@@ -6,15 +6,16 @@ const Main = () => {
 
   // TODO: uncomment the following part and add correct url
 
-//  const [message, setMessage] = useState('')
-//  const fetchMessage = async () => {
+//  const [form, setForm] = useState('')
+//  const fetchForm = async () => {
 //    const response = await fetch('<url-here>')
 //    const json = await response.json()
 //
-//    setMessage(json.message)
+//    setForm(json.form)
+//    console.log(form)
 //  }
 //  useEffect(() => {
-//    fetchMessage()
+//    fetchForm()
 //  }, [])
 
   return (
