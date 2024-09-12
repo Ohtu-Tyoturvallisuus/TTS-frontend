@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const Main = () => {
 
-    // TODO: uncomment the following part and add correct url
+  // TODO: uncomment the following part and add correct url
 
 //  const [message, setMessage] = useState('')
 //  const fetchMessage = async () => {
