@@ -1,25 +1,11 @@
 import { StyleSheet, View, Text } from 'react-native';
-
-import { useState, useEffect } from 'react';
+import WorksitesList from './WorksitesList';
 
 const Main = () => {
 
-  // TODO: uncomment the following part and add correct url
-
-//  const [message, setMessage] = useState('')
-//  const fetchMessage = async () => {
-//    const response = await fetch('<url-here>')
-//    const json = await response.json()
-//
-//    setMessage(json.message)
-//  }
-//  useEffect(() => {
-//    fetchMessage()
-//  }, [])
-
   return (
     <View style={styles.container}>
-      <Text>Placeholder text</Text>
+      <WorksitesList />
     </View>
   );
 }
@@ -30,6 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e1e4e8',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 75,
   },
 });
 
