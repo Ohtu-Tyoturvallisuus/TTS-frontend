@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import WorksiteModal from './WorksiteModal';
+import Constants from 'expo-constants';
 
 const WorksitesList = () => {
   const [worksites, setWorksites] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedWorksite, setSelectedWorksite] = useState(null);
+  const local_ip = Constants.expoConfig.extra.local_ip
 
   useEffect(() => {
-    // ONLY WORKING ON MY SETUP
-    fetch('http://192.168.101.101:8000/worksites/api/')
+    // Fetch worksites from server
+    fetch('http://' + local_ip + ':8000/worksites/api/')
       .then(response => response.json())
       .then(data => {
         // Ensure the data is in an array format
