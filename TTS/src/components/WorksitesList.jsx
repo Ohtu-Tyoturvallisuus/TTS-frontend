@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import axios from 'axios';
+
 import WorksiteModal from './WorksiteModal';
 import Constants from 'expo-constants';
 
@@ -11,9 +13,9 @@ const WorksitesList = () => {
 
   useEffect(() => {
     // Fetch worksites from server
-    fetch('http://' + local_ip + ':8000/worksites/api/')
-      .then(response => response.json())
-      .then(data => {
+    axios.get('http://' + local_ip + ':8000/worksites/api/')
+      .then(response => {
+        const data = response.data
         // Ensure the data is in an array format
         if (Array.isArray(data)) {
           setWorksites(data);
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    textAlign: 'center', // Center the title
+    textAlign: 'center',
   },
   worksiteContainer: {
     marginBottom: 16,
