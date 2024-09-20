@@ -1,10 +1,12 @@
 import { StyleSheet, View, Text } from 'react-native';
 import WorksitesList from './WorksitesList';
+import WorkSafetyForm from './WorkSafetyForm';
 
 const Main = () => {
 
   return (
     <View style={styles.container}>
+      <WorkSafetyForm />
       <WorksitesList />
     </View>
   );
