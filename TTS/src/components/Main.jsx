@@ -5,21 +5,24 @@ import WorksitesList from './WorksitesList';
 import WorkSafetyForm from './WorkSafetyForm';
 import SignIn from './SignIn';
 import AppBar from './AppBar';
+import { UserProvider } from '../contexts/UserContext';
 
 const Main = () => {
 
 
   return (
     <View style={styles.container}>
-      <AppBar />
-      <WorkSafetyForm />
-      <View style={styles.content}>
-        <Routes>
-          <Route path='/' element={<WorksitesList />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-          <Route path='/signin' element={<SignIn />} />
-        </Routes>
-      </View>
+      <UserProvider>
+        <AppBar />
+        <WorkSafetyForm />
+        <View style={styles.content}>
+          <Routes>
+            <Route path='/' element={<WorksitesList />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path='/signin' element={<SignIn />} />
+          </Routes>
+        </View>
+      </UserProvider>
     </View>
   );
 }

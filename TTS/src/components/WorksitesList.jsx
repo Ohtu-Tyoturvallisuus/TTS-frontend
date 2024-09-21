@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 import WorksiteModal from './WorksiteModal';
-import Constants from 'expo-constants';
 
 const WorksitesList = () => {
   const [worksites, setWorksites] = useState([]);
