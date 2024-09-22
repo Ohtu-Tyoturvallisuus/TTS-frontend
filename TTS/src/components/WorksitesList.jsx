@@ -13,7 +13,7 @@ const WorksitesList = () => {
 
   useEffect(() => {
     // Fetch worksites from server
-    axios.get('http://' + local_ip + ':8000/worksites/api/')
+    axios.get('http://' + local_ip + ':8000/api/worksites/')
       .then(response => {
         const data = response.data
         // Ensure the data is in an array format
