@@ -1,5 +1,12 @@
 import { TextInput, Pressable, View, StyleSheet, Text } from 'react-native';
 import { useFormik } from 'formik';
+import axios from 'axios';
+import Constants from 'expo-constants';
+import * as yup from 'yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigate } from 'react-router-native';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +44,19 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  errorInput: {
+    borderColor: 'red',
+  },
+  errorText: {
+    color: 'red',
+    marginLeft: 10,
+  },
+});
+
+const validationSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required('Username is required'),
 });
 
 const initialValues = {
@@ -44,14 +64,30 @@ const initialValues = {
 };
 
 const SignIn = () => {
-  // TODO: Communicate submit with backend
+  const navigate = useNavigate()
+  const { setUsername } = useContext(UserContext)
+  const local_ip = Constants.expoConfig.extra.local_ip
   const onSubmit = (values) => {
-    console.log('Tried to sign in with username ' + values.username)
+    axios.post('http://' + local_ip + ':8000/worksites/signin/', {
+      username: values.username
+    })
+      .then(response => {
+        console.log(response.data.message)
+        AsyncStorage.setItem('username', response.data.username)
+          .then(() => {
+            setUsername(response.data.username)
+            navigate('/')
+          })
+      })
+      .catch(error => console.error('Error signing in:', error))
   }
   const formik = useFormik({
     initialValues,
+    validationSchema,
     onSubmit,
   })
+  const hasError = (field) =>
+    formik.errors[field] && formik.touched[field];
 
   return (
     <View style={styles.container}>
@@ -59,7 +95,16 @@ const SignIn = () => {
         placeholder="Käyttäjänimi"
         onChangeText={formik.handleChange('username')}
         value={formik.values.username}
+        style={[
+          styles.input,
+          hasError('username') && styles.errorInput,
+        ]}
       />
+      {hasError('username') && (
+        <Text style={styles.errorText}>
+          {formik.errors.username}
+        </Text>
+      )}
 
       <Pressable
         onPress={formik.handleSubmit}
