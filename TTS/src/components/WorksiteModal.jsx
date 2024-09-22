@@ -1,7 +1,7 @@
 // WorksiteModal.jsx
 import React from 'react';
 import { View, Text, StyleSheet, Modal, Button } from 'react-native';
-import RiskList from './RiskList';
+import SurveyList from './SurveyList';
 
 const WorksiteModal = ({ visible, worksite, onClose }) => {
   if (!worksite) return null;
@@ -17,7 +17,7 @@ const WorksiteModal = ({ visible, worksite, onClose }) => {
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{worksite.name}</Text>
           <Text>Sijainti: {worksite.location}</Text>
-          <RiskList risks={worksite.risk_notes} />
+          <SurveyList surveys={worksite.surveys} />
           <Button title="Close" onPress={onClose} />
         </View>
       </View>

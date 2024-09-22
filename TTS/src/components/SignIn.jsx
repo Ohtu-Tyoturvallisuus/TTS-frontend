@@ -68,7 +68,7 @@ const SignIn = () => {
   const { setUsername } = useContext(UserContext)
   const local_ip = Constants.expoConfig.extra.local_ip
   const onSubmit = (values) => {
-    axios.post('http://' + local_ip + ':8000/worksites/signin/', {
+    axios.post('http://' + local_ip + ':8000/api/signin/', {
       username: values.username
     })
       .then(response => {
