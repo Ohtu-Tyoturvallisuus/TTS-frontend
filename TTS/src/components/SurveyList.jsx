@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
-import RiskList from './RiskList'; // Make sure to import the RiskList component
+import WorkSafetyForm from './risk_form/WorkSafetyForm'; // Import the WorkSafetyForm component
 
 const SurveyList = ({ surveys }) => {
-  const [expandedSurveyId, setExpandedSurveyId] = useState(null);
+  const [selectedSurveyId, setSelectedSurveyId] = useState(null);
 
-  const toggleRiskList = (surveyId) => {
-    setExpandedSurveyId(expandedSurveyId === surveyId ? null : surveyId);
+  const toggleWorkSafetyForm = (surveyId) => {
+    setSelectedSurveyId(selectedSurveyId === surveyId ? null : surveyId);
   };
 
   const renderSurvey = ({ item: survey }) => (
@@ -16,10 +16,10 @@ const SurveyList = ({ surveys }) => {
         <Text style={styles.surveyDate}>{new Date(survey.created_at).toLocaleDateString()}</Text>
       </View>
       <Button
-        title={expandedSurveyId === survey.id ? '-' : '+'}
-        onPress={() => toggleRiskList(survey.id)}
+        title={'Aloita riskikartoitus'}
+        onPress={() => toggleWorkSafetyForm(survey.id)}
       />
-      {expandedSurveyId === survey.id && <RiskList risks={survey.risk_notes} />}
+      {selectedSurveyId === survey.id && <WorkSafetyForm />}
     </View>
   );
 
