@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 const validationSchema = yup.object().shape({
   username: yup
     .string()
-    .required('Username is required'),
+    .required('Syötä käyttäjänimi'),
 });
 
 const initialValues = {
