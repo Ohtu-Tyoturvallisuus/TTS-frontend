@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import RiskNote from './RiskNote';
 
 const WorkSafetyForm = ({risks}) => {
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const local_ip = Constants.expoConfig.extra.local_ip;
   const [formData, setFormData] = useState({
     WorkSite: '',
@@ -78,23 +78,14 @@ const WorkSafetyForm = ({risks}) => {
   //     .catch(error => console.error('Virhe tietojen lähettämisessä:', error));
   // };
 
-  const renderButtonGroup = (name) => (
-    <View style={styles.buttonGroup}>
-      <Button
-        title="Kunnossa"
-        onPress={() => handleInputChange(name, 'Kunnossa')}
-        color={formData[name] === 'Kunnossa' ? 'blue' : 'gray'}
-      />
-      <Button
-        title="Ei koske"
-        onPress={() => handleInputChange(name, 'Ei koske')}
-        color={formData[name] === 'Ei koske' ? 'blue' : 'gray'}
-      />
-    </View>
-  );
 
   return (
     <View style={styles.container}>
+        <Button 
+          title="Täytä Työturvallisuuslomake" 
+          onPress={() => setModalVisible(true)} 
+          style={styles.button} 
+        />
       <Modal visible={modalVisible} animationType="slide">
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Button title="Sulje" onPress={() => setModalVisible(false)} />

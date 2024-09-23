@@ -8,18 +8,12 @@ import AppBar from './AppBar';
 import { UserProvider } from '../contexts/UserContext';
 
 const Main = () => {
-  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
       <UserProvider>
         <AppBar />
-        <Button 
-          title="Täytä Työturvallisuuslomake" 
-          onPress={() => setModalVisible(true)} 
-          style={styles.button} 
-        />
-        {modalVisible && <WorkSafetyForm />}
+        <WorkSafetyForm />
         <View style={styles.content}>
           <Routes>
             <Route path='/' element={<WorksitesList />} />
