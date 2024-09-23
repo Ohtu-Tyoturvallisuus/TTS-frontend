@@ -9,21 +9,24 @@
         <Button
           title="Kunnossa"
           onPress={() => {
-            setValue('Kunnossa');
-            onChange(name, 'Kunnossa');
+            const newValue = value === 'Kunnossa' ? '' : 'Kunnossa';
+            setValue(newValue);
+            onChange(name, newValue);
           }}
           color={value === 'Kunnossa' ? 'blue' : 'gray'}
         />
         <Button
           title="Ei koske"
           onPress={() => {
-            setValue('Ei koske');
-            onChange(name, 'Ei koske');
+            const newValue = value === 'Ei koske' ? '' : 'Ei koske';
+            setValue(newValue);
+            onChange(name, newValue);
           }}
           color={value === 'Ei koske' ? 'blue' : 'gray'}
         />
       </View>
     );
+    
 
     return (
       <View>
