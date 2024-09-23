@@ -72,10 +72,10 @@ const SignIn = () => {
       username: values.username
     })
       .then(response => {
-        console.log(response.data.message)
-        AsyncStorage.setItem('username', response.data.username)
+        console.log(response.data)
+        AsyncStorage.setItem('username', values.username)
           .then(() => {
-            setUsername(response.data.username)
+            setUsername(values.username)
             navigate('/')
           })
       })
