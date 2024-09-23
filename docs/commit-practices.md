@@ -1,5 +1,5 @@
 # Commit practices
-All commits are made in development (feature) branches, not directly into the main branch ([branching practices](add link to branching practises)).
+All commits are made in development (feature) branches, not directly into the main branch ([branching practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-practices.md)).
 
 Commit messages should be written by following these guidelines:
 1. Separate the subject from the body with a blank line
