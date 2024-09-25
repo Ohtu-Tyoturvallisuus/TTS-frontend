@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, View, Button, Modal, TextInput, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
 import RiskNote from './RiskNote';
+import { Dimensions } from 'react-native';
 
 const WorkSafetyForm = ({ risks }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [currentViewIndex, setCurrentViewIndex] = useState(0);
+  const scrollViewRef = useRef(null);
   const local_ip = Constants.expoConfig.extra.local_ip;
   const [formData, setFormData] = useState({
     'Työmaa': '',
@@ -38,6 +41,18 @@ const WorkSafetyForm = ({ risks }) => {
     });
   };
 
+  const handleButtonInputChange = (name, value) => {
+    handleInputChange(name, value)
+      
+    // Scroll down to the next view
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        y: currentViewIndex + Dimensions.get('window').height,
+        animated: true,
+      });
+    }
+  };
+
   const handleSubmit = () => {
     console.log('Lomakkeen tiedot:', JSON.stringify(formData, null, 2));
   };
@@ -50,65 +65,85 @@ const WorkSafetyForm = ({ risks }) => {
         style={styles.button} 
       />
       <Modal visible={modalVisible} animationType="slide">
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Button title="Sulje" onPress={() => setModalVisible(false)} />
-          <Text style={styles.title}>Työturvallisuuslomake</Text>
+        <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        pagingEnabled={true}
+        ref={scrollViewRef}
+        onScroll={
+          event => {
+            setCurrentViewIndex(event.nativeEvent.contentOffset.y)
+          }
+        }>
+          <View style={styles.riskNote}>
+            <Button title="Sulje" onPress={() => setModalVisible(false)} />
+            <Text style={styles.title}>Työturvallisuuslomake</Text>
 
-          {/* Työmaa */}
-          <Text style={styles.label}>Työmaa:</Text>
-          <TextInput
-            style={styles.input}
-            value={formData['Työmaa']}
-            onChangeText={(value) => handleInputChange('Työmaa', value)}
-          />
+            {/* Työmaa */}
+            <Text style={styles.label}>Työmaa:</Text>
+            <TextInput
+              style={styles.input}
+              value={formData['Työmaa']}
+              onChangeText={(value) => handleInputChange('Työmaa', value)}
+            />
+          </View>
 
-          <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
+          <View style={styles.riskNote}>
+            <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
+          </View>
 
           {Object.keys(formData)
             .slice(1, 10)  // 1: Aloita toisesta kentästä, 10: Pysähdy "Telineiden puhtaus ja jätteiden lajittelu" jälkeen
             .map(key => (
-              <View key={key}>
+              <View key={key} style={styles.riskNote}>
                 <RiskNote
                   risk={{ note: key }}
                   data={formData[key]}
-                  onChange={(value) => handleInputChange(key, value)}
+                  onChange={(value) => handleButtonInputChange(key, value)}
                 />
               </View>
           ))}
 
 
           {/* Muut telineriskit näytetään heti telinetöihin liittyvien vaarojen jälkeen */}
-          <Text style={styles.label}>Muut telineriskit:</Text>
-          <TextInput
-            style={styles.input}
-            value={formData['Muut telineriskit']}
-            onChangeText={(value) => handleInputChange('Muut telineriskit', value)}
-          />
+          <View style={styles.riskNote}>
+            <Text style={styles.label}>Muut telineriskit:</Text>
+            <TextInput
+              style={styles.input}
+              value={formData['Muut telineriskit']}
+              onChangeText={(value) => handleInputChange('Muut telineriskit', value)}
+            />
+          </View>
 
           {/* Muut työympäristöriskit näytetään myöhemmin */}
-          <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
+          <View style={styles.riskNote}>
+            <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
+          </View>
 
           {Object.keys(formData)
             .slice(11, 21)
             .map(key => (
-              <View key={key}>
+              <View key={key} style={styles.riskNote}>
                 <RiskNote
                   risk={{ note: key }}
                   data={formData[key]}
-                  onChange={(value) => handleInputChange(key, value)}
+                  onChange={(value) => handleButtonInputChange(key, value)}
                 />
               </View>
           ))}
 
-          <Text style={styles.label}>Muut työympäristöriskit:</Text>
-          <TextInput
-            style={styles.input}
-            value={formData['Muut työympäristöriskit']}
-            onChangeText={(value) => handleInputChange('Muut työympäristöriskit', value)}
-          />
+          <View style={styles.riskNote}>
+            <Text style={styles.label}>Muut työympäristöriskit:</Text>
+            <TextInput
+              style={styles.input}
+              value={formData['Muut työympäristöriskit']}
+              onChangeText={(value) => handleInputChange('Muut työympäristöriskit', value)}
+            />
+          </View>
 
-          <Button title="Lähetä" onPress={handleSubmit} />
-          <Button title="Sulje" onPress={() => setModalVisible(false)} />
+          <View style={styles.riskNote}>
+            <Button title="Lähetä" onPress={handleSubmit} />
+            <Button title="Sulje" onPress={() => setModalVisible(false)} />
+          </View>
         </ScrollView>
       </Modal>
     </View>
@@ -130,13 +165,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    paddingBottom: 20,
     textAlign: 'center',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 15,
+    paddingVertical: 15,
     textAlign: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
@@ -144,21 +179,20 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    marginVertical: 8,
+    paddingVertical: 8,
     fontWeight: 'bold',
   },
   input: {
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 15,
+    paddingBottom: 15,
     paddingHorizontal: 10,
     borderRadius: 5,
   },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
+  riskNote: {
+    flex: 1,
+    height: Dimensions.get('window').height,
   },
 });
 

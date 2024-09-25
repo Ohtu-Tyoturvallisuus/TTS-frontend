@@ -41,10 +41,11 @@
       fontSize: 16,
       marginVertical: 8,
       fontWeight: 'bold',
+      alignSelf: 'center'
     },
     buttonGroup: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       marginBottom: 15,
     },
   });
