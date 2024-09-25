@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Button, Modal, TextInput, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
 import RiskNote from './RiskNote';
+import axios from 'axios';
 
-const WorkSafetyForm = ({ risks }) => {
+const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus' }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const local_ip = Constants.expoConfig.extra.local_ip;
+  const [worksiteId, setWorksiteId] = useState(worksite ? worksite.id : null);
+  const [subject, setSubject] = useState('');
   const [formData, setFormData] = useState({
     'Työmaa': '',
     'Henkilökohtaiset suojaimet / kohteen edellyttämät erityissuojaimet': '',
@@ -39,27 +42,56 @@ const WorkSafetyForm = ({ risks }) => {
   };
 
   const handleSubmit = () => {
+    console.log('Työkohde', subject)
     console.log('Lomakkeen tiedot:', JSON.stringify(formData, null, 2));
+    // Send form data to server
+
+    const scaffoldRisks = JSON.stringify(Object.fromEntries(Object.entries(formData).slice(2, 10)), null, 2);
+    const surroundingsRisks = JSON.stringify(Object.fromEntries(Object.entries(formData).slice(11, 21)), null, 2);
+
+    axios.post(`http://${local_ip}:8000/api/worksites/${worksiteId}/surveys/`, {
+      title: subject,
+      description: "",
+      scaffold_risks: scaffoldRisks,
+      surroundings_risks: surroundingsRisks,
+    })
+    .then(response => {
+      console.log('Server response:', response.data);
+      setModalVisible(false);
+    })
+    .catch(error => console.error('Error:', error));
+
   };
 
   return (
     <View style={styles.container}>
       <Button 
-        title="Täytä Työturvallisuuslomake" 
+        title={title}
         onPress={() => setModalVisible(true)} 
-        style={styles.button} 
       />
       <Modal visible={modalVisible} animationType="slide">
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Button title="Sulje" onPress={() => setModalVisible(false)} />
           <Text style={styles.title}>Työturvallisuuslomake</Text>
 
-          {/* Työmaa */}
+          {/*Työmaa */}
+          {/* Display worksite name and location if exists, otherwise input for worksite*/}
           <Text style={styles.label}>Työmaa:</Text>
+          {worksite ? (
+            <Text>{worksite.name}, {worksite.location}</Text>
+          ) : (
+            <TextInput
+              style={styles.input}
+              value={subject}
+              onChangeText={(value) => handleInputChange('Työmaa', value)}
+            />
+          )}
+
+          <Text style={styles.label}>Työkohde:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Työmaa']}
-            onChangeText={(value) => handleInputChange('Työmaa', value)}
+            value={subject}
+            onChangeText={(value) => setSubject(value)}
           />
 
           <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
@@ -71,7 +103,7 @@ const WorkSafetyForm = ({ risks }) => {
                 <RiskNote
                   risk={{ note: key }}
                   data={formData[key]}
-                  onChange={(value) => handleInputChange(key, value)}
+                  onChange={handleInputChange}
                 />
               </View>
           ))}
@@ -95,7 +127,7 @@ const WorkSafetyForm = ({ risks }) => {
                 <RiskNote
                   risk={{ note: key }}
                   data={formData[key]}
-                  onChange={(value) => handleInputChange(key, value)}
+                  onChange={handleInputChange}
                 />
               </View>
           ))}
@@ -117,7 +149,7 @@ const WorkSafetyForm = ({ risks }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,

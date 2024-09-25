@@ -2,9 +2,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, Button } from 'react-native';
 import SurveyList from './SurveyList';
+import WorkSafetyForm from './risk_form/WorkSafetyForm';
 
 const WorksiteModal = ({ visible, worksite, onClose }) => {
   if (!worksite) return null;
+  console.log('Työmaan tiedot:', worksite);
 
   return (
     <Modal
@@ -17,7 +19,8 @@ const WorksiteModal = ({ visible, worksite, onClose }) => {
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{worksite.name}</Text>
           <Text>Sijainti: {worksite.location}</Text>
-          <SurveyList surveys={worksite.surveys} />
+          <WorkSafetyForm title='Tee uusi riskikartoitus' worksite={worksite} />
+          {/* <SurveyList surveys={worksite.surveys} /> */}
           <Button title="Close" onPress={onClose} />
         </View>
       </View>
