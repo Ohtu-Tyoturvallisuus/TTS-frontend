@@ -20,7 +20,7 @@ const WorksiteModal = ({ visible, worksite, onClose }) => {
           <Text style={styles.modalTitle}>{worksite.name}</Text>
           <Text>Sijainti: {worksite.location}</Text>
           <WorkSafetyForm title='Tee uusi riskikartoitus' worksite={worksite} />
-          {/* <SurveyList surveys={worksite.surveys} /> */}
+          <SurveyList worksite={worksite} />
           <Button title="Close" onPress={onClose} />
         </View>
       </View>

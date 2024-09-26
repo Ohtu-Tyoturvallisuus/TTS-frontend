@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Button, Modal, TextInput, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
 import RiskNote from './RiskNote';
 import axios from 'axios';
 
-const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus' }) => {
+const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=null }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const local_ip = Constants.expoConfig.extra.local_ip;
   const [worksiteId, setWorksiteId] = useState(worksite ? worksite.id : null);
@@ -33,6 +33,19 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus' }) => {
     'Toiminta hätätilanteessa/hätäpoistumistie tiedossa': '',
     'Muut työympäristöriskit': '',
   });
+  useEffect(() => {
+    if (surveyAPIURL) {
+      axios.get(surveyAPIURL)
+        .then(response => {
+          console.log('Survey data:', response.data);
+          const risks = JSON.parse(response.data.risks);
+          setSubject(response.data.title);
+          setFormData(risks);
+        })
+        .catch(error => console.error('Error fetching survey data:', error));
+    }
+  }, [surveyAPIURL]);
+  
 
   const handleInputChange = (name, value) => {
     setFormData({
@@ -42,25 +55,21 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus' }) => {
   };
 
   const handleSubmit = () => {
-    console.log('Työkohde', subject)
     console.log('Lomakkeen tiedot:', JSON.stringify(formData, null, 2));
     // Send form data to server
 
-    const scaffoldRisks = JSON.stringify(Object.fromEntries(Object.entries(formData).slice(2, 10)), null, 2);
-    const surroundingsRisks = JSON.stringify(Object.fromEntries(Object.entries(formData).slice(11, 21)), null, 2);
+    const risks = JSON.stringify(formData, null, 2);
 
     axios.post(`http://${local_ip}:8000/api/worksites/${worksiteId}/surveys/`, {
       title: subject,
       description: "",
-      scaffold_risks: scaffoldRisks,
-      surroundings_risks: surroundingsRisks,
+      risks: risks,
     })
     .then(response => {
       console.log('Server response:', response.data);
       setModalVisible(false);
     })
     .catch(error => console.error('Error:', error));
-
   };
 
   return (
@@ -107,7 +116,6 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus' }) => {
                 />
               </View>
           ))}
-
 
           {/* Muut telineriskit näytetään heti telinetöihin liittyvien vaarojen jälkeen */}
           <Text style={styles.label}>Muut telineriskit:</Text>
