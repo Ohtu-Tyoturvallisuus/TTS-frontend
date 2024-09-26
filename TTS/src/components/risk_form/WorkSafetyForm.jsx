@@ -43,7 +43,10 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
           console.log('Survey data:', response.data);
           const risks = JSON.parse(response.data.risks);
           setSubject(response.data.title);
-          setFormData(risks);
+
+          // Merge the fetched data with the initial form data
+          const mergedData = { ...formData, ...risks };
+          setFormData(mergedData);
         })
         .catch(error => console.error('Error fetching survey data:', error));
     }
@@ -106,14 +109,6 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
           <View style={styles.riskNote}>
             <Button title="Sulje" onPress={() => setModalVisible(false)} />
             <Text style={styles.title}>Työturvallisuuslomake</Text>
-
-            {/* Työmaa */}
-            <Text style={styles.label}>Työmaa:</Text>
-            <TextInput
-              style={styles.input}
-              value={formData['Työmaa']}
-              onChangeText={(value) => handleInputChange('Työmaa', value)}
-            />
           </View>
           {/*Työmaa */}
           {/* Display worksite name and location if exists, otherwise input for worksite*/}
