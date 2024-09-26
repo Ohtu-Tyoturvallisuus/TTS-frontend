@@ -1,14 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, Button, Modal, TextInput, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
 import RiskNote from './RiskNote';
+import axios from 'axios';
 import { Dimensions } from 'react-native';
 
-const WorkSafetyForm = ({ risks }) => {
+const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=null }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentViewIndex, setCurrentViewIndex] = useState(0);
   const scrollViewRef = useRef(null);
   const local_ip = Constants.expoConfig.extra.local_ip;
+  const [worksiteId, setWorksiteId] = useState(worksite ? worksite.id : null);
+  const [subject, setSubject] = useState('');
   const [formData, setFormData] = useState({
     'Työmaa': '',
     'Henkilökohtaiset suojaimet / kohteen edellyttämät erityissuojaimet': '',
@@ -33,6 +36,19 @@ const WorkSafetyForm = ({ risks }) => {
     'Toiminta hätätilanteessa/hätäpoistumistie tiedossa': '',
     'Muut työympäristöriskit': '',
   });
+  useEffect(() => {
+    if (surveyAPIURL) {
+      axios.get(surveyAPIURL)
+        .then(response => {
+          console.log('Survey data:', response.data);
+          const risks = JSON.parse(response.data.risks);
+          setSubject(response.data.title);
+          setFormData(risks);
+        })
+        .catch(error => console.error('Error fetching survey data:', error));
+    }
+  }, [surveyAPIURL]);
+  
 
   const handleInputChange = (name, value) => {
     setFormData({
@@ -55,14 +71,27 @@ const WorkSafetyForm = ({ risks }) => {
 
   const handleSubmit = () => {
     console.log('Lomakkeen tiedot:', JSON.stringify(formData, null, 2));
+    // Send form data to server
+
+    const risks = JSON.stringify(formData, null, 2);
+
+    axios.post(`http://${local_ip}:8000/api/worksites/${worksiteId}/surveys/`, {
+      title: subject,
+      description: "",
+      risks: risks,
+    })
+    .then(response => {
+      console.log('Server response:', response.data);
+      setModalVisible(false);
+    })
+    .catch(error => console.error('Error:', error));
   };
 
   return (
     <View style={styles.container}>
       <Button 
-        title="Täytä Työturvallisuuslomake" 
+        title={title}
         onPress={() => setModalVisible(true)} 
-        style={styles.button} 
       />
       <Modal visible={modalVisible} animationType="slide">
         <ScrollView
@@ -86,6 +115,25 @@ const WorkSafetyForm = ({ risks }) => {
               onChangeText={(value) => handleInputChange('Työmaa', value)}
             />
           </View>
+          {/*Työmaa */}
+          {/* Display worksite name and location if exists, otherwise input for worksite*/}
+          <Text style={styles.label}>Työmaa:</Text>
+          {worksite ? (
+            <Text>{worksite.name}, {worksite.location}</Text>
+          ) : (
+            <TextInput
+              style={styles.input}
+              value={subject}
+              onChangeText={(value) => handleInputChange('Työmaa', value)}
+            />
+          )}
+
+          <Text style={styles.label}>Työkohde:</Text>
+          <TextInput
+            style={styles.input}
+            value={subject}
+            onChangeText={(value) => setSubject(value)}
+          />
 
           <View style={styles.riskNote}>
             <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
@@ -98,11 +146,10 @@ const WorkSafetyForm = ({ risks }) => {
                 <RiskNote
                   risk={{ note: key }}
                   data={formData[key]}
-                  onChange={(value) => handleButtonInputChange(key, value)}
+                  onChange={handleButtonInputChange}
                 />
               </View>
           ))}
-
 
           {/* Muut telineriskit näytetään heti telinetöihin liittyvien vaarojen jälkeen */}
           <View style={styles.riskNote}>
@@ -126,7 +173,7 @@ const WorkSafetyForm = ({ risks }) => {
                 <RiskNote
                   risk={{ note: key }}
                   data={formData[key]}
-                  onChange={(value) => handleButtonInputChange(key, value)}
+                  onChange={handleButtonInputChange}
                 />
               </View>
           ))}
@@ -152,7 +199,7 @@ const WorkSafetyForm = ({ risks }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
