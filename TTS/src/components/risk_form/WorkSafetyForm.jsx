@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import RiskNote from './RiskNote';
 import axios from 'axios';
 import { Dimensions } from 'react-native';
+import useFetchSurveyData from '../../hooks/useFetchSurveyData';
 
 const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=null }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -36,22 +37,20 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
     'Toiminta hätätilanteessa/hätäpoistumistie tiedossa': '',
     'Muut työympäristöriskit': '',
   });
-  useEffect(() => {
-    if (surveyAPIURL) {
-      axios.get(surveyAPIURL)
-        .then(response => {
-          console.log('Survey data:', response.data);
-          const risks = JSON.parse(response.data.risks);
-          setSubject(response.data.title);
+  //Fetches surveydata from API (returns null if URL not provided)
+  const { surveyData, error } = useFetchSurveyData(surveyAPIURL);
+  if (error) {
+    return <Text>Error fetching survey data</Text>;
+  }
 
-          // Merge the fetched data with the initial form data
-          const mergedData = { ...formData, ...risks };
-          setFormData(mergedData);
-        })
-        .catch(error => console.error('Error fetching survey data:', error));
+  //Merges fetched survey data to the default formData
+  useEffect(() => {
+    if (surveyData) {
+      setSubject(surveyData.title);
+      const mergedData = { ...formData, ...surveyData.risks };
+      setFormData(mergedData);
     }
-  }, [surveyAPIURL]);
-  
+  }, [surveyData]);
 
   const handleInputChange = (name, value) => {
     setFormData({
@@ -62,7 +61,6 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
 
   const handleButtonInputChange = (name, value) => {
     handleInputChange(name, value)
-      
     // Scroll down to the next view
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollTo({
@@ -73,11 +71,10 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
   };
 
   const handleSubmit = () => {
-    console.log('Lomakkeen tiedot:', JSON.stringify(formData, null, 2));
-    // Send form data to server
-
     const risks = JSON.stringify(formData, null, 2);
-
+    console.log('Lomakkeen tiedot:', risks);
+    
+    // Send form data to server
     axios.post(`http://${local_ip}:8000/api/worksites/${worksiteId}/surveys/`, {
       title: subject,
       description: "",
@@ -85,9 +82,11 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
     })
     .then(response => {
       console.log('Server response:', response.data);
+      // Close modal when successful
       setModalVisible(false);
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error:', error))
+    
   };
 
   return (

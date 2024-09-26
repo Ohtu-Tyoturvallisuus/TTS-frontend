@@ -10,26 +10,32 @@ const SurveyList = ({ worksite }) => {
         <Text style={styles.surveyTitle}>{survey.title}</Text>
         <Text style={styles.surveyDate}>{new Date(survey.created_at).toLocaleDateString()}</Text>
       </View>
-      <WorkSafetyForm title='Avaa' worksite={worksite} surveyAPIURL={survey.url} />
+      <WorkSafetyForm title='Käytä pohjana' worksite={worksite} surveyAPIURL={survey.url}/>
     </View>
   );
 
   return (
     <>
       <Text>Tehdyt kartoitukset:</Text>
-      <FlatList
-        data={worksite.surveys}
-        renderItem={renderSurvey}
-        keyExtractor={survey => survey.id.toString()}
-      />
+      <View style={styles.listContainer}>
+        <FlatList
+          data={worksite.surveys}
+          renderItem={renderSurvey}
+          keyExtractor={survey => survey.id.toString()}
+        />
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  listContainer: {
+    maxHeight: 300, 
+  },
   surveyContainer: {
     flexDirection: 'column',
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingTop: 10,
     marginVertical: 5,
     backgroundColor: '#f9f9f9',
     borderRadius: 5,

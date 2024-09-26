@@ -2,31 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Constants from 'expo-constants';
+import useFetchWorksites from '../hooks/useFetchWorksites';
 
 import WorksiteModal from './WorksiteModal';
 
 const WorksitesList = () => {
-  const [worksites, setWorksites] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedWorksite, setSelectedWorksite] = useState(null);
   const local_ip = Constants.expoConfig.extra.local_ip
 
-  useEffect(() => {
-    // Fetch worksites from server
-    axios.get('http://' + local_ip + ':8000/api/worksites/')
-      .then(response => {
-        const data = response.data
-        // Ensure the data is in an array format
-        if (Array.isArray(data)) {
-          setWorksites(data);
-        } else {
-          setWorksites([data]);
-        }
-      })
-      .catch(error => console.error('Error fetching worksites:', error))
-  }, []);
+  // Custom hook for fetching worksites
+  const worksites = useFetchWorksites(local_ip);
 
-  const renderWorksite = ({ item }) => (
+  const WorksiteButton = ({ item }) => (
     <View style={styles.worksiteContainer}>
       <TouchableOpacity
         style={styles.button}
@@ -46,7 +34,7 @@ const WorksitesList = () => {
       <Text style={styles.title}>Työmaat</Text>
       <FlatList
         data={worksites}
-        renderItem={renderWorksite}
+        renderItem={WorksiteButton}
         keyExtractor={worksite => worksite.id.toString()}
       />
       <WorksiteModal
