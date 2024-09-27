@@ -5,10 +5,7 @@ import RiskNote from './RiskNote';
 import axios from 'axios';
 import { Dimensions } from 'react-native';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
-<<<<<<< Updated upstream
-=======
 import { TouchableOpacity } from 'react-native';
->>>>>>> Stashed changes
 
 const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=null }) => {
   const [modalVisible, setModalVisible] = useState(false);
