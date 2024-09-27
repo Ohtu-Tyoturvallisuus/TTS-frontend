@@ -1,0 +1,22 @@
+{
+  "plugins": ["react", "react-native"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parser": "@babel/eslint-parser",
+  "env": {
+    "react-native/react-native": true
+  },
+  "rules": {
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 2,
+    "react-native/no-inline-styles": 2,
+    "react-native/no-raw-text": 2,
+    "react-native/no-single-element-style-arrays": 2
+  }
+}

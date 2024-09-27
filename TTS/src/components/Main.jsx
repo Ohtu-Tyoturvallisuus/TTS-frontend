@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
 import WorksitesList from './WorksitesList';
@@ -33,7 +33,14 @@ const Main = () => {
   return (
     <View style={styles.container}>
       <AppBar username={username} setUsername={setUsername} />
-      {username && location !== '/worksafetyform' ? (<RiskFormButton />) : (<></>)}
+      {username && location !== '/worksafetyform'
+        ? (
+          <View style={styles.buttonContainer}>
+            <RiskFormButton />
+          </View>
+        ) 
+        : (<></>)
+      }
       <View style={styles.content}>
         <Routes>
           <Route path='/' element={<WorksitesList />} />
@@ -54,12 +61,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 10
-  },
-  button: {
-    backgroundColor: '#FF8C00',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
   },
 });
 
