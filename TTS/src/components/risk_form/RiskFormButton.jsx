@@ -5,14 +5,12 @@ const RiskFormButton = ({ title, worksite }) => {
   const navigate = useNavigate()
 
   return (
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity 
-      style={styles.button}
-      onPress={() => navigate('worksafetyform')}
-      >
-        <Text style={styles.buttonText}>Täytä Työturvallisuuslomake</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity 
+    style={styles.button}
+    onPress={() => navigate('worksafetyform')}
+    >
+      <Text style={styles.buttonText}>Täytä Työturvallisuuslomake</Text>
+    </TouchableOpacity>
   )
 }
 
@@ -29,10 +27,6 @@ const styles = StyleSheet.create({
     color: '#fff', 
     fontWeight: 'bold',
     fontSize: 16,
-  },
-  buttonContainer: {
-    backgroundColor: '#e1e4e8',
-    padding: 10,
   },
 })
 

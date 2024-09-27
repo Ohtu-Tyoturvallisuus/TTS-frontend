@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
   content: {
     flex: 10
   },
+  buttonContainer: {
+    backgroundColor: '#e1e4e8',
+    padding: 10,
+  },
 });
 
 export default Main;
