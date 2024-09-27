@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Button, Modal, TextInput, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, Button, TextInput, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
-import RiskNote from './RiskNote';
 import axios from 'axios';
-import { Dimensions } from 'react-native';
+import { useNavigate } from 'react-router-native';
+
+import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
-import { TouchableOpacity } from 'react-native';
 
 const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=null }) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const [currentViewIndex, setCurrentViewIndex] = useState(0);
+  const navigate = useNavigate();
   const scrollViewRef = useRef(null);
   const local_ip = Constants.expoConfig.extra.local_ip;
   const [worksiteId, setWorksiteId] = useState(worksite ? worksite.id : null);
@@ -83,8 +83,8 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
     })
     .then(response => {
       console.log('Server response:', response.data);
-      // Close modal when successful
-      setModalVisible(false);
+      // navigate to front page when successful
+      navigate('/')
     })
     .catch(error => console.error('Error:', error))
     
@@ -92,104 +92,99 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
-      style={styles.button} 
-      onPress={() => setModalVisible(true)}
-    >
-      <Text style={styles.buttonText}>Täytä Työturvallisuuslomake</Text>
-    </TouchableOpacity>
-      <Modal visible={modalVisible} animationType="slide">
-        <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        pagingEnabled={true}
-        ref={scrollViewRef}
-        onScroll={
-          event => {
-            setCurrentViewIndex(event.nativeEvent.contentOffset.y)
-          }
-        }>
-          <View style={styles.riskNote}>
-            <Button title="Sulje" onPress={() => setModalVisible(false)} />
-            <Text style={styles.title}>Työturvallisuuslomake</Text>
-          </View>
-          {/*Työmaa */}
-          {/* Display worksite name and location if exists, otherwise input for worksite*/}
-          <Text style={styles.label}>Työmaa:</Text>
-          {worksite ? (
-            <Text>{worksite.name}, {worksite.location}</Text>
-          ) : (
-            <TextInput
-              style={styles.input}
-              value={subject}
-              onChangeText={(value) => handleInputChange('Työmaa', value)}
-            />
-          )}
+      <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      pagingEnabled={true}
+      ref={scrollViewRef}
+      onScroll={
+        event => {
+          setCurrentViewIndex(event.nativeEvent.contentOffset.y)
+        }
+      }>
 
-          <Text style={styles.label}>Työkohde:</Text>
+        <View style={styles.riskNote}>
+          <Button title="Sulje" onPress={() => navigate('/')} />
+          <Text style={styles.title}>Työturvallisuuslomake</Text>
+        </View>
+
+        {/*Työmaa */}
+        {/* Display worksite name and location if exists, otherwise input for worksite*/}
+        <Text style={styles.label}>Työmaa:</Text>
+
+        {worksite ? (
+          <Text>{worksite.name}, {worksite.location}</Text>
+        ) : (
           <TextInput
             style={styles.input}
             value={subject}
-            onChangeText={(value) => setSubject(value)}
+            onChangeText={(value) => handleInputChange('Työmaa', value)}
           />
+        )}
 
-          <View style={styles.riskNote}>
-            <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
-          </View>
+        <Text style={styles.label}>Työkohde:</Text>
+        <TextInput
+          style={styles.input}
+          value={subject}
+          onChangeText={(value) => setSubject(value)}
+        />
 
-          {Object.keys(formData)
-            .slice(1, 10)  // 1: Aloita toisesta kentästä, 10: Pysähdy "Telineiden puhtaus ja jätteiden lajittelu" jälkeen
-            .map(key => (
-              <View key={key} style={styles.riskNote}>
-                <RiskNote
-                  risk={{ note: key }}
-                  data={formData[key]}
-                  onChange={handleButtonInputChange}
-                />
-              </View>
-          ))}
+        <View style={styles.riskNote}>
+          <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
+        </View>
 
-          {/* Muut telineriskit näytetään heti telinetöihin liittyvien vaarojen jälkeen */}
-          <View style={styles.riskNote}>
-            <Text style={styles.label}>Muut telineriskit:</Text>
-            <TextInput
-              style={styles.input}
-              value={formData['Muut telineriskit']}
-              onChangeText={(value) => handleInputChange('Muut telineriskit', value)}
-            />
-          </View>
+        {Object.keys(formData)
+          .slice(1, 10)  // 1: Aloita toisesta kentästä, 10: Pysähdy "Telineiden puhtaus ja jätteiden lajittelu" jälkeen
+          .map(key => (
+            <View key={key} style={styles.riskNote}>
+              <RiskNote
+                risk={{ note: key }}
+                data={formData[key]}
+                onChange={handleButtonInputChange}
+              />
+            </View>
+        ))}
 
-          {/* Muut työympäristöriskit näytetään myöhemmin */}
-          <View style={styles.riskNote}>
-            <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
-          </View>
+        {/* Muut telineriskit näytetään heti telinetöihin liittyvien vaarojen jälkeen */}
+        <View style={styles.riskNote}>
+          <Text style={styles.label}>Muut telineriskit:</Text>
+          <TextInput
+            style={styles.input}
+            value={formData['Muut telineriskit']}
+            onChangeText={(value) => handleInputChange('Muut telineriskit', value)}
+          />
+        </View>
 
-          {Object.keys(formData)
-            .slice(11, 21)
-            .map(key => (
-              <View key={key} style={styles.riskNote}>
-                <RiskNote
-                  risk={{ note: key }}
-                  data={formData[key]}
-                  onChange={handleButtonInputChange}
-                />
-              </View>
-          ))}
+        {/* Muut työympäristöriskit näytetään myöhemmin */}
+        <View style={styles.riskNote}>
+          <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
+        </View>
 
-          <View style={styles.riskNote}>
-            <Text style={styles.label}>Muut työympäristöriskit:</Text>
-            <TextInput
-              style={styles.input}
-              value={formData['Muut työympäristöriskit']}
-              onChangeText={(value) => handleInputChange('Muut työympäristöriskit', value)}
-            />
-          </View>
+        {Object.keys(formData)
+          .slice(11, 21)
+          .map(key => (
+            <View key={key} style={styles.riskNote}>
+              <RiskNote
+                risk={{ note: key }}
+                data={formData[key]}
+                onChange={handleButtonInputChange}
+              />
+            </View>
+        ))}
 
-          <View style={styles.riskNote}>
-            <Button title="Lähetä" onPress={handleSubmit} />
-            <Button title="Sulje" onPress={() => setModalVisible(false)} />
-          </View>
-        </ScrollView>
-      </Modal>
+        <View style={styles.riskNote}>
+          <Text style={styles.label}>Muut työympäristöriskit:</Text>
+          <TextInput
+            style={styles.input}
+            value={formData['Muut työympäristöriskit']}
+            onChangeText={(value) => handleInputChange('Muut työympäristöriskit', value)}
+          />
+        </View>
+
+        <View style={styles.riskNote}>
+          <Button title="Lähetä" onPress={handleSubmit} />
+          <Button title="Sulje" onPress={() => navigate('/')} />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -237,17 +232,6 @@ const styles = StyleSheet.create({
   riskNote: {
     flex: 1,
     height: Dimensions.get('window').height,
-  },
-  button: {
-    backgroundColor: '#FF8C00',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff', 
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
 

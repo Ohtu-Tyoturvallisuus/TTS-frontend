@@ -7,9 +7,12 @@ import SignIn from './SignIn';
 import AppBar from './AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../contexts/UserContext';
+import RiskFormButton from './risk_form/RiskFormButton';
+import { useLocation } from 'react-router-native';
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
+  const location = useLocation().pathname
 
   useEffect(() => {
     const fetchUsername = () => {
@@ -30,7 +33,7 @@ const Main = () => {
   return (
     <View style={styles.container}>
       <AppBar username={username} setUsername={setUsername} />
-      {username ? (<WorkSafetyForm />) : (<></>)}
+      {username && location !== '/worksafetyform' ? (<RiskFormButton />) : (<></>)}
       <View style={styles.content}>
         <Routes>
           <Route path='/' element={<WorksitesList />} />
