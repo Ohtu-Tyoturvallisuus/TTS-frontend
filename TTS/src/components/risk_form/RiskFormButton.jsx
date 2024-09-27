@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigate } from 'react-router-native';
 
 const RiskFormButton = ({ title, worksite }) => {
