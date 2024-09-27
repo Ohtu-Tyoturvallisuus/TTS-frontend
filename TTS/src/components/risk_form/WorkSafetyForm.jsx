@@ -5,6 +5,10 @@ import RiskNote from './RiskNote';
 import axios from 'axios';
 import { Dimensions } from 'react-native';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
+<<<<<<< Updated upstream
+=======
+import { TouchableOpacity } from 'react-native';
+>>>>>>> Stashed changes
 
 const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=null }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -91,10 +95,12 @@ const WorkSafetyForm = ({ worksite, title = 'Tee riskikartoitus', surveyAPIURL=n
 
   return (
     <View style={styles.container}>
-      <Button 
-        title={title}
-        onPress={() => setModalVisible(true)} 
-      />
+      <TouchableOpacity 
+      style={styles.button} 
+      onPress={() => setModalVisible(true)}
+    >
+      <Text style={styles.buttonText}>Täytä Työturvallisuuslomake</Text>
+    </TouchableOpacity>
       <Modal visible={modalVisible} animationType="slide">
         <ScrollView
         contentContainerStyle={styles.scrollContainer}
@@ -234,6 +240,17 @@ const styles = StyleSheet.create({
   riskNote: {
     flex: 1,
     height: Dimensions.get('window').height,
+  },
+  button: {
+    backgroundColor: '#FF8C00',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff', 
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

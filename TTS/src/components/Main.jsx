@@ -36,6 +36,7 @@ const Main = () => {
           <Route path='/' element={<WorksitesList />} />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
+          <Route path='/worksafetyform' element={<WorkSafetyForm />}/>
         </Routes>
       </View>
     </View>
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    flex: 1
+    flex: 10
   },
   button: {
     backgroundColor: '#FF8C00',
