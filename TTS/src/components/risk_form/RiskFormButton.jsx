@@ -1,16 +1,16 @@
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
 
-const RiskFormButton = ({ title, worksite }) => {
+const RiskFormButton = ({ title='Täytä työturvallisuuslomake', worksite, buttonStyle, textStyle }) => {
   const navigate = useNavigate()
 
   return (
-    <View style={styles.buttonContainer}>
+    <View>
       <TouchableOpacity 
-      style={styles.button}
-      onPress={() => navigate('worksafetyform')}
+        style={[styles.button, buttonStyle]}
+        onPress={() => navigate('worksafetyform', {state: {worksite: worksite}})}
       >
-        <Text style={styles.buttonText}>Täytä Työturvallisuuslomake</Text>
+        <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       </TouchableOpacity>
     </View>
   )
@@ -22,17 +22,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
-    width: '90%',
+    width: '80%',
     alignSelf: 'center',
   },
   buttonText: {
     color: '#fff', 
     fontWeight: 'bold',
     fontSize: 16,
-  },
-  buttonContainer: {
-    backgroundColor: '#e1e4e8',
-    padding: 10,
   },
 })
 
