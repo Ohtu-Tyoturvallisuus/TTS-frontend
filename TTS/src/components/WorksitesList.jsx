@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import axios from 'axios';
 import Constants from 'expo-constants';
 import useFetchWorksites from '../hooks/useFetchWorksites';
 

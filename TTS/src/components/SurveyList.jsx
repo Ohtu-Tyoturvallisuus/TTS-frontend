@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Button } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import WorkSafetyForm from './risk_form/WorkSafetyForm'; // Import the WorkSafetyForm component
 
 const SurveyList = ({ worksite }) => {
