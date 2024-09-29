@@ -1,20 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { StyleSheet, View, Button, TextInput, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import { useNavigate } from 'react-router-native';
-
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
+import { WorksiteSurveyContext } from '../../contexts/WorksiteSurveyContext';
 
-const WorkSafetyForm = ({ worksite, surveyAPIURL=null }) => {
+const WorkSafetyForm = () => {
+  const { selectedWorksite: worksite, selectedSurveyURL: prevSurveyURL } = useContext(WorksiteSurveyContext);
+  const local_ip = Constants.expoConfig.extra.local_ip;
+
   const [currentViewIndex, setCurrentViewIndex] = useState(0);
   const [viewHeights, setViewHeights] = useState([]);
   const viewHeightsRef = useRef([]);
   const navigate = useNavigate();
   const scrollViewRef = useRef(null);
-  const local_ip = Constants.expoConfig.extra.local_ip;
-  const worksiteId = worksite ? worksite.id : null;
+  
   const [subject, setSubject] = useState('');
   const [formData, setFormData] = useState({
     'Työmaa': '',
@@ -40,20 +42,18 @@ const WorkSafetyForm = ({ worksite, surveyAPIURL=null }) => {
     'Toiminta hätätilanteessa/hätäpoistumistie tiedossa': '',
     'Muut työympäristöriskit': '',
   });
-  //Fetches surveydata from API (returns null if URL not provided)
-  const { surveyData, error } = useFetchSurveyData(surveyAPIURL);
-  if (error) {
-    return <Text>Error fetching survey data</Text>;
-  }
+
+  //Fetches previous survey's data from API, if survey is in context
+  console.log('prevSurveyURL:', prevSurveyURL);
 
   //Merges fetched survey data to the default formData
-  useEffect(() => {
-    if (surveyData) {
-      setSubject(surveyData.title);
-      const mergedData = { ...formData, ...surveyData.risks };
-      setFormData(mergedData);
-    }
-  }, [surveyData]);
+  // useEffect(() => {
+  //   if (surveyData) {
+  //     setSubject(surveyData.title);
+  //     const mergedData = { ...formData, ...surveyData.risks };
+  //     setFormData(mergedData);
+  //   }
+  // }, [surveyData]);
 
   const handleInputChange = (name, value) => {
     setFormData({
@@ -97,7 +97,7 @@ const WorkSafetyForm = ({ worksite, surveyAPIURL=null }) => {
     console.log('Lomakkeen tiedot:', risks);
     
     // Send form data to server
-    axios.post(`http://${local_ip}:8000/api/worksites/${worksiteId}/surveys/`, {
+    axios.post(`http://${local_ip}:8000/api/worksites/${worksite.id}/surveys/`, {
       title: subject,
       description: "",
       risks: risks,
