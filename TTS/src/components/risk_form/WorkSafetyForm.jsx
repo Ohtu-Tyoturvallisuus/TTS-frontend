@@ -8,14 +8,14 @@ import useFetchSurveyData from '../../hooks/useFetchSurveyData';
 import { WorksiteSurveyContext } from '../../contexts/WorksiteSurveyContext';
 
 const WorkSafetyForm = () => {
-  const { selectedWorksite: worksite, selectedSurveyURL: prevSurveyURL } = useContext(WorksiteSurveyContext);
+  const { 
+    selectedWorksite: worksite, 
+    setSelectedWorksite, 
+    selectedSurveyURL: prevSurveyURL, 
+    setSelectedSurveyURL 
+  } = useContext(WorksiteSurveyContext);
   const local_ip = Constants.expoConfig.extra.local_ip;
-
-  const [currentViewIndex, setCurrentViewIndex] = useState(0);
-  const [viewHeights, setViewHeights] = useState([]);
-  const viewHeightsRef = useRef([]);
   const navigate = useNavigate();
-  const scrollViewRef = useRef(null);
   
   const [subject, setSubject] = useState('');
   const [formData, setFormData] = useState({
@@ -45,15 +45,17 @@ const WorkSafetyForm = () => {
 
   //Fetches previous survey's data from API, if survey is in context
   console.log('prevSurveyURL:', prevSurveyURL);
+  const { surveyData, error } = useFetchSurveyData(prevSurveyURL);
 
-  //Merges fetched survey data to the default formData
-  // useEffect(() => {
-  //   if (surveyData) {
-  //     setSubject(surveyData.title);
-  //     const mergedData = { ...formData, ...surveyData.risks };
-  //     setFormData(mergedData);
-  //   }
-  // }, [surveyData]);
+  // Merges fetched survey data to the default formData
+  useEffect(() => {
+    if (surveyData) {
+      setSubject(surveyData.title);
+      const mergedData = { ...formData, ...surveyData.risks };
+      setFormData(mergedData);
+      console.log('Merged data:', mergedData);
+    }
+  }, [surveyData]);
 
   const handleInputChange = (name, value) => {
     setFormData({
@@ -61,36 +63,6 @@ const WorkSafetyForm = () => {
       [name]: value,
     });
   };
-
-  const handleButtonInputChange = (name, value) => {
-    handleInputChange(name, value);
-  
-    if (scrollViewRef.current && viewHeightsRef.current.length > 0) {
-      // Get the current scroll position (currentViewIndex represents this)
-      const currentScrollY = currentViewIndex;
-  
-      // Find the current view based on scroll Y position
-      let currentView = 0;
-  
-      for (let i = 0; i < viewHeightsRef.current.length; i++) {
-        if (currentScrollY >= viewHeightsRef.current[i]) {
-          currentView = i;
-        }
-      }
-  
-      // Scroll to the next view if there is one
-      const nextView = currentView + 1;
-  
-      if (nextView < viewHeightsRef.current.length) {
-        const scrollToY = viewHeightsRef.current[nextView]; // Get the next Y position
-        scrollViewRef.current.scrollTo({
-          y: scrollToY, // Scroll to the Y position of the next view
-          animated: true,
-        });
-      }
-    }
-  };
-  
 
   const handleSubmit = () => {
     const risks = JSON.stringify(formData, null, 2);
@@ -106,52 +78,46 @@ const WorkSafetyForm = () => {
       console.log('Server response:', response.data);
       // navigate to front page when successful
       navigate('/')
+      console.log('reset worksite context')
+      setSelectedWorksite(null);
+      setSelectedSurveyURL(null);
     })
-    .catch(error => console.error('Error:', error))
+    .catch(error => {
+      console.error('Error:', error)
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    })
   };
-
-  const getHeight = (event) => {
-    const { y } = event.nativeEvent.layout
-    setViewHeights(prevHeights => {
-      const updatedHeights = [...prevHeights, y]
-      viewHeightsRef.current = updatedHeights
-      return updatedHeights
-    })
-  }
 
   return (
     <View style={styles.container}>
       <ScrollView
       contentContainerStyle={styles.scrollContainer}
-      showsVerticalScrollIndicator={false}
-      ref={scrollViewRef}
-      onScroll={
-        event => {
-          setCurrentViewIndex(event.nativeEvent.contentOffset.y)
-        }
-      }
       >
 
         <Button title="Sulje" onPress={() => navigate('/')} />
         <Text style={styles.title}>Työturvallisuuslomake</Text>
 
+        {error && <Text>Error fetching survey data</Text>}
+
         {/*Työmaa */}
-        {/* Display worksite name and location if exists, otherwise input for worksite*/}
-        <View onLayout={getHeight}>
+        {/* Display worksite name and location if given,
+            otherwise render input field for worksite*/}
+        <View>
           <Text style={styles.label}>Työmaa:</Text>
 
           {worksite ? (
             <Text>{worksite.name}, {worksite.location}</Text>
           ) : (
             <TextInput
-              style={styles.input}
+            style={styles.input}
               value={subject}
               onChangeText={(value) => handleInputChange('Työmaa', value)}
-            />
+              />
           )}
         </View>
 
-        <View onLayout={getHeight}>
+        <View>
           <Text style={styles.label}>Työkohde:</Text>
           <TextInput
             style={styles.input}
@@ -163,43 +129,40 @@ const WorkSafetyForm = () => {
         <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
 
         {Object.keys(formData)
-          .slice(1, 10)  // 1: Aloita toisesta kentästä, 10: Pysähdy "Telineiden puhtaus ja jätteiden lajittelu" jälkeen
+          .slice(1, 10) 
           .map(key => (
-            <View key={key} onLayout={getHeight}>
+            <View key={key}>
               <RiskNote
                 risk={{ note: key }}
                 data={formData[key]}
-                onChange={handleButtonInputChange}
-              />
+                onChange={handleInputChange}
+                />
             </View>
         ))}
 
-        {/* Muut telineriskit näytetään heti telinetöihin liittyvien vaarojen jälkeen */}
-        <View onLayout={getHeight}>
+        <View>
           <Text style={styles.label}>Muut telineriskit:</Text>
           <TextInput
             style={styles.input}
             value={formData['Muut telineriskit']}
             onChangeText={(value) => handleInputChange('Muut telineriskit', value)}
-          />
+            />
         </View>
 
-        {/* Muut työympäristöriskit näytetään myöhemmin */}
         <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
-
         {Object.keys(formData)
           .slice(11, 21)
           .map(key => (
-            <View key={key} onLayout={getHeight}>
+            <View key={key}>
               <RiskNote
                 risk={{ note: key }}
                 data={formData[key]}
-                onChange={handleButtonInputChange}
-              />
+                onChange={handleInputChange}
+                />
             </View>
         ))}
 
-        <View onLayout={getHeight}>
+        <View>
           <Text style={styles.label}>Muut työympäristöriskit:</Text>
           <TextInput
             style={styles.input}
