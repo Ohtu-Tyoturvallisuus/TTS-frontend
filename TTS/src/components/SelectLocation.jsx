@@ -3,10 +3,10 @@ import useFetchWorksites from '../hooks/useFetchWorksites';
 import { View, Text, StyleSheet } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown'
 
-const SelectLocation = () => {
+const SelectLocation = ( {setFilter}) => {
   const local_ip = Constants.expoConfig.extra.local_ip
   const worksites = useFetchWorksites(local_ip);
-  const locations = worksites.map(worksite => worksite.location);
+  const locations =  ['Valitse kaikki', ...worksites.map(worksite => worksite.location)];
 
   return (
     <View style={styles.container}>
@@ -14,13 +14,17 @@ const SelectLocation = () => {
         data={locations}
         onSelect={(selectedItem, index) => {
           console.log(selectedItem, index);
+          setFilter(selectedItem);
         }}
         renderButton={(selectedItem, isOpen) => {
-          return (
+            return (
             <View style={styles.dropdownButtonStyle}>
               <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || 'Valitse kaupunki'}</Text>
+              <View style={{ position: 'absolute', right: 20 }}>
+              <Text>▼</Text>
+              </View>
             </View>
-          );
+            );
         }}
         renderItem={(item, index, isSelected) => {
           return (
@@ -38,7 +42,7 @@ const SelectLocation = () => {
         search
         searchInputStyle={styles.dropdown1SearchInputStyle}
         searchInputTxtColor={'#000000'} // Changed text color to black
-        searchPlaceHolder={'Search here'}
+        searchPlaceHolder={'Etsi...'}
         searchPlaceHolderColor={'#A9A9A9'} // Changed placeholder color to a darker shade
         renderSearchInputLeftIcon={() => {
           return <Text style={{ color: '#000000', fontSize: 18 }}>🔍</Text>; // Changed icon color to black

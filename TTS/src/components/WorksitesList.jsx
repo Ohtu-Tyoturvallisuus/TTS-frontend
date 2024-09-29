@@ -4,15 +4,20 @@ import Constants from 'expo-constants';
 import useFetchWorksites from '../hooks/useFetchWorksites';
 import { WorksiteSurveyContext } from '../contexts/WorksiteSurveyContext';
 import WorksiteModal from './WorksiteModal';
+import SelectLocation from './SelectLocation';
 
 const WorksitesList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {selectedWorksite, setSelectedWorksite} = useContext(WorksiteSurveyContext);
+  const [locationFilter, setLocationFilter] = useState('Valitse kaupunki');
   console.log('Selected worksite:', selectedWorksite);
   const local_ip = Constants.expoConfig.extra.local_ip
   
   // Custom hook for fetching worksites
   const worksites = useFetchWorksites(local_ip);
+  const filteredWorksites = locationFilter === 'Valitse kaikki' 
+    ? worksites 
+    : worksites.filter(worksite => worksite.location === locationFilter);
 
   const WorksiteButton = ({ item }) => (
     <View style={styles.worksiteContainer}>
@@ -32,8 +37,9 @@ const WorksitesList = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Työmaat</Text>
+      <SelectLocation setFilter={setLocationFilter}/>
       <FlatList
-        data={worksites}
+        data={filteredWorksites}
         renderItem={WorksiteButton}
         keyExtractor={worksite => worksite.id.toString()}
       />
