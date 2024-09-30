@@ -89,13 +89,19 @@ const WorkSafetyForm = () => {
     })
   };
 
+  const handleClose = () => {
+    setSelectedWorksite(null);
+    setSelectedSurveyURL(null);
+    navigate('/');
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView
       contentContainerStyle={styles.scrollContainer}
       >
 
-        <Button title="Sulje" onPress={() => navigate('/')} />
+        <Button title="Sulje" onPress={handleClose} />
         <Text style={styles.title}>Työturvallisuuslomake</Text>
 
         {error && <Text>Error fetching survey data</Text>}
@@ -172,7 +178,7 @@ const WorkSafetyForm = () => {
         </View>
 
         <Button title="Lähetä" onPress={handleSubmit} />
-        <Button title="Sulje" onPress={() => navigate('/')} />
+        <Button title="Sulje" onPress={handleClose} />
       </ScrollView>
     </View>
   );

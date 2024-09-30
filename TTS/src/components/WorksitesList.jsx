@@ -15,7 +15,7 @@ const WorksitesList = () => {
   
   // Custom hook for fetching worksites
   const worksites = useFetchWorksites(local_ip);
-  const filteredWorksites = locationFilter === 'Valitse kaikki' 
+  const filteredWorksites = locationFilter === 'Näytä kaikki' 
     ? worksites 
     : worksites.filter(worksite => worksite.location === locationFilter);
 
@@ -36,19 +36,23 @@ const WorksitesList = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Työmaat</Text>
-      <SelectLocation setFilter={setLocationFilter}/>
       <FlatList
         data={filteredWorksites}
         renderItem={WorksiteButton}
         keyExtractor={worksite => worksite.id.toString()}
+        ListHeaderComponent={
+          <>
+            <Text style={styles.title}>Työmaat</Text>
+            <SelectLocation setFilter={setLocationFilter} />
+          </>
+        }
       />
       <WorksiteModal
         visible={modalVisible}
         onClose={() => {
-          setModalVisible(false)
+          setModalVisible(false);
           // Reset selected worksite if closed
-          setSelectedWorksite(null) 
+          setSelectedWorksite(null);
         }}
       />
     </View>

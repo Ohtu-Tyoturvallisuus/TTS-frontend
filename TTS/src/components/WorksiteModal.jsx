@@ -26,7 +26,7 @@ const WorksiteModal = ({ visible, onClose }) => {
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{worksite.name}</Text>
           <Text>Sijainti: {worksite.location}</Text>
-          <RiskFormButton title='Tee uusi riskikartoitus'/>
+          <RiskFormButton title='Täytä uusi riskilomake'/>
           <SurveyList/>
           <Button title="Close" onPress={onClose} />
         </View>

@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
 
-const RiskFormButton = ({ title='Tee uusi työturvallisuuslomake', worksite, buttonStyle, textStyle }) => {
+const RiskFormButton = ({ title='Täytä uusi riskilomake', worksite, buttonStyle, textStyle }) => {
   const navigate = useNavigate()
 
   return (
@@ -18,7 +18,7 @@ const RiskFormButton = ({ title='Tee uusi työturvallisuuslomake', worksite, but
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#FF8C00',
+    backgroundColor: '#32CD32', 
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',

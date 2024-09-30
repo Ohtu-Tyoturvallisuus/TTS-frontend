@@ -6,14 +6,14 @@ import SelectDropdown from 'react-native-select-dropdown'
 const SelectLocation = ( {setFilter}) => {
   const local_ip = Constants.expoConfig.extra.local_ip
   const worksites = useFetchWorksites(local_ip);
-  const locations =  ['Valitse kaikki', ...worksites.map(worksite => worksite.location)];
+  const locations = [...new Set(worksites.map(worksite => worksite.location))].sort((a, b) => a.localeCompare(b));
+  locations.unshift('Näytä kaikki');
 
   return (
     <View style={styles.container}>
       <SelectDropdown
         data={locations}
         onSelect={(selectedItem, index) => {
-          console.log(selectedItem, index);
           setFilter(selectedItem);
         }}
         renderButton={(selectedItem, isOpen) => {
@@ -31,7 +31,7 @@ const SelectLocation = ( {setFilter}) => {
             <View
               style={{
                 ...styles.dropdown1ItemStyle,
-                ...(isSelected && { backgroundColor: 'grey' }),
+                ...(isSelected && { backgroundColor: '#ADD8E6' }),
               }}>
               <Text style={styles.dropdown1ItemTxtStyle}>{item}</Text>
             </View>
