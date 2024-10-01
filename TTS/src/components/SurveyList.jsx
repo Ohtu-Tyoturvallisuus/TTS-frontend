@@ -1,16 +1,32 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, {useContext} from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import WorkSafetyForm from './risk_form/WorkSafetyForm'; // Import the WorkSafetyForm component
+import RiskFormButton from './risk_form/RiskFormButton';
+import { WorksiteSurveyContext } from '../contexts/WorksiteSurveyContext';
+import { useNavigate } from 'react-router-native';
 
-const SurveyList = ({ worksite }) => {
+const SurveyList = () => {
+  const { selectedWorksite: worksite, setSelectedSurveyURL } = useContext(WorksiteSurveyContext);
+  const navigate = useNavigate()
 
-  const renderSurvey = ({ item: survey }) => (
+  const renderSurveyOption = ({ item: survey }) => (
     <View style={styles.surveyContainer}>
       <View style={styles.surveyInfo}>
         <Text style={styles.surveyTitle}>{survey.title}</Text>
         <Text style={styles.surveyDate}>{new Date(survey.created_at).toLocaleDateString()}</Text>
       </View>
-      <WorkSafetyForm title='Käytä pohjana' worksite={worksite} surveyAPIURL={survey.url}/>
+      <View>
+        <TouchableOpacity 
+          style={[styles.button]}
+          onPress={() => {
+            console.log('Valittu kartoitus:', survey);
+            setSelectedSurveyURL(survey.url);
+            navigate('worksafetyform')
+          }}
+        >
+          <Text style={[styles.buttonText]}>Käytä pohjana</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -20,7 +36,7 @@ const SurveyList = ({ worksite }) => {
       <View style={styles.listContainer}>
         <FlatList
           data={worksite.surveys}
-          renderItem={renderSurvey}
+          renderItem={renderSurveyOption}
           keyExtractor={survey => survey.id.toString()}
         />
       </View>
@@ -33,7 +49,7 @@ const styles = StyleSheet.create({
     maxHeight: 300, 
   },
   surveyContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     paddingHorizontal: 10,
     paddingTop: 10,
     marginVertical: 5,
@@ -54,6 +70,19 @@ const styles = StyleSheet.create({
   surveyDate: {
     fontSize: 12,
     color: '#555',
+  },
+  button: {
+    backgroundColor: '#FF8C00',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    width: '80%',
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#fff', 
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

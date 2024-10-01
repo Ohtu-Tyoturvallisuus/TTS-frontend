@@ -1,33 +1,28 @@
-  import React, { useState } from 'react';
+  import React, { useState, useEffect } from 'react';
   import { View, Text, Button, StyleSheet } from 'react-native';
 
   const RiskNote = ({ risk, data, onChange }) => {
-    const [value, setValue] = useState(data);
-
     const renderButtonGroup = (name) => (
       <View style={styles.buttonGroup}>
         <Button
           title="Kunnossa"
           onPress={() => {
-            const newValue = value === 'Kunnossa' ? '' : 'Kunnossa';
-            setValue(newValue);
+            const newValue = data === 'Kunnossa' ? '' : 'Kunnossa';
             onChange(name, newValue);
           }}
-          color={value === 'Kunnossa' ? 'blue' : 'gray'}
+          color={data === 'Kunnossa' ? 'blue' : 'gray'}
         />
         <Button
           title="Ei koske"
           onPress={() => {
-            const newValue = value === 'Ei koske' ? '' : 'Ei koske';
-            setValue(newValue);
+            const newValue = data === 'Ei koske' ? '' : 'Ei koske';
             onChange(name, newValue);
           }}
-          color={value === 'Ei koske' ? 'blue' : 'gray'}
+          color={data === 'Ei koske' ? 'blue' : 'gray'}
         />
       </View>
     );
-    
-
+  
     return (
       <View>
         <Text style={styles.riskNote}>{risk.note}</Text>
