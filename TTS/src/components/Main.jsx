@@ -33,14 +33,14 @@ const Main = () => {
   return (
     <View style={styles.container}>
       <AppBar username={username} setUsername={setUsername} />
-      {username && location !== '/worksafetyform'
+      {/* {username && location !== '/worksafetyform'
         ? (
           <View style={styles.buttonContainer}>
             <RiskFormButton />
           </View>
         ) 
         : (<></>)
-      }
+      } */}
       <View style={styles.content}>
         <Routes>
           <Route path='/' element={<ProjectList />} />

@@ -110,17 +110,20 @@ const WorkSafetyForm = () => {
         {/* Display project name and location if given,
             otherwise render input field for project*/}
         <View>
-          <Text style={styles.label}>Projekti:</Text>
+          <Text style={styles.label}>Projektin nimi:</Text>
 
           {project ? (
-            <Text>{project.formattedName}</Text>
+            <Text>{project.project_name}</Text>
           ) : (
             <TextInput
-            style={styles.input}
+              style={styles.input}
               value={subject}
               onChangeText={(value) => handleInputChange('Projekti', value)}
               />
           )}
+
+          <Text style={styles.label}>Projektin ID: </Text>
+          <Text>{project.project_id}</Text>
         </View>
 
         <View>

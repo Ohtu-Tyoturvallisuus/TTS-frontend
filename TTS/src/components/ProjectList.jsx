@@ -1,22 +1,56 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import useFetchProjects from '../hooks/useFetchProjects';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import ProjectModal from './ProjectModal';
-import SelectProject from './SelectProject';
+import SelectArea from './DropdownOptions';
+import SearchBar from './SearchBar';
+import DropdownOptions from './DropdownOptions';
 
 const ProjectsList = () => {
+  const local_ip = Constants.expoConfig.extra.local_ip
   const [modalVisible, setModalVisible] = useState(false);
   const {selectedProject, setSelectedProject} = useContext(ProjectSurveyContext);
-  const [searchInput, setSearchInput] = useState('Valitse kaupunki');
-  console.log('Selected project:', selectedProject);
-  const local_ip = Constants.expoConfig.extra.local_ip
-  // Custom hook for fetching projects
-  const projects = useFetchProjects(local_ip);
-  console.log('Projects:', projects[1]);
+  const [searchFilter, setSearchFilter] = useState('');
+  const [filteredProjects, setFilteredProjects] = useState([]);  
 
-  const formattedProjects = projects.map(project => project.formattedName);
+  const projects = useFetchProjects(local_ip);
+  console.log('Project example:', projects[1]);
+  
+  const [areaFilter, setAreaFilter] = useState([]);
+  const projectAreas = [
+    ["--Valitse kaikki--", ""],
+    ["Hallinto", "AL90"],
+    ["Etelä-Suomi", "AL31"],
+    ["Sisä-Suomi", "AL41"],
+    ["Länsi-Suomi", "AL34"],
+    ["Keski-Suomi", "AL51"],
+    ["Kaakkois-Suomi", "AL52"],
+    ["Itä-Suomi", "AL53"],
+    ["Pohjois-Suomi", "AL54"],
+    ["Kataja Event", "3100"],
+    ["SCAF Common", "SCAF"],
+    ["EVENT Common", "EVENT"]
+];
+
+// filteredProjects is updated whenever areaFilter or searchFilter changes
+useEffect(() => {
+  let filtered = projects;
+  if (areaFilter) {
+    filtered = filtered.filter(project => {
+      const [areaCode] = project.dimension_display_value.split('|');
+      const includesArea = areaCode.includes(areaFilter[1]);
+      return includesArea;
+    });
+  }
+  if (searchFilter) {
+    filtered = filtered.filter(project =>
+      project.formattedName.toLowerCase().includes(searchFilter.toLowerCase())
+    );
+  }
+  setFilteredProjects(filtered);
+}, [areaFilter, searchFilter, projects]);
 
   const ProjectButton = ({ item: project }) => (
     <View style={styles.projectContainer}>
@@ -27,7 +61,9 @@ const ProjectsList = () => {
           setModalVisible(true);
         }}
       >
-        <Text style={styles.projectTitle}>{project.formattedName}</Text>
+        <Text style={styles.projectTitle}>
+          {project.formattedName} ({project.dimension_display_value.split('|')[0]})
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -35,13 +71,14 @@ const ProjectsList = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={projects}
+        data={filteredProjects}
         renderItem={ProjectButton}
         keyExtractor={project => project.id.toString()}
         ListHeaderComponent={
           <>
             <Text style={styles.title}>Projektit</Text>
-            {/* <SelectProject setFilter={setSearchInput} projects={formattedProjects} /> */}
+            <DropdownOptions onSelect={setAreaFilter} options={projectAreas} />
+            <SearchBar setFilter={setSearchFilter} />
           </>
         }
       />

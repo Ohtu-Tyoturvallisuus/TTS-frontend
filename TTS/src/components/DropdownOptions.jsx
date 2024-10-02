@@ -1,20 +1,17 @@
-import Constants from 'expo-constants';
-import useFetchProjects from '../hooks/useFetchProjects';
 import { View, Text, StyleSheet } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 
-const SelectProject = ({ setFilter, projects }) => {
+const DropdownOptions = ({ options=[], onSelect, placeholderText='Valitse' }) => {
   return (
-    <View style={styles.container}>
       <SelectDropdown
-        data={projects}
+        data={options}
         onSelect={(selectedItem, index) => {
-          setFilter(selectedItem);
+          onSelect(selectedItem);
         }}
         renderButton={(selectedItem, isOpen) => {
           return (
             <View style={styles.dropdownButtonStyle}>
-              <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || 'Valitse projekti'}</Text>
+              <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || placeholderText}</Text>
               <View style={{ position: 'absolute', right: 20 }}>
                 <Text>▼</Text>
               </View>
@@ -33,7 +30,7 @@ const SelectProject = ({ setFilter, projects }) => {
           );
         }}
         dropdownStyle={styles.dropdown1MenuStyle}
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         search
         searchInputStyle={styles.dropdown1SearchInputStyle}
         searchInputTxtColor={'#000000'} // Changed text color to black
@@ -43,16 +40,10 @@ const SelectProject = ({ setFilter, projects }) => {
           return <Text style={{ color: '#000000', fontSize: 18 }}>🔍</Text>; // Changed icon color to black
         }}
       />
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   dropdownButtonStyle: {
     width: 350,
     height: 50,
@@ -75,6 +66,7 @@ const styles = StyleSheet.create({
   dropdown1MenuStyle: {
     backgroundColor: '#FFFFFF',
     borderRadius: 8,
+    minHeight: 420,
   },
   dropdown1SearchInputStyle: {
     backgroundColor: '#FFFFFF',
@@ -99,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SelectProject;
+export default DropdownOptions;
