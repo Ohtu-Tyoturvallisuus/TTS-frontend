@@ -2,11 +2,11 @@ import React, {useContext} from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import WorkSafetyForm from './risk_form/WorkSafetyForm'; // Import the WorkSafetyForm component
 import RiskFormButton from './risk_form/RiskFormButton';
-import { WorksiteSurveyContext } from '../contexts/WorksiteSurveyContext';
+import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
 
 const SurveyList = () => {
-  const { selectedWorksite: worksite, setSelectedSurveyURL } = useContext(WorksiteSurveyContext);
+  const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const navigate = useNavigate()
 
   const renderSurveyOption = ({ item: survey }) => (
@@ -33,13 +33,17 @@ const SurveyList = () => {
   return (
     <>
       <Text>Tehdyt kartoitukset:</Text>
-      <View style={styles.listContainer}>
-        <FlatList
-          data={worksite.surveys}
-          renderItem={renderSurveyOption}
-          keyExtractor={survey => survey.id.toString()}
-        />
-      </View>
+      {project && project.surveys && project.surveys.length > 0 ? (
+        <View style={styles.listContainer}>
+          <FlatList
+            data={project.surveys}
+            renderItem={renderSurveyOption}
+            keyExtractor={survey => survey.id.toString()}
+          />
+        </View>
+      ) : (
+        <Text>Ei kartoituksia saatavilla.</Text>
+      )}
     </>
   );
 };

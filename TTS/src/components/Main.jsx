@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
-import WorksitesList from './WorksitesList';
+import ProjectList from './ProjectList';
 import WorkSafetyForm from './risk_form/WorkSafetyForm';
 import SignIn from './SignIn';
 import AppBar from './AppBar';
@@ -43,7 +43,7 @@ const Main = () => {
       }
       <View style={styles.content}>
         <Routes>
-          <Route path='/' element={<WorksitesList />} />
+          <Route path='/' element={<ProjectList />} />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/worksafetyform' element={<WorkSafetyForm />}/>

@@ -1,30 +1,25 @@
 import Constants from 'expo-constants';
-import useFetchWorksites from '../hooks/useFetchWorksites';
+import useFetchProjects from '../hooks/useFetchProjects';
 import { View, Text, StyleSheet } from 'react-native';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
 
-const SelectLocation = ( {setFilter}) => {
-  const local_ip = Constants.expoConfig.extra.local_ip
-  const worksites = useFetchWorksites(local_ip);
-  const locations = [...new Set(worksites.map(worksite => worksite.location))].sort((a, b) => a.localeCompare(b));
-  locations.unshift('Näytä kaikki');
-
+const SelectProject = ({ setFilter, projects }) => {
   return (
     <View style={styles.container}>
       <SelectDropdown
-        data={locations}
+        data={projects}
         onSelect={(selectedItem, index) => {
           setFilter(selectedItem);
         }}
         renderButton={(selectedItem, isOpen) => {
-            return (
+          return (
             <View style={styles.dropdownButtonStyle}>
-              <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || 'Valitse kaupunki'}</Text>
+              <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || 'Valitse projekti'}</Text>
               <View style={{ position: 'absolute', right: 20 }}>
-              <Text>▼</Text>
+                <Text>▼</Text>
               </View>
             </View>
-            );
+          );
         }}
         renderItem={(item, index, isSelected) => {
           return (
@@ -50,11 +45,13 @@ const SelectLocation = ( {setFilter}) => {
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dropdownButtonStyle: {
     width: 350,
@@ -82,7 +79,7 @@ const styles = StyleSheet.create({
   dropdown1SearchInputStyle: {
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#000000', 
+    borderBottomColor: '#000000',
   },
   dropdown1ItemStyle: {
     width: '100%',
@@ -92,15 +89,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#D1D1D1', 
+    borderBottomColor: '#D1D1D1',
   },
   dropdown1ItemTxtStyle: {
     flex: 1,
     fontSize: 18,
     fontWeight: '500',
-    color: '#000000', 
+    color: '#000000',
   },
 });
 
-export default SelectLocation;
-
+export default SelectProject;

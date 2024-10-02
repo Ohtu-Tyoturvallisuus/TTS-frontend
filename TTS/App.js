@@ -3,16 +3,16 @@ import { NativeRouter } from 'react-router-native';
 
 import { UserProvider } from './src/contexts/UserContext';
 import Main from './src/components/Main'
-import { WorksiteSurveyProvider } from './src/contexts/WorksiteSurveyContext';
+import { ProjectSurveyProvider } from './src/contexts/ProjectSurveyContext';
 
 export default function App() {
   return (
     <>
       <NativeRouter>
         <UserProvider>
-          <WorksiteSurveyProvider>
+          <ProjectSurveyProvider>
             <Main />
-          </WorksiteSurveyProvider>
+          </ProjectSurveyProvider>
         </UserProvider>
       </NativeRouter>
       <StatusBar style='auto' />

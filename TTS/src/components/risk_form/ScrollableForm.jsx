@@ -5,10 +5,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
-import { WorksiteSurveyContext } from '../../contexts/WorksiteSurveyContext';
+import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
 
 const WorkSafetyForm = () => {
-  const { selectedWorksite: worksite, selectedSurveyURL: prevSurveyURL } = useContext(WorksiteSurveyContext);
+  const { selectedProject: project, selectedSurveyURL: prevSurveyURL } = useContext(ProjectSurveyContext);
   const local_ip = Constants.expoConfig.extra.local_ip;
 
   const [currentViewIndex, setCurrentViewIndex] = useState(0);
@@ -97,7 +97,7 @@ const WorkSafetyForm = () => {
     console.log('Lomakkeen tiedot:', risks);
     
     // Send form data to server
-    axios.post(`http://${local_ip}:8000/api/worksites/${worksite.id}/surveys/`, {
+    axios.post(`http://${local_ip}:8000/api/projects/${project.id}/surveys/`, {
       title: subject,
       description: "",
       risks: risks,
@@ -136,12 +136,12 @@ const WorkSafetyForm = () => {
         <Text style={styles.title}>Työturvallisuuslomake</Text>
 
         {/*Työmaa */}
-        {/* Display worksite name and location if exists, otherwise input for worksite*/}
+        {/* Display project name and location if exists, otherwise input for project*/}
         <View onLayout={getHeight}>
           <Text style={styles.label}>Työmaa:</Text>
 
-          {worksite ? (
-            <Text>{worksite.name}, {worksite.location}</Text>
+          {project ? (
+            <Text>{project.name}, {project.location}</Text>
           ) : (
             <TextInput
               style={styles.input}

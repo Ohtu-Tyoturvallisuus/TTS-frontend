@@ -1,7 +1,7 @@
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
 
-const RiskFormButton = ({ title='Täytä uusi riskilomake', worksite, buttonStyle, textStyle }) => {
+const RiskFormButton = ({ title='Täytä uusi riskilomake', buttonStyle, textStyle }) => {
   const navigate = useNavigate()
 
   return (

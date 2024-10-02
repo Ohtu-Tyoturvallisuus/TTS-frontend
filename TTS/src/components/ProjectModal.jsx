@@ -1,19 +1,18 @@
-// WorksiteModal.jsx
 import React from 'react';
 import { View, Text, StyleSheet, Modal, Button } from 'react-native';
 import SurveyList from './SurveyList';
 import RiskFormButton from './risk_form/RiskFormButton';
 import { useContext } from 'react';
-import { WorksiteSurveyContext } from '../contexts/WorksiteSurveyContext';
+import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 
-const WorksiteModal = ({ visible, onClose }) => {
-  const { selectedWorksite: worksite } = useContext(WorksiteSurveyContext);
+const ProjectModal = ({ visible, onClose }) => {
+  const { selectedProject: project } = useContext(ProjectSurveyContext);
 
-  if (!worksite) {
-    console.log('Työmaata ei ole saatavilla');
+  if (!project) {
+    console.log('Projektia ei ole saatavilla');
     return null;
   }
-  console.log('Työmaan tiedot:', worksite);
+  console.log('Projektin tiedot:', project);
 
   return (
     <Modal
@@ -24,8 +23,7 @@ const WorksiteModal = ({ visible, onClose }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{worksite.name}</Text>
-          <Text>Sijainti: {worksite.location}</Text>
+          <Text style={styles.modalTitle}>{project.formattedName}</Text>
           <RiskFormButton title='Täytä uusi riskilomake'/>
           <SurveyList/>
           <Button title="Close" onPress={onClose} />
@@ -43,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    width: '90%',
+    width: '95%',
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -52,10 +50,10 @@ const styles = StyleSheet.create({
     borderColor: '#FF8C00',
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
   },
 });
 
-export default WorksiteModal;
+export default ProjectModal;

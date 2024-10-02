@@ -5,21 +5,21 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
-import { WorksiteSurveyContext } from '../../contexts/WorksiteSurveyContext';
+import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
 
 const WorkSafetyForm = () => {
   const { 
-    selectedWorksite: worksite, 
-    setSelectedWorksite, 
+    selectedProject: project, 
+    setSelectedProject, 
     selectedSurveyURL: prevSurveyURL, 
     setSelectedSurveyURL 
-  } = useContext(WorksiteSurveyContext);
+  } = useContext(ProjectSurveyContext);
   const local_ip = Constants.expoConfig.extra.local_ip;
   const navigate = useNavigate();
   
   const [subject, setSubject] = useState('');
   const [formData, setFormData] = useState({
-    'Työmaa': '',
+    'Projekti': '',
     'Henkilökohtaiset suojaimet / kohteen edellyttämät erityissuojaimet': '',
     'Alustan kestävyys (maaperä/työalusta)': '',
     'Työnaikainen putoamissuojaus': '',
@@ -69,7 +69,7 @@ const WorkSafetyForm = () => {
     console.log('Lomakkeen tiedot:', risks);
     
     // Send form data to server
-    axios.post(`http://${local_ip}:8000/api/worksites/${worksite.id}/surveys/`, {
+    axios.post(`http://${local_ip}:8000/api/projects/${project.id}/surveys/`, {
       title: subject,
       description: "",
       risks: risks,
@@ -78,8 +78,8 @@ const WorkSafetyForm = () => {
       console.log('Server response:', response.data);
       // navigate to front page when successful
       navigate('/')
-      console.log('reset worksite context')
-      setSelectedWorksite(null);
+      console.log('reset project context')
+      setSelectedProject(null);
       setSelectedSurveyURL(null);
     })
     .catch(error => {
@@ -90,7 +90,7 @@ const WorkSafetyForm = () => {
   };
 
   const handleClose = () => {
-    setSelectedWorksite(null);
+    setSelectedProject(null);
     setSelectedSurveyURL(null);
     navigate('/');
   }
@@ -106,19 +106,19 @@ const WorkSafetyForm = () => {
 
         {error && <Text>Error fetching survey data</Text>}
 
-        {/*Työmaa */}
-        {/* Display worksite name and location if given,
-            otherwise render input field for worksite*/}
+        {/* Projekti */}
+        {/* Display project name and location if given,
+            otherwise render input field for project*/}
         <View>
-          <Text style={styles.label}>Työmaa:</Text>
+          <Text style={styles.label}>Projekti:</Text>
 
-          {worksite ? (
-            <Text>{worksite.name}, {worksite.location}</Text>
+          {project ? (
+            <Text>{project.formattedName}</Text>
           ) : (
             <TextInput
             style={styles.input}
               value={subject}
-              onChangeText={(value) => handleInputChange('Työmaa', value)}
+              onChangeText={(value) => handleInputChange('Projekti', value)}
               />
           )}
         </View>
