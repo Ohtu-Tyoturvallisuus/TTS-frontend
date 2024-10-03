@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../contexts/UserContext';
 import RiskFormButton from './risk_form/RiskFormButton';
 import { useLocation } from 'react-router-native';
+import SpeechToTextView from './SpeechToTextView';
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
@@ -33,15 +34,8 @@ const Main = () => {
   return (
     <View style={styles.container}>
       <AppBar username={username} setUsername={setUsername} />
-      {/* {username && location !== '/worksafetyform'
-        ? (
-          <View style={styles.buttonContainer}>
-            <RiskFormButton />
-          </View>
-        ) 
-        : (<></>)
-      } */}
       <View style={styles.content}>
+        <SpeechToTextView />
         <Routes>
           <Route path='/' element={<ProjectList />} />
           <Route path="*" element={<Navigate to="/" replace />} />
