@@ -20,8 +20,8 @@ const WorkSafetyForm = () => {
   
   const [ task, setTask ] = useState('');
   const [ scaffoldType, setScaffoldType ] = useState('');
-  const [ subject, setSubject ] = useState('');
-  console.log('Basic info:', task, scaffoldType, subject);
+  const [ taskDesc, setSubject ] = useState('');
+  console.log('Basic info:', task, scaffoldType, taskDesc);
 
   const [formData, setFormData] = useState({
     'Henkilökohtaiset suojaimet': '',
@@ -68,19 +68,38 @@ const WorkSafetyForm = () => {
   };
 
   const handleSubmit = () => {
+    
+    if (!task || !scaffoldType || !taskDesc 
+      || Object.values(formData).some(value => value === '' || value === null)) {
+      alert('Jotkin kentät ovat tyhjiä. Täytä kaikki kentät.');
+      console.log('Some fields are empty or null. Please fill out all fields.');
+
+      const emptyFields = [];
+      if (!task) emptyFields.push('Tehtävä');
+      if (!scaffoldType) emptyFields.push('Telinetyyppi');
+      if (!taskDesc) emptyFields.push('Mitä olemme tekemässä/ telineen käyttötarkoitus');
+      Object.entries(formData).forEach(([key, value]) => {
+      if (value === '' || value === null) {
+        emptyFields.push(key);
+      }
+      });
+      console.log('Empty fields:', emptyFields.join(', '));
+      return;
+    }
     const risks = JSON.stringify(formData, null, 2);
     console.log('Lomakkeen tiedot:', risks);
     
     // POST a new survey instance to the API
     axios.post(`http://${local_ip}:8000/api/projects/${project.id}/surveys/`, {
-      title: subject,
-      description: "",
+      description: taskDesc,
+      task: task,
+      scaffold_type: scaffoldType,
     })
     .then(response => {
       console.log('Server response:', response.data);
       const surveyId = response.data.id;
 
-      // Post a risk note
+      // Formatting formData as last of django risk_note instances
       const riskNotes = Object.keys(formData).map(key => ({
         note: key,
         status: formData[key]
@@ -91,7 +110,7 @@ const WorkSafetyForm = () => {
           console.log('Risk note response:', riskNoteResponse.data);
           // navigate to front page when successful
           navigate('/');
-          console.log('reset project context');
+          console.log('resetting project context to null');
           setSelectedProject(null);
           setSelectedSurveyURL(null);
         })
@@ -139,7 +158,7 @@ const WorkSafetyForm = () => {
           <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
           <TextInput
             style={[styles.input, { height: 100 }]}
-            value={subject}
+            value={taskDesc}
             onChangeText={(value) => setSubject(value)}
             multiline={true}
             numberOfLines={4} 
@@ -170,7 +189,7 @@ const WorkSafetyForm = () => {
 
         <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
         {Object.keys(formData)
-          .slice(10, 17)
+          .slice(10, 18)
           .map(key => (
             <RiskNote
               key={key}
