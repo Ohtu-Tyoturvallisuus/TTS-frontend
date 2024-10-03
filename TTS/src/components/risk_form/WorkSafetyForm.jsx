@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Button, TextInput, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
 import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
+import ButtonGroup from './ButtonGroup';
 
 const WorkSafetyForm = () => {
   const { 
@@ -17,30 +18,31 @@ const WorkSafetyForm = () => {
   const local_ip = Constants.expoConfig.extra.local_ip;
   const navigate = useNavigate();
   
-  const [subject, setSubject] = useState('');
+  const [ task, setTask ] = useState('');
+  const [ scaffoldType, setScaffoldType ] = useState('');
+  const [ subject, setSubject ] = useState('');
+  console.log('Basic info:', task, scaffoldType, subject);
+
   const [formData, setFormData] = useState({
-    'Projekti': '',
-    'Henkilökohtaiset suojaimet / kohteen edellyttämät erityissuojaimet': '',
-    'Alustan kestävyys (maaperä/työalusta)': '',
-    'Työnaikainen putoamissuojaus': '',
-    'Vaara-alueen merkintä (putoavan esineen vaara)': '',
-    'Työjärjestys/työmenetelmä ja ergonomia': '',
-    'Ankkuroinnin tai telineen vakaus': '',
-    'Nostoapuvälineiden tarkastus': '',
-    'Materiaalin varastointi ja kulkutiet huomioitu': '',
-    'Telineiden puhtaus ja jätteiden lajittelu': '',
-    'Muut telineriskit': '',
-    'Ajoneuvoliikenne/jalankulkijat/muut työt': '',
-    'Liukastuminen/kompastuminen': '',
-    'Valaistus': '',
-    'Sähkölinjat huomioitu': '',
-    'Sääolosuhteet huomioitu': '',
-    'Käynnissä olevat koneet/laitteet huomioitu ja tarvittaessa suojattu': '',
-    'Altisteet huomioitu (pöly, kemikaalit, asbesti)': '',
-    'Poikkeava lämpötila huomioitu': '',
-    'Työluvat/valvomoon ilmoittautuminen/turvalukitukset': '',
-    'Toiminta hätätilanteessa/hätäpoistumistie tiedossa': '',
-    'Muut työympäristöriskit': '',
+    'Henkilökohtaiset suojaimet': '',
+    'Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)': '',
+    'Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)': '',
+    'Nostoapuvälineet (toimintakunnossa/tarkastettu)': '',
+    'Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)': '',
+    'Alustan kestävyys (maa/hoitotaso/katto)': '',
+    'Ankkurointi (telineen asennus/purku)': '',
+    'Sääolosuhteet (tuuli/kylmyys/kuumuus)': '',
+    'Ympäristö (siisteys/jätteiden lajittelu)': '',
+    'Muu telinetyöhön liittyvä vaara': '', //index 9
+    'Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)': '',
+    'Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)': '',
+    'Ajoneuvoliikenne/jalankulkija': '',
+    'Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)': '',
+    'Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)': '',
+    'Säiliötyölupa': '',
+    'Energiasta erottaminen (turvalukitukset)': '',
+    'Toiminta hätätilanteessa (hätäpoistumistie)': '',
+    'Muu työympäristöön liittyvä vaara': '', //index 17
   });
 
   //Fetches previous survey's data from API, if survey is in context
@@ -58,6 +60,7 @@ const WorkSafetyForm = () => {
   }, [surveyData]);
 
   const handleInputChange = (name, value) => {
+    console.log('Changed', name, 'to', value === '' ? "empty ('')" : value);
     setFormData({
       ...formData,
       [name]: value,
@@ -68,25 +71,41 @@ const WorkSafetyForm = () => {
     const risks = JSON.stringify(formData, null, 2);
     console.log('Lomakkeen tiedot:', risks);
     
-    // Send form data to server
+    // POST a new survey instance to the API
     axios.post(`http://${local_ip}:8000/api/projects/${project.id}/surveys/`, {
       title: subject,
       description: "",
-      risks: risks,
     })
     .then(response => {
       console.log('Server response:', response.data);
-      // navigate to front page when successful
-      navigate('/')
-      console.log('reset project context')
-      setSelectedProject(null);
-      setSelectedSurveyURL(null);
+      const surveyId = response.data.id;
+
+      // Post a risk note
+      const riskNotes = Object.keys(formData).map(key => ({
+        note: key,
+        status: formData[key]
+      }));
+
+      axios.post(`http://${local_ip}:8000/api/surveys/${surveyId}/risk_notes/`, riskNotes)
+        .then(riskNoteResponse => {
+          console.log('Risk note response:', riskNoteResponse.data);
+          // navigate to front page when successful
+          navigate('/');
+          console.log('reset project context');
+          setSelectedProject(null);
+          setSelectedSurveyURL(null);
+        })
+        .catch(riskNoteError => {
+          console.error('Error posting risk note:', riskNoteError);
+          console.error('Error status:', riskNoteError.response.status);
+          console.error('Error headers:', riskNoteError.response.headers);
+        });
     })
     .catch(error => {
-      console.error('Error:', error)
+      console.error('Error:', error);
       console.error('Error status:', error.response.status);
       console.error('Error headers:', error.response.headers);
-    })
+    });
   };
 
   const handleClose = () => {
@@ -97,86 +116,76 @@ const WorkSafetyForm = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-      contentContainerStyle={styles.scrollContainer}
-      >
-
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Button title="Sulje" onPress={handleClose} />
         <Text style={styles.title}>Työturvallisuuslomake</Text>
 
         {error && <Text>Error fetching survey data</Text>}
 
-        {/* Projekti */}
-        {/* Display project name and location if given,
-            otherwise render input field for project*/}
-        <View>
+        {/* Projektin tiedot */}
+        <View style={styles.infoContainer}>
           <Text style={styles.label}>Projektin nimi:</Text>
-
-          {project ? (
-            <Text>{project.project_name}</Text>
-          ) : (
-            <TextInput
-              style={styles.input}
-              value={subject}
-              onChangeText={(value) => handleInputChange('Projekti', value)}
-              />
-          )}
+          <Text>{project.project_name}</Text>
 
           <Text style={styles.label}>Projektin ID: </Text>
           <Text>{project.project_id}</Text>
-        </View>
 
-        <View>
-          <Text style={styles.label}>Työkohde:</Text>
+          <Text style={styles.label}>Tehtävä:</Text>
+          <ButtonGroup options={['Asennus', 'Muokkaus', 'Purku']} onChange={(value) => setTask(value)} />
+
+          <Text style={styles.label}>Telinetyyppi:</Text>
+          <ButtonGroup options={['Työteline', 'Sääsuojaton työteline', 'Sääsuoja']} onChange={(value) => setScaffoldType(value)} />
+
+          <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { height: 100 }]}
             value={subject}
             onChangeText={(value) => setSubject(value)}
+            multiline={true}
+            numberOfLines={4} 
           />
         </View>
 
         <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
 
         {Object.keys(formData)
-          .slice(1, 10) 
+          .slice(0, 9)
           .map(key => (
-            <View key={key}>
-              <RiskNote
-                risk={{ note: key }}
-                data={formData[key]}
-                onChange={handleInputChange}
-                />
-            </View>
+            <RiskNote
+              key={key}
+              risk={{ note: key }}
+              data={formData[key]}
+              onChange={handleInputChange}
+            />
         ))}
 
         <View>
-          <Text style={styles.label}>Muut telineriskit:</Text>
+          <Text style={styles.label}>Muu telinetyöhön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Muut telineriskit']}
-            onChangeText={(value) => handleInputChange('Muut telineriskit', value)}
-            />
+            value={formData['Muu telinetyöhön liittyvä vaara']}
+            onChangeText={(value) => handleInputChange('Muu telinetyöhön liittyvä vaara', value)}
+          />
         </View>
 
         <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
         {Object.keys(formData)
-          .slice(11, 21)
+          .slice(10, 17)
           .map(key => (
-            <View key={key}>
-              <RiskNote
-                risk={{ note: key }}
-                data={formData[key]}
-                onChange={handleInputChange}
-                />
-            </View>
+            <RiskNote
+              key={key}
+              risk={{ note: key }}
+              data={formData[key]}
+              onChange={handleInputChange}
+            />
         ))}
 
         <View>
-          <Text style={styles.label}>Muut työympäristöriskit:</Text>
+          <Text style={styles.label}>Muu työympäristöön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Muut työympäristöriskit']}
-            onChangeText={(value) => handleInputChange('Muut työympäristöriskit', value)}
+            value={formData['Muu työympäristöön liittyvä vaara']}
+            onChangeText={(value) => handleInputChange('Muu työympäristöön liittyvä vaara', value)}
           />
         </View>
 
@@ -188,11 +197,12 @@ const WorkSafetyForm = () => {
 };
 
 const styles = StyleSheet.create({
+  infoContainer: {
+    marginBottom: 20,
+  },
   container: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
   },
   scrollContainer: {
     padding: 20,

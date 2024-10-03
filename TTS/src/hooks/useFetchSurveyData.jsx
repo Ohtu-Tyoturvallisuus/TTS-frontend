@@ -7,17 +7,11 @@ const useFetchSurveyData = (url) => {
 
   useEffect(() => {
     if (!url) return;
-
+    console.log('Fetching survey data from:', url);
     axios.get(url)
       .then(response => {
         const data = response.data;
-        try {
-          // Ensure risks field is valid JSON
-          const risks = data.risks ? JSON.parse(data.risks) : {};
-          setSurveyData({ ...data, risks });
-        } catch (e) {
-          setError('Invalid risks data');
-        }
+        //Implement fetching of riskNote descriptions
       })
       .catch(error => {
         setError(error.message);

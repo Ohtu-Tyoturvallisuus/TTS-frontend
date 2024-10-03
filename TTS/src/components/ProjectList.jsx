@@ -77,7 +77,11 @@ useEffect(() => {
         ListHeaderComponent={
           <>
             <Text style={styles.title}>Projektit</Text>
-            <DropdownOptions onSelect={setAreaFilter} options={projectAreas} />
+            <DropdownOptions 
+              onSelect={setAreaFilter} 
+              options={projectAreas} 
+              placeholderText='Valitse alue'
+              />
             <SearchBar setFilter={setSearchFilter} />
           </>
         }

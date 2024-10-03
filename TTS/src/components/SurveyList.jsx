@@ -1,42 +1,64 @@
-import React, {useContext} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import WorkSafetyForm from './risk_form/WorkSafetyForm'; // Import the WorkSafetyForm component
-import RiskFormButton from './risk_form/RiskFormButton';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
+import Constants from 'expo-constants';
 
 const SurveyList = () => {
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const navigate = useNavigate()
+  const [surveys, setSurveys] = useState([]);
 
-  const renderSurveyOption = ({ item: survey }) => (
-    <View style={styles.surveyContainer}>
-      <View style={styles.surveyInfo}>
-        <Text style={styles.surveyTitle}>{survey.title}</Text>
-        <Text style={styles.surveyDate}>{new Date(survey.created_at).toLocaleDateString()}</Text>
+  // Like this for now, but we should use the local_ip from the context
+  const local_ip = Constants.expoConfig.extra.local_ip;
+
+  useEffect(() => {
+    if (project && project.id) {
+      console.log('Fetching surveys for project id:', project.id);
+      fetch(`http://${local_ip}:8000/api/projects/${project.id}/`)
+        .then(response => response.json())
+        .then(data => {
+          setSurveys(data.surveys || []);
+        })
+        .catch(error => {
+          console.error('Error fetching surveys:', error);
+        });
+    }
+  }, [project]);
+
+  const renderSurveyOption = ({ item: survey }) => {
+    const surveyDate = new Date(survey.created_at);
+    const formattedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+    return (
+      <View style={styles.surveyContainer}>
+        <View style={styles.surveyInfo}>
+          <Text style={styles.surveyTitle}>{survey.title}</Text>
+          <Text style={styles.surveyDate}>{formattedDate}</Text>
+        </View>
+        <View>
+          <TouchableOpacity 
+            style={[styles.button]}
+            onPress={() => {
+              console.log('Valittu kartoitus:', survey);
+              setSelectedSurveyURL(survey.url);
+              navigate('worksafetyform')
+            }}
+          >
+            <Text style={[styles.buttonText]}>Käytä pohjana</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View>
-        <TouchableOpacity 
-          style={[styles.button]}
-          onPress={() => {
-            console.log('Valittu kartoitus:', survey);
-            setSelectedSurveyURL(survey.url);
-            navigate('worksafetyform')
-          }}
-        >
-          <Text style={[styles.buttonText]}>Käytä pohjana</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <>
       <Text>Tehdyt kartoitukset:</Text>
-      {project && project.surveys && project.surveys.length > 0 ? (
+      {surveys.length > 0 ? (
         <View style={styles.listContainer}>
           <FlatList
-            data={project.surveys}
+            data={surveys}
             renderItem={renderSurveyOption}
             keyExtractor={survey => survey.id.toString()}
           />

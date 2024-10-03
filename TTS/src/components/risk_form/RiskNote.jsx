@@ -1,32 +1,12 @@
   import React, { useState, useEffect } from 'react';
   import { View, Text, Button, StyleSheet } from 'react-native';
+  import ButtonGroup from './ButtonGroup';
 
-  const RiskNote = ({ risk, data, onChange }) => {
-    const renderButtonGroup = (name) => (
-      <View style={styles.buttonGroup}>
-        <Button
-          title="Kunnossa"
-          onPress={() => {
-            const newValue = data === 'Kunnossa' ? '' : 'Kunnossa';
-            onChange(name, newValue);
-          }}
-          color={data === 'Kunnossa' ? 'blue' : 'gray'}
-        />
-        <Button
-          title="Ei koske"
-          onPress={() => {
-            const newValue = data === 'Ei koske' ? '' : 'Ei koske';
-            onChange(name, newValue);
-          }}
-          color={data === 'Ei koske' ? 'blue' : 'gray'}
-        />
-      </View>
-    );
-  
+  const RiskNote = ({ risk, onChange }) => {  
     return (
       <View>
         <Text style={styles.riskNote}>{risk.note}</Text>
-        {renderButtonGroup(risk.note)}
+        <ButtonGroup options={['Kunnossa', 'Ei koske']} onChange={(value) => onChange(risk.note, value)} />
       </View>
     );
   };

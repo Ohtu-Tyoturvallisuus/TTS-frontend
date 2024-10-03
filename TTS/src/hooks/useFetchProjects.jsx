@@ -3,9 +3,9 @@ import axios from 'axios';
 
 const useFetchProjects = (local_ip) => {
   const [projects, setProjects] = useState([]);
-
   useEffect(() => {
     // Fetch projects from server
+    console.log('Fetching projects from api/projects...');
     axios.get(`http://${local_ip}:8000/api/projects/`)
       .then(response => {
         const data = response.data;
@@ -15,7 +15,7 @@ const useFetchProjects = (local_ip) => {
             formattedName: `[${project.project_id}] ${project.project_name}`
           }));
           setProjects(updatedProjects);
-        }else{
+        } else {
           console.error('Error fetching projects:', data);
         }
       })
