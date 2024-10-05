@@ -26,17 +26,19 @@ jobs:
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+          token: ${{ secrets.EXPO_TOKEN }}        
       - name: Create .env file
-        run: echo "EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > .env
+        run: echo "EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > ./TTS/.env
       - name: Install dependencies
         run: npm ci
+        working-directory: ./TTS
       - name: Build on EAS
         run: eas build -p ios --non-interactive --no-wait
+        working-directory: ./TTS
         env:
           EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
       - name: Remove .env file
-        run: rm .env
+        run: rm ./TTS/.env
 
   submit:
     name: Submit to EAS
@@ -75,7 +77,7 @@ jobs:
                 }
               }
             }
-          }' > eas.json
+          }' > ./TTS/eas.json
 
       - name: Setup Expo and EAS
         uses: expo/expo-github-action@v8
@@ -84,3 +86,6 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: Submit to EAS
         run: eas submit -p ios --latest --non-interactive
+        working-directory: ./TTS
+      - name: Remove eas.json file
+        run: rm ./TTS/eas.json
