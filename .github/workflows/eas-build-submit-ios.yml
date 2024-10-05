@@ -1,0 +1,86 @@
+name: CD(iOs) - HazardHunt
+
+on:
+  workflow_run:
+    workflows: ["CI - HazardHunt"]
+    types:
+      - completed
+    branches:
+        - main
+        - 15-konfiguroi-sovelluksen-frontend-käyttämään-expo-easia-sovelluksen-rakentamisessa
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Install and build
+    runs-on: ubuntu-latest
+    if: >
+      ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}  # Only deploy on successful builds triggered by push events
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Create .env file
+        run: echo "EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > .env
+      - name: Install dependencies
+        run: npm ci
+      - name: Build on EAS
+        run: eas build -p ios --non-interactive --no-wait
+        env:
+          EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
+      - name: Remove .env file
+        run: rm .env
+
+  submit:
+    name: Submit to EAS
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create eas.json with secrets
+        run: |
+          echo '{
+            "cli": {
+              "version": ">= 10.8.2",
+              "appVersionSource": "remote"
+            },
+            "build": {
+              "development": {
+                "developmentClient": true,
+                "distribution": "internal",
+                "channel": "development"
+              },
+              "preview": {
+                "distribution": "internal",
+                "channel": "preview"
+              },
+              "production": {
+                "autoIncrement": true,
+                "channel": "production"
+              }
+            },
+            "submit": {
+              "production": {
+                "ios": {
+                  "appleId": "'"${{ secrets.EAS_APPLE_ID }}"'",
+                  "ascAppId": "'"${{ secrets.EAS_ASC_APP_ID }}"'",
+                  "appleTeamId": "'"${{ secrets.EAS_APPLE_TEAM_ID }}"'"
+                }
+              }
+            }
+          }' > eas.json
+
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Submit to EAS
+        run: eas submit -p ios --latest --non-interactive
