@@ -1,21 +1,25 @@
 name: CD(iOs) - HazardHunt
 
 on:
-  workflow_run:
-    workflows: ["CI - HazardHunt"]
-    types:
-      - completed
+  #workflow_run:
+  #  workflows:
+  #    - CI-HazardHunt
+  #  types:
+  #    - completed
+  #  branches:
+  #      - main
+  #      - 15-konfiguroi-sovelluksen-frontend-käyttämään-expo-easia-sovelluksen-rakentamisessa
+  push:
     branches:
-        - main
-        - 15-konfiguroi-sovelluksen-frontend-käyttämään-expo-easia-sovelluksen-rakentamisessa
+      - 15-konfiguroi-sovelluksen-frontend-käyttämään-expo-easia-sovelluksen-rakentamisessa
   workflow_dispatch:
 
 jobs:
   build:
     name: Install and build
     runs-on: ubuntu-latest
-    if: >
-      ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}  # Only deploy on successful builds triggered by push events
+    #if: >
+    #  ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}  # Only deploy on successful builds triggered by push events
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
