@@ -9,8 +9,8 @@
     "web": "expo start --web",
     "test": "jest",
     "eas": "npx eas-cli",
-    "build:ios:production": "dotenv -c -- npx eas-cli build --platform ios --profile production",
-    "submit:ios": "dotenv -c -- npx eas-cli submit --platform ios --profile production"
+    "build:ios:production": "dotenv -- npx eas-cli build --platform ios --profile production",
+    "submit:ios": "npx eas-cli submit --platform ios --latest --profile production"
   },
   "jest": {
     "preset": "jest-expo",

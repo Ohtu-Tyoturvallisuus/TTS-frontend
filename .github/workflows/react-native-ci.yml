@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - development
-      - 15-konfiguroi-sovelluksen-frontend-käyttämään-expo-easia-sovelluksen-rakentamisessa
   pull_request:
     branches:
       - main

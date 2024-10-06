@@ -4,6 +4,9 @@
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml" alt="Continuous Integration">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml/badge.svg"/>
   </a>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-ios.yml" alt="Continuous Deployment">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-ios.yml/badge.svg"/>
+  </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/LICENSE" alt="License">
     <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-frontend"/>
   </a>
