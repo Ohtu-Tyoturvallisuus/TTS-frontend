@@ -7,7 +7,10 @@ import Constants from 'expo-constants';
 const SpeechToTextView = () => {
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
+  const timeout = 60000
   const local_ip = Constants.expoConfig.extra.local_ip;
+
+  let recordingTimeout;
 
   async function startRecording() {
     try {
@@ -23,27 +26,44 @@ const SpeechToTextView = () => {
         return;
       }
 
-      const recording = new Audio.Recording();
-      await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-      await recording.startAsync();
-      setRecording(recording);
+      const newRecording = new Audio.Recording();
+      await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+      await newRecording.startAsync();
+      setRecording(newRecording);
       console.log('Recording started');
+
+      // Set timeout to automatically stop the recording
+      recordingTimeout = setTimeout(async () => {
+        await stopRecording(newRecording);
+      }, timeout);
+
     } catch (error) {
       console.error('Failed to start recording', error);
     }
   }
 
-  async function stopRecording() {
+  async function stopRecording(currentRecording) {
     try {
-        await recording.stopAndUnloadAsync();
-        const uri = recording.getURI();
-        setRecording(null);
+      // Clear the timeout if stopRecording is called manually before it finishes
+      if (recordingTimeout) {
+        clearTimeout(recordingTimeout);
+        recordingTimeout = null;
+      }
+
+      try {
+        await currentRecording.stopAndUnloadAsync();
+        const uri = currentRecording.getURI();
+        setRecording(null);  // Set recording to null after stopping
         console.log('Recording stopped and stored at', uri);
 
-        // Upload the file to the Django backend
+        // Upload the file to the backend
         await uploadToBackend(uri);
+      } catch (error) {
+        console.log('Recording stopped manually before timer ran out')
+      }
+
     } catch (error) {
-        console.error('Failed to stop recording', error);
+      console.error('Failed to stop recording', error);
     }
   }
 
@@ -75,9 +95,13 @@ const SpeechToTextView = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Paina alla olevaa nappia kääntääksesi puhetta</Text>
+      <Text>Paina alla olevaa nappia kääntääksesi puhetta.</Text>
+      <Text>Maksimipituus puheentunnistukselle on {timeout/1000} sekuntia.</Text>
       <View style={styles.buttonsContainer}>
-        <Button title={recording ? 'Lopeta puheentunnistus' : 'Käynnistä puheentunnistus'} onPress={recording ? stopRecording : startRecording} />
+        <Button
+          title={recording ? 'Lopeta puheentunnistus' : 'Käynnistä puheentunnistus'}
+          onPress={recording ? () => stopRecording(recording) : startRecording}
+        />
       </View>
       {transcription !== '' && (
         <View style={styles.transcriptionContainer}>
@@ -88,6 +112,7 @@ const SpeechToTextView = () => {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
