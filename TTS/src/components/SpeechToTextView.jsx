@@ -2,13 +2,27 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Audio } from 'expo-av';
 import Constants from 'expo-constants';
+import LanguageSelectMenu from './LanguageSelectMenu'
+import CountryFlag from 'react-native-country-flag';
 
 
 const SpeechToTextView = () => {
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
+  const [recordingLanguage, setRecordingLanguage] = useState('')
+  const [translationLanguages, setTranslationLanguages] = useState([])
+  const [translations, setTranslations] = useState({})
   const timeout = 60000
   const local_ip = Constants.expoConfig.extra.local_ip;
+  const languageToFlagMap = {
+    'fi': 'FI',
+    'sv': 'SE',
+    'en': 'GB',
+    'et': 'EE',
+    'lv': 'LV',
+    'lt': 'LT',
+  }
+  const recordingLanguageFlagCode = recordingLanguage.slice(-2);
 
   let recordingTimeout;
 
@@ -72,41 +86,64 @@ const SpeechToTextView = () => {
     const fileType = "audio/3gp";
 
     formData.append('audio', {
-        uri: fileUri,
-        name: 'audio.3gp',
-        type: fileType
+      uri: fileUri,
+      name: 'audio.3gp',
+      type: fileType
     });
 
+    formData.append('recordingLanguage', recordingLanguage);
+    formData.append('translationLanguages', JSON.stringify(translationLanguages));
+
     try {
-        const response = await fetch("http://" + local_ip + ":8000/api/transcribe/", {
-            method: "POST",
-            body: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        const result = await response.json();
-        console.log("File uploaded successfully:", result);
-        setTranscription(result.transcription)
+      const response = await fetch("http://" + local_ip + ":8000/api/transcribe/", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      const result = await response.json();
+      console.log("File uploaded successfully:", result);
+      setTranscription(result.transcription)
+      setTranslations(result.translations)
     } catch (error) {
-        console.error("Failed to upload file:", error);
+      console.error("Failed to upload file:", error);
     }
   }
 
   return (
     <View style={styles.container}>
-      <Text>Paina alla olevaa nappia kääntääksesi puhetta.</Text>
-      <Text>Maksimipituus puheentunnistukselle on {timeout/1000} sekuntia.</Text>
-      <View style={styles.buttonsContainer}>
-        <Button
-          title={recording ? 'Lopeta puheentunnistus' : 'Käynnistä puheentunnistus'}
-          onPress={recording ? () => stopRecording(recording) : startRecording}
-        />
-      </View>
-      {transcription !== '' && (
-        <View style={styles.transcriptionContainer}>
-          <Text>Käännös:</Text>
-          <Text>{transcription}</Text>
+      <LanguageSelectMenu
+        setRecordingLanguage={setRecordingLanguage}
+      />
+      <LanguageSelectMenu
+        setTranslationLanguages={setTranslationLanguages}
+      />
+      {recordingLanguage !== '' && (
+        <View>
+          <Text>Paina alla olevaa nappia nauhoittaaksesi puhetta.</Text>
+          <Text>Maksimipituus puheentunnistukselle on {timeout/1000} sekuntia.</Text>
+          <View style={styles.buttonsContainer}>
+            <Button
+              title={recording ? 'Lopeta puheentunnistus' : 'Käynnistä puheentunnistus'}
+              onPress={recording ? () => stopRecording(recording) : startRecording}
+            />
+          </View>
+          {transcription !== '' && (
+            <View style={styles.textContainer}>
+              <CountryFlag isoCode={recordingLanguageFlagCode} size={24} />
+              <Text style={styles.translatedText}>{transcription}</Text>
+            </View>
+          )}
+          {Object.entries(translations).map(([lang, text]) => {
+            const flagCode = languageToFlagMap[lang] || lang.toUpperCase();
+            return (
+              <View style={styles.textContainer} key={lang}>
+                <CountryFlag isoCode={flagCode} size={24} />
+                <Text style={styles.translatedText}>{text}</Text>
+              </View>
+            )
+          })}
         </View>
       )}
     </View>
@@ -116,7 +153,6 @@ const SpeechToTextView = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -124,11 +160,19 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     paddingVertical: 20,
   },
-  transcriptionContainer: {
-    paddingTop: 20,
-    padding: 10,
+  textContainer: {
+    padding: 15,
     borderWidth: 1,
     borderColor: 'lightgray',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexShrink: 1,
+    maxWidth: '90%',
+    flexWrap: 'wrap',
+  },
+  translatedText: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
 });
 
