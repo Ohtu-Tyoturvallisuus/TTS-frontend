@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest",
-    "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern --fix"
+    "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern --fix",
     "eas": "npx eas-cli",
     "build:ios:production": "dotenv -- npx eas-cli build --platform ios --profile production",
     "submit:ios": "npx eas-cli submit --platform ios --latest --profile production"
