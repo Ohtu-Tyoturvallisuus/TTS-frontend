@@ -1,21 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import Constants from 'expo-constants';
 import useFetchProjects from '../hooks/useFetchProjects';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import ProjectModal from './ProjectModal';
-import SelectArea from './DropdownOptions';
 import SearchBar from './SearchBar';
 import DropdownOptions from './DropdownOptions';
 
 const ProjectsList = () => {
-  const local_ip = Constants.expoConfig.extra.local_ip
   const [modalVisible, setModalVisible] = useState(false);
-  const {selectedProject, setSelectedProject} = useContext(ProjectSurveyContext);
+  const { setSelectedProject } = useContext(ProjectSurveyContext);
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);  
 
-  const projects = useFetchProjects(local_ip);
+  const {projects, loading, error} = useFetchProjects();
   console.log('Project example:', projects[1]);
   
   const [areaFilter, setAreaFilter] = useState([]);

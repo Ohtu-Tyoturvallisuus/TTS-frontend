@@ -25,6 +25,7 @@ export default {
     "favicon": "./assets/favicon.png"
   },
   "extra": {
+    "local_setup": process.env.LOCAL_SETUP, // 0 or 1
     "local_ip": process.env.LOCAL_IP
   },
 }
