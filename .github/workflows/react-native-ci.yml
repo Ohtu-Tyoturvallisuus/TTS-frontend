@@ -1,0 +1,42 @@
+name: CI-HazardHunt
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./TTS/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('TTS/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./TTS
+
+    #  - name: Run ESLint
+    #    run: npm run lint
+    #    working-directory: ./TTS
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./TTS

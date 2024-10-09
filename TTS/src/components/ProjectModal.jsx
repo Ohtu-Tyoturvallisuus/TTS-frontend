@@ -35,19 +35,19 @@ const ProjectModal = ({ visible, onClose }) => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+    justifyContent: 'center',
   },
   modalContent: {
-    width: '95%',
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
     alignItems: 'center',
-    borderWidth: 5,
+    backgroundColor: 'white',
     borderColor: '#FF8C00',
+    borderRadius: 10,
+    borderWidth: 5,
+    padding: 20,
+    width: '95%',
   },
   modalTitle: {
     fontSize: 18,

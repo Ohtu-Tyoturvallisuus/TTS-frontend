@@ -5,27 +5,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppBarTab from './AppBarTab';
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: Constants.statusBarHeight,
-    paddingBottom: 10,
-    paddingHorizontal: 10,
-    backgroundColor: '#24292e',
-    width: '100%',
-    alignSelf: 'flex-start',
-  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  text: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: 'System',
-    fontWeight: '700',
+  container: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#24292e',
+    paddingBottom: 10,
+    paddingHorizontal: 10,
+    paddingTop: Constants.statusBarHeight,
+    width: '100%',
   },
   signOutButton: {
     borderRadius: 10,
+  },
+  text: {
+    color: 'white',
+    fontFamily: 'System',
+    fontSize: 16,    
+    fontWeight: '700',
   },
 });
 

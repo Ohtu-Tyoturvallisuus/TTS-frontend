@@ -38,14 +38,14 @@ const SurveyList = () => {
         </View>
         <View>
           <TouchableOpacity 
-            style={[styles.button]}
+            style={styles.button}
             onPress={() => {
               console.log('Valittu kartoitus:', survey);
               setSelectedSurveyURL(survey.url);
               navigate('worksafetyform')
             }}
           >
-            <Text style={[styles.buttonText]}>Käytä pohjana</Text>
+            <Text style={styles.buttonText}>Käytä pohjana</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -71,20 +71,37 @@ const SurveyList = () => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#FF8C00',
+    borderRadius: 5,
+    padding: 10,
+    width: '80%',
+  },
+  buttonText: {
+    color: '#fff', 
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   listContainer: {
     maxHeight: 300, 
   },
   surveyContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    marginVertical: 5,
+    alignItems: 'center',
     backgroundColor: '#f9f9f9',
+    borderColor: '#ddd',
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#ddd',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    marginVertical: 5,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+  },
+  surveyDate: {
+    color: '#555',
+    fontSize: 12,
   },
   surveyInfo: {
     flexDirection: 'column',
@@ -92,23 +109,6 @@ const styles = StyleSheet.create({
   },
   surveyTitle: {
     fontWeight: 'bold',
-  },
-  surveyDate: {
-    fontSize: 12,
-    color: '#555',
-  },
-  button: {
-    backgroundColor: '#FF8C00',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    width: '80%',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#fff', 
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
 

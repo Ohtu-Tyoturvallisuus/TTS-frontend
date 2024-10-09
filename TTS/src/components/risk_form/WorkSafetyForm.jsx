@@ -216,45 +216,45 @@ const WorkSafetyForm = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   infoContainer: {
     marginBottom: 20,
   },
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  input: {
+    borderColor: '#ccc',
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 40,
+    paddingBottom: 15,
+    paddingHorizontal: 10,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingVertical: 8,
   },
   scrollContainer: {
-    padding: 20,
     backgroundColor: '#fff',
     flexGrow: 1,
+    padding: 20,
+  },
+  sectionTitle: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 5,
+    paddingVertical: 15,
+    textAlign: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     paddingBottom: 20,
     textAlign: 'center',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingVertical: 15,
-    textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    paddingBottom: 5,
-  },
-  label: {
-    fontSize: 16,
-    paddingVertical: 8,
-    fontWeight: 'bold',
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    paddingBottom: 15,
-    paddingHorizontal: 10,
-    borderRadius: 5,
   },
 });
 

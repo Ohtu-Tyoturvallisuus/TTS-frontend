@@ -1,5 +1,5 @@
-  import React, { useState, useEffect } from 'react';
-  import { View, Text, Button, StyleSheet } from 'react-native';
+  import React from 'react';
+  import { View, Text, StyleSheet } from 'react-native';
   import ButtonGroup from './ButtonGroup';
 
   const RiskNote = ({ risk, onChange }) => {  
@@ -13,15 +13,10 @@
 
   const styles = StyleSheet.create({
     riskNote: {
+      alignSelf: 'center',
       fontSize: 16,
-      marginVertical: 8,
       fontWeight: 'bold',
-      alignSelf: 'center'
-    },
-    buttonGroup: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginBottom: 15,
+      marginVertical: 8
     },
   });
 

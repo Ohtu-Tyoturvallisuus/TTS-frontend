@@ -4,14 +4,13 @@ import Constants from 'expo-constants';
 import useFetchProjects from '../hooks/useFetchProjects';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import ProjectModal from './ProjectModal';
-import SelectArea from './DropdownOptions';
 import SearchBar from './SearchBar';
 import DropdownOptions from './DropdownOptions';
 
 const ProjectsList = () => {
   const local_ip = Constants.expoConfig.extra.local_ip
   const [modalVisible, setModalVisible] = useState(false);
-  const {selectedProject, setSelectedProject} = useContext(ProjectSurveyContext);
+  const {setSelectedProject} = useContext(ProjectSurveyContext);
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);  
 
@@ -79,7 +78,7 @@ useEffect(() => {
             <Text style={styles.title}>Projektit</Text>
             <DropdownOptions 
               onSelect={setAreaFilter} 
-              options={projectAreas} 
+              options={projectAreas}
               placeholderText='Valitse alue'
               />
             <SearchBar setFilter={setSearchFilter} />
@@ -99,32 +98,29 @@ useEffect(() => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#FF8C00',
+    borderRadius: 5,
+    padding: 10,
+  },
   container: {
     display: 'flex',
     padding: 16,
+  },
+  projectContainer: {
+    marginBottom: 16,
+  },
+  projectTitle: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-  },
-  projectContainer: {
-    marginBottom: 16,
-  },
-  button: {
-    backgroundColor: '#FF8C00',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  projectTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  projectLocation: {
-    color: '#FFFFFF',
   },
 });
 

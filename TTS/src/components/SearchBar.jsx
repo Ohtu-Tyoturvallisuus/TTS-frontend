@@ -16,21 +16,21 @@ const SearchBar = ({ setFilter }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
   },
   searchInput: {
-    width: 350,
-    height: 50,
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    borderWidth: 1,
     borderColor: '#000000',
-    fontSize: 18,
+    borderRadius: 12,
+    borderWidth: 1,
     color: '#151E26',
+    fontSize: 18,
+    height: 50,
+    paddingHorizontal: 12,
     textAlign: 'center',
+    width: 350,
   },
 });
 
