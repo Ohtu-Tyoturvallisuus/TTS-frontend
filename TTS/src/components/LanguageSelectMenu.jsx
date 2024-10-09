@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 
-const LangugeSelectMenu = ({
+const LanguageSelectMenu = ({
     setRecordingLanguage = null,
     setTranslationLanguages = null
   }) => {
@@ -36,16 +36,11 @@ const LangugeSelectMenu = ({
   const toggleCountry = (value) => {
     setSelectedCountries((prevSelected) => {
       if (prevSelected.includes(value)) {
-        setRecordingLanguage
-          ? setRecordingLanguage('')
-          : setTranslationLanguages(prevSelected.filter((country) => country !== value))
         return prevSelected.filter((country) => country !== value);
       } else {
         if (setRecordingLanguage) {
-          setRecordingLanguage(value)
           return [value];
         } else {
-          setTranslationLanguages([...prevSelected, value])
           return [...prevSelected, value];
         }
       }
@@ -116,7 +111,14 @@ const LangugeSelectMenu = ({
           <View style={styles.button}>
             <Button
               title='Sulje'
-              onPress={() => setModalVisible(false)}
+              onPress={() => {
+                setModalVisible(false)
+                setRecordingLanguage
+                  ? selectedCountries.length > 0
+                    ? setRecordingLanguage(selectedCountries[0])
+                    : setRecordingLanguage('')
+                  : setTranslationLanguages(selectedCountries)
+              }}
             />
           </View>
         </ScrollView>
@@ -195,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LangugeSelectMenu;
+export default LanguageSelectMenu;
