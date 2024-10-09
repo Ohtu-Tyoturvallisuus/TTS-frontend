@@ -12,12 +12,27 @@ const SurveyList = () => {
 
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
-    const formattedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const now = new Date();
+    const timeDifference = now - surveyDate;
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    let formattedDate;
+    if (minutesDifference < 60) {
+      formattedDate = `${minutesDifference} minuuttia sitten`;
+    } else if (hoursDifference < 24) {
+      formattedDate = `${hoursDifference} tuntia sitten`;
+    } else if (daysDifference <= 14) {
+      formattedDate = `${daysDifference} päivää sitten`;
+    } else {
+      formattedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
 
     return (
       <View style={styles.surveyContainer}>
         <View style={styles.surveyInfo}>
-          <Text style={styles.surveyTitle}>{survey.title}</Text>
+          <Text style={styles.surveyTitle}>{survey.scaffold_type}: {survey.task}</Text>
           <Text style={styles.surveyDate}>{formattedDate}</Text>
         </View>
         <View>

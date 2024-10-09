@@ -5,6 +5,7 @@ import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import ProjectModal from './ProjectModal';
 import SearchBar from './SearchBar';
 import DropdownOptions from './DropdownOptions';
+import { ActivityIndicator } from 'react-native';
 
 const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -48,6 +49,24 @@ useEffect(() => {
   }
   setFilteredProjects(filtered);
 }, [areaFilter, searchFilter, projects]);
+
+if (loading) {
+  return (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="#FF8C00" />
+      <Text style={styles.loadingText}>Projekteja ladataan...</Text>
+    </View>
+  );
+}
+
+if (error) {
+  return (
+    <View style={styles.errorContainer}>
+      <Text style={styles.errorText}>Virhe projektien hakemisessa: {error}</Text>
+    </View>
+  );
+}
+
 
   const ProjectButton = ({ item: project }) => (
     <View style={styles.projectContainer}>
@@ -105,6 +124,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   projectContainer: {
     marginBottom: 16,

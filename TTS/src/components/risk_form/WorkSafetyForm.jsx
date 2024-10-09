@@ -7,6 +7,7 @@ import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
 import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
 import ButtonGroup from './ButtonGroup';
+import { postNewSurvey, postRiskNotes } from '../../services/apiService';
 
 const WorkSafetyForm = () => {
   const { 
@@ -89,42 +90,29 @@ const WorkSafetyForm = () => {
     const risks = JSON.stringify(formData, null, 2);
     console.log('Lomakkeen tiedot:', risks);
     
-    // POST a new survey instance to the API
-    axios.post(`http://${local_ip}:8000/api/projects/${project.id}/surveys/`, {
-      description: taskDesc,
-      task: task,
-      scaffold_type: scaffoldType,
-    })
+    // POST a new survey instance 
+    postNewSurvey(project.id, taskDesc, task, scaffoldType)
     .then(response => {
-      console.log('Server response:', response.data);
-      const surveyId = response.data.id;
+      console.log('Server response:', response);
+      const surveyId = response.id;
 
-      // Formatting formData as last of django risk_note instances
+      // Formatting formData as list of django risk_note instances
       const riskNotes = Object.keys(formData).map(key => ({
         note: key,
+        // description: ,
         status: formData[key]
       }));
 
-      axios.post(`http://${local_ip}:8000/api/surveys/${surveyId}/risk_notes/`, riskNotes)
-        .then(riskNoteResponse => {
-          console.log('Risk note response:', riskNoteResponse.data);
-          // navigate to front page when successful
-          navigate('/');
-          console.log('resetting project context to null');
-          setSelectedProject(null);
-          setSelectedSurveyURL(null);
-        })
-        .catch(riskNoteError => {
-          console.error('Error posting risk note:', riskNoteError);
-          console.error('Error status:', riskNoteError.response.status);
-          console.error('Error headers:', riskNoteError.response.headers);
-        });
+    postRiskNotes(surveyId, riskNotes)
+      .then(riskNoteResponse => {
+        console.log('Risk note response:', riskNoteResponse);
+        // navigate to front page when successful
+        navigate('/');
+        console.log('resetting project context to null');
+        setSelectedProject(null);
+        setSelectedSurveyURL(null);
+      })
     })
-    .catch(error => {
-      console.error('Error:', error);
-      console.error('Error status:', error.response.status);
-      console.error('Error headers:', error.response.headers);
-    });
   };
 
   const handleClose = () => {

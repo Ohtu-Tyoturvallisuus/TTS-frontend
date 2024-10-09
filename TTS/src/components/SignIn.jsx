@@ -1,12 +1,12 @@
 import { TextInput, Pressable, View, StyleSheet, Text } from 'react-native';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import Constants from 'expo-constants';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigate } from 'react-router-native';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import { signIn } from '../services/apiService';
 
 
 const validationSchema = yup.object().shape({
@@ -22,21 +22,18 @@ const initialValues = {
 const SignIn = () => {
   const navigate = useNavigate()
   const { setUsername } = useContext(UserContext)
-  const local_ip = Constants.expoConfig.extra.local_ip
-  const onSubmit = (values) => {
-    axios.post('http://' + local_ip + ':8000/api/signin/', {
-      username: values.username
-    })
-    .then(response => {
-      console.log(response.data)
-      AsyncStorage.setItem('username', values.username)
-      .then(() => {
-        setUsername(values.username)
-        navigate('/')
-      })
-    })
-    .catch(error => console.error('Error signing in:', error))
-  }
+
+  const onSubmit = async (values) => {
+    try {
+      const data = await signIn(values.username);
+      console.log(data);
+      await AsyncStorage.setItem('username', values.username);
+      setUsername(values.username);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing in:', error);
+    }
+  };
   const formik = useFormik({
     initialValues,
     validationSchema,
