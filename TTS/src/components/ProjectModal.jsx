@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    width: '95%',
+    width: '90%',
+    height: '70%',
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 10,

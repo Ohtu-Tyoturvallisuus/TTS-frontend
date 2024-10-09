@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
 import ProjectList from './ProjectList';
-import WorkSafetyForm from './risk_form/WorkSafetyForm';
+import WorkSafetyForm from './risk_form/RiskForm';
 import SignIn from './SignIn';
 import AppBar from './AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -35,9 +35,13 @@ const Main = () => {
     <View style={styles.container}>
       <AppBar username={username} setUsername={setUsername} />
       <View style={styles.content}>
-        <SpeechToTextView />
         <Routes>
-          <Route path='/' element={<ProjectList />} />
+          <Route path='/' element={
+            <View>
+              <SpeechToTextView />
+              <ProjectList />
+            </View>
+            }/>
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/worksafetyform' element={<WorkSafetyForm />}/>

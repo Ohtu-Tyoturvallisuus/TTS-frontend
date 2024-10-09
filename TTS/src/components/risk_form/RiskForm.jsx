@@ -33,7 +33,7 @@ const WorkSafetyForm = () => {
     'Ankkurointi (telineen asennus/purku)': '',
     'Sääolosuhteet (tuuli/kylmyys/kuumuus)': '',
     'Ympäristö (siisteys/jätteiden lajittelu)': '',
-    'Muu telinetyöhön liittyvä vaara': '', //index 9
+    'Muu telinetyöhön liittyvä vaara': '',
     'Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)': '',
     'Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)': '',
     'Ajoneuvoliikenne/jalankulkija': '',
@@ -42,7 +42,7 @@ const WorkSafetyForm = () => {
     'Säiliötyölupa': '',
     'Energiasta erottaminen (turvalukitukset)': '',
     'Toiminta hätätilanteessa (hätäpoistumistie)': '',
-    'Muu työympäristöön liittyvä vaara': '', //index 17
+    'Muu työympäristöön liittyvä vaara': '',
   });
 
   //Fetches previous survey's data from API, if survey is in context

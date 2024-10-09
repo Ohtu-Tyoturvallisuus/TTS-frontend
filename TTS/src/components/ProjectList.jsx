@@ -90,8 +90,7 @@ useEffect(() => {
         visible={modalVisible}
         onClose={() => {
           setModalVisible(false);
-          // Reset selected project if closed
-          setSelectedProject(null);
+          setSelectedProject(null); // Reset selected project if closed
         }}
       />
     </View>
