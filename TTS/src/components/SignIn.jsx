@@ -11,8 +11,8 @@ import { UserContext } from '../contexts/UserContext';
 
 const validationSchema = yup.object().shape({
   username: yup
-  .string()
-  .required('Username is required'),
+    .string()
+    .required('Syötä käyttäjänimi'),
 });
 
 const initialValues = {

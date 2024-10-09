@@ -9,6 +9,9 @@
     "web": "expo start --web",
     "test": "jest",
     "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern --fix"
+    "eas": "npx eas-cli",
+    "build:ios:production": "dotenv -- npx eas-cli build --platform ios --profile production",
+    "submit:ios": "npx eas-cli submit --platform ios --latest --profile production"
   },
   "jest": {
     "preset": "jest-expo",
@@ -39,6 +42,7 @@
     "expo": "~51.0.37",
     "expo-av": "^14.0.7",
     "expo-constants": "^16.0.2",
+    "expo-dev-client": "~4.0.27",
     "expo-status-bar": "~1.12.1",
     "formik": "^2.4.6",
     "react": "18.2.0",
