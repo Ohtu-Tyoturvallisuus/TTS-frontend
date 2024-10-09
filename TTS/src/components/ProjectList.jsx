@@ -127,13 +127,14 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   loadingContainer: {
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   projectContainer: {
     marginBottom: 16,
   },
   projectTitle: {
+    color: '#FFFFFF',
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 'bold',

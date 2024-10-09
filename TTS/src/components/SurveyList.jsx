@@ -1,14 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
-import Constants from 'expo-constants';
 import useFetchSurveys from '../hooks/useFetchSurveys';
 
 const SurveyList = () => {
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const navigate = useNavigate()
-  const { surveys, loading, error } = useFetchSurveys(project.id);
+  const { surveys } = useFetchSurveys(project.id);
 
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
