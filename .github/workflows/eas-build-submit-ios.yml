@@ -18,6 +18,10 @@ jobs:
       ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}  # Only deploy on successful builds triggered by push events
     steps:
       - uses: actions/checkout@v4
+
+      - name: Change to the TTS working directory
+        run: cd TTS
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
