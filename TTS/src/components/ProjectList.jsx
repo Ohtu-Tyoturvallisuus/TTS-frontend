@@ -95,7 +95,7 @@ if (error) {
             <Text style={styles.title}>Projektit</Text>
             <DropdownOptions 
               onSelect={setAreaFilter} 
-              options={projectAreas} 
+              options={projectAreas}
               placeholderText='Valitse alue'
               />
             <SearchBar setFilter={setSearchFilter} />
@@ -115,9 +115,23 @@ if (error) {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#FF8C00',
+    borderRadius: 5,
+    padding: 10,
+  },
   container: {
     display: 'flex',
     padding: 16,
+  },
+  projectContainer: {
+    marginBottom: 16,
+  },
+  projectTitle: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 24,

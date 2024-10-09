@@ -27,18 +27,18 @@ const ButtonGroup = ({ options = [], onChange }) => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    borderRadius: 5,
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    paddingVertical: 10,
+  },
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 5,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
   },
   buttonText: {
     color: 'white',

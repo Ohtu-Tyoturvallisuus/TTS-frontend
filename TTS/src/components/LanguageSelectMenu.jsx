@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 
-const LangugeSelectMenu = ({
+const LanguageSelectMenu = ({
     setRecordingLanguage = null,
     setTranslationLanguages = null
   }) => {
@@ -36,16 +36,11 @@ const LangugeSelectMenu = ({
   const toggleCountry = (value) => {
     setSelectedCountries((prevSelected) => {
       if (prevSelected.includes(value)) {
-        setRecordingLanguage
-          ? setRecordingLanguage('')
-          : setTranslationLanguages(prevSelected.filter((country) => country !== value))
         return prevSelected.filter((country) => country !== value);
       } else {
         if (setRecordingLanguage) {
-          setRecordingLanguage(value)
           return [value];
         } else {
-          setTranslationLanguages([...prevSelected, value])
           return [...prevSelected, value];
         }
       }
@@ -116,7 +111,14 @@ const LangugeSelectMenu = ({
           <View style={styles.button}>
             <Button
               title='Sulje'
-              onPress={() => setModalVisible(false)}
+              onPress={() => {
+                setModalVisible(false)
+                setRecordingLanguage
+                  ? selectedCountries.length > 0
+                    ? setRecordingLanguage(selectedCountries[0])
+                    : setRecordingLanguage('')
+                  : setTranslationLanguages(selectedCountries)
+              }}
             />
           </View>
         </ScrollView>
@@ -126,48 +128,57 @@ const LangugeSelectMenu = ({
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'center',
+    padding: 20,
+    width: '100%',
+  },
   container: {
+    alignItems: 'flex-start',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'flex-start',
     padding: 20,
+  },
+  countryItem: {
+    alignItems: 'center',
+    borderColor: 'gray',
+    borderRadius: 4,
+    borderWidth: 1,
+    flexDirection: 'row',
+    marginVertical: 5,
+    padding: 10,
+    width: '100%',
+  },
+  countryLabel: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  countryName: {
+    fontSize: 18,
+    marginLeft: 10,
   },
   label: {
     fontSize: 16,
     marginBottom: 10,
   },
+  scrollViewContent: {
+    backgroundColor: '#e1e4e8',
+    flexGrow: 1,
+  },
   searchInput: {
+    borderColor: 'gray',
+    borderRadius: 4,
+    borderWidth: 1,
     height: 40,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    paddingHorizontal: 10,
     marginBottom: 10,
+    paddingHorizontal: 10,
     width: '100%',
-  },
-  countryItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    marginVertical: 5,
-    width: '100%',
-  },
-  countryLabel: {
-    marginLeft: 10,
-    flex: 1,
-  },
-  selectedText: {
-    color: 'green',
-    fontWeight: 'bold',
   },
   selectedCountriesContainer: {
-    marginTop: 20,
-    borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 4,
+    borderWidth: 1,
+    marginTop: 20,
     padding: 10,
     width: '100%',
   },
@@ -176,23 +187,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   selectedCountry: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     marginVertical: 5,
   },
-  countryName: {
-    marginLeft: 10,
-    fontSize: 18,
-  },
-  button: {
-    width: '100%',
-    alignSelf: 'center',
-    padding: 20,
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-    backgroundColor: '#e1e4e8',
+  selectedText: {
+    color: 'green',
+    fontWeight: 'bold',
   },
 });
 
-export default LangugeSelectMenu;
+export default LanguageSelectMenu;

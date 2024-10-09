@@ -2,14 +2,14 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 import { Link } from "react-router-native";
 
 const styles = StyleSheet.create({
-  text: {
-    color: 'white',
-    fontSize: 16,
-    fontFamily: 'System',
-    fontWeight: '700',
-  },
   button: {
     borderRadius: 10,
+  },
+  text: {
+    color: 'white',
+    fontFamily: 'System',
+    fontSize: 16,
+    fontWeight: '700',
   },
 });
 

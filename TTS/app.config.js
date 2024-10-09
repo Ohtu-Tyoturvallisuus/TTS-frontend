@@ -1,9 +1,10 @@
 import 'dotenv/config'
 
 export default {
-  "name": "TTS",
-  "slug": "TTS",
+  "name": "HazardHunt",
+  "slug": "HazardHunt",
   "version": "1.0.0",
+  "owner": "telinekataja",
   "orientation": "portrait",
   "icon": "./assets/icon.png",
   "userInterfaceStyle": "light",
@@ -13,7 +14,8 @@ export default {
     "backgroundColor": "#ffffff"
   },
   "ios": {
-    "supportsTablet": true
+    "supportsTablet": true,
+    "bundleIdentifier": "com.HazardHunt"
   },
   "android": {
     "adaptiveIcon": {
@@ -25,6 +27,9 @@ export default {
     "favicon": "./assets/favicon.png"
   },
   "extra": {
+    "eas": {
+      "projectId": process.env.EXPO_PUBLIC_EAS_PROJECT_ID
+    },
     "local_setup": process.env.LOCAL_SETUP, // 0 or 1
     "local_ip": process.env.LOCAL_IP
   },

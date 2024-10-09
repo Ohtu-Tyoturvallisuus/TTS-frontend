@@ -5,10 +5,10 @@ const DropdownOptions = ({ options=[], onSelect, placeholderText='Valitse' }) =>
   return (
       <SelectDropdown
         data={options}
-        onSelect={(selectedItem, index) => {
+        onSelect={(selectedItem) => {
           onSelect(selectedItem);
         }}
-        renderButton={(selectedItem, isOpen) => {
+        renderButton={(selectedItem) => {
           return (
             <View style={styles.dropdownButtonStyle}>
               <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || placeholderText}</Text>
@@ -18,7 +18,7 @@ const DropdownOptions = ({ options=[], onSelect, placeholderText='Valitse' }) =>
             </View>
           );
         }}
-        renderItem={(item, index, isSelected) => {
+        renderItem={(item, isSelected) => {
           return (
             <View
               style={{
@@ -44,24 +44,21 @@ const DropdownOptions = ({ options=[], onSelect, placeholderText='Valitse' }) =>
 };
 
 const styles = StyleSheet.create({
-  dropdownButtonStyle: {
-    width: 350,
-    height: 50,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+  dropdown1ItemStyle: {
+    alignItems: 'center',
+    borderBottomColor: '#D1D1D1',
+    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
     paddingHorizontal: 12,
-    borderWidth: 1, // Added border width
-    borderColor: '#000000', // Added border color
+    paddingVertical: 12,
+    width: '100%',
   },
-  dropdownButtonTxtStyle: {
+  dropdown1ItemTxtStyle: {
+    color: '#000000',
     flex: 1,
     fontSize: 18,
     fontWeight: '500',
-    color: '#151E26',
-    textAlign: 'center',
   },
   dropdown1MenuStyle: {
     backgroundColor: '#FFFFFF',
@@ -70,24 +67,27 @@ const styles = StyleSheet.create({
   },
   dropdown1SearchInputStyle: {
     backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
     borderBottomColor: '#000000',
-  },
-  dropdown1ItemStyle: {
-    width: '100%',
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#D1D1D1',
   },
-  dropdown1ItemTxtStyle: {
+  dropdownButtonStyle: {
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#000000', // Added border color
+    borderRadius: 12,
+    borderWidth: 1, // Added border width
+    flexDirection: 'row',
+    height: 50,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    width: 350,
+  },
+  dropdownButtonTxtStyle: {
+    color: '#151E26',
     flex: 1,
     fontSize: 18,
     fontWeight: '500',
-    color: '#000000',
+    textAlign: 'center',
   },
 });
 

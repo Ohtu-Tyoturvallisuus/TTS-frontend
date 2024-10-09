@@ -7,13 +7,10 @@ import SignIn from './SignIn';
 import AppBar from './AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../contexts/UserContext';
-import RiskFormButton from './risk_form/RiskFormButton';
-import { useLocation } from 'react-router-native';
 import SpeechToTextView from './SpeechToTextView';
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
-  const location = useLocation().pathname
 
   useEffect(() => {
     const fetchUsername = () => {
@@ -54,16 +51,12 @@ const Main = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#e1e4e8',
+    flex: 1,
     justifyContent: 'center',
   },
   content: {
     flex: 10
-  },
-  buttonContainer: {
-    backgroundColor: '#e1e4e8',
-    padding: 10,
   },
 });
 

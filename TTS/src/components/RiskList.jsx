@@ -23,15 +23,19 @@ const RiskList = ({ risks }) => {
 };
 const styles = StyleSheet.create({
   riskContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    marginVertical: 5,
+    alignItems: 'center',
     backgroundColor: '#f9f9f9',
+    borderColor: '#ddd',
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#ddd',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    marginVertical: 5,
+    padding: 10,
+  },
+  riskDate: {
+    color: '#555',
+    fontSize: 12,
   },
   riskInfo: {
     flexDirection: 'column',
@@ -39,10 +43,6 @@ const styles = StyleSheet.create({
   },
   riskNote: {
     fontWeight: 'bold',
-  },
-  riskDate: {
-    fontSize: 12,
-    color: '#555',
   },
 });
 

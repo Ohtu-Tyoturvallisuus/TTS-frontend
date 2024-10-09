@@ -18,17 +18,17 @@ const RiskFormButton = ({ title='Täytä uusi riskilomake', buttonStyle, textSty
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#32CD32', 
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    width: '80%',
+    alignItems: 'center', 
     alignSelf: 'center',
+    backgroundColor: '#32CD32',
+    borderRadius: 5,
+    padding: 10,
+    width: '80%',
   },
   buttonText: {
     color: '#fff', 
-    fontWeight: 'bold',
     fontSize: 16,
+    fontWeight: 'bold',
   },
 })
 
