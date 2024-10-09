@@ -1,6 +1,5 @@
 import { TextInput, Pressable, View, StyleSheet, Text } from 'react-native';
 import { useFormik } from 'formik';
-import axios from 'axios';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigate } from 'react-router-native';
@@ -11,8 +10,8 @@ import { signIn } from '../services/apiService';
 
 const validationSchema = yup.object().shape({
   username: yup
-    .string()
-    .required('Syötä käyttäjänimi'),
+  .string()
+  .required('Syötä käyttäjänimi'),
 });
 
 const initialValues = {
