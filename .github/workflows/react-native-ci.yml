@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - development
   pull_request:
     branches:
       - main
-      - development
   workflow_dispatch:
 
 jobs:
@@ -35,10 +33,17 @@ jobs:
         run: npm ci
         working-directory: ./TTS
 
-      #- name: Run ESLint
-      #  run: npm run lint
-      #  working-directory: ./TTS
+    #  - name: Run ESLint
+    #    run: npm run lint
+    #    working-directory: ./TTS
 
-      #- name: Run tests
-      #  run: npm test
-      #  working-directory: ./TTS
+      - name: Run tests
+        run: npm test -- --coverage
+        working-directory: ./TTS
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./TTS/coverage/lcov.info
+          fail_ci_if_error: true

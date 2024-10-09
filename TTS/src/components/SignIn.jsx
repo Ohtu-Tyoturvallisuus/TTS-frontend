@@ -8,50 +8,6 @@ import { useNavigate } from 'react-router-native';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    gap: 10,
-    paddingVertical: 10,
-    width: '90%',
-    alignSelf: 'center',
-  },
-  input: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    height: 40,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#e1e4e8',
-    padding: 10,
-  },
-  button: {
-    width: '100%',
-    height: 40,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    backgroundColor: '#0366d6',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  errorInput: {
-    borderColor: 'red',
-  },
-  errorText: {
-    color: 'red',
-    marginLeft: 10,
-  },
-});
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -71,15 +27,15 @@ const SignIn = () => {
     axios.post('http://' + local_ip + ':8000/api/signin/', {
       username: values.username
     })
-      .then(response => {
-        console.log(response.data)
-        AsyncStorage.setItem('username', values.username)
-          .then(() => {
-            setUsername(values.username)
-            navigate('/')
-          })
+    .then(response => {
+      console.log(response.data)
+      AsyncStorage.setItem('username', values.username)
+      .then(() => {
+        setUsername(values.username)
+        navigate('/')
       })
-      .catch(error => console.error('Error signing in:', error))
+    })
+    .catch(error => console.error('Error signing in:', error))
   }
   const formik = useFormik({
     initialValues,
@@ -109,7 +65,7 @@ const SignIn = () => {
       <Pressable
         onPress={formik.handleSubmit}
         style={styles.button}
-      >
+        >
         <Text style={styles.buttonText}>Kirjaudu sisään</Text>
       </Pressable>
     </View>
@@ -117,3 +73,48 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#0366d6',
+    borderRadius: 5,
+    height: 40,
+    justifyContent: 'center',
+    width: '100%',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  container: {
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10,
+    justifyContent: 'center',
+    paddingVertical: 10,
+    width: '90%',
+  },
+  errorInput: {
+    borderColor: 'red',
+  },
+  errorText: {
+    color: 'red',
+    marginLeft: 10,
+  },
+  input: {
+    alignSelf: 'center',
+    borderColor: '#e1e4e8',
+    borderRadius: 5,
+    borderWidth: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    height: 40,
+    justifyContent: 'center',
+    padding: 10,
+    width: '100%',
+  },
+});

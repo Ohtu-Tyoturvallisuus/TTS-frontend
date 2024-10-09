@@ -1,37 +1,66 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Button, Modal, TextInput, ScrollView, Text } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, View, Button, TextInput, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
+import axios from 'axios';
+import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
+import useFetchSurveyData from '../../hooks/useFetchSurveyData';
+import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
+import ButtonGroup from './ButtonGroup';
 
-const WorkSafetyForm = ({ risks }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+const WorkSafetyForm = () => {
+  const { 
+    selectedProject: project, 
+    setSelectedProject, 
+    selectedSurveyURL: prevSurveyURL, 
+    setSelectedSurveyURL 
+  } = useContext(ProjectSurveyContext);
   const local_ip = Constants.expoConfig.extra.local_ip;
+  const navigate = useNavigate();
+  
+  const [ task, setTask ] = useState('');
+  const [ scaffoldType, setScaffoldType ] = useState('');
+  const [ taskDesc, setSubject ] = useState('');
+  console.log('Basic info:', task, scaffoldType, taskDesc);
+
   const [formData, setFormData] = useState({
-    'Työmaa': '',
-    'Henkilökohtaiset suojaimet / kohteen edellyttämät erityissuojaimet': '',
-    'Alustan kestävyys (maaperä/työalusta)': '',
-    'Työnaikainen putoamissuojaus': '',
-    'Vaara-alueen merkintä (putoavan esineen vaara)': '',
-    'Työjärjestys/työmenetelmä ja ergonomia': '',
-    'Ankkuroinnin tai telineen vakaus': '',
-    'Nostoapuvälineiden tarkastus': '',
-    'Materiaalin varastointi ja kulkutiet huomioitu': '',
-    'Telineiden puhtaus ja jätteiden lajittelu': '',
-    'Muut telineriskit': '',
-    'Ajoneuvoliikenne/jalankulkijat/muut työt': '',
-    'Liukastuminen/kompastuminen': '',
-    'Valaistus': '',
-    'Sähkölinjat huomioitu': '',
-    'Sääolosuhteet huomioitu': '',
-    'Käynnissä olevat koneet/laitteet huomioitu ja tarvittaessa suojattu': '',
-    'Altisteet huomioitu (pöly, kemikaalit, asbesti)': '',
-    'Poikkeava lämpötila huomioitu': '',
-    'Työluvat/valvomoon ilmoittautuminen/turvalukitukset': '',
-    'Toiminta hätätilanteessa/hätäpoistumistie tiedossa': '',
-    'Muut työympäristöriskit': '',
+    'Henkilökohtaiset suojaimet': '',
+    'Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)': '',
+    'Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)': '',
+    'Nostoapuvälineet (toimintakunnossa/tarkastettu)': '',
+    'Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)': '',
+    'Alustan kestävyys (maa/hoitotaso/katto)': '',
+    'Ankkurointi (telineen asennus/purku)': '',
+    'Sääolosuhteet (tuuli/kylmyys/kuumuus)': '',
+    'Ympäristö (siisteys/jätteiden lajittelu)': '',
+    'Muu telinetyöhön liittyvä vaara': '', //index 9
+    'Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)': '',
+    'Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)': '',
+    'Ajoneuvoliikenne/jalankulkija': '',
+    'Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)': '',
+    'Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)': '',
+    'Säiliötyölupa': '',
+    'Energiasta erottaminen (turvalukitukset)': '',
+    'Toiminta hätätilanteessa (hätäpoistumistie)': '',
+    'Muu työympäristöön liittyvä vaara': '', //index 17
   });
 
+  //Fetches previous survey's data from API, if survey is in context
+  console.log('prevSurveyURL:', prevSurveyURL);
+  const { surveyData, error } = useFetchSurveyData(prevSurveyURL);
+
+  // Merges fetched survey data to the default formData
+  useEffect(() => {
+    if (surveyData) {
+      setSubject(surveyData.title);
+      const mergedData = { ...formData, ...surveyData.risks };
+      setFormData(mergedData);
+      console.log('Merged data:', mergedData);
+    }
+  }, [surveyData]);
+
   const handleInputChange = (name, value) => {
+    console.log('Changed', name, 'to', value === '' ? "empty ('')" : value);
     setFormData({
       ...formData,
       [name]: value,
@@ -39,126 +68,193 @@ const WorkSafetyForm = ({ risks }) => {
   };
 
   const handleSubmit = () => {
-    console.log('Lomakkeen tiedot:', JSON.stringify(formData, null, 2));
+    
+    if (!task || !scaffoldType || !taskDesc 
+      || Object.values(formData).some(value => value === '' || value === null)) {
+      alert('Jotkin kentät ovat tyhjiä. Täytä kaikki kentät.');
+      console.log('Some fields are empty or null. Please fill out all fields.');
+
+      const emptyFields = [];
+      if (!task) emptyFields.push('Tehtävä');
+      if (!scaffoldType) emptyFields.push('Telinetyyppi');
+      if (!taskDesc) emptyFields.push('Mitä olemme tekemässä/ telineen käyttötarkoitus');
+      Object.entries(formData).forEach(([key, value]) => {
+      if (value === '' || value === null) {
+        emptyFields.push(key);
+      }
+      });
+      console.log('Empty fields:', emptyFields.join(', '));
+      return;
+    }
+    const risks = JSON.stringify(formData, null, 2);
+    console.log('Lomakkeen tiedot:', risks);
+    
+    // POST a new survey instance to the API
+    axios.post(`http://${local_ip}:8000/api/projects/${project.id}/surveys/`, {
+      description: taskDesc,
+      task: task,
+      scaffold_type: scaffoldType,
+    })
+    .then(response => {
+      console.log('Server response:', response.data);
+      const surveyId = response.data.id;
+
+      // Formatting formData as last of django risk_note instances
+      const riskNotes = Object.keys(formData).map(key => ({
+        note: key,
+        status: formData[key]
+      }));
+
+      axios.post(`http://${local_ip}:8000/api/surveys/${surveyId}/risk_notes/`, riskNotes)
+        .then(riskNoteResponse => {
+          console.log('Risk note response:', riskNoteResponse.data);
+          // navigate to front page when successful
+          navigate('/');
+          console.log('resetting project context to null');
+          setSelectedProject(null);
+          setSelectedSurveyURL(null);
+        })
+        .catch(riskNoteError => {
+          console.error('Error posting risk note:', riskNoteError);
+          console.error('Error status:', riskNoteError.response.status);
+          console.error('Error headers:', riskNoteError.response.headers);
+        });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      console.error('Error status:', error.response.status);
+      console.error('Error headers:', error.response.headers);
+    });
   };
+
+  const handleClose = () => {
+    setSelectedProject(null);
+    setSelectedSurveyURL(null);
+    navigate('/');
+  }
 
   return (
     <View style={styles.container}>
-      <Button 
-        title="Täytä Työturvallisuuslomake" 
-        onPress={() => setModalVisible(true)} 
-        style={styles.button} 
-      />
-      <Modal visible={modalVisible} animationType="slide">
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Button title="Sulje" onPress={() => setModalVisible(false)} />
-          <Text style={styles.title}>Työturvallisuuslomake</Text>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Button title="Sulje" onPress={handleClose} />
+        <Text style={styles.title}>Työturvallisuuslomake</Text>
 
-          {/* Työmaa */}
-          <Text style={styles.label}>Työmaa:</Text>
+        {error && <Text>Error fetching survey data</Text>}
+
+        {/* Projektin tiedot */}
+        <View style={styles.infoContainer}>
+          <Text style={styles.label}>Projektin nimi:</Text>
+          <Text>{project.project_name}</Text>
+
+          <Text style={styles.label}>Projektin ID: </Text>
+          <Text>{project.project_id}</Text>
+
+          <Text style={styles.label}>Tehtävä:</Text>
+          <ButtonGroup options={['Asennus', 'Muokkaus', 'Purku']} onChange={(value) => setTask(value)} />
+
+          <Text style={styles.label}>Telinetyyppi:</Text>
+          <ButtonGroup options={['Työteline', 'Sääsuojaton työteline', 'Sääsuoja']} onChange={(value) => setScaffoldType(value)} />
+
+          <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
+          <TextInput
+            style={[styles.input, { height: 100 }]}
+            value={taskDesc}
+            onChangeText={(value) => setSubject(value)}
+            multiline={true}
+            numberOfLines={4} 
+          />
+        </View>
+
+        <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
+
+        {Object.keys(formData)
+          .slice(0, 9)
+          .map(key => (
+            <RiskNote
+              key={key}
+              risk={{ note: key }}
+              data={formData[key]}
+              onChange={handleInputChange}
+            />
+        ))}
+
+        <View>
+          <Text style={styles.label}>Muu telinetyöhön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Työmaa']}
-            onChangeText={(value) => handleInputChange('Työmaa', value)}
+            value={formData['Muu telinetyöhön liittyvä vaara']}
+            onChangeText={(value) => handleInputChange('Muu telinetyöhön liittyvä vaara', value)}
           />
+        </View>
 
-          <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
+        <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
+        {Object.keys(formData)
+          .slice(10, 18)
+          .map(key => (
+            <RiskNote
+              key={key}
+              risk={{ note: key }}
+              data={formData[key]}
+              onChange={handleInputChange}
+            />
+        ))}
 
-          {Object.keys(formData)
-            .slice(1, 10)  // 1: Aloita toisesta kentästä, 10: Pysähdy "Telineiden puhtaus ja jätteiden lajittelu" jälkeen
-            .map(key => (
-              <View key={key}>
-                <RiskNote
-                  risk={{ note: key }}
-                  data={formData[key]}
-                  onChange={(value) => handleInputChange(key, value)}
-                />
-              </View>
-          ))}
-
-
-          {/* Muut telineriskit näytetään heti telinetöihin liittyvien vaarojen jälkeen */}
-          <Text style={styles.label}>Muut telineriskit:</Text>
+        <View>
+          <Text style={styles.label}>Muu työympäristöön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Muut telineriskit']}
-            onChangeText={(value) => handleInputChange('Muut telineriskit', value)}
+            value={formData['Muu työympäristöön liittyvä vaara']}
+            onChangeText={(value) => handleInputChange('Muu työympäristöön liittyvä vaara', value)}
           />
+        </View>
 
-          {/* Muut työympäristöriskit näytetään myöhemmin */}
-          <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
-
-          {Object.keys(formData)
-            .slice(11, 21)
-            .map(key => (
-              <View key={key}>
-                <RiskNote
-                  risk={{ note: key }}
-                  data={formData[key]}
-                  onChange={(value) => handleInputChange(key, value)}
-                />
-              </View>
-          ))}
-
-          <Text style={styles.label}>Muut työympäristöriskit:</Text>
-          <TextInput
-            style={styles.input}
-            value={formData['Muut työympäristöriskit']}
-            onChangeText={(value) => handleInputChange('Muut työympäristöriskit', value)}
-          />
-
-          <Button title="Lähetä" onPress={handleSubmit} />
-          <Button title="Sulje" onPress={() => setModalVisible(false)} />
-        </ScrollView>
-      </Modal>
+        <Button title="Lähetä" onPress={handleSubmit} />
+        <Button title="Sulje" onPress={handleClose} />
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    justifyContent: 'center',
+  },
+  infoContainer: {
+    marginBottom: 20,
+  },
+  input: {
+    borderColor: '#ccc',
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 40,
+    paddingBottom: 15,
+    paddingHorizontal: 10,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingVertical: 8,
   },
   scrollContainer: {
-    padding: 20,
     backgroundColor: '#fff',
     flexGrow: 1,
+    padding: 20,
+  },
+  sectionTitle: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 5,
+    paddingVertical: 15,
+    textAlign: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    paddingBottom: 20,
     textAlign: 'center',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 15,
-    textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    paddingBottom: 5,
-  },
-  label: {
-    fontSize: 16,
-    marginVertical: 8,
-    fontWeight: 'bold',
-  },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
   },
 });
 

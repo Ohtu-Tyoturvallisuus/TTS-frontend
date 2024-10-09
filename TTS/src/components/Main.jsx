@@ -1,45 +1,57 @@
-import { StyleSheet, View, Text, Button } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
-import WorksitesList from './WorksitesList';
+import ProjectList from './ProjectList';
 import WorkSafetyForm from './risk_form/WorkSafetyForm';
 import SignIn from './SignIn';
 import AppBar from './AppBar';
-import { UserProvider } from '../contexts/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserContext } from '../contexts/UserContext';
+import SpeechToTextView from './SpeechToTextView';
 
 const Main = () => {
+  const { username, setUsername } = useContext(UserContext)
+
+  useEffect(() => {
+    const fetchUsername = () => {
+      AsyncStorage.getItem('username')
+        .then(storedUsername => {
+          if (storedUsername) {
+            setUsername(storedUsername)
+          }
+        })
+        .catch(error => {
+          console.error('Error retrieving username', error)
+        })
+    }
+  
+    fetchUsername()
+  }, [setUsername])
 
   return (
     <View style={styles.container}>
-      <UserProvider>
-        <AppBar />
-        <WorkSafetyForm />
-        <View style={styles.content}>
-          <Routes>
-            <Route path='/' element={<WorksitesList />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-            <Route path='/signin' element={<SignIn />} />
-          </Routes>
-        </View>
-      </UserProvider>
+      <AppBar username={username} setUsername={setUsername} />
+      <View style={styles.content}>
+        <SpeechToTextView />
+        <Routes>
+          <Route path='/' element={<ProjectList />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path='/signin' element={<SignIn />} />
+          <Route path='/worksafetyform' element={<WorkSafetyForm />}/>
+        </Routes>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#e1e4e8',
+    flex: 1,
     justifyContent: 'center',
   },
   content: {
-    flex: 1
-  },
-  button: {
-    backgroundColor: '#FF8C00',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
+    flex: 10
   },
 });
 
