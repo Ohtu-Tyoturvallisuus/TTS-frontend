@@ -10,6 +10,7 @@ import { ActivityIndicator } from 'react-native';
 const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
+
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);  
 
@@ -95,7 +96,7 @@ if (error) {
             <Text style={styles.title}>Projektit</Text>
             <DropdownOptions 
               onSelect={setAreaFilter} 
-              options={projectAreas} 
+              options={projectAreas}
               placeholderText='Valitse alue'
               />
             <SearchBar setFilter={setSearchFilter} />
@@ -115,15 +116,15 @@ if (error) {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#FF8C00',
+    borderRadius: 5,
+    padding: 10,
+  },
   container: {
     display: 'flex',
     padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
   },
   loadingContainer: {
     justifyContent: 'center',
@@ -132,19 +133,16 @@ const styles = StyleSheet.create({
   projectContainer: {
     marginBottom: 16,
   },
-  button: {
-    backgroundColor: '#FF8C00',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
   projectTitle: {
+    color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFFFFF',
   },
-  projectLocation: {
-    color: '#FFFFFF',
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
   },
 });
 

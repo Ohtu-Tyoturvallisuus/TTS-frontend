@@ -152,23 +152,23 @@ const SpeechToTextView = () => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
   buttonsContainer: {
     paddingVertical: 20,
   },
-  textContainer: {
-    padding: 15,
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    flexDirection: 'row',
+  container: {
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  textContainer: {
+    alignItems: 'center',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    flexDirection: 'row',
     flexShrink: 1,
-    maxWidth: '90%',
     flexWrap: 'wrap',
+    maxWidth: '90%',
+    padding: 15,
   },
   translatedText: {
     paddingHorizontal: 10,

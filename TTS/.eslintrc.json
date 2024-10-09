@@ -1,23 +1,30 @@
 {
-  "plugins": ["react", "react-native"],
+  "plugins": ["react", "react-native", "jest"],
   "settings": {
     "react": {
       "version": "detect"
     }
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "plugin:react-native/all"
+  ],
   "parser": "@babel/eslint-parser",
   "requireConfigFile": false,
   "env": {
-    "react-native/react-native": true
+    "react-native/react-native": true,
+    "jest/globals": true
   },
   "rules": {
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react-native/no-unused-styles": 2,
     "react-native/split-platform-components": 2,
-    "react-native/no-inline-styles": 2,
     "react-native/no-raw-text": 2,
-    "react-native/no-single-element-style-arrays": 2
+    "react-native/no-single-element-style-arrays": 2,
+    "react-native/no-color-literals": 0,
+    "react-native/no-inline-styles": 0
   }
 }

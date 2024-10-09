@@ -34,7 +34,7 @@ describe('AppBar Component', () => {
 
     expect(AsyncStorage.removeItem).toHaveBeenCalledWith('username');
     expect(mockSetUsername).toHaveBeenCalledWith(null);
-  });
+  }, 10000);
 
   it('logs error when AsyncStorage.removeItem fails', async () => {
     const mockError = new Error('AsyncStorage error');

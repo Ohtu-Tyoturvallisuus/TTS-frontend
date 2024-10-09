@@ -11,8 +11,8 @@ import { signIn } from '../services/apiService';
 
 const validationSchema = yup.object().shape({
   username: yup
-  .string()
-  .required('Username is required'),
+    .string()
+    .required('Syötä käyttäjänimi'),
 });
 
 const initialValues = {
@@ -72,40 +72,28 @@ const SignIn = () => {
 export default SignIn;
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    gap: 10,
-    paddingVertical: 10,
-    width: '90%',
-    alignSelf: 'center',
-  },
-  input: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    height: 40,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#e1e4e8',
-    padding: 10,
-  },
   button: {
-    width: '100%',
-    height: 40,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    backgroundColor: '#0366d6',
     alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#0366d6',
+    borderRadius: 5,
+    height: 40,
+    justifyContent: 'center',
+    width: '100%',
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  container: {
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10,
+    justifyContent: 'center',
+    paddingVertical: 10,
+    width: '90%',
   },
   errorInput: {
     borderColor: 'red',
@@ -113,5 +101,17 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginLeft: 10,
+  },
+  input: {
+    alignSelf: 'center',
+    borderColor: '#e1e4e8',
+    borderRadius: 5,
+    borderWidth: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    height: 40,
+    justifyContent: 'center',
+    padding: 10,
+    width: '100%',
   },
 });

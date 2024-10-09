@@ -8,10 +8,21 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest",
-    "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern"
+    "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern --fix",
+    "eas": "npx eas-cli",
+    "build:ios:production": "dotenv -- npx eas-cli build --platform ios --profile production",
+    "submit:ios": "npx eas-cli submit --platform ios --latest --profile production"
   },
   "jest": {
     "preset": "jest-expo",
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover"
+    ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     },
@@ -23,14 +34,15 @@
     ]
   },
   "dependencies": {
-    "@expo/metro-runtime": "~3.1.1",
+    "@expo/metro-runtime": "~3.2.3",
     "@react-native-async-storage/async-storage": "^1.23.1",
-    "@react-native-picker/picker": "^2.8.0",
+    "@react-native-picker/picker": "2.7.5",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
-    "expo": "~51.0.28",
+    "expo": "~51.0.37",
     "expo-av": "^14.0.7",
     "expo-constants": "^16.0.2",
+    "expo-dev-client": "~4.0.27",
     "expo-status-bar": "~1.12.1",
     "formik": "^2.4.6",
     "react": "18.2.0",
