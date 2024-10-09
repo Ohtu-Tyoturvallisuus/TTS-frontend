@@ -1,39 +1,37 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
-import Constants from 'expo-constants';
+import useFetchSurveys from '../hooks/useFetchSurveys';
 
 const SurveyList = () => {
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const navigate = useNavigate()
-  const [surveys, setSurveys] = useState([]);
-
-  // Like this for now, but we should use the local_ip from the context
-  const local_ip = Constants.expoConfig.extra.local_ip;
-
-  useEffect(() => {
-    if (project && project.id) {
-      console.log('Fetching surveys for project id:', project.id);
-      fetch(`http://${local_ip}:8000/api/projects/${project.id}/`)
-        .then(response => response.json())
-        .then(data => {
-          setSurveys(data.surveys || []);
-        })
-        .catch(error => {
-          console.error('Error fetching surveys:', error);
-        });
-    }
-  }, [project]);
+  const { surveys } = useFetchSurveys(project.id);
 
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
-    const formattedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const now = new Date();
+    const timeDifference = now - surveyDate;
+    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    let formattedDate;
+    if (minutesDifference < 60) {
+      formattedDate = `${minutesDifference} minuuttia sitten`;
+    } else if (hoursDifference < 24) {
+      formattedDate = `${hoursDifference} tuntia sitten`;
+    } else if (daysDifference <= 14) {
+      formattedDate = `${daysDifference} päivää sitten`;
+    } else {
+      formattedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
 
     return (
       <View style={styles.surveyContainer}>
         <View style={styles.surveyInfo}>
-          <Text style={styles.surveyTitle}>{survey.title}</Text>
+          <Text style={styles.surveyTitle}>{survey.scaffold_type}: {survey.task}</Text>
           <Text style={styles.surveyDate}>{formattedDate}</Text>
         </View>
         <View>

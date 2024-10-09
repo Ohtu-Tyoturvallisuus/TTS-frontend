@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontFamily: 'System',
-    fontSize: 16,    
+    fontSize: 16,   
     fontWeight: '700',
   },
 });

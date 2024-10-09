@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import Constants from 'expo-constants';
 import useFetchProjects from '../hooks/useFetchProjects';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import ProjectModal from './ProjectModal';
 import SearchBar from './SearchBar';
 import DropdownOptions from './DropdownOptions';
+import { ActivityIndicator } from 'react-native';
 
 const ProjectsList = () => {
-  const local_ip = Constants.expoConfig.extra.local_ip
   const [modalVisible, setModalVisible] = useState(false);
-  const {setSelectedProject} = useContext(ProjectSurveyContext);
+  const { setSelectedProject } = useContext(ProjectSurveyContext);
+
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);  
 
-  const projects = useFetchProjects(local_ip);
+  const {projects, loading, error} = useFetchProjects();
   console.log('Project example:', projects[1]);
   
   const [areaFilter, setAreaFilter] = useState([]);
@@ -50,6 +50,24 @@ useEffect(() => {
   }
   setFilteredProjects(filtered);
 }, [areaFilter, searchFilter, projects]);
+
+if (loading) {
+  return (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="#FF8C00" />
+      <Text style={styles.loadingText}>Projekteja ladataan...</Text>
+    </View>
+  );
+}
+
+if (error) {
+  return (
+    <View style={styles.errorContainer}>
+      <Text style={styles.errorText}>Virhe projektien hakemisessa: {error}</Text>
+    </View>
+  );
+}
+
 
   const ProjectButton = ({ item: project }) => (
     <View style={styles.projectContainer}>
@@ -107,6 +125,10 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     padding: 16,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   projectContainer: {
     marginBottom: 16,
