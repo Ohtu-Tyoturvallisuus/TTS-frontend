@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
   },
   projectTitle: {
     color: '#FFFFFF',
-    color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 'bold',
   },
