@@ -38,5 +38,12 @@ jobs:
     #    working-directory: ./TTS
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --coverage
         working-directory: ./TTS
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./TTS/coverage/lcov.info
+          fail_ci_if_error: true
