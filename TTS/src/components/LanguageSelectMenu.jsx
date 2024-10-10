@@ -50,7 +50,7 @@ const LanguageSelectMenu = ({
   return (
     <>
       <TouchableOpacity 
-        style={styles.countryItem}
+        style={styles.selectCountryButton}
         onPress={() => setModalVisible(true)}
       >
         {setRecordingLanguage ? (
@@ -173,6 +173,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
     width: '100%',
+  },
+  selectCountryButton: {
+    alignItems: 'center',
+    borderColor: 'gray',
+    borderRadius: 4,
+    borderWidth: 1,
+    flexDirection: 'row',
+    marginVertical: 5,
+    padding: 10,
+    width: 280,
   },
   selectedCountriesContainer: {
     borderColor: 'gray',

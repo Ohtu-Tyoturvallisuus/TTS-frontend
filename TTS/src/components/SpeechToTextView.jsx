@@ -6,7 +6,7 @@ import LanguageSelectMenu from './LanguageSelectMenu'
 import CountryFlag from 'react-native-country-flag';
 
 
-const SpeechToTextView = () => {
+const SpeechToTextView = ({ setDescription=null }) => {
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
   const [recordingLanguage, setRecordingLanguage] = useState('')
@@ -106,6 +106,7 @@ const SpeechToTextView = () => {
       console.log("File uploaded successfully:", result);
       setTranscription(result.transcription)
       setTranslations(result.translations)
+      setDescription && setDescription(result.transcription)
     } catch (error) {
       console.error("Failed to upload file:", error);
     }
