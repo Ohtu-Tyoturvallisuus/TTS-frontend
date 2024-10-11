@@ -95,7 +95,7 @@ const SpeechToTextView = ({ setDescription=null }) => {
     formData.append('translationLanguages', JSON.stringify(translationLanguages));
 
     try {
-      const response = await fetch("http://" + local_ip + ":8000/api/transcribe/", {
+      const response = await fetch("https://tts-app.azurewebsites.net/api/transcribe/", {
         method: "POST",
         body: formData,
         headers: {
