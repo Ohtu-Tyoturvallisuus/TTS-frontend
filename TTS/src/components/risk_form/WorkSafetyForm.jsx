@@ -19,7 +19,7 @@ const WorkSafetyForm = () => {
   const [ task, setTask ] = useState('');
   const [ scaffoldType, setScaffoldType ] = useState('');
   const [ taskDesc, setSubject ] = useState('');
-  console.log('Basic info:', task, scaffoldType, taskDesc);
+  console.log('Task:', task, '| Scaffold type:', scaffoldType, '|Task description:', taskDesc);
 
   // Default risk objects for the form
   const [formData, setFormData] = useState({
@@ -45,7 +45,6 @@ const WorkSafetyForm = () => {
   });
 
   //Fetches previous survey's data from API, if survey is in context
-  console.log('prevSurveyURL:', prevSurveyURL);
   const { surveyData, error } = useFetchSurveyData(prevSurveyURL);
 
   // Merges previous surveys descriptions into formData
@@ -56,12 +55,10 @@ const WorkSafetyForm = () => {
       setSubject(surveyData.description);
       const updatedFormData = { ...formData };
 
+      // Update descriptions for each risk note
       surveyData.risk_notes.forEach(note => {
         if (updatedFormData[note.note]) {
-          updatedFormData[note.note] = {
-            description: note.description,
-            status: '',
-          };
+            updatedFormData[note.note].description = note.description;
         }
       });
       console.log('Updated form data:', JSON.stringify(updatedFormData, null, 2));
@@ -69,18 +66,21 @@ const WorkSafetyForm = () => {
     }
   }, [surveyData]);
 
-  const handleInputChange = (name, value) => {
-    console.log('Changed', name, 'to', value === '' ? "empty ('')" : value);
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleInputChange = (name, field, value) => {
+    console.log('Changed', name, field, 'to', value === '' ? "empty ('')" : value);
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: {
+        ...prevFormData[name],
+        [field]: value,
+      },
+    }));
   };
 
   const handleSubmit = () => {
     
     if (!task || !scaffoldType || !taskDesc 
-      || Object.values(formData).some(value => value === '' || value === null)) {
+      || Object.values(formData).some(risk => risk.status === '' || risk.status === null)) {
       alert('Jotkin kentät ovat tyhjiä. Täytä kaikki kentät.');
       console.log('Some fields are empty or null. Please fill out all fields.');
 
@@ -88,8 +88,8 @@ const WorkSafetyForm = () => {
       if (!task) emptyFields.push('Tehtävä');
       if (!scaffoldType) emptyFields.push('Telinetyyppi');
       if (!taskDesc) emptyFields.push('Mitä olemme tekemässä/ telineen käyttötarkoitus');
-      Object.entries(formData).forEach(([key, value]) => {
-      if (value === '' || value === null) {
+      Object.entries(formData).forEach(([key, risk]) => {
+      if (risk.status === '' || risk.status === null) {
         emptyFields.push(key);
       }
       });
@@ -108,8 +108,8 @@ const WorkSafetyForm = () => {
       // Formatting formData as list of django risk_note instances
       const riskNotes = Object.keys(formData).map(key => ({
         note: key,
-        // description: ,
-        status: formData[key]
+        description: formData[key].description,
+        status: formData[key].description
       }));
 
     postRiskNotes(surveyId, riskNotes)
@@ -186,8 +186,8 @@ const WorkSafetyForm = () => {
           <Text style={styles.label}>Muu telinetyöhön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Muu telinetyöhön liittyvä vaara']}
-            onChangeText={(value) => handleInputChange('Muu telinetyöhön liittyvä vaara', value)}
+            value={formData['Muu telinetyöhön liittyvä vaara'].description}
+            onChangeText={(value) => handleInputChange('Muu telinetyöhön liittyvä vaara', 'description', value)}
           />
         </View>
 
@@ -199,7 +199,7 @@ const WorkSafetyForm = () => {
               key={key}
               risk={{ note: key }}
               data={formData[key]}
-              onChange={handleInputChange}
+              onChange={(field, value) => handleInputChange(key, field, value)}
             />
         ))}
 
@@ -207,8 +207,8 @@ const WorkSafetyForm = () => {
           <Text style={styles.label}>Muu työympäristöön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Muu työympäristöön liittyvä vaara']}
-            onChangeText={(value) => handleInputChange('Muu työympäristöön liittyvä vaara', value)}
+            value={formData['Muu työympäristöön liittyvä vaara'].description}
+            onChangeText={(value) => handleInputChange('Muu työympäristöön liittyvä vaara', 'description', value)}
           />
         </View>
 
