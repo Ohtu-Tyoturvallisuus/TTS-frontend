@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ButtonGroup = ({ options = [], onChange }) => {
-  const [selectedValue, setSelectedValue] = useState('');
-
+const ButtonGroup = ({ options, selectedValue, onChange }) => {
   return (
-    <View style={styles.buttonGroup}>
-      {options.map((value) => (
+    <View style={{ flexDirection: 'row' }}>
+      {options.map((option, index) => (
         <TouchableOpacity
-          key={value}
-          style={[
-            styles.button,
-            { backgroundColor: selectedValue === value ? 'blue' : 'gray' },
-          ]}
-          onPress={() => {
-            const newValue = selectedValue === value ? '' : value;
-            setSelectedValue(newValue);
-            onChange(newValue);
+          key={index}
+          onPress={() => onChange(option)}
+          style={{
+            padding: 10,
+            backgroundColor: selectedValue === option ? 'blue' : 'gray',
+            margin: 5,
           }}
         >
-          <Text style={styles.buttonText}>{value}</Text>
+          <Text style={{ color: 'white' }}>{option}</Text>
         </TouchableOpacity>
       ))}
     </View>

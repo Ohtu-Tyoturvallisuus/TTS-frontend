@@ -21,39 +21,51 @@ const WorkSafetyForm = () => {
   const [ taskDesc, setSubject ] = useState('');
   console.log('Basic info:', task, scaffoldType, taskDesc);
 
+  // Default risk objects for the form
   const [formData, setFormData] = useState({
-    'Henkilökohtaiset suojaimet': '',
-    'Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)': '',
-    'Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)': '',
-    'Nostoapuvälineet (toimintakunnossa/tarkastettu)': '',
-    'Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)': '',
-    'Alustan kestävyys (maa/hoitotaso/katto)': '',
-    'Ankkurointi (telineen asennus/purku)': '',
-    'Sääolosuhteet (tuuli/kylmyys/kuumuus)': '',
-    'Ympäristö (siisteys/jätteiden lajittelu)': '',
-    'Muu telinetyöhön liittyvä vaara': '', //index 9
-    'Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)': '',
-    'Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)': '',
-    'Ajoneuvoliikenne/jalankulkija': '',
-    'Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)': '',
-    'Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)': '',
-    'Säiliötyölupa': '',
-    'Energiasta erottaminen (turvalukitukset)': '',
-    'Toiminta hätätilanteessa (hätäpoistumistie)': '',
-    'Muu työympäristöön liittyvä vaara': '', //index 17
+    'Henkilökohtaiset suojaimet': { description: '', status: '' },
+    'Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)': { description: '', status: '' },
+    'Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)': { description: '', status: '' },
+    'Nostoapuvälineet (toimintakunnossa/tarkastettu)': { description: '', status: '' },
+    'Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)': { description: '', status: '' },
+    'Alustan kestävyys (maa/hoitotaso/katto)': { description: '', status: '' },
+    'Ankkurointi (telineen asennus/purku)': { description: '', status: '' },
+    'Sääolosuhteet (tuuli/kylmyys/kuumuus)': { description: '', status: '' },
+    'Ympäristö (siisteys/jätteiden lajittelu)': { description: '', status: '' },
+    'Muu telinetyöhön liittyvä vaara': { description: '', status: '' }, //index 9
+    'Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)': { description: '', status: '' },
+    'Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)': { description: '', status: '' },
+    'Ajoneuvoliikenne/jalankulkija': { description: '', status: '' },
+    'Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)': { description: '', status: '' },
+    'Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)': { description: '', status: '' },
+    'Säiliötyölupa': { description: '', status: '' },
+    'Energiasta erottaminen (turvalukitukset)': { description: '', status: '' },
+    'Toiminta hätätilanteessa (hätäpoistumistie)': { description: '', status: '' },
+    'Muu työympäristöön liittyvä vaara': { description: '', status: '' }, //index 17
   });
 
   //Fetches previous survey's data from API, if survey is in context
   console.log('prevSurveyURL:', prevSurveyURL);
   const { surveyData, error } = useFetchSurveyData(prevSurveyURL);
 
-  // Merges fetched survey data to the default formData
+  // Merges previous surveys descriptions into formData
   useEffect(() => {
     if (surveyData) {
-      setSubject(surveyData.title);
-      const mergedData = { ...formData, ...surveyData.risks };
-      setFormData(mergedData);
-      console.log('Merged data:', mergedData);
+      setTask(surveyData.task);
+      setScaffoldType(surveyData.scaffold_type);
+      setSubject(surveyData.description);
+      const updatedFormData = { ...formData };
+
+      surveyData.risk_notes.forEach(note => {
+        if (updatedFormData[note.note]) {
+          updatedFormData[note.note] = {
+            description: note.description,
+            status: '',
+          };
+        }
+      });
+      console.log('Updated form data:', JSON.stringify(updatedFormData, null, 2));
+      setFormData(updatedFormData);
     }
   }, [surveyData]);
 
@@ -135,19 +147,26 @@ const WorkSafetyForm = () => {
           <Text>{project.project_id}</Text>
 
           <Text style={styles.label}>Tehtävä:</Text>
-          <ButtonGroup options={['Asennus', 'Muokkaus', 'Purku']} onChange={(value) => setTask(value)} />
+          <ButtonGroup 
+          options={['Asennus', 'Muokkaus', 'Purku']} 
+          selectedValue={task}
+          onChange={(value) => setTask(value)} />
 
           <Text style={styles.label}>Telinetyyppi:</Text>
-          <ButtonGroup options={['Työteline', 'Sääsuojaton työteline', 'Sääsuoja']} onChange={(value) => setScaffoldType(value)} />
+            <ButtonGroup 
+              options={['Työteline', 'Sääsuojaton työteline', 'Sääsuoja']} 
+              selectedValue={scaffoldType} 
+              onChange={(value) => setScaffoldType(value)} 
+            />
 
-          <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
-          <TextInput
-            style={[styles.input, { height: 100 }]}
-            value={taskDesc}
-            onChangeText={(value) => setSubject(value)}
-            multiline={true}
-            numberOfLines={4} 
-          />
+            <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
+            <TextInput
+              style={[styles.input, { height: 100 }]}
+              value={taskDesc}
+              onChangeText={(value) => setSubject(value)}
+              multiline={true}
+              numberOfLines={4} 
+            />
         </View>
 
         <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
