@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Button, TextInput, ScrollView, Text } from 'react-native';
-import Constants from 'expo-constants';
-import axios from 'axios';
 import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
@@ -16,7 +14,6 @@ const WorkSafetyForm = () => {
     selectedSurveyURL: prevSurveyURL, 
     setSelectedSurveyURL 
   } = useContext(ProjectSurveyContext);
-  const local_ip = Constants.expoConfig.extra.local_ip;
   const navigate = useNavigate();
   
   const [ task, setTask ] = useState('');

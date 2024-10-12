@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Audio } from 'expo-av';
-import Constants from 'expo-constants';
 import LanguageSelectMenu from './LanguageSelectMenu'
 import CountryFlag from 'react-native-country-flag';
 
@@ -13,7 +12,6 @@ const SpeechToTextView = ({ setDescription=null }) => {
   const [translationLanguages, setTranslationLanguages] = useState([])
   const [translations, setTranslations] = useState({})
   const timeout = 60000
-  const local_ip = Constants.expoConfig.extra.local_ip;
   const languageToFlagMap = {
     'fi': 'FI',
     'sv': 'SE',

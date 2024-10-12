@@ -16,12 +16,19 @@ jest.mock('axios');
 jest.mock('expo-constants', () => ({
   expoConfig: {
     extra: {
-      local_ip: 'localhost'
+      local_ip: 'localhost',
+      local_setup: 'false'
     }
   }
 }));
 
+console.error = jest.fn();
+
 describe('Sign in', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders the sign-in page successfully', () => {
     const mockSetUsername = jest.fn();
 
@@ -61,7 +68,7 @@ describe('Sign in', () => {
     fireEvent.press(button);
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith('http://localhost:8000/api/signin/', {
+      expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
         username: 'testuser'
       });
 
@@ -85,6 +92,35 @@ describe('Sign in', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Syötä käyttäjänimi')).toBeDefined();
+    });
+  });
+
+  it('displays error when API call fails', async () => {
+    const mockSetUsername = jest.fn();
+    const mockError = new Error('Network Error');
+
+    axios.post.mockRejectedValueOnce(mockError);
+
+    render(
+      <NativeRouter>
+        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+          <SignIn />
+        </UserContext.Provider>
+      </NativeRouter>
+    );
+
+    const input = screen.getByPlaceholderText('Käyttäjänimi');
+    const button = screen.getByText('Kirjaudu sisään');
+
+    fireEvent.changeText(input, 'testuser');
+    fireEvent.press(button);
+
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
+        username: 'testuser'
+      });
+
+      expect(console.error).toHaveBeenCalledWith('Error signing in:', mockError);
     });
   });
 });

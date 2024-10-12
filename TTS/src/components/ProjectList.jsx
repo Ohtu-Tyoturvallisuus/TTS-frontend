@@ -13,7 +13,7 @@ const ProjectsList = () => {
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);  
 
-  const {projects, loading, error} = useFetchProjects();
+  const { projects, loading, error } = useFetchProjects();
   console.log('Project example:', projects[1]);
   
   const [areaFilter, setAreaFilter] = useState([]);
@@ -125,6 +125,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     padding: 16,
   },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   projectContainer: {
     marginBottom: 16,
   },
@@ -138,27 +142,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-  },
-  loadingContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  projectContainer: {
-    marginBottom: 16,
-  },
-  button: {
-    backgroundColor: '#FF8C00',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  projectTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  projectLocation: {
-    color: '#FFFFFF',
   },
 });
 

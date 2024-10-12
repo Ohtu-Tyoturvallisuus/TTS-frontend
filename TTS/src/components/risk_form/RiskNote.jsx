@@ -79,50 +79,50 @@ const RiskNote = ({ risk, onChange }) => {
 };
 
 const styles = StyleSheet.create({
-  riskNote: {
-    fontSize: 16,
-    marginVertical: 8,
-    fontWeight: 'bold',
-    alignSelf: 'center'
+  button: {
+    alignItems: 'center',
+    backgroundColor: 'gray',
+    borderRadius: 5,
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    paddingVertical: 10,
   },
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
   },
-  button: {
-    flex: 1,
-    marginHorizontal: 5,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'gray',
-    borderRadius: 5,
-  },
   buttonText: {
     color: 'white',
     textAlign: 'center',
   },
-  kunnossaText: {
-    fontSize: 16,
-    marginVertical: 8,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    color: 'green',
-  },
   choiceDisplayView: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginHorizontal: 16, 
   },
   editButton: {
-    borderWidth: 1,
-    borderRadius: 5,
-    height: 40,
-    width: 60,
     alignItems: 'center',
-    justifyContent: 'center'
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 40,
+    justifyContent: 'center',
+    width: 60
+  },
+  kunnossaText: {
+    alignSelf: 'center',
+    color: 'green',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginVertical: 8,
+  },
+  riskNote: {
+    alignSelf: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginVertical: 8
   },
 });
 

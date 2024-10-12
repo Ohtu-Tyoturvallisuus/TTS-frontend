@@ -33,7 +33,13 @@ const Main = () => {
       <AppBar username={username} setUsername={setUsername} />
       <View style={styles.content}>
         <Routes>
-          <Route path='/' element={<ProjectList /> } />
+          <Route path='/' element={
+            <>
+              <SpeechToTextView />
+              <ProjectList /> 
+            </>
+          }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/worksafetyform' element={<WorkSafetyForm />}/>
