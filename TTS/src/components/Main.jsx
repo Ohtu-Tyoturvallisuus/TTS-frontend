@@ -62,9 +62,9 @@ const styles = StyleSheet.create({
   sub_title: {
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center',
+    marginBottom: 10,
     marginTop: 10,
-    marginBottom: 10
+    textAlign: 'center'
   }
 });
 

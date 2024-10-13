@@ -221,10 +221,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    flex: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     borderWidth: 1,
+    flex: 1,
     height: 100,
     padding: 10,
   },

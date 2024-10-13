@@ -68,7 +68,7 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
         style={styles.button}
         onPress={() => {
           setStatus('Ei koske');
-          onChange(title, 'status', 'Ei koske');;
+          onChange(title, 'status', 'Ei koske');
         }}
       >
         <Text style={styles.buttonText}>Ei koske</Text>
@@ -115,20 +115,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  statusContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   editButton: {
-    position: 'absolute',
-    right: 0,
     alignItems: 'center',
+    borderColor: '#ccc',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
     height: 40,
     justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
     width: 40,
   },
   kunnossaText: {
@@ -143,6 +138,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginVertical: 8
+  },
+  statusContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 

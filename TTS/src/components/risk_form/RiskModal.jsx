@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import SpeechToTextView from '../SpeechToTextView';
 
@@ -88,14 +88,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     justifyContent: 'center',
-    paddingVertical: 10,
     marginHorizontal: 5,
     marginTop: 10,
+    paddingVertical: 10,
   },
   buttonContainer: {
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 20,
     width: '100%',
   },
   buttonText: {
@@ -106,6 +106,32 @@ const styles = StyleSheet.create({
   cancelButton: {
     backgroundColor: 'gray',
     flex: 1,
+  },
+  disabledButton: {
+    backgroundColor: 'lightgray',
+    flex: 1,
+  },
+  input: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    flex: 1,
+    height: 100,
+    marginBottom: 20,
+    padding: 10,
+  },
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  modalContent: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    maxWidth: 400,
+    padding: 20,
+    width: '90%',
   },
   resetButton: {
     alignItems: 'center',
@@ -121,43 +147,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  input: {
-    flex: 1,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    padding: 10,
-    height: 100,
-  },
-  modalContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContent: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 20,
-    width: '90%',
-    maxWidth: 400,
-  },
   speechButton: {
     backgroundColor: 'darkorange',
     width: 'auto',
   },
-  submitButton: {
-    backgroundColor: 'green',
-    flex: 1,
-  },
-  disabledButton: {
-    backgroundColor: 'lightgray',
-    flex: 1,
-  },
   sub_title: {
     fontSize: 16,
     marginBottom: 10,
+  },
+  submitButton: {
+    backgroundColor: 'green',
+    flex: 1,
   },
   title: {
     fontSize: 20,

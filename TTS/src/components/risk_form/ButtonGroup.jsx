@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 const ButtonGroup = ({ options, selectedValue, onChange }) => {
   return (
@@ -20,25 +20,5 @@ const ButtonGroup = ({ options, selectedValue, onChange }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    borderRadius: 5,
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    paddingVertical: 10,
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-});
 
 export default ButtonGroup;
