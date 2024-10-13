@@ -104,7 +104,10 @@ const SpeechToTextView = ({ setDescription=null }) => {
       console.log("File uploaded successfully:", result);
       setTranscription(result.transcription)
       setTranslations(result.translations)
-      setDescription && setDescription(result.transcription)
+      // Concatenate into description text
+      if (setDescription) {
+        setDescription((prevDescription) => `${prevDescription} ${result.transcription}`);
+      }
     } catch (error) {
       console.error("Failed to upload file:", error);
     }
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+
   },
   textContainer: {
     alignItems: 'center',

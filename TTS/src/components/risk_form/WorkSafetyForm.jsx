@@ -19,7 +19,6 @@ const WorkSafetyForm = () => {
   const [ task, setTask ] = useState('');
   const [ scaffoldType, setScaffoldType ] = useState('');
   const [ taskDesc, setSubject ] = useState('');
-  console.log('Task:', task, '| Scaffold type:', scaffoldType, '|Task description:', taskDesc);
 
   // Default risk objects for the form
   const [formData, setFormData] = useState({
@@ -32,7 +31,7 @@ const WorkSafetyForm = () => {
     'Ankkurointi (telineen asennus/purku)': { description: '', status: '' },
     'Sääolosuhteet (tuuli/kylmyys/kuumuus)': { description: '', status: '' },
     'Ympäristö (siisteys/jätteiden lajittelu)': { description: '', status: '' },
-    'Muu telinetyöhön liittyvä vaara': { description: '', status: '' }, //index 9
+    'Muu telinetyöhön liittyvä vaara': { description: '', status: '' }, 
     'Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)': { description: '', status: '' },
     'Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)': { description: '', status: '' },
     'Ajoneuvoliikenne/jalankulkija': { description: '', status: '' },
@@ -41,7 +40,7 @@ const WorkSafetyForm = () => {
     'Säiliötyölupa': { description: '', status: '' },
     'Energiasta erottaminen (turvalukitukset)': { description: '', status: '' },
     'Toiminta hätätilanteessa (hätäpoistumistie)': { description: '', status: '' },
-    'Muu työympäristöön liittyvä vaara': { description: '', status: '' }, //index 17
+    'Muu työympäristöön liittyvä vaara': { description: '', status: '' }, 
   });
 
   //Fetches previous survey's data from API, if survey is in context
@@ -67,37 +66,22 @@ const WorkSafetyForm = () => {
   }, [surveyData]);
 
   const handleInputChange = (name, field, value) => {
-    console.log('Changed', name, field, 'to', value === '' ? "empty ('')" : value);
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: {
-        ...prevFormData[name],
-        [field]: value,
-      },
-    }));
+    setFormData(prevFormData => {
+      console.log('Changed', name, field, 'to', value);
+      return {
+        ...prevFormData,
+        [name]: {
+          ...prevFormData[name],
+          [field]: value,
+        },
+      };
+    });
   };
 
   const handleSubmit = () => {
-    
-    if (!task || !scaffoldType || !taskDesc 
-      || Object.values(formData).some(risk => risk.status === '' || risk.status === null)) {
-      alert('Jotkin kentät ovat tyhjiä. Täytä kaikki kentät.');
-      console.log('Some fields are empty or null. Please fill out all fields.');
-
-      const emptyFields = [];
-      if (!task) emptyFields.push('Tehtävä');
-      if (!scaffoldType) emptyFields.push('Telinetyyppi');
-      if (!taskDesc) emptyFields.push('Mitä olemme tekemässä/ telineen käyttötarkoitus');
-      Object.entries(formData).forEach(([key, risk]) => {
-      if (risk.status === '' || risk.status === null) {
-        emptyFields.push(key);
-      }
-      });
-      console.log('Empty fields:', emptyFields.join(', '));
-      return;
-    }
-    const risks = JSON.stringify(formData, null, 2);
-    console.log('Lomakkeen tiedot:', risks);
+    // ------------------------------------------------
+    //         TODO: Implement form submit checks
+    // ------------------------------------------------
     
     // POST a new survey instance 
     postNewSurvey(project.id, taskDesc, task, scaffoldType)
@@ -105,21 +89,20 @@ const WorkSafetyForm = () => {
       console.log('Server response:', response);
       const surveyId = response.id;
 
-      // Formatting formData as list of django risk_note instances
-      const riskNotes = Object.keys(formData).map(key => ({
-        note: key,
-        description: formData[key].description,
-        status: formData[key].description
-      }));
+    // Formatting formData as list of django risk_note instances
+    const riskNotes = Object.keys(formData).map(key => ({
+      note: key,
+      description: formData[key].description,
+      status: formData[key].status
+    }));
+    console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
 
+    // POST risk notes to the just made survey
     postRiskNotes(surveyId, riskNotes)
-      .then(riskNoteResponse => {
-        console.log('Risk note response:', riskNoteResponse);
+      .then(() => {
         // navigate to front page when successful
-        navigate('/');
-        console.log('resetting project context to null');
-        setSelectedProject(null);
-        setSelectedSurveyURL(null);
+        alert('Risk notes submitted successfully');
+        handleClose();
       })
     })
   };
@@ -148,9 +131,10 @@ const WorkSafetyForm = () => {
 
           <Text style={styles.label}>Tehtävä:</Text>
           <ButtonGroup 
-          options={['Asennus', 'Muokkaus', 'Purku']} 
-          selectedValue={task}
-          onChange={(value) => setTask(value)} />
+            options={['Asennus', 'Muokkaus', 'Purku']} 
+            selectedValue={task}
+            onChange={(value) => setTask(value)} 
+          />
 
           <Text style={styles.label}>Telinetyyppi:</Text>
             <ButtonGroup 
@@ -161,11 +145,11 @@ const WorkSafetyForm = () => {
 
             <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
             <TextInput
-              style={[styles.input, { height: 100 }]}
+              style={styles.input}
               value={taskDesc}
               onChangeText={(value) => setSubject(value)}
               multiline={true}
-              numberOfLines={4} 
+              textAlignVertical="top"
             />
         </View>
 
@@ -188,6 +172,8 @@ const WorkSafetyForm = () => {
             style={styles.input}
             value={formData['Muu telinetyöhön liittyvä vaara'].description}
             onChangeText={(value) => handleInputChange('Muu telinetyöhön liittyvä vaara', 'description', value)}
+            multiline={true}
+            textAlignVertical="top"
           />
         </View>
 
@@ -199,7 +185,7 @@ const WorkSafetyForm = () => {
               key={key}
               risk={{ note: key }}
               data={formData[key]}
-              onChange={(field, value) => handleInputChange(key, field, value)}
+              onChange={handleInputChange}
             />
         ))}
 
@@ -209,6 +195,8 @@ const WorkSafetyForm = () => {
             style={styles.input}
             value={formData['Muu työympäristöön liittyvä vaara'].description}
             onChangeText={(value) => handleInputChange('Muu työympäristöön liittyvä vaara', 'description', value)}
+            multiline={true}
+            textAlignVertical="top"
           />
         </View>
 
@@ -228,12 +216,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
+    flex: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     borderWidth: 1,
-    height: 40,
-    paddingBottom: 15,
-    paddingHorizontal: 10,
+    height: 100,
+    padding: 10,
   },
   label: {
     fontSize: 16,

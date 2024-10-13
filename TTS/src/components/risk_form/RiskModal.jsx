@@ -13,6 +13,7 @@ const RiskModal = ({
 }) => {
   const [useSpeech, setUseSpeech] = useState(false);
   const [description, setDescription] = useState(initialDescription);
+  const [buttonHidden, setButtonHidden] = useState(false);
 
   return (
     <Modal
@@ -25,20 +26,30 @@ const RiskModal = ({
         <View style={styles.modalContent}>
           <ScrollView>
             <Text style={styles.title}>{title}</Text>
+            
             <Text style={styles.sub_title}>Syötä lisätiedot:</Text>
             <TextInput
               style={styles.input}
               placeholder="Syötä lisätietoja"
               value={description}
               onChangeText={setDescription}
+              multiline={true}
+              textAlignVertical="top"
             />
-            <TouchableOpacity
-              style={[styles.button, styles.speechButton]}
-              onPress={() => setUseSpeech(!useSpeech)}
-            >
-              <Text style={styles.buttonText}>Syötä puheena</Text>
-            </TouchableOpacity>
+
+            {!buttonHidden && (
+              <TouchableOpacity
+                style={[styles.button, styles.speechButton]}
+                onPress={() => {
+                  setUseSpeech(!useSpeech);
+                  setButtonHidden(true);
+                }}
+              >
+                <Text style={styles.buttonText}>Syötä puheella</Text>
+              </TouchableOpacity>
+            )}
             {useSpeech && <SpeechToTextView setDescription={setDescription} />}
+            
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, styles.cancelButton]}
@@ -54,14 +65,16 @@ const RiskModal = ({
                   <Text style={styles.resetButtonText}>Resetoi</Text>
                 </TouchableOpacity>
               )}
-              {description !== '' && (
-                <TouchableOpacity
-                  style={[styles.button, styles.submitButton]}
-                  onPress={() => onSubmit(description)}
-                >
-                  <Text style={styles.buttonText}>Kunnossa</Text>
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  description !== '' ? styles.submitButton : styles.disabledButton
+                ]}
+                onPress={() => description !== '' && onSubmit(description)}
+                disabled={description === ''}
+              >
+                <Text style={styles.buttonText}>Kunnossa</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
@@ -109,11 +122,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   input: {
+    flex: 1,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 20,
     padding: 10,
-    width: '100%',
+    height: 100,
   },
   modalContainer: {
     alignItems: 'center',
@@ -131,10 +145,14 @@ const styles = StyleSheet.create({
   },
   speechButton: {
     backgroundColor: 'darkorange',
-    width: '100%',
+    width: 'auto',
   },
   submitButton: {
     backgroundColor: 'green',
+    flex: 1,
+  },
+  disabledButton: {
+    backgroundColor: 'lightgray',
     flex: 1,
   },
   sub_title: {

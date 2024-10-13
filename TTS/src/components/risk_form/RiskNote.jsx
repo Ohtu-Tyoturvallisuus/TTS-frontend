@@ -12,7 +12,8 @@ const RiskNote = ({ risk, onChange }) => {
     setModalVisible(false);
     setStatus('Kunnossa');
     setDescription(newDescription);
-    onChange({ ...risk, status: 'Kunnossa', description: newDescription });
+    onChange(risk.note, 'description', newDescription);
+    onChange(risk.note, 'status', 'Kunnossa');
   };
 
   const handleEditPress = () => {
@@ -21,11 +22,12 @@ const RiskNote = ({ risk, onChange }) => {
   };
 
   const handleReset = () => {
-    console.log('Poistetaan riski:', risk.note);
+    console.log('Resetoidaan riski:', risk.note);
     setIsModification(false);
     setStatus('');
     setDescription('');
-    onChange({ ...risk, status: '', description: '' });
+    onChange(risk.note, 'description', '');
+    onChange(risk.note, 'status', '');
     setModalVisible(false);
   };
 
@@ -68,7 +70,7 @@ const RiskNote = ({ risk, onChange }) => {
         style={styles.button}
         onPress={() => {
           setStatus('Ei koske');
-          onChange({ ...risk, status: 'Ei koske' });
+          onChange(risk.note, 'status', 'Ei koske');;
         }}
       >
         <Text style={styles.buttonText}>Ei koske</Text>
