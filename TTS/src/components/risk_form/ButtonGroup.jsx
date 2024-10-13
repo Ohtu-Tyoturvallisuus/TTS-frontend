@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
-const ButtonGroup = ({ options, selectedValue, onChange }) => {
+const ButtonGroup = ({ options = [], selectedValue, onChange }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {options.map((option, index) => (

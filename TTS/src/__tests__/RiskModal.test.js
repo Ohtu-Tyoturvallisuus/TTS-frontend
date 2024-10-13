@@ -12,7 +12,7 @@ describe('<RiskModal />', () => {
     mockOnClose.mockClear();
   });
 
-  it('renders modal with title and closes when "Keskeytä" is pressed', () => {
+  it('renders modal with title and closes when "Peruuta" is pressed', () => {
     const { getByText } = render(
       <RiskModal
         title={mockTitle}
@@ -23,9 +23,9 @@ describe('<RiskModal />', () => {
     );
 
     expect(getByText(mockTitle)).toBeTruthy();
-    expect(getByText('Keskeytä')).toBeTruthy();
+    expect(getByText('Peruuta')).toBeTruthy();
 
-    fireEvent.press(getByText('Keskeytä'));
+    fireEvent.press(getByText('Peruuta'));
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
@@ -39,7 +39,6 @@ describe('<RiskModal />', () => {
       />
     );
 
-    fireEvent.press(getByText('Kirjoittamalla'));
     const input = getByPlaceholderText('Syötä lisätietoja');
 
     fireEvent.changeText(input, 'This is a test description');
@@ -49,5 +48,4 @@ describe('<RiskModal />', () => {
     expect(mockOnSubmit).toHaveBeenCalledWith('This is a test description');
     expect(mockOnSubmit).toHaveBeenCalledTimes(1);
   });
-
 });

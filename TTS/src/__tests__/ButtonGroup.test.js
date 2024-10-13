@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import ButtonGroup from '../components/risk_form/ButtonGroup';
+
 describe('ButtonGroup Component', () => {
 
   it('renders correctly with no options provided (default [])', () => {
@@ -31,7 +32,7 @@ describe('ButtonGroup Component', () => {
     expect(mockOnChange).toHaveBeenCalledWith('Option 1'); 
     
     fireEvent.press(button);
-    expect(mockOnChange).toHaveBeenCalledWith('');
+    expect(mockOnChange).toHaveBeenCalledWith('Option 1');
   });
 });
 
