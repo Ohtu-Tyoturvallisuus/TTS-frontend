@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchSurveyData } from '../services/apiService';
 
 const useFetchSurveyData = (url) => {
   const [surveyData, setSurveyData] = useState(null);
@@ -8,10 +8,9 @@ const useFetchSurveyData = (url) => {
   useEffect(() => {
     if (!url) return;
     console.log('Fetching survey data from:', url);
-    axios.get(url)
-      .then(response => {
-        const data = response.data;
-        //Implement fetching of riskNote descriptions
+    fetchSurveyData(url)
+      .then(data => {
+        setSurveyData(data);
       })
       .catch(error => {
         setError(error.message);

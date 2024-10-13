@@ -1,45 +1,56 @@
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 
-const DropdownOptions = ({ options=[], onSelect, placeholderText='Valitse' }) => {
+const DropdownOptions = ({ options = [], onSelect, placeholderText = 'Valitse' }) => {
+  const [selectedItem, setSelectedItem] = useState(null);
+
   return (
-      <SelectDropdown
-        data={options}
-        onSelect={(selectedItem) => {
-          onSelect(selectedItem);
-        }}
-        renderButton={(selectedItem) => {
-          return (
-            <View style={styles.dropdownButtonStyle}>
-              <Text style={styles.dropdownButtonTxtStyle}>{selectedItem || placeholderText}</Text>
-              <View style={{ position: 'absolute', right: 20 }}>
-                <Text>▼</Text>
-              </View>
+    <SelectDropdown
+      data={options}
+      onSelect={(item) => {
+        setSelectedItem(item);
+        item[0] === '--Valitse kaikki--'
+          ? onSelect(null)
+          : onSelect(item);
+      }}
+      defaultButtonText={placeholderText}
+      buttonTextAfterSelection={(item) => item}
+      renderButton={(selectedItem) => {
+        return (
+          <View style={styles.dropdownButtonStyle}>
+            <Text style={styles.dropdownButtonTxtStyle}>
+              {selectedItem || placeholderText}
+            </Text>
+            <View style={{ position: 'absolute', right: 20 }}>
+              <Text>▼</Text>
             </View>
-          );
-        }}
-        renderItem={(item, isSelected) => {
-          return (
-            <View
-              style={{
-                ...styles.dropdown1ItemStyle,
-                ...(isSelected && { backgroundColor: '#ADD8E6' }),
-              }}>
-              <Text style={styles.dropdown1ItemTxtStyle}>{item}</Text>
-            </View>
-          );
-        }}
-        dropdownStyle={styles.dropdown1MenuStyle}
-        showsVerticalScrollIndicator={true}
-        search
-        searchInputStyle={styles.dropdown1SearchInputStyle}
-        searchInputTxtColor={'#000000'} // Changed text color to black
-        searchPlaceHolder={'Etsi...'}
-        searchPlaceHolderColor={'#A9A9A9'} // Changed placeholder color to a darker shade
-        renderSearchInputLeftIcon={() => {
-          return <Text style={{ color: '#000000', fontSize: 18 }}>🔍</Text>; // Changed icon color to black
-        }}
-      />
+          </View>
+        );
+      }}
+      renderItem={(item) => {
+        return (
+          <View
+            style={{
+              ...styles.dropdown1ItemStyle,
+              ...(selectedItem === item && { backgroundColor: '#ADD8E6' }),
+            }}
+          >
+            <Text style={styles.dropdown1ItemTxtStyle}>{item}</Text>
+          </View>
+        );
+      }}
+      dropdownStyle={styles.dropdown1MenuStyle}
+      showsVerticalScrollIndicator={true}
+      search
+      searchInputStyle={styles.dropdown1SearchInputStyle}
+      searchInputTxtColor={'#000000'}
+      searchPlaceHolder={'Etsi...'}
+      searchPlaceHolderColor={'#A9A9A9'}
+      renderSearchInputLeftIcon={() => {
+        return <Text style={{ color: '#000000', fontSize: 18 }}>🔍</Text>;
+      }}
+    />
   );
 };
 
@@ -73,9 +84,9 @@ const styles = StyleSheet.create({
   dropdownButtonStyle: {
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
-    borderColor: '#000000', // Added border color
+    borderColor: '#000000',
     borderRadius: 12,
-    borderWidth: 1, // Added border width
+    borderWidth: 1,
     flexDirection: 'row',
     height: 50,
     justifyContent: 'center',

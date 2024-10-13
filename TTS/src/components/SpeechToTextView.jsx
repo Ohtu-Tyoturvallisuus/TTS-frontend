@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Audio } from 'expo-av';
-import Constants from 'expo-constants';
 import LanguageSelectMenu from './LanguageSelectMenu'
 import CountryFlag from 'react-native-country-flag';
 
 
-const SpeechToTextView = () => {
+const SpeechToTextView = ({ setDescription=null }) => {
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
   const [recordingLanguage, setRecordingLanguage] = useState('')
   const [translationLanguages, setTranslationLanguages] = useState([])
   const [translations, setTranslations] = useState({})
   const timeout = 60000
-  const local_ip = Constants.expoConfig.extra.local_ip;
   const languageToFlagMap = {
     'fi': 'FI',
     'sv': 'SE',
@@ -95,7 +93,7 @@ const SpeechToTextView = () => {
     formData.append('translationLanguages', JSON.stringify(translationLanguages));
 
     try {
-      const response = await fetch("http://" + local_ip + ":8000/api/transcribe/", {
+      const response = await fetch("https://tts-app.azurewebsites.net/api/transcribe/", {
         method: "POST",
         body: formData,
         headers: {
@@ -106,6 +104,10 @@ const SpeechToTextView = () => {
       console.log("File uploaded successfully:", result);
       setTranscription(result.transcription)
       setTranslations(result.translations)
+      // Concatenate into description text
+      if (setDescription) {
+        setDescription((prevDescription) => `${prevDescription} ${result.transcription}`);
+      }
     } catch (error) {
       console.error("Failed to upload file:", error);
     }
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+
   },
   textContainer: {
     alignItems: 'center',

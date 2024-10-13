@@ -43,3 +43,9 @@ export const postRiskNotes = async (surveyId, riskNotes) => {
   const response = await axios.post(url, riskNotes);
   return response.data;
 };
+
+export const fetchSurveyData = async (url) => {
+  console.log('fetchSurveyData:', url);
+  const response = await axios.get(url);
+  return response.data;
+};

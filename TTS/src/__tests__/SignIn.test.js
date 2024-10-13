@@ -16,7 +16,8 @@ jest.mock('axios');
 jest.mock('expo-constants', () => ({
   expoConfig: {
     extra: {
-      local_ip: 'localhost'
+      local_ip: 'localhost',
+      local_setup: 'false'
     }
   }
 }));

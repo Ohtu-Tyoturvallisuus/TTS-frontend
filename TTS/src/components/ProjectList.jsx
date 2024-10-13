@@ -10,11 +10,9 @@ import { ActivityIndicator } from 'react-native';
 const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
-
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);  
-
-  const {projects, loading, error} = useFetchProjects();
+  const { projects, loading, error } = useFetchProjects();
   console.log('Project example:', projects[1]);
   
   const [areaFilter, setAreaFilter] = useState([]);

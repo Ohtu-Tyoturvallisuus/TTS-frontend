@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
 import ProjectList from './ProjectList';
@@ -35,11 +35,12 @@ const Main = () => {
         <Routes>
           <Route path='/' element={
             <>
+              <Text style={styles.sub_title}>Text-to-speech demo:</Text>
               <SpeechToTextView />
               <ProjectList /> 
             </>
           }
-            />
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/worksafetyform' element={<WorkSafetyForm />}/>
@@ -58,6 +59,13 @@ const styles = StyleSheet.create({
   content: {
     flex: 10
   },
+  sub_title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 10,
+    textAlign: 'center'
+  }
 });
 
 export default Main;

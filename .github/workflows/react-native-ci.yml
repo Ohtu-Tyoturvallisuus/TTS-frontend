@@ -33,9 +33,9 @@ jobs:
         run: npm ci
         working-directory: ./TTS
 
-    #  - name: Run ESLint
-    #    run: npm run lint
-    #    working-directory: ./TTS
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: ./TTS
 
       - name: Run tests
         run: npm test -- --coverage
@@ -46,4 +46,3 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./TTS/coverage/lcov.info
-          fail_ci_if_error: true
