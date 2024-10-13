@@ -4,74 +4,86 @@ import RiskModal from './RiskModal';
 
 const RiskNote = ({ risk, onChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [notApplicable, setNotApplicable] = useState(false);
+  const [status, setStatus] = useState(risk.status);
+  const [description, setDescription] = useState(risk.description);
+  const [isModification, setIsModification] = useState(false);
 
-  const onPress = (note, value) => {
-    if (value === 'Huomioitavaa') {
-      setModalVisible(true);
-    } else if (value === 'Ei koske') {
-      setNotApplicable(true);
-      setSubmitted(true);
-    }
+  const handleModalSubmit = (newDescription) => {
+    setModalVisible(false);
+    setStatus('Kunnossa');
+    setDescription(newDescription);
+    onChange({ ...risk, status: 'Kunnossa', description: newDescription });
+  };
+
+  const handleEditPress = () => {
+    setIsModification(true);
+    setModalVisible(true);
+  };
+
+  const handleReset = () => {
+    console.log('Poistetaan riski:', risk.note);
+    setIsModification(false);
+    setStatus('');
+    setDescription('');
+    onChange({ ...risk, status: '', description: '' });
+    setModalVisible(false);
   };
 
   return (
     <View>
       <Text style={styles.riskNote}>{risk.note}</Text>
-      {!submitted ? (
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => onPress(risk.note, 'Huomioitavaa')}
-          >
-            <Text style={styles.buttonText}>Huomioitavaa</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => onPress(risk.note, 'Ei koske')}
-          >
-            <Text style={styles.buttonText}>Ei koske</Text>
-          </TouchableOpacity>
-        </View>
-      ) : notApplicable ? (
-        <View style={styles.choiceDisplayView}>
-          <Text style={[styles.kunnossaText, { color: 'red' }]}>Ei koske</Text>
+      {status === 'Kunnossa' ? (
+        <View style={styles.choiceDisplay}>
+          <View style={styles.statusContainer}>
+            <Text style={styles.kunnossaText}>Kunnossa</Text>
+          </View>
           <TouchableOpacity
             style={styles.editButton}
-            onPress={() => {
-              setSubmitted(false)
-              setNotApplicable(false)
-            }}
+            onPress={handleEditPress}
           >
             <Text>✏️</Text>
           </TouchableOpacity>
         </View>
-      ) : (
-        <View style={styles.choiceDisplayView}>
-          <Text style={styles.kunnossaText}>Kunnossa</Text>
+      ) : status === 'Ei koske' ? (
+        <View style={styles.choiceDisplay}>
+          <View style={styles.statusContainer}>
+            <Text style={[styles.kunnossaText, { color: 'red' }]}>Ei koske</Text>
+          </View>
           <TouchableOpacity
             style={styles.editButton}
-            onPress={() => {
-              setSubmitted(false)
-              setNotApplicable(false)
-            }}
+            onPress={handleEditPress}
           >
             <Text>✏️</Text>
           </TouchableOpacity>
         </View>
+  ) : (
+    <View style={styles.buttonGroup}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.buttonText}>Huomioitavaa</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          setStatus('Ei koske');
+          onChange({ ...risk, status: 'Ei koske' });
+        }}
+      >
+        <Text style={styles.buttonText}>Ei koske</Text>
+      </TouchableOpacity>
+    </View>
       )}
       {modalVisible && (
         <RiskModal
           title={risk.note}
           visible={modalVisible}
-          onSubmit={(description) => {
-            setModalVisible(false);
-            setSubmitted(true);
-          }}
-          onClose={() => {
-            setModalVisible(false);
-          }}
+          initialDescription={description}
+          onSubmit={handleModalSubmit}
+          onClose={() => setModalVisible(false)}
+          onReset={handleReset}
+          isModification={isModification}
         />
       )}
     </View>
@@ -97,19 +109,27 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
-  choiceDisplayView: {
+  choiceDisplay: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 16, 
+    marginHorizontal: 16,
+  },
+  statusContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   editButton: {
+    position: 'absolute',
+    right: 0,
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 10,
     borderWidth: 1,
+    borderColor: '#ccc',
     height: 40,
     justifyContent: 'center',
-    width: 60
+    width: 40,
   },
   kunnossaText: {
     alignSelf: 'center',

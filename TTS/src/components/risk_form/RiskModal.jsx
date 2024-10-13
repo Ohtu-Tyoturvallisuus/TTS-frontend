@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import SpeechToTextView from '../SpeechToTextView';
 
-const RiskModal = ({ title, onSubmit, visible, onClose }) => {
-  const [description, setDescription] = useState('');
-  const [addInformationMethod, setAddInformationMethod] = useState('');
-
-  const handleSubmit = () => {
-    onSubmit(description);
-    setDescription('');
-    onClose();
-  };
+const RiskModal = ({ 
+  title, 
+  visible, 
+  onClose, 
+  initialDescription, 
+  onSubmit, 
+  onReset, 
+  isModification 
+}) => {
+  const [useSpeech, setUseSpeech] = useState(false);
+  const [description, setDescription] = useState(initialDescription);
 
   return (
     <Modal
@@ -24,51 +26,41 @@ const RiskModal = ({ title, onSubmit, visible, onClose }) => {
           <ScrollView>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.sub_title}>Syötä lisätiedot:</Text>
-            <View style={{paddingVertical: 20}}>
-              <View style={styles.buttonContainer}>
-                <View style={styles.buttonWrapper}>
-                  <Button
-                    title="Puheena"
-                    onPress={() => setAddInformationMethod("Speech")}
-                    color={
-                      addInformationMethod === "Speech"
-                        ? "darkorange"
-                        : "gray"
-                    }
-                  />
-                </View>
-                <View style={styles.buttonWrapper}>
-                  <Button
-                    title="Kirjoittamalla"
-                    onPress={() => setAddInformationMethod("Text")}
-                    color={
-                      addInformationMethod === "Text"
-                        ? "darkorange"
-                        : "gray"
-                    }
-                  />
-                </View>
-              </View>
-            </View>
-            {addInformationMethod === "Speech" && (
-              <SpeechToTextView setDescription={setDescription} />
-            )}
-            {addInformationMethod === "Text" && (
-              <TextInput
-                style={styles.input}
-                placeholder="Syötä lisätietoja"
-                value={description}
-                onChangeText={setDescription}
-              />
-            )}
+            <TextInput
+              style={styles.input}
+              placeholder="Syötä lisätietoja"
+              value={description}
+              onChangeText={setDescription}
+            />
+            <TouchableOpacity
+              style={[styles.button, styles.speechButton]}
+              onPress={() => setUseSpeech(!useSpeech)}
+            >
+              <Text style={styles.buttonText}>Syötä puheena</Text>
+            </TouchableOpacity>
+            {useSpeech && <SpeechToTextView setDescription={setDescription} />}
             <View style={styles.buttonContainer}>
-              <View style={styles.buttonWrapper}>
-                <Button title="Keskeytä" onPress={onClose} color="red" />
-              </View>
+              <TouchableOpacity
+                style={[styles.button, styles.cancelButton]}
+                onPress={onClose}
+              >
+                <Text style={styles.buttonText}>Peruuta</Text>
+              </TouchableOpacity>
+              {isModification && (
+                <TouchableOpacity
+                  style={styles.resetButton}
+                  onPress={onReset}
+                >
+                  <Text style={styles.resetButtonText}>Resetoi</Text>
+                </TouchableOpacity>
+              )}
               {description !== '' && (
-                <View style={styles.buttonWrapper}>
-                  <Button title="Kunnossa" onPress={handleSubmit} color="green" />
-                </View>
+                <TouchableOpacity
+                  style={[styles.button, styles.submitButton]}
+                  onPress={() => onSubmit(description)}
+                >
+                  <Text style={styles.buttonText}>Kunnossa</Text>
+                </TouchableOpacity>
               )}
             </View>
           </ScrollView>
@@ -79,14 +71,42 @@ const RiskModal = ({ title, onSubmit, visible, onClose }) => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    paddingVertical: 10,
+    marginHorizontal: 5,
+    marginTop: 10,
+  },
   buttonContainer: {
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
   },
-  buttonWrapper: {
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  cancelButton: {
+    backgroundColor: 'gray',
     flex: 1,
-    marginHorizontal: 5,
+  },
+  resetButton: {
+    alignItems: 'center',
+    backgroundColor: 'red',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginTop: 10,
+    paddingVertical: 10,
+    width: 100,
+  },
+  resetButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   input: {
     borderColor: 'gray',
@@ -107,6 +127,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     width: '90%',
+    maxWidth: 400,
+  },
+  speechButton: {
+    backgroundColor: 'darkorange',
+    width: '100%',
+  },
+  submitButton: {
+    backgroundColor: 'green',
+    flex: 1,
   },
   sub_title: {
     fontSize: 16,
