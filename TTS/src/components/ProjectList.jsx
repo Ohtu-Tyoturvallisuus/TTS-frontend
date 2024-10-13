@@ -12,7 +12,6 @@ const ProjectsList = () => {
   const { setSelectedProject } = useContext(ProjectSurveyContext);
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);  
-
   const { projects, loading, error } = useFetchProjects();
   console.log('Project example:', projects[1]);
   

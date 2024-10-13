@@ -10,8 +10,8 @@ import { signIn } from '../services/apiService';
 
 const validationSchema = yup.object().shape({
   username: yup
-    .string()
-    .required('Syötä käyttäjänimi'),
+  .string()
+  .required('Syötä käyttäjänimi'),
 });
 
 const initialValues = {
