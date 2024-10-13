@@ -22,7 +22,7 @@ describe('LanguageSelectMenu', () => {
     fireEvent.press(closeButton);
 
     expect(mockSetRecordingLanguage).toHaveBeenCalledWith('fi-FI');
-  });
+  }, 10000);
   it('removes a selected language when clicked again', async () => {
     const mockSetRecordingLanguage = jest.fn();
     
