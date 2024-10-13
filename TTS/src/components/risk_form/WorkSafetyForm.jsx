@@ -65,13 +65,13 @@ const WorkSafetyForm = () => {
     }
   }, [surveyData]);
 
-  const handleInputChange = (name, field, value) => {
+  const handleInputChange = (title, field, value) => {
     setFormData(prevFormData => {
-      console.log('Changed', name, field, 'to', value);
+      console.log('Changed', title, field, 'to', value);
       return {
         ...prevFormData,
-        [name]: {
-          ...prevFormData[name],
+        [title]: {
+          ...prevFormData[title],
           [field]: value,
         },
       };
@@ -101,8 +101,8 @@ const WorkSafetyForm = () => {
     postRiskNotes(surveyId, riskNotes)
       .then(() => {
         // navigate to front page when successful
-        alert('Risk notes submitted successfully');
         handleClose();
+        alert('Risk notes submitted successfully');
       })
     })
   };
@@ -118,31 +118,32 @@ const WorkSafetyForm = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Button title="Sulje" onPress={handleClose} />
         <Text style={styles.title}>Työturvallisuuslomake</Text>
-
+  
         {error && <Text>Error fetching survey data</Text>}
-
+  
         {/* Projektin tiedot */}
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Projektin nimi:</Text>
-          <Text>{project.project_name}</Text>
-
-          <Text style={styles.label}>Projektin ID: </Text>
-          <Text>{project.project_id}</Text>
-
-          <Text style={styles.label}>Tehtävä:</Text>
-          <ButtonGroup 
-            options={['Asennus', 'Muokkaus', 'Purku']} 
-            selectedValue={task}
-            onChange={(value) => setTask(value)} 
-          />
-
-          <Text style={styles.label}>Telinetyyppi:</Text>
+        {project ? (
+          <View style={styles.infoContainer}>
+            <Text style={styles.label}>Projektin nimi:</Text>
+            <Text>{project.project_name}</Text>
+  
+            <Text style={styles.label}>Projektin ID: </Text>
+            <Text>{project.project_id}</Text>
+  
+            <Text style={styles.label}>Tehtävä:</Text>
+            <ButtonGroup 
+              options={['Asennus', 'Muokkaus', 'Purku']} 
+              selectedValue={task}
+              onChange={(value) => setTask(value)} 
+            />
+  
+            <Text style={styles.label}>Telinetyyppi:</Text>
             <ButtonGroup 
               options={['Työteline', 'Sääsuojaton työteline', 'Sääsuoja']} 
               selectedValue={scaffoldType} 
               onChange={(value) => setScaffoldType(value)} 
             />
-
+  
             <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
             <TextInput
               style={styles.input}
@@ -151,21 +152,24 @@ const WorkSafetyForm = () => {
               multiline={true}
               textAlignVertical="top"
             />
-        </View>
-
+          </View>
+        ) : (
+          <Text>Not seeing project...</Text>
+        )}
+  
         <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
-
         {Object.keys(formData)
           .slice(0, 9)
           .map(key => (
             <RiskNote
               key={key}
-              risk={{ note: key }}
-              data={formData[key]}
+              title={key}
+              initialDescription={formData[key].description}
+              initialStatus={formData[key].status}
               onChange={handleInputChange}
             />
         ))}
-
+  
         <View>
           <Text style={styles.label}>Muu telinetyöhön liittyvä vaara:</Text>
           <TextInput
@@ -176,19 +180,20 @@ const WorkSafetyForm = () => {
             textAlignVertical="top"
           />
         </View>
-
+  
         <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
         {Object.keys(formData)
           .slice(10, 18)
           .map(key => (
             <RiskNote
               key={key}
-              risk={{ note: key }}
-              data={formData[key]}
+              title={key}
+              initialDescription={formData[key].description}
+              initialStatus={formData[key].status}
               onChange={handleInputChange}
             />
         ))}
-
+  
         <View>
           <Text style={styles.label}>Muu työympäristöön liittyvä vaara:</Text>
           <TextInput
@@ -199,7 +204,7 @@ const WorkSafetyForm = () => {
             textAlignVertical="top"
           />
         </View>
-
+  
         <Button title="Lähetä" onPress={handleSubmit} />
         <Button title="Sulje" onPress={handleClose} />
       </ScrollView>

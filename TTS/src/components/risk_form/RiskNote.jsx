@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import RiskModal from './RiskModal';
 
-const RiskNote = ({ risk, onChange }) => {
+const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [status, setStatus] = useState(risk.status);
-  const [description, setDescription] = useState(risk.description);
+  const [status, setStatus] = useState(initialStatus);
   const [isModification, setIsModification] = useState(false);
+  console.log('RiskNote.jsx: ', title, ': ', initialDescription);
 
   const handleModalSubmit = (newDescription) => {
     setModalVisible(false);
     setStatus('Kunnossa');
-    setDescription(newDescription);
-    onChange(risk.note, 'description', newDescription);
-    onChange(risk.note, 'status', 'Kunnossa');
+    onChange(title, 'description', newDescription);
+    onChange(title, 'status', 'Kunnossa');
   };
 
   const handleEditPress = () => {
@@ -22,18 +21,17 @@ const RiskNote = ({ risk, onChange }) => {
   };
 
   const handleReset = () => {
-    console.log('Resetoidaan riski:', risk.note);
+    console.log('Resetoidaan riski:', title);
     setIsModification(false);
     setStatus('');
-    setDescription('');
-    onChange(risk.note, 'description', '');
-    onChange(risk.note, 'status', '');
+    onChange(title, 'description', '');
+    onChange(title, 'status', '');
     setModalVisible(false);
   };
 
   return (
     <View>
-      <Text style={styles.riskNote}>{risk.note}</Text>
+      <Text style={styles.riskNote}>{title}</Text>
       {status === 'Kunnossa' ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
@@ -70,7 +68,7 @@ const RiskNote = ({ risk, onChange }) => {
         style={styles.button}
         onPress={() => {
           setStatus('Ei koske');
-          onChange(risk.note, 'status', 'Ei koske');;
+          onChange(title, 'status', 'Ei koske');;
         }}
       >
         <Text style={styles.buttonText}>Ei koske</Text>
@@ -79,9 +77,9 @@ const RiskNote = ({ risk, onChange }) => {
       )}
       {modalVisible && (
         <RiskModal
-          title={risk.note}
+          title={title}
           visible={modalVisible}
-          initialDescription={description}
+          initialDescription={initialDescription}
           onSubmit={handleModalSubmit}
           onClose={() => setModalVisible(false)}
           onReset={handleReset}
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   buttonText: {
     color: 'white',
@@ -115,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 16,
+    marginBottom: 10,
   },
   statusContainer: {
     flex: 1,
