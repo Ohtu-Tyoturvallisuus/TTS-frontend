@@ -35,7 +35,7 @@ const Main = () => {
         <Routes>
           <Route path='/' element={
             <>
-              <Text style={styles.sub_title}>Text-to-speech demo:</Text>
+              <Text style={styles.sub_title}>Speech-to-text demo:</Text>
               <SpeechToTextView />
               <ProjectList /> 
             </>
