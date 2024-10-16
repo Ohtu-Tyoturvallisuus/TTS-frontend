@@ -24,7 +24,11 @@ export default {
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#ffffff"
-    }
+    },
+    package: "com.HazardHunt",
+    permissions: [
+      "RECORD_AUDIO"
+    ]
   },
   web: {
     favicon: "./assets/favicon.png"
