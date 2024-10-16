@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import RiskList from '../components/RiskList';
+import RiskList from '../../components/RiskList';
 
 describe('RiskList', () => {
   const risksMock = [
