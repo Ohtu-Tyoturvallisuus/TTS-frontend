@@ -5,7 +5,7 @@ import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import ProjectModal from './ProjectModal';
 import SearchBar from './SearchBar';
 import DropdownOptions from './DropdownOptions';
-import { ActivityIndicator } from 'react-native';
+import Loading from './Loading';
 
 const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,43 +29,35 @@ const ProjectsList = () => {
     ["Kataja Event", "3100"],
     ["SCAF Common", "SCAF"],
     ["EVENT Common", "EVENT"]
-];
+  ];
 
-// filteredProjects is updated whenever areaFilter or searchFilter changes
-useEffect(() => {
-  let filtered = projects;
-  if (areaFilter) {
-    filtered = filtered.filter(project => {
-      const [areaCode] = project.dimension_display_value.split('|');
-      const includesArea = areaCode.includes(areaFilter[1]);
-      return includesArea;
-    });
-  }
-  if (searchFilter) {
-    filtered = filtered.filter(project =>
-      project.formattedName.toLowerCase().includes(searchFilter.toLowerCase())
+  // filteredProjects is updated whenever areaFilter or searchFilter changes
+  useEffect(() => {
+    let filtered = projects;
+    if (areaFilter) {
+      filtered = filtered.filter(project => {
+        const [areaCode] = project.dimension_display_value.split('|');
+        const includesArea = areaCode.includes(areaFilter[1]);
+        return includesArea;
+      });
+    }
+    if (searchFilter) {
+      filtered = filtered.filter(project =>
+        project.formattedName.toLowerCase().includes(searchFilter.toLowerCase())
+      );
+    }
+    setFilteredProjects(filtered);
+  }, [areaFilter, searchFilter, projects]);
+
+  if (loading || error) {
+    return (
+      <Loading 
+        loading={loading} 
+        error={error} 
+        title="Ladataan projekteja" 
+      />
     );
   }
-  setFilteredProjects(filtered);
-}, [areaFilter, searchFilter, projects]);
-
-if (loading) {
-  return (
-    <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color="#FF8C00" />
-      <Text style={styles.loadingText}>Projekteja ladataan...</Text>
-    </View>
-  );
-}
-
-if (error) {
-  return (
-    <View style={styles.errorContainer}>
-      <Text style={styles.errorText}>Virhe projektien hakemisessa: {error}</Text>
-    </View>
-  );
-}
-
 
   const ProjectButton = ({ item: project }) => (
     <View style={styles.projectContainer}>
@@ -105,7 +97,6 @@ if (error) {
         visible={modalVisible}
         onClose={() => {
           setModalVisible(false);
-          // Reset selected project if closed
           setSelectedProject(null);
         }}
       />
@@ -123,10 +114,6 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     padding: 16,
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   projectContainer: {
     marginBottom: 16,

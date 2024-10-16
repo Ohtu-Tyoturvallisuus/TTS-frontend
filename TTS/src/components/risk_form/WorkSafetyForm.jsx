@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Button, TextInput, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
 import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
 import ButtonGroup from './ButtonGroup';
 import { postNewSurvey, postRiskNotes } from '../../services/apiService';
+import CloseButton from '../CloseButton';
+import SuccessAlert from '../SuccessAlert';
 
 const WorkSafetyForm = () => {
   const { 
@@ -19,6 +21,8 @@ const WorkSafetyForm = () => {
   const [ task, setTask ] = useState('');
   const [ scaffoldType, setScaffoldType ] = useState('');
   const [ taskDesc, setSubject ] = useState('');
+
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   // Default risk objects for the form
   const [formData, setFormData] = useState({
@@ -84,39 +88,41 @@ const WorkSafetyForm = () => {
     // ------------------------------------------------
     
     // POST a new survey instance 
-    postNewSurvey(project.id, taskDesc, task, scaffoldType)
-    .then(response => {
-      console.log('Server response:', response);
-      const surveyId = response.id;
+    // postNewSurvey(project.id, taskDesc, task, scaffoldType)
+    // .then(response => {
+    //   console.log('Server response:', response);
+    //   const surveyId = response.id;
 
-    // Formatting formData as list of django risk_note instances
-    const riskNotes = Object.keys(formData).map(key => ({
-      note: key,
-      description: formData[key].description,
-      status: formData[key].status
-    }));
-    console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
+    // // Formatting formData as list of django risk_note instances
+    // const riskNotes = Object.keys(formData).map(key => ({
+    //   note: key,
+    //   description: formData[key].description,
+    //   status: formData[key].status
+    // }));
+    // console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
 
-    // POST risk notes to the just made survey
-    postRiskNotes(surveyId, riskNotes)
-      .then(() => {
-        // navigate to front page when successful
-        handleClose();
-        alert('Risk notes submitted successfully');
-      })
-    })
+    // // POST risk notes to the just made survey
+    // postRiskNotes(surveyId, riskNotes)
+    //   .then(() => {
+    //     // navigate to front page when successful
+    //     handleClose();
+    //     alert('Risk notes submitted successfully');
+    //   })
+    // })
+    setShowSuccessAlert(true);
+    // handleClose();
   };
 
   const handleClose = () => {
     setSelectedProject(null);
     setSelectedSurveyURL(null);
+    setShowSuccessAlert(false);
     navigate('/');
   }
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Button title="Sulje" onPress={handleClose} />
         <Text style={styles.title}>Työturvallisuuslomake</Text>
   
         {error && <Text>Error fetching survey data</Text>}
@@ -170,7 +176,7 @@ const WorkSafetyForm = () => {
             />
         ))}
   
-        <View>
+        <View style={styles.inputContainer}>
           <Text style={styles.label}>Muu telinetyöhön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
@@ -194,7 +200,7 @@ const WorkSafetyForm = () => {
             />
         ))}
   
-        <View>
+        <View style={styles.inputContainer}>
           <Text style={styles.label}>Muu työympäristöön liittyvä vaara:</Text>
           <TextInput
             style={styles.input}
@@ -205,9 +211,18 @@ const WorkSafetyForm = () => {
           />
         </View>
   
-        <Button title="Lähetä" onPress={handleSubmit} />
-        <Button title="Sulje" onPress={handleClose} />
+        <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Lähetä</Text>
+        </TouchableOpacity>
+
+        <CloseButton onPress={handleClose} />
       </ScrollView>
+      {showSuccessAlert && (
+        <SuccessAlert 
+          message="Lomake lähetetty onnistuneesti!" 
+          onDismiss={handleClose} 
+        />
+      )}
     </View>
   );
 };
@@ -228,6 +243,9 @@ const styles = StyleSheet.create({
     height: 100,
     padding: 10,
   },
+  inputContainer: {
+    marginBottom: 20,
+  },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -244,7 +262,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     paddingBottom: 5,
-    paddingVertical: 15,
     textAlign: 'center',
   },
   title: {
@@ -252,6 +269,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingBottom: 20,
     textAlign: 'center',
+  },
+  button: {
+    alignItems: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: 10,
+    padding: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  submitButton: {
+    backgroundColor: 'green',
+  },
+  closeButton: {
+    backgroundColor: 'red',
   },
 });
 

@@ -3,11 +3,21 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
 import useFetchSurveys from '../hooks/useFetchSurveys';
+import Loading from './Loading';
 
 const SurveyList = () => {
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const navigate = useNavigate()
-  const { surveys } = useFetchSurveys(project.id);
+  const { surveys, loading, error } = useFetchSurveys(project.id);
+
+  if (loading || error) {
+    return (
+        <Loading 
+          loading={loading} 
+          error={error} 
+        />
+    );
+  }
 
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
@@ -25,7 +35,9 @@ const SurveyList = () => {
     } else if (daysDifference <= 14) {
       formattedDate = `${daysDifference} päivää sitten`;
     } else {
-      formattedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      formattedDate = `${surveyDate.toLocaleDateString()}, klo ${
+        surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }`;
     }
 
     return (
@@ -52,7 +64,6 @@ const SurveyList = () => {
 
   return (
     <>
-      <Text>Tehdyt kartoitukset:</Text>
       {surveys.length > 0 ? (
         <View style={styles.listContainer}>
           <FlatList
@@ -62,7 +73,9 @@ const SurveyList = () => {
           />
         </View>
       ) : (
-        <Text>Ei kartoituksia saatavilla.</Text>
+        <View style={styles.noSurveysContainer}>
+          <Text style={styles.noSurveysText}>Ei kartoituksia saatavilla.</Text>
+        </View>
       )}
     </>
   );
@@ -83,7 +96,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   listContainer: {
-    maxHeight: 300, 
+    maxHeight: 350, 
   },
   surveyContainer: {
     alignItems: 'center',
@@ -95,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 5,
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingVertical: 5,
   },
   surveyDate: {
     color: '#555',
@@ -107,6 +120,15 @@ const styles = StyleSheet.create({
   },
   surveyTitle: {
     fontWeight: 'bold',
+  },
+  noSurveysContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noSurveysText: {
+    fontSize: 16,
+    color: '#555',
   },
 });
 

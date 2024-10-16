@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const ButtonGroup = ({ options = [], selectedValue, onChange }) => {
   return (
@@ -8,17 +8,37 @@ const ButtonGroup = ({ options = [], selectedValue, onChange }) => {
         <TouchableOpacity
           key={index}
           onPress={() => onChange(option)}
-          style={{
-            padding: 10,
-            backgroundColor: selectedValue === option ? 'blue' : 'gray',
-            margin: 5,
-          }}
+          style={[
+            styles.button,
+            selectedValue === option && styles.selectedButton,
+          ]}
         >
-          <Text style={{ color: 'white' }}>{option}</Text>
+          <Text style={styles.buttonText}>{option}</Text>
         </TouchableOpacity>
       ))}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#6f7072',
+    borderRadius: 5,
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    paddingVertical: 10,
+    textAlign: 'center',
+  },
+  selectedButton: {
+    backgroundColor: "#FF8C00",
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    letterSpacing: 1,
+  },
+});
 
 export default ButtonGroup;
