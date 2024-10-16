@@ -35,8 +35,6 @@ const Main = () => {
         <Routes>
           <Route path='/' element={
             <>
-              <Text style={styles.sub_title}>Speech-to-text demo:</Text>
-              <SpeechToTextView />
               <ProjectList /> 
             </>
           }
@@ -57,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    flex: 10
+    flex: 1,
   },
   sub_title: {
     fontSize: 20,
