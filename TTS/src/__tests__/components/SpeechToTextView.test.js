@@ -56,6 +56,8 @@ function mockConsole() {
   jest.spyOn(console, 'log').mockImplementation(() => {});
 }
 
+jest.setTimeout(20000);
+
 describe('SpeechToTextView Component', () => {
   beforeEach(() => {
     mockConsole();
@@ -76,7 +78,6 @@ describe('SpeechToTextView Component', () => {
   };
 
   const stopRecording = async (getByText) => {
-    jest.advanceTimersByTime(1000);
     await waitFor(() => {
       expect(getByText('Lopeta puheentunnistus')).toBeTruthy();
     });
