@@ -7,7 +7,6 @@ import SignIn from './SignIn';
 import AppBar from './AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../contexts/UserContext';
-import SpeechToTextView from './SpeechToTextView';
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)

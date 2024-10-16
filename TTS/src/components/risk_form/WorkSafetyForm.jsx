@@ -88,29 +88,27 @@ const WorkSafetyForm = () => {
     // ------------------------------------------------
     
     // POST a new survey instance 
-    // postNewSurvey(project.id, taskDesc, task, scaffoldType)
-    // .then(response => {
-    //   console.log('Server response:', response);
-    //   const surveyId = response.id;
+    postNewSurvey(project.id, taskDesc, task, scaffoldType)
+    .then(response => {
+      console.log('Server response:', response);
+      const surveyId = response.id;
 
-    // // Formatting formData as list of django risk_note instances
-    // const riskNotes = Object.keys(formData).map(key => ({
-    //   note: key,
-    //   description: formData[key].description,
-    //   status: formData[key].status
-    // }));
-    // console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
+    // Formatting formData as list of django risk_note instances
+    const riskNotes = Object.keys(formData).map(key => ({
+      note: key,
+      description: formData[key].description,
+      status: formData[key].status
+    }));
+    console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
 
-    // // POST risk notes to the just made survey
-    // postRiskNotes(surveyId, riskNotes)
-    //   .then(() => {
-    //     // navigate to front page when successful
-    //     handleClose();
-    //     alert('Risk notes submitted successfully');
-    //   })
-    // })
+    // POST risk notes to the just made survey
+    postRiskNotes(surveyId, riskNotes)
+      .then(() => {
+        // navigate to front page when successful
+        setShowSuccessAlert(true);
+      })
+    })
     setShowSuccessAlert(true);
-    // handleClose();
   };
 
   const handleClose = () => {
