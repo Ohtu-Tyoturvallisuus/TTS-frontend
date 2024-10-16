@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import SpeechToTextView from '../SpeechToTextView';
+import SpeechToTextView from '../speech-to-text/SpeechToTextView';
 
 const RiskModal = ({ 
   title, 
@@ -27,7 +27,6 @@ const RiskModal = ({
           <ScrollView>
             <Text style={styles.title}>{title}</Text>
             
-            <Text style={styles.sub_title}>Syötä lisätiedot:</Text>
             <TextInput
               style={styles.input}
               placeholder="Syötä lisätietoja"
