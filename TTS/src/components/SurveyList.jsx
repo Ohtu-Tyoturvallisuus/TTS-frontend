@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
 import useFetchSurveys from '../hooks/useFetchSurveys';
+import Loading from './Loading';
 
 export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
   const renderSurveyOption = ({ item: survey }) => {
@@ -21,7 +22,9 @@ export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, naviga
     } else if (daysDifference <= 14) {
       formattedDate = `${daysDifference} päivää sitten`;
     } else {
-      formattedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      formattedDate = `${surveyDate.toLocaleDateString()}, klo ${
+        surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }`;
     }
 
     const handleSurveyPress = (survey) => {
@@ -51,7 +54,6 @@ export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, naviga
 
   return (
     <>
-      <Text>Tehdyt kartoitukset:</Text>
       {surveys.length > 0 ? (
         <View style={styles.listContainer}>
           <FlatList
@@ -61,7 +63,9 @@ export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, naviga
           />
         </View>
       ) : (
-        <Text>Ei kartoituksia saatavilla.</Text>
+        <View style={styles.noSurveysContainer}>
+          <Text style={styles.noSurveysText}>Ei kartoituksia saatavilla.</Text>
+        </View>
       )}
     </>
   );
@@ -69,8 +73,17 @@ export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, naviga
 
 const SurveyList = () => {
   const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
-  const { surveys = [] } = useFetchSurveys(project.id);
   const navigate = useNavigate();
+  const { surveys, loading, error } = useFetchSurveys(project.id);
+
+  if (loading || error) {
+    return (
+        <Loading 
+          loading={loading} 
+          error={error} 
+        />
+    );
+  }
 
   return (
     <SurveyListContainer surveys={surveys} setSelectedSurveyURL={setSelectedSurveyURL} navigate={navigate} />
@@ -92,7 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   listContainer: {
-    maxHeight: 300, 
+    maxHeight: 350, 
   },
   surveyContainer: {
     alignItems: 'center',
@@ -104,7 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginVertical: 5,
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingVertical: 5,
   },
   surveyDate: {
     color: '#555',
@@ -116,6 +129,15 @@ const styles = StyleSheet.create({
   },
   surveyTitle: {
     fontWeight: 'bold',
+  },
+  noSurveysContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noSurveysText: {
+    fontSize: 16,
+    color: '#555',
   },
 });
 

@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   container: {
     alignSelf: 'flex-start',
     backgroundColor: '#24292e',
-    paddingBottom: 10,
+    paddingBottom: 15,
     paddingHorizontal: 10,
     paddingTop: Constants.statusBarHeight,
     width: '100%',

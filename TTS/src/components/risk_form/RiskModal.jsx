@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   cancelButton: {
-    backgroundColor: 'gray',
+    backgroundColor: '#6f7072',
     flex: 1,
   },
   disabledButton: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    borderColor: 'gray',
+    borderColor: '#c5c6c8',
     borderWidth: 1,
     flex: 1,
     height: 100,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   speechButton: {
-    backgroundColor: 'darkorange',
+    backgroundColor: '#ef7d00',
     width: 'auto',
   },
   sub_title: {

@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignItems: 'center',
-    borderColor: 'lightgray',
+    borderColor: 'light#c5c6c8',
     borderWidth: 1,
     flexDirection: 'row',
     flexShrink: 1,

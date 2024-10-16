@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   countryItem: {
     alignItems: 'center',
-    borderColor: 'gray',
+    borderColor: '#c5c6c8',
     borderRadius: 4,
     borderWidth: 1,
     flexDirection: 'row',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   searchInput: {
-    borderColor: 'gray',
+    borderColor: '#c5c6c8',
     borderRadius: 4,
     borderWidth: 1,
     height: 40,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   },
   selectCountryButton: {
     alignItems: 'center',
-    borderColor: 'gray',
+    borderColor: '#c5c6c8',
     borderRadius: 4,
     borderWidth: 1,
     flexDirection: 'row',
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     width: 280,
   },
   selectedCountriesContainer: {
-    borderColor: 'gray',
+    borderColor: '#c5c6c8',
     borderRadius: 4,
     borderWidth: 1,
     marginTop: 20,

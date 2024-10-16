@@ -35,7 +35,7 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
       {status === 'Kunnossa' ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
-            <Text style={styles.kunnossaText}>Kunnossa</Text>
+            <Text style={styles.statusText}>Kunnossa</Text>
           </View>
           <TouchableOpacity
             style={styles.editButton}
@@ -47,7 +47,7 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
       ) : status === 'Ei koske' ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
-            <Text style={[styles.kunnossaText, { color: 'red' }]}>Ei koske</Text>
+            <Text style={[styles.statusText, { color: 'red' }]}>Ei koske</Text>
           </View>
           <TouchableOpacity
             style={styles.editButton}
@@ -59,19 +59,19 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
   ) : (
     <View style={styles.buttonGroup}>
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.buttonText}>Huomioitavaa</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, { borderColor: 'red' }]}
         onPress={() => {
           setStatus('Ei koske');
           onChange(title, 'status', 'Ei koske');
         }}
       >
         <Text style={styles.buttonText}>Ei koske</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, { borderColor: 'green' }]}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.buttonText}>Huomioitavaa</Text>
       </TouchableOpacity>
     </View>
       )}
@@ -93,8 +93,8 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    backgroundColor: 'gray',
     borderRadius: 5,
+    borderWidth: 1,
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 5,
@@ -106,8 +106,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
+    fontSize: 14,
+    letterSpacing: 1,
   },
   choiceDisplay: {
     alignItems: 'center',
@@ -126,12 +128,13 @@ const styles = StyleSheet.create({
     right: 0,
     width: 40,
   },
-  kunnossaText: {
+  statusText: {
     alignSelf: 'center',
     color: 'green',
     fontSize: 16,
     fontWeight: 'bold',
     marginVertical: 8,
+    letterSpacing: 1,
   },
   riskNote: {
     alignSelf: 'center',

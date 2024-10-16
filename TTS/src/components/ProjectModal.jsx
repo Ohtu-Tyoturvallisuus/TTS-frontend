@@ -4,6 +4,7 @@ import SurveyList from './SurveyList';
 import RiskFormButton from './risk_form/RiskFormButton';
 import { useContext } from 'react';
 import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
+import CloseButton from './CloseButton';
 
 const ProjectModal = ({ visible, onClose }) => {
   const { selectedProject: project } = useContext(ProjectSurveyContext);
@@ -26,7 +27,7 @@ const ProjectModal = ({ visible, onClose }) => {
           <Text style={styles.modalTitle}>{project.formattedName}</Text>
           <RiskFormButton title='Täytä uusi riskilomake'/>
           <SurveyList/>
-          <Button title="Close" onPress={onClose} />
+          <CloseButton onPress={onClose}/>
         </View>
       </View>
     </Modal>
