@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RiskModal from '../components/risk_form/RiskModal'; 
+import RiskModal from '../../../components/risk_form/RiskModal'; 
 
 describe('<RiskModal />', () => {
   const mockOnSubmit = jest.fn();
@@ -47,5 +47,35 @@ describe('<RiskModal />', () => {
 
     expect(mockOnSubmit).toHaveBeenCalledWith('This is a test description');
     expect(mockOnSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it('should toggle useSpeech and hide the button when "Syötä puheella" is pressed', () => {
+    const mockOnClose = jest.fn();
+    const mockOnSubmit = jest.fn();
+    const mockOnReset = jest.fn();
+
+    const { getByText, queryByText } = render(
+      <RiskModal 
+        title="Test Risk" 
+        visible={true} 
+        initialDescription="Test description" 
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+        onReset={mockOnReset}
+        isModification={false}
+      />
+    );
+
+    const speechButton = getByText('Syötä puheella');
+    expect(speechButton).toBeTruthy();
+
+    fireEvent.press(speechButton);
+
+    expect(queryByText('Syötä puheella')).toBeNull();
+
+    const recordingLanguageText = getByText('Valitse tunnistettava kieli');
+    expect(recordingLanguageText).toBeTruthy();
+    const translatedLanguagesText = getByText('Valitse kielet, joille haluat kääntää');
+    expect(translatedLanguagesText).toBeTruthy();
   });
 });
