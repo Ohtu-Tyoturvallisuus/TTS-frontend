@@ -5,6 +5,9 @@
     "signOut": "Kirjaudu ulos",
     "signIn": "Kirjaudu sisään"
   },
+  "main": {
+    "close": "Sulje"
+  },
   "settings": {
     "changeLanguage": "Vaihda kieli",
     "languages": {
@@ -29,6 +32,7 @@
     "weatherproof": "Sääsuojattu työteline",
     "taskDescription": "Mitä olemme tekemässä? (telineen käyttötarkoitus)",
     "noProject": "Projekti ei näy...",
+    "loadingFormData": "Ladataan lomaketietoja...",
     "scaffoldRisks": "Telinetöihin liittyvät vaarat",
     "environmentRisks": "Työympäristön vaarat",
     "submit": "Lähetä"

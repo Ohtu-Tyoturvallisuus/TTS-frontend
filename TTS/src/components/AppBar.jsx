@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import AppBarTab from './AppBarTab';
 
-const AppBar = ({ username, setUsername }) => {
+const AppBar = ({ username, setUsername, openSettings }) => {
   const { t } = useTranslation();
 
   const handleSignOut = () => {
@@ -23,7 +23,9 @@ const AppBar = ({ username, setUsername }) => {
     <Pressable style={styles.container}>
       <View style={styles.buttons}>
         <AppBarTab text={t('appbar.projects')} to='/' />
-        <AppBarTab text={t('appbar.settings')} to='settings' />
+        <Pressable onPress={openSettings}>{/* Opens the settings modal */}
+          <Text style={styles.text}>{t('appbar.settings')}</Text>
+        </Pressable>
         {username ? (
           <Pressable style={styles.signOutButton} onPress={handleSignOut}>
             <Text style={styles.text}>{t('appbar.signOut')}</Text>

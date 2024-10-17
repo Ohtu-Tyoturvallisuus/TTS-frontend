@@ -1,5 +1,5 @@
-import { StyleSheet, View, Text } from 'react-native';
-import React, { useEffect, useContext } from 'react';
+import { StyleSheet, View, Modal, Button } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
 import ProjectList from './ProjectList';
 import WorkSafetyForm from './risk_form/WorkSafetyForm';
@@ -8,10 +8,12 @@ import AppBar from './AppBar';
 import Settings from './Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../contexts/UserContext';
-import SpeechToTextView from './SpeechToTextView';
+import { useTranslation } from 'react-i18next';
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
+  const [settingsVisible, setSettingsVisible] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchUsername = () => {
@@ -31,23 +33,31 @@ const Main = () => {
 
   return (
     <View style={styles.container}>
-      <AppBar username={username} setUsername={setUsername} />
+      <AppBar username={username} setUsername={setUsername} openSettings={() => setSettingsVisible(true)} />
       <View style={styles.content}>
         <Routes>
           <Route path='/' element={
-            <>
-              <Text style={styles.sub_title}>Speech-to-text demo:</Text>
-              <SpeechToTextView />
-              <ProjectList /> 
-            </>
+            <ProjectList /> 
           }
           />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
-          <Route path='settings' element={<Settings />} />
           <Route path='/worksafetyform' element={<WorkSafetyForm />}/>
         </Routes>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={settingsVisible}
+        onRequestClose={() => setSettingsVisible(false)} // Close the modal when back is pressed on Android
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Settings />
+            <Button title={t('main.close')} onPress={() => setSettingsVisible(false)} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -61,13 +71,19 @@ const styles = StyleSheet.create({
   content: {
     flex: 10
   },
-  sub_title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 10,
-    textAlign: 'center'
-  }
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  modalContent: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    width: '80%',
+  },
 });
 
 export default Main;

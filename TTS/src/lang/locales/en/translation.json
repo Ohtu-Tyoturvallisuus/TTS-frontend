@@ -5,6 +5,9 @@
     "signOut": "Sign Out",
     "signIn": "Sign In"
   },
+  "main": {
+    "close": "Close"
+  },
   "settings": {
     "changeLanguage": "Change language",
     "languages": {
@@ -29,6 +32,7 @@
     "weatherproof": "Weatherproof work scaffold",
     "taskDescription": "What are we doing? (purpose of scaffolding)",
     "noProject": "Not seeing a project...",
+    "loadingFormData": "Loading form data...",
     "scaffoldRisks": "Scaffold work risks",
     "environmentRisks": "Work environment risks",
     "submit": "Submit"    

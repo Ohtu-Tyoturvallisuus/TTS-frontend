@@ -27,9 +27,9 @@ const WorkSafetyForm = () => {
 
   const getFormFieldsByLanguage = () => {
     switch (i18n.language) {
-      case 'fi': // Finnish language
+      case 'fi':
         return fiFormFields;
-      case 'en': // English language
+      case 'en':
       default:
         return enFormFields;  // Fallback to English if no match
     }
@@ -53,9 +53,20 @@ const WorkSafetyForm = () => {
   const [formData, setFormData] = useState(createInitialFormData(formFields));
 
   useEffect(() => {
-    // Update formData whenever the language changes
     const updatedFormFields = getFormFieldsByLanguage();
-    setFormData(createInitialFormData(updatedFormFields));
+    const updatedFormData = createInitialFormData(updatedFormFields);
+
+    // Preserve existing input in formData (keep descriptions/status that have been filled)
+    const mergedFormData = Object.keys(updatedFormData).reduce((acc, key) => {
+      acc[key] = {
+        ...updatedFormData[key],
+        description: formData[key]?.description || '',
+        status: formData[key]?.status || '',
+      };
+      return acc;
+    }, {});
+
+    setFormData(mergedFormData);
   }, [i18n.language]);
 
   //Fetches previous survey's data from API, if survey is in context
@@ -126,16 +137,11 @@ const WorkSafetyForm = () => {
     setSelectedProject(null);
     setSelectedSurveyURL(null);
     navigate('/');
+  };
+
+  if (!formData || !Object.keys(formData).length) {
+    return <Text>{t('worksiteform.loadingFormData')}</Text>;
   }
-
-  let scaffoldRisks = Object.entries(formData)
-  .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith('other'))
-  let environmentRisks = Object.entries(formData)
-  .filter(([key, value]) => value.type === 'environment' && !key.startsWith('other'))
-
-  console.log('Form data:', formData); 
-  console.log('Scaffold risks:', scaffoldRisks);
-  console.log('Environment risks:', environmentRisks);
 
   return (
     <View style={styles.container}>
@@ -198,7 +204,7 @@ const WorkSafetyForm = () => {
           <Text style={styles.label}>{t('other_scaffolding.title', { ns: 'formFields' })}:</Text>
           <TextInput
             style={styles.input}
-            value={formData[t('other_scaffolding.title', { ns: 'formFields' })].description}
+            value={formData['other_scaffolding']?.description}
             onChangeText={(value) => handleInputChange(t('other_scaffolding.title', { ns: 'formFields' }), 'description', value)}
             multiline={true}
             textAlignVertical="top"
@@ -222,7 +228,7 @@ const WorkSafetyForm = () => {
           <Text style={styles.label}>{t('other_environment.title', { ns: 'formFields' })}:</Text>
           <TextInput
             style={styles.input}
-            value={formData[t('other_environment.title', { ns: 'formFields' })].description}
+            value={formData['other_environment']?.description}
             onChangeText={(value) => handleInputChange(t('other_environment.title', { ns: 'formFields' }), 'description', value)}
             multiline={true}
             textAlignVertical="top"
