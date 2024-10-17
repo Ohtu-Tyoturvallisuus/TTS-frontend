@@ -11,5 +11,26 @@
       "english": "English",
       "finnish": "Finnish"
     }
-  }  
+  },
+  "worksafetyform": {
+    "successMessage": "Risk notes submitted successfully",
+    "close": "Close",
+    "title": "Work safety form",
+    "errorFetchingData": "Error fetching form data",
+    "projectName": "Project name",
+    "projectId": "Project ID",
+    "task": "Task",
+    "installation": "Installation",
+    "modification": "Modification",
+    "dismantling": "Dismantling",
+    "scaffoldType": "Scaffold type",
+    "workScaffold": "Work scaffold",
+    "nonWeatherproof": "Non-weatherproof work scaffold",
+    "weatherproof": "Weatherproof work scaffold",
+    "taskDescription": "What are we doing? (purpose of scaffolding)",
+    "noProject": "Not seeing a project...",
+    "scaffoldRisks": "Scaffold work risks",
+    "environmentRisks": "Work environment risks",
+    "submit": "Submit"    
+  }
 }

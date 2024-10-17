@@ -1,122 +1,78 @@
 {
-    "personal_protection": {
-      "Personal protective equipment": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "personal_fall_protection": {
-      "Personal fall protection (harness/lanyard/life line/rails/guardrails)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "material_storage": {
-      "Material storage and packaging (consider access ways)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "lifting_accessories": {
-      "Lifting accessories (functional/inspected)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "danger_area": {
-      "Danger area and demarcation (risk of falling objects)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "ground_stability": {
-      "Ground stability (soil/platform/roof)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "anchoring": {
-      "Anchoring (scaffolding installation/removal)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "weather_conditions": {
-      "Weather conditions (wind/cold/heat)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "environment_cleanliness": {
-      "Environment (cleanliness/waste sorting)": { 
-        "description": "", 
-        "status": "", 
-        "type": "scaffolding"
-      }
-    },
-    "slipping_tripping": {
-      "Slipping/tripping (cleanliness/winter maintenance/lighting)": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    },
-    "surrounding_structures": {
-      "Surrounding structures and equipment (valves/electrical cables or lines/glass)": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    },
-    "vehicle_traffic": {
-      "Vehicle traffic/pedestrian": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    },
-    "hazards": {
-      "Hazards (scaffolding cleanliness during dismantling/dusts/chemicals/asbestos)": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    },
-    "work_permit": {
-      "Work permit (reporting to control room/personal protective equipment/meters)": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    },
-    "tank_work_permit": {
-      "Tank work permit": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    },
-    "energy_isolation": {
-      "Energy isolation (lockout)": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    },
-    "emergency_procedure": {
-      "Emergency procedure (emergency exit route)": { 
-        "description": "", 
-        "status": "", 
-        "type": "environment"
-      }
-    }
+  "personal_protection": {
+    "title": "Personal protective equipment", 
+    "type": "scaffolding"
+  },
+  "personal_fall_protection": {
+    "title": "Personal fall protection (harness/lanyard/life line/rails/guardrails)", 
+    "type": "scaffolding"
+  },
+  "material_storage": {
+    "title": "Material storage and packaging (consider access ways)", 
+    "type": "scaffolding"
+  },
+  "lifting_accessories": {
+    "title": "Lifting accessories (functional/inspected)", 
+    "type": "scaffolding"
+  },
+  "danger_area": {
+    "title": "Danger area and demarcation (risk of falling objects)", 
+    "type": "scaffolding"
+  },
+  "ground_stability": {
+    "title": "Ground stability (soil/platform/roof)", 
+    "type": "scaffolding"
+  },
+  "anchoring": {
+    "title": "Anchoring (scaffolding installation/removal)", 
+    "type": "scaffolding"
+  },
+  "weather_conditions": {
+    "title": "Weather conditions (wind/cold/heat)", 
+    "type": "scaffolding"
+  },
+  "environment_cleanliness": {
+    "title": "Environment (cleanliness/waste sorting)", 
+    "type": "scaffolding"
+  },
+  "other_scaffolding": {
+    "title": "Other hazards related to scaffolding work", 
+    "type": "scaffolding"
+  },
+  "slipping_tripping": {
+    "title": "Slipping/tripping (cleanliness/winter maintenance/lighting)", 
+    "type": "environment"
+  },
+  "surrounding_structures": {
+    "title": "Surrounding structures and equipment (valves/electrical cables or lines/glass)", 
+    "type": "environment"
+  },
+  "vehicle_traffic": {
+    "title": "Vehicle traffic/pedestrian", 
+    "type": "environment"
+  },
+  "hazards": {
+    "title": "Hazards (scaffolding cleanliness during dismantling/dusts/chemicals/asbestos)", 
+    "type": "environment"
+  },
+  "work_permit": {
+    "title": "Work permit (reporting to control room/personal protective equipment/meters)", 
+    "type": "environment"
+  },
+  "tank_work_permit": {
+    "title": "Tank work permit", 
+    "type": "environment"
+  },
+  "energy_isolation": {
+    "title": "Energy isolation (lockout)", 
+    "type": "environment"
+  },
+  "emergency_procedure": {
+    "title": "Emergency procedure (emergency exit route)", 
+    "type": "environment"
+  },
+  "other_environment": {
+    "title": "Other hazards related to the environment", 
+    "type": "environment"
   }
-  
+}

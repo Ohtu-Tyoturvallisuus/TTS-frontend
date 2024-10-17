@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Button, TextInput, ScrollView, Text } from 'react-native';
 import { useNavigate } from 'react-router-native';
+import { useTranslation } from 'react-i18next';
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '../../hooks/useFetchSurveyData';
 import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
 import ButtonGroup from './ButtonGroup';
 import { postNewSurvey, postRiskNotes } from '../../services/apiService';
+import enFormFields from '../../lang/locales/en/formFields.json';
+import fiFormFields from '../../lang/locales/fi/formFields.json';
 
 const WorkSafetyForm = () => {
   const { 
@@ -20,28 +23,40 @@ const WorkSafetyForm = () => {
   const [ scaffoldType, setScaffoldType ] = useState('');
   const [ taskDesc, setSubject ] = useState('');
 
+  const { t, i18n } = useTranslation(['translation', 'formFields']);
+
+  const getFormFieldsByLanguage = () => {
+    switch (i18n.language) {
+      case 'fi': // Finnish language
+        return fiFormFields;
+      case 'en': // English language
+      default:
+        return enFormFields;  // Fallback to English if no match
+    }
+  };
+
+  const createInitialFormData = (formFields) => {
+    const initialData = {};
+    Object.keys(formFields).forEach((key) => {
+      initialData[t(`${key}.title`, { ns: 'formFields' })] = {
+        description: '',
+        status: '',
+        type: t(`${key}.type`, { ns: 'formFields' }),
+      };
+    });
+    return initialData;
+  };
+
+  const formFields = getFormFieldsByLanguage();
+
   // Default risk objects for the form
-  const [formData, setFormData] = useState({
-    'Henkilökohtaiset suojaimet': { description: '', status: '' },
-    'Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)': { description: '', status: '' },
-    'Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)': { description: '', status: '' },
-    'Nostoapuvälineet (toimintakunnossa/tarkastettu)': { description: '', status: '' },
-    'Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)': { description: '', status: '' },
-    'Alustan kestävyys (maa/hoitotaso/katto)': { description: '', status: '' },
-    'Ankkurointi (telineen asennus/purku)': { description: '', status: '' },
-    'Sääolosuhteet (tuuli/kylmyys/kuumuus)': { description: '', status: '' },
-    'Ympäristö (siisteys/jätteiden lajittelu)': { description: '', status: '' },
-    'Muu telinetyöhön liittyvä vaara': { description: '', status: '' }, 
-    'Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)': { description: '', status: '' },
-    'Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)': { description: '', status: '' },
-    'Ajoneuvoliikenne/jalankulkija': { description: '', status: '' },
-    'Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)': { description: '', status: '' },
-    'Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)': { description: '', status: '' },
-    'Säiliötyölupa': { description: '', status: '' },
-    'Energiasta erottaminen (turvalukitukset)': { description: '', status: '' },
-    'Toiminta hätätilanteessa (hätäpoistumistie)': { description: '', status: '' },
-    'Muu työympäristöön liittyvä vaara': { description: '', status: '' }, 
-  });
+  const [formData, setFormData] = useState(createInitialFormData(formFields));
+
+  useEffect(() => {
+    // Update formData whenever the language changes
+    const updatedFormFields = getFormFieldsByLanguage();
+    setFormData(createInitialFormData(updatedFormFields));
+  }, [i18n.language]);
 
   //Fetches previous survey's data from API, if survey is in context
   const { surveyData, error } = useFetchSurveyData(prevSurveyURL);
@@ -102,7 +117,7 @@ const WorkSafetyForm = () => {
       .then(() => {
         // navigate to front page when successful
         handleClose();
-        alert('Risk notes submitted successfully');
+        alert(t('worksafetyform.successMessage'));
       })
     })
   };
@@ -113,38 +128,47 @@ const WorkSafetyForm = () => {
     navigate('/');
   }
 
+  let scaffoldRisks = Object.entries(formData)
+  .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith('other'))
+  let environmentRisks = Object.entries(formData)
+  .filter(([key, value]) => value.type === 'environment' && !key.startsWith('other'))
+
+  console.log('Form data:', formData); 
+  console.log('Scaffold risks:', scaffoldRisks);
+  console.log('Environment risks:', environmentRisks);
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Button title="Sulje" onPress={handleClose} />
-        <Text style={styles.title}>Työturvallisuuslomake</Text>
+        <Button title={t('worksafetyform.close')} onPress={handleClose} />
+        <Text style={styles.title}>{t('worksafetyform.title')}</Text>
   
-        {error && <Text>Error fetching survey data</Text>}
+        {error && <Text>{t('worksafetyform.errorFetchingData')}</Text>}
   
         {/* Projektin tiedot */}
         {project ? (
           <View style={styles.infoContainer}>
-            <Text style={styles.label}>Projektin nimi:</Text>
+            <Text style={styles.label}>{t('worksafetyform.projectName')}:</Text>
             <Text>{project.project_name}</Text>
   
-            <Text style={styles.label}>Projektin ID: </Text>
+            <Text style={styles.label}>{t('worksafetyform.projectId')}: </Text>
             <Text>{project.project_id}</Text>
   
-            <Text style={styles.label}>Tehtävä:</Text>
+            <Text style={styles.label}>{t('worksafetyform.task')}:</Text>
             <ButtonGroup 
-              options={['Asennus', 'Muokkaus', 'Purku']} 
+              options={[t('worksafetyform.installation'), t('worksafetyform.modification'), t('worksafetyform.dismantling')]} 
               selectedValue={task}
               onChange={(value) => setTask(value)} 
             />
   
-            <Text style={styles.label}>Telinetyyppi:</Text>
+            <Text style={styles.label}>{t('worksafetyform.scaffoldType')}:</Text>
             <ButtonGroup 
-              options={['Työteline', 'Sääsuojaton työteline', 'Sääsuoja']} 
+              options={[t('worksafetyform.workScaffold'), t('worksafetyform.nonWeatherproof'), t('worksafetyform.weatherproof')]} 
               selectedValue={scaffoldType} 
               onChange={(value) => setScaffoldType(value)} 
             />
   
-            <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
+            <Text style={styles.label}>{t('worksafetyform.taskDescription')}:</Text>
             <TextInput
               style={styles.input}
               value={taskDesc}
@@ -154,59 +178,59 @@ const WorkSafetyForm = () => {
             />
           </View>
         ) : (
-          <Text>Not seeing project...</Text>
+          <Text>{t('worksafetyform.noProject')}</Text>
         )}
   
-        <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
-        {Object.keys(formData)
-          .slice(0, 9)
-          .map(key => (
+        <Text style={styles.sectionTitle}>{t('worksafetyform.scaffoldRisks')}</Text>
+        {Object.entries(formData)
+          .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith('other'))
+          .map(([key, value]) => (
             <RiskNote
               key={key}
               title={key}
-              initialDescription={formData[key].description}
-              initialStatus={formData[key].status}
+              initialDescription={value.description}
+              initialStatus={value.status}
               onChange={handleInputChange}
             />
         ))}
   
         <View>
-          <Text style={styles.label}>Muu telinetyöhön liittyvä vaara:</Text>
+          <Text style={styles.label}>{t('other_scaffolding.title', { ns: 'formFields' })}:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Muu telinetyöhön liittyvä vaara'].description}
-            onChangeText={(value) => handleInputChange('Muu telinetyöhön liittyvä vaara', 'description', value)}
+            value={formData[t('other_scaffolding.title', { ns: 'formFields' })].description}
+            onChangeText={(value) => handleInputChange(t('other_scaffolding.title', { ns: 'formFields' }), 'description', value)}
             multiline={true}
             textAlignVertical="top"
           />
         </View>
   
-        <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
-        {Object.keys(formData)
-          .slice(10, 18)
-          .map(key => (
+        <Text style={styles.sectionTitle}>{t('worksafetyform.environmentRisks')}</Text>
+        {Object.entries(formData)
+          .filter(([key, value]) => value.type === 'environment' && !key.startsWith('other'))
+          .map(([key, value]) => (
             <RiskNote
               key={key}
               title={key}
-              initialDescription={formData[key].description}
-              initialStatus={formData[key].status}
+              initialDescription={value.description}
+              initialStatus={value.status}
               onChange={handleInputChange}
             />
         ))}
   
         <View>
-          <Text style={styles.label}>Muu työympäristöön liittyvä vaara:</Text>
+          <Text style={styles.label}>{t('other_environment.title', { ns: 'formFields' })}:</Text>
           <TextInput
             style={styles.input}
-            value={formData['Muu työympäristöön liittyvä vaara'].description}
-            onChangeText={(value) => handleInputChange('Muu työympäristöön liittyvä vaara', 'description', value)}
+            value={formData[t('other_environment.title', { ns: 'formFields' })].description}
+            onChangeText={(value) => handleInputChange(t('other_environment.title', { ns: 'formFields' }), 'description', value)}
             multiline={true}
             textAlignVertical="top"
           />
         </View>
   
-        <Button title="Lähetä" onPress={handleSubmit} />
-        <Button title="Sulje" onPress={handleClose} />
+        <Button title={t('worksafetyform.submit')} onPress={handleSubmit} />
+        <Button title={t('worksafetyform.close')} onPress={handleClose} />
       </ScrollView>
     </View>
   );
