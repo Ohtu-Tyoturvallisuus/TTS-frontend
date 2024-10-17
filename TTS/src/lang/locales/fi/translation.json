@@ -1,0 +1,15 @@
+{
+  "appbar": {
+    "projects": "Työmaat",
+    "settings": "Asetukset",
+    "signOut": "Kirjaudu ulos",
+    "signIn": "Kirjaudu sisään"
+  },
+  "settings": {
+    "changeLanguage": "Vaihda kieli",
+    "languages": {
+      "english": "englanti",
+      "finnish": "suomi"
+    }
+  }
+}

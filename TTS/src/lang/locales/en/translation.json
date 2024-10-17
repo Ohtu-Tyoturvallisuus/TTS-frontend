@@ -1,0 +1,15 @@
+{
+  "appbar": {
+    "projects": "Projects",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "settings": {
+    "changeLanguage": "Change language",
+    "languages": {
+      "english": "English",
+      "finnish": "Finnish"
+    }
+  }  
+}

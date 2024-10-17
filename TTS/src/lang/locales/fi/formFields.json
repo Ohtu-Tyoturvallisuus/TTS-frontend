@@ -1,0 +1,122 @@
+{
+    "personal_protection": {
+      "Henkilökohtaiset suojaimet": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "personal_fall_protection": {
+      "Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "material_storage": {
+      "Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "lifting_accessories": {
+      "Nostoapuvälineet (toimintakunnossa/tarkastettu)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "danger_area": {
+      "Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "ground_stability": {
+      "Alustan kestävyys (maa/hoitotaso/katto)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "anchoring": {
+      "Ankkurointi (telineen asennus/purku)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "weather_conditions": {
+      "Sääolosuhteet (tuuli/kylmyys/kuumuus)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "environment_cleanliness": {
+      "Ympäristö (siisteys/jätteiden lajittelu)": { 
+        "description": "", 
+        "status": "", 
+        "type": "scaffolding"
+      }
+    },
+    "slipping_tripping": {
+      "Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    },
+    "surrounding_structures": {
+      "Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    },
+    "vehicle_traffic": {
+      "Ajoneuvoliikenne/jalankulkija": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    },
+    "hazards": {
+      "Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    },
+    "work_permit": {
+      "Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    },
+    "tank_work_permit": {
+      "Säiliötyölupa": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    },
+    "energy_isolation": {
+      "Energiasta erottaminen (turvalukitukset)": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    },
+    "emergency_procedure": {
+      "Toiminta hätätilanteessa (hätäpoistumistie)": { 
+        "description": "", 
+        "status": "", 
+        "type": "environment"
+      }
+    }
+  }
+  

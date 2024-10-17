@@ -13,6 +13,9 @@ export default {
     resizeMode: "contain",
     backgroundColor: "#ffffff"
   },
+  plugins: [
+    "expo-localization"
+  ],
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.HazardHunt",

@@ -5,6 +5,7 @@ import ProjectList from './ProjectList';
 import WorkSafetyForm from './risk_form/WorkSafetyForm';
 import SignIn from './SignIn';
 import AppBar from './AppBar';
+import Settings from './Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../contexts/UserContext';
 import SpeechToTextView from './SpeechToTextView';
@@ -43,6 +44,7 @@ const Main = () => {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
+          <Route path='settings' element={<Settings />} />
           <Route path='/worksafetyform' element={<WorkSafetyForm />}/>
         </Routes>
       </View>
