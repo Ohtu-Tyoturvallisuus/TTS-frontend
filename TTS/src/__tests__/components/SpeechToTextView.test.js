@@ -136,4 +136,21 @@ describe('SpeechToTextView Component', () => {
       expect(console.error).toHaveBeenCalledWith('Failed to start recording', expect.any(Error));
     });
   });
+
+  it('updates recording and translation languages when selected', async () => {
+    const { getByText, getAllByText } = render(<SpeechToTextView />);
+  
+    fireEvent.press(getByText('Mocked Recording Language Select'));
+    fireEvent.press(getByText('Mocked Translation Language Select'));
+  
+    await waitFor(() => {
+      expect(getByText('Speech recognition language:')).toBeTruthy();
+      
+      const finnishTexts = getAllByText('Finnish');
+      expect(finnishTexts.length).toBe(2);
+  
+      expect(getByText('Translation languages:')).toBeTruthy();
+      expect(getByText('Swedish')).toBeTruthy();
+    });
+  });
 });
