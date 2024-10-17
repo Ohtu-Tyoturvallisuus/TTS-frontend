@@ -6,7 +6,6 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [status, setStatus] = useState(initialStatus);
   const [isModification, setIsModification] = useState(false);
-  console.log('RiskNote.jsx: ', title, ': ', initialDescription);
 
   const handleModalSubmit = (newDescription) => {
     setModalVisible(false);

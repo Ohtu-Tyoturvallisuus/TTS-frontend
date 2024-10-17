@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import LanguageSelectMenu from '../../components/LanguageSelectMenu';
+import LanguageSelectMenu from '@components/speech-to-text/LanguageSelectMenu';
 
 describe('LanguageSelectMenu', () => {
   it('calls setRecordingLanguage with the correct language when a language is selected', async () => {

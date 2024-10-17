@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { MemoryRouter } from 'react-router-native';
-import AppBar from '../../components/AppBar';
+import AppBar from '@components/app-bar/AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({

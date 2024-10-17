@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
-import useFetchSurveys from '../hooks/useFetchSurveys';
-import Loading from './Loading';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
+import useFetchSurveys from '@hooks/useFetchSurveys';
+import Loading from '@components/Loading';
 
 export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
   const renderSurveyOption = ({ item: survey }) => {

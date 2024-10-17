@@ -1,13 +1,13 @@
 import { StyleSheet, View, Modal, Button } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
-import ProjectList from './ProjectList';
-import WorkSafetyForm from './risk_form/WorkSafetyForm';
-import SignIn from './SignIn';
-import AppBar from './AppBar';
+import ProjectList from '@components/project-list/ProjectList';
+import WorkSafetyForm from '@components/risk-form/RiskForm';
+import SignIn from '@components/sign-in/SignIn';
+import AppBar from '@components/app-bar/AppBar';
 import Settings from './Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '@contexts/UserContext';
 import { useTranslation } from 'react-i18next';
 
 const Main = () => {

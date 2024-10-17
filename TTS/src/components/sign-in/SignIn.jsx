@@ -4,8 +4,8 @@ import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigate } from 'react-router-native';
 import { useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import { signIn } from '../services/apiService';
+import { UserContext } from '@contexts/UserContext';
+import { signIn } from '@services/apiService';
 
 
 const validationSchema = yup.object().shape({

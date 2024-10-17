@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RiskModal from '../../../components/risk_form/RiskModal'; 
+import RiskModal from '@components/risk_form/RiskModal'; 
 
 describe('<RiskModal />', () => {
   const mockOnSubmit = jest.fn();

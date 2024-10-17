@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import useFetchProjects from '../hooks/useFetchProjects';
-import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
-import ProjectModal from './ProjectModal';
-import SearchBar from './SearchBar';
-import DropdownOptions from './DropdownOptions';
-import Loading from './Loading';
+import useFetchProjects from '@hooks/useFetchProjects';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
+import ProjectModal from '@components/project-list/ProjectModal';
+import SearchBar from '@components/SearchBar';
+import DropdownOptions from '@components/DropdownOptions';
+import Loading from '@components/Loading';
 
 const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);

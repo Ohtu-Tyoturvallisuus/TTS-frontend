@@ -42,7 +42,7 @@ export default {
     eas: {
       projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID
     },
-    local_setup: process.env.LOCAL_SETUP, // 0 or 1
+    local_setup: process.env.LOCAL_SETUP, // true or false
     local_ip: process.env.LOCAL_IP
   }
 }
