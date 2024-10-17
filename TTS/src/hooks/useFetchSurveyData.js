@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchSurveyData } from '../services/apiService';
+import { fetchSurveyData } from '@services/apiService';
 
 const useFetchSurveyData = (url) => {
   const [surveyData, setSurveyData] = useState(null);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import SpeechToTextView from '../speech-to-text/SpeechToTextView';
+import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
 const RiskModal = ({ 
   title, 

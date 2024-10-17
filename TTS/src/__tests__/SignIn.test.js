@@ -1,7 +1,7 @@
 import { screen, render, fireEvent, waitFor } from "@testing-library/react-native";
-import SignIn from "../components/SignIn";
+import SignIn from "@components/SignIn";
 import { NativeRouter } from "react-router-native";
-import { UserContext } from "../contexts/UserContext";
+import { UserContext } from "@contexts/UserContext";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

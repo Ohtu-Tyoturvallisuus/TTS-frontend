@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal, Button } from 'react-native';
-import SurveyList from './SurveyList';
-import RiskFormButton from './risk_form/RiskFormButton';
+import SurveyList from './ProjectSurveyList';
+import RiskFormButton from '@components/buttons/RiskFormButton';
 import { useContext } from 'react';
-import { ProjectSurveyContext } from '../contexts/ProjectSurveyContext';
-import CloseButton from './CloseButton';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
+import CloseButton from '@components/buttons/CloseButton';
 
 const ProjectModal = ({ visible, onClose }) => {
   const { selectedProject: project } = useContext(ProjectSurveyContext);

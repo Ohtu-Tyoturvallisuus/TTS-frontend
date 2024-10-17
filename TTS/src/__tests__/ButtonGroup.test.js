@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import ButtonGroup from '../components/risk_form/ButtonGroup';
+import ButtonGroup from '@components/buttons/ButtonGroup';
 
 describe('ButtonGroup Component', () => {
 

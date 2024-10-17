@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import DropdownOptions from '../components/DropdownOptions';
+import DropdownOptions from '@components/DropdownOptions';
 
 test('DropdownOptions renders correctly with placeholder text', () => {
   const mockOnSelect = jest.fn();

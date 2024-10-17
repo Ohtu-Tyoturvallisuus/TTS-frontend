@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
-import useFetchSurveyData from '../../hooks/useFetchSurveyData';
-import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
-import ButtonGroup from './ButtonGroup';
-import { postNewSurvey, postRiskNotes } from '../../services/apiService';
-import CloseButton from '../CloseButton';
-import SuccessAlert from '../SuccessAlert';
+import useFetchSurveyData from '@hooks/useFetchSurveyData';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
+import ButtonGroup from '@components/buttons/ButtonGroup';
+import { postNewSurvey, postRiskNotes } from '@services/apiService';
+import CloseButton from '@components/buttons/CloseButton';
+import SuccessAlert from '@components/SuccessAlert';
 
 const WorkSafetyForm = () => {
   const { 

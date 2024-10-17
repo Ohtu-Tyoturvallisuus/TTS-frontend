@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RiskFormButton from '../components/risk_form/RiskFormButton'; // Adjust path based on your project structure
+import RiskFormButton from '@components/buttons/RiskFormButton';
 import { useNavigate } from 'react-router-native';
 
 jest.mock('react-router-native', () => ({
