@@ -21,6 +21,15 @@ const SpeechToTextView = ({ setDescription=null }) => {
     'pl': 'PL',
     'ru': 'RU',
   }
+  const codeToNameMap = {
+    'fi': 'Finnish',
+    'sv': 'Swedish',
+    'en': 'English',
+    'et': 'Estonian',
+    'lv': 'Latvian',
+    'pl': 'Polish',
+    'ru': 'Russian',
+  }
   const recordingLanguageFlagCode = recordingLanguage.slice(-2);
 
   let recordingTimeout;
@@ -123,6 +132,28 @@ const SpeechToTextView = ({ setDescription=null }) => {
         setTranslationLanguages={setTranslationLanguages}
       />
       {recordingLanguage !== '' && (
+        <View style={styles.selectedCountriesContainer}>
+          <Text style={styles.selectedCountriesLabel}>Speech recognition language:</Text>
+          <View style={styles.selectedCountry}>
+            <CountryFlag isoCode={recordingLanguageFlagCode} size={24} />
+            <Text style={styles.countryName}>{codeToNameMap[recordingLanguage.slice(0, 2)]}</Text>
+          </View>
+        </View>
+      )}
+      {translationLanguages.length !== 0 && (
+        <View style={styles.selectedCountriesContainer}>
+          <Text style={styles.selectedCountriesLabel}>Translation languages:</Text>
+          {translationLanguages.map((value) => {
+            return (
+              <View key={value} style={styles.selectedCountry}>
+                <CountryFlag isoCode={languageToFlagMap[value]} size={24} />
+                <Text style={styles.countryName}>{codeToNameMap[value]}</Text>
+              </View>
+            )
+          })}
+        </View>
+      )}
+      {recordingLanguage !== '' && (
         <View>
           <Text>Paina alla olevaa nappia nauhoittaaksesi puhetta.</Text>
           <Text>Maksimipituus puheentunnistukselle on {timeout/1000} sekuntia.</Text>
@@ -176,6 +207,27 @@ const styles = StyleSheet.create({
   translatedText: {
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  selectedCountriesContainer: {
+    borderColor: 'gray',
+    borderRadius: 4,
+    borderWidth: 1,
+    marginTop: 20,
+    padding: 10,
+    width: '80%',
+  },
+  selectedCountriesLabel: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  selectedCountry: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: 5,
+  },
+  countryName: {
+    fontSize: 18,
+    marginLeft: 10,
   },
 });
 
