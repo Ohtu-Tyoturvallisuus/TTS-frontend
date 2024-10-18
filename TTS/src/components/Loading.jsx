@@ -5,7 +5,7 @@ const LoadingErrorComponent = ({ loading, error, title }) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#FF8C00" />
+        <ActivityIndicator testID="activity-indicator" size="large" color="#FF8C00" />
         <Text style={styles.loadingText}>{title}</Text>
       </View>
     );
