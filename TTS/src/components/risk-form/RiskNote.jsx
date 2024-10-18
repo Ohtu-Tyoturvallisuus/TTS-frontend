@@ -46,7 +46,7 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
       ) : status === 'Ei koske' ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
-            <Text style={[styles.statusText, { color: 'red' }]}>Ei koske</Text>
+            <Text style={[styles.statusText, { color: 'grey' }]}>Ei koske</Text>
           </View>
           <TouchableOpacity
             style={styles.editButton}
@@ -58,7 +58,7 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
   ) : (
     <View style={styles.buttonGroup}>
       <TouchableOpacity
-        style={[styles.button, { borderColor: 'red' }]}
+        style={[styles.button, { borderColor: 'grey' }]}
         onPress={() => {
           setStatus('Ei koske');
           onChange(title, 'status', 'Ei koske');
@@ -67,7 +67,7 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
         <Text style={styles.buttonText}>Ei koske</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, { borderColor: 'green' }]}
+        style={[styles.button, { borderColor: '#FF8C00' }]}
         onPress={() => setModalVisible(true)}
       >
         <Text style={styles.buttonText}>Huomioitavaa</Text>

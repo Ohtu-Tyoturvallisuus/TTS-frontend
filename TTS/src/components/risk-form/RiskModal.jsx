@@ -47,7 +47,12 @@ const RiskModal = ({
                 <Text style={styles.buttonText}>Syötä puheella</Text>
               </TouchableOpacity>
             )}
-            {useSpeech && <SpeechToTextView setDescription={setDescription} />}
+            {useSpeech && (
+              <SpeechToTextView
+                setDescription={setDescription}
+                translation={true}
+              />
+            )}
             
             <View style={styles.buttonContainer}>
               <TouchableOpacity
@@ -67,9 +72,13 @@ const RiskModal = ({
               <TouchableOpacity
                 style={[
                   styles.button,
-                  description !== '' ? styles.submitButton : styles.disabledButton
+                  description !== ''
+                    ? styles.submitButton
+                    : styles.disabledButton
                 ]}
-                onPress={() => description !== '' && onSubmit(description)}
+                onPress={() =>
+                  description !== '' && onSubmit(description)
+                }
                 disabled={description === ''}
               >
                 <Text style={styles.buttonText}>Kunnossa</Text>

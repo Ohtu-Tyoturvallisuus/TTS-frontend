@@ -68,7 +68,7 @@ const ProjectsList = () => {
           setModalVisible(true);
         }}
       >
-        <Text style={styles.projectTitle}>
+        <Text style={styles.projectText}>
           {project.formattedName} ({project.dimension_display_value.split('|')[0]})
         </Text>
       </TouchableOpacity>
@@ -118,10 +118,12 @@ const styles = StyleSheet.create({
   projectContainer: {
     marginBottom: 16,
   },
-  projectTitle: {
+  projectText: {
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'left', 
+    width: '100%',
   },
   title: {
     fontSize: 24,
