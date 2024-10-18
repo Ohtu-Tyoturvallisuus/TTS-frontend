@@ -124,6 +124,7 @@ describe('SpeechToTextView Component', () => {
 
     const updateFn = mockSetDescription.mock.calls[0][0];
     expect(updateFn('Previous description')).toBe('Previous description Test transcription');
+    expect(updateFn('')).toBe('Test transcription');
   });
 
   it('catches error when failing to start recording', async () => {
