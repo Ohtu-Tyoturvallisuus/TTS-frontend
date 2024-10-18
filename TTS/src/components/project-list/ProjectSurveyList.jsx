@@ -145,15 +145,6 @@ const styles = StyleSheet.create({
   surveyTitle: {
     fontWeight: 'bold',
   },
-  noSurveysContainer: {
-    marginVertical: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  noSurveysText: {
-    fontSize: 16,
-    color: '#555',
-  },
 });
 
 export default ProjectSurveyList;
