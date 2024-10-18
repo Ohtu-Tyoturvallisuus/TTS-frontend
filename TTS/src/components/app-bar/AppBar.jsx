@@ -40,10 +40,10 @@ const AppBar = ({ username, setUsername, openSettings }) => {
 
 const styles = StyleSheet.create({
   buttons: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   container: {
     alignSelf: 'flex-start',

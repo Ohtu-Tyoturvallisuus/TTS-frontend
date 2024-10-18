@@ -159,10 +159,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ef7d00',
     width: 'auto',
   },
-  sub_title: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
   submitButton: {
     backgroundColor: 'green',
     flex: 1,

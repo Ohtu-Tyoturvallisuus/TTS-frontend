@@ -315,4 +315,3 @@ textAlign: 'center',
 });
 
 export default WorkSafetyForm;
-

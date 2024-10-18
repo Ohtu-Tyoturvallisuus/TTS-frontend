@@ -23,25 +23,25 @@ const LoadingErrorComponent = ({ loading, error, title }) => {
 };
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 40,
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: 'black',
-  },
   errorContainer: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
   },
   errorText: {
     color: 'red',
     fontSize: 16,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    padding: 40,
+  },
+  loadingText: {
+    color: 'black',
+    fontSize: 16,
+    marginTop: 10,
   },
 });
 
