@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import SpeechToTextView from '../SpeechToTextView';
+import TakePictureView from '../TakePictureView';
 
 const RiskModal = ({ 
   title, 
@@ -49,6 +50,8 @@ const RiskModal = ({
               </TouchableOpacity>
             )}
             {useSpeech && <SpeechToTextView setDescription={setDescription} />}
+
+            <TakePictureView />
             
             <View style={styles.buttonContainer}>
               <TouchableOpacity
