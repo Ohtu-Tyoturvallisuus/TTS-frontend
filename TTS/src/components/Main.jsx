@@ -1,13 +1,12 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
-import ProjectList from './ProjectList';
-import WorkSafetyForm from './risk_form/WorkSafetyForm';
-import SignIn from './SignIn';
-import AppBar from './AppBar';
+import ProjectList from '@components/project-list/ProjectList';
+import WorkSafetyForm from '@components/risk-form/RiskForm';
+import SignIn from '@components/sign-in/SignIn';
+import AppBar from '@components/app-bar/AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserContext } from '../contexts/UserContext';
-import SpeechToTextView from './SpeechToTextView';
+import { UserContext } from '@contexts/UserContext';
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
@@ -35,9 +34,7 @@ const Main = () => {
         <Routes>
           <Route path='/' element={
             <>
-              <Text style={styles.sub_title}>Speech-to-text demo:</Text>
-              <SpeechToTextView />
-              <ProjectList /> 
+              <ProjectList/> 
             </>
           }
           />
@@ -57,15 +54,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    flex: 10
+    flex: 1,
   },
-  sub_title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 10,
-    textAlign: 'center'
-  }
 });
 
 export default Main;
