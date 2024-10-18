@@ -36,7 +36,7 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText = 'Valitse' }
               ...(selectedItem === item && { backgroundColor: '#ADD8E6' }),
             }}
           >
-            <Text style={styles.dropdown1ItemTxtStyle}>{item}</Text>
+            <Text style={styles.dropdown1ItemTxtStyle}>{item[0]}, {item[1]}</Text>
           </View>
         );
       }}
