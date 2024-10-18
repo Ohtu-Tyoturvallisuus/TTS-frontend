@@ -1,9 +1,10 @@
 import { screen, render, fireEvent, waitFor } from "@testing-library/react-native";
-import SignIn from "@components/sign-in/SignIn";
 import { NativeRouter } from "react-router-native";
-import { UserContext } from "@contexts/UserContext";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import SignIn from "@components/sign-in/SignIn";
+import { UserContext } from "@contexts/UserContext";
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(() => Promise.resolve()),

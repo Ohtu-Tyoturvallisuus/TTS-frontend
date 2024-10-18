@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import SpeechToTextView from '../../components/SpeechToTextView';
 import { Audio } from 'expo-av';
+
+import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
 jest.mock('expo-av', () => ({
   Audio: {
@@ -16,7 +17,7 @@ jest.mock('expo-av', () => ({
   },
 }));
 
-jest.mock('../../components/LanguageSelectMenu', () => {
+jest.mock('@components/speech-to-text/LanguageSelectMenu', () => {
   return jest.fn(({ setRecordingLanguage, setTranslationLanguages }) => {
     const React = require('react');
     const { View, Text } = require('react-native');
@@ -73,15 +74,15 @@ describe('SpeechToTextView Component', () => {
 
   const startRecording = (getByText, getAllByText) => {
     fireEvent.press(getAllByText('Mocked Recording Language Select')[0]);
-    expect(getByText('Paina alla olevaa nappia nauhoittaaksesi puhetta.')).toBeTruthy();
-    fireEvent.press(getByText('Käynnistä puheentunnistus'));
+    expect(getByText('(Maksimipituus: 60 sekuntia.)')).toBeTruthy();
+    fireEvent.press(getByText('Aloita puheentunnistus'));
   };
 
   const stopRecording = async (getByText) => {
     await waitFor(() => {
-      expect(getByText('Lopeta puheentunnistus')).toBeTruthy();
+      expect(getByText('Lopeta')).toBeTruthy();
     });
-    fireEvent.press(getByText('Lopeta puheentunnistus'));
+    fireEvent.press(getByText('Lopeta'));
   };
 
   it('renders and starts/stops recording correctly', async () => {

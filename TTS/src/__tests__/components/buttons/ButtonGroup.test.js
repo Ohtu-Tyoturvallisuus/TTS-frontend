@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import ButtonGroup from '../../../components/risk_form/ButtonGroup';
+import ButtonGroup from '@components/buttons/ButtonGroup';
 
 describe('ButtonGroup Component', () => {
 
@@ -52,16 +52,16 @@ describe('ButtonGroup Component', () => {
 
     const { getByText, getByTestId } = render(<ButtonGroupWrapper />);
 
-    expect(getByTestId('button-Option 1')).toHaveStyle({ backgroundColor: 'blue' });
-    expect(getByTestId('button-Option 2')).toHaveStyle({ backgroundColor: 'gray' });
-    expect(getByTestId('button-Option 3')).toHaveStyle({ backgroundColor: 'gray' });
+    expect(getByTestId('button-Option 1')).toHaveStyle({ backgroundColor: '#FF8C00' });
+    expect(getByTestId('button-Option 2')).toHaveStyle({ backgroundColor: '#6f7072' });
+    expect(getByTestId('button-Option 3')).toHaveStyle({ backgroundColor: '#6f7072' });
 
     fireEvent.press(getByText('Option 2'));
     expect(mockOnChange).toHaveBeenCalledWith('Option 2');
 
-    expect(getByTestId('button-Option 1')).toHaveStyle({ backgroundColor: 'gray' });
-    expect(getByTestId('button-Option 2')).toHaveStyle({ backgroundColor: 'blue' });
-    expect(getByTestId('button-Option 3')).toHaveStyle({ backgroundColor: 'gray' });
+    expect(getByTestId('button-Option 1')).toHaveStyle({ backgroundColor: '#6f7072' });
+    expect(getByTestId('button-Option 2')).toHaveStyle({ backgroundColor: '#FF8C00' });
+    expect(getByTestId('button-Option 3')).toHaveStyle({ backgroundColor: '#6f7072' });
   });
 });
 
