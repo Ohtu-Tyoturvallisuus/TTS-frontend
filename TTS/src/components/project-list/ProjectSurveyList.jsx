@@ -98,6 +98,15 @@ const styles = StyleSheet.create({
   listContainer: {
     maxHeight: 350, 
   },
+  noSurveysContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  noSurveysText: {
+    color: '#555',
+    fontSize: 16,
+  },
   surveyContainer: {
     alignItems: 'center',
     backgroundColor: '#f9f9f9',
@@ -120,15 +129,6 @@ const styles = StyleSheet.create({
   },
   surveyTitle: {
     fontWeight: 'bold',
-  },
-  noSurveysContainer: {
-    marginVertical: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  noSurveysText: {
-    fontSize: 16,
-    color: '#555',
   },
 });
 

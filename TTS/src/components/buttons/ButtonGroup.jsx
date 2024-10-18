@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     textAlign: 'center',
   },
-  selectedButton: {
-    backgroundColor: "#FF8C00",
-  },
   buttonText: {
     color: 'white',
-    textAlign: 'center',
     letterSpacing: 1,
+    textAlign: 'center',
+  },
+  selectedButton: {
+    backgroundColor: "#FF8C00",
   },
 });
 

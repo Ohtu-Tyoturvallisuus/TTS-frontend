@@ -188,8 +188,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   scrollViewContent: {
-    flexGrow: 1,
     backgroundColor: 'white',
+    flexGrow: 1,
 
   },
   searchInput: {
@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
   },
   selectCountryButton: {
     alignItems: 'center',
-    borderColor: '#c5c6c8',
     backgroundColor: '#f0f0f0',
+    borderColor: '#c5c6c8',
     borderRadius: 4,
     borderWidth: 1,
     flexDirection: 'row',

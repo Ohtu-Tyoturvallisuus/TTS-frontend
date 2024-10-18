@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Modal, Button } from 'react-native';
+import { View, Text, StyleSheet, Modal } from 'react-native';
 import SurveyList from './ProjectSurveyList';
 import RiskFormButton from '@components/buttons/RiskFormButton';
 import { useContext } from 'react';

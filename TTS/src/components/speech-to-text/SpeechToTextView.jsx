@@ -164,12 +164,28 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
 }
 
 const styles = StyleSheet.create({
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   buttonsContainer: {
     paddingVertical: 20,
   },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  recordButton: {
+    alignItems: 'center',
+    borderRadius: 5,
+    padding: 10,
+  },
+  startButton: {
+    backgroundColor: 'green',
+  },
+  stopButton: {
+    backgroundColor: 'red',
   },
   textContainer: {
     alignItems: 'center',
@@ -184,22 +200,6 @@ const styles = StyleSheet.create({
   translatedText: {
     paddingHorizontal: 10,
     paddingVertical: 5,
-  },
-  recordButton: {
-    alignItems: 'center',
-    borderRadius: 5,
-    padding: 10,
-  },
-  startButton: {
-    backgroundColor: 'green',
-  },
-  stopButton: {
-    backgroundColor: 'red',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
 

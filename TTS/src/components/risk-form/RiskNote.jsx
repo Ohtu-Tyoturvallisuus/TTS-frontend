@@ -106,9 +106,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black',
-    textAlign: 'center',
     fontSize: 14,
     letterSpacing: 1,
+    textAlign: 'center',
   },
   choiceDisplay: {
     alignItems: 'center',
@@ -127,14 +127,6 @@ const styles = StyleSheet.create({
     right: 0,
     width: 40,
   },
-  statusText: {
-    alignSelf: 'center',
-    color: 'green',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginVertical: 8,
-    letterSpacing: 1,
-  },
   riskNote: {
     alignSelf: 'center',
     fontSize: 16,
@@ -145,6 +137,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
+  },
+  statusText: {
+    alignSelf: 'center',
+    color: 'green',
+    fontSize: 16,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    marginVertical: 8,
   },
 });
 

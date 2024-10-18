@@ -12,11 +12,11 @@ const CloseButton = ({ onPress }) => {
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
+    backgroundColor: '#6f7072',
     borderRadius: 5,
     justifyContent: 'center',
     marginVertical: 10,
     padding: 15,
-    backgroundColor: '#6f7072',
   },
   buttonText: {
     color: '#fff',

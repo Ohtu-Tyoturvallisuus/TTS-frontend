@@ -229,6 +229,18 @@ const WorkSafetyForm = () => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: 10,
+    padding: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -265,29 +277,14 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     textAlign: 'center',
   },
+  submitButton: {
+    backgroundColor: 'green',
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     paddingBottom: 20,
     textAlign: 'center',
-  },
-  button: {
-    alignItems: 'center',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginVertical: 10,
-    padding: 15,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  submitButton: {
-    backgroundColor: 'green',
-  },
-  closeButton: {
-    backgroundColor: 'red',
   },
 });
 

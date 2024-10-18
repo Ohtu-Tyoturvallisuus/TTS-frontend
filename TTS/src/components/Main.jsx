@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
 import ProjectList from '@components/project-list/ProjectList';
@@ -56,13 +56,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
-  sub_title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 10,
-    textAlign: 'center'
-  }
 });
 
 export default Main;
