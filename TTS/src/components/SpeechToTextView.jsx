@@ -194,19 +194,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
 
   },
-  textContainer: {
-    alignItems: 'center',
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    flexDirection: 'row',
-    flexShrink: 1,
-    flexWrap: 'wrap',
-    maxWidth: '90%',
-    padding: 15,
-  },
-  translatedText: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+  countryName: {
+    fontSize: 18,
+    marginLeft: 10,
   },
   selectedCountriesContainer: {
     borderColor: 'gray',
@@ -225,9 +215,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 5,
   },
-  countryName: {
-    fontSize: 18,
-    marginLeft: 10,
+  textContainer: {
+    alignItems: 'center',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    flexDirection: 'row',
+    flexShrink: 1,
+    flexWrap: 'wrap',
+    maxWidth: '90%',
+    padding: 15,
+  },
+  translatedText: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
 });
 
