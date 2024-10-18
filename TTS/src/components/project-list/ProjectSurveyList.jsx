@@ -5,7 +5,7 @@ import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import useFetchSurveys from '@hooks/useFetchSurveys';
 import Loading from '@components/Loading';
 
-export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
+export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
     const now = new Date();
@@ -71,7 +71,7 @@ export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, naviga
   );
 };
 
-const SurveyList = () => {
+const ProjectSurveyList = () => {
   const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const navigate = useNavigate();
   const { surveys, loading, error } = useFetchSurveys(project.id);
@@ -86,7 +86,7 @@ const SurveyList = () => {
   }
 
   return (
-    <SurveyListContainer surveys={surveys} setSelectedSurveyURL={setSelectedSurveyURL} navigate={navigate} />
+    <ProjectSurveyListContainer surveys={surveys} setSelectedSurveyURL={setSelectedSurveyURL} navigate={navigate} />
   );
 }
 
@@ -141,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SurveyList;
+export default ProjectSurveyList;

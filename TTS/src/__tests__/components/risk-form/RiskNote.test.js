@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RiskNote from '../../../components/risk_form/RiskNote';
+import RiskNote from '@components/risk-form/RiskNote';
 
 describe('RiskNote Component', () => {
   const mockOnChange = jest.fn();

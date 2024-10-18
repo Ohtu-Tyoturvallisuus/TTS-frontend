@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import SurveyList from '../../components/SurveyList';
-import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
+import ProjectSurveyList from '@components/project-list/ProjectSurveyList';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import { useNavigate } from 'react-router-native';
 
 jest.mock('react-router-native', () => ({
   useNavigate: jest.fn(),
 }));
 
-jest.mock('../../hooks/useFetchSurveys', () => ({
+jest.mock('@hooks/useFetchSurveys', () => ({
   __esModule: true,
   default: jest.fn(() => ({
     surveys: [
@@ -30,7 +30,7 @@ jest.mock('../../hooks/useFetchSurveys', () => ({
   })),
 }));
 
-describe('SurveyList Component', () => {
+describe('ProjectSurveyList Component', () => {
   const mockSetSelectedSurveyURL = jest.fn();
   const mockNavigate = jest.fn();
 
@@ -50,7 +50,7 @@ describe('SurveyList Component', () => {
 
     const { getByTestId } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <SurveyList />
+        <ProjectSurveyList />
       </ProjectSurveyContext.Provider>
     );
 
@@ -61,7 +61,7 @@ describe('SurveyList Component', () => {
   });
 
   it('displays message when there are no surveys', () => {
-    require('../../hooks/useFetchSurveys').default.mockReturnValue({});
+    require('@hooks/useFetchSurveys').default.mockReturnValue({});
 
     const mockProjectContext = {
       selectedProject: { id: 123, formattedName: 'Test Project' },
@@ -70,7 +70,7 @@ describe('SurveyList Component', () => {
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <SurveyList />
+        <ProjectSurveyList />
       </ProjectSurveyContext.Provider>
     );
 

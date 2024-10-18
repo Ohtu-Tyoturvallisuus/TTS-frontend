@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { UserContext, UserProvider } from '../../contexts/UserContext';
+import { UserContext, UserProvider } from '@contexts/UserContext';
 import { Text, Button } from 'react-native';
 
 const TestComponent = () => {

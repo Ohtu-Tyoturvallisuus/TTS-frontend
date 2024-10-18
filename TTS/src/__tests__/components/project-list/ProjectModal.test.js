@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import ProjectModal from '../../components/ProjectModal';
-import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
+import ProjectModal from '@components/project-list/ProjectModal';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 
-jest.mock('../../components/SurveyList', () => 'SurveyList');
-jest.mock('../../components/risk_form/RiskFormButton', () => 'RiskFormButton');
+jest.mock('@components/project-list/ProjectSurveyList', () => 'ProjectSurveyList');
+jest.mock('@components/buttons/RiskFormButton', () => 'RiskFormButton');
 
 describe('ProjectModal Component', () => {
   const mockOnClose = jest.fn();
@@ -26,7 +26,7 @@ describe('ProjectModal Component', () => {
       </ProjectSurveyContext.Provider>
     );
 
-    fireEvent.press(getByText('Close'));
+    fireEvent.press(getByText('Sulje'));
     expect(mockOnClose).toHaveBeenCalled();
   });
 

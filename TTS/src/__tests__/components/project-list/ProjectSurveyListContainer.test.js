@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { SurveyListContainer } from '../../components/SurveyList';
-import { ProjectSurveyContext } from '../../contexts/ProjectSurveyContext';
+import { ProjectSurveyListContainer } from '@components/project-list/ProjectSurveyList';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 
-jest.mock('../../hooks/useFetchSurveys', () => ({
+jest.mock('@hooks/useFetchSurveys', () => ({
   __esModule: true,
   default: jest.fn(() => ({
     surveys: [
@@ -25,7 +25,7 @@ jest.mock('../../hooks/useFetchSurveys', () => ({
   })),
 }));
 
-describe('SurveyListContainer Component', () => {
+describe('ProjectSurveyListContainer Component', () => {
   const mockProjectContext = {
     setSelectedSurveyURL: jest.fn(),
   };
@@ -56,7 +56,7 @@ describe('SurveyListContainer Component', () => {
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <SurveyListContainer
+        <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
           navigate={mockNavigate}
@@ -83,7 +83,7 @@ describe('SurveyListContainer Component', () => {
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <SurveyListContainer
+        <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
           navigate={mockNavigate}
@@ -109,7 +109,7 @@ describe('SurveyListContainer Component', () => {
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <SurveyListContainer
+        <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
           navigate={mockNavigate}
@@ -135,7 +135,7 @@ describe('SurveyListContainer Component', () => {
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <SurveyListContainer
+        <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
           navigate={mockNavigate}
@@ -151,7 +151,7 @@ describe('SurveyListContainer Component', () => {
   });
 
   it('displays a message when no surveys are available', () => {
-    const { getByText } = render(<SurveyListContainer surveys={[]} />);
+    const { getByText } = render(<ProjectSurveyListContainer surveys={[]} />);
 
     expect(getByText('Ei kartoituksia saatavilla.')).toBeTruthy();
   });
@@ -161,7 +161,7 @@ describe('SurveyListContainer Component', () => {
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <SurveyListContainer
+        <ProjectSurveyListContainer
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
           navigate={mockNavigate}
         />
@@ -186,7 +186,7 @@ describe('SurveyListContainer Component', () => {
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={{ setSelectedSurveyURL: mockProjectContext.setSelectedSurveyURL }}>
-        <SurveyListContainer
+        <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
           navigate={mockNavigate}
