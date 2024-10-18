@@ -93,23 +93,26 @@ const WorkSafetyForm = () => {
       console.log('Server response:', response);
       const surveyId = response.id;
 
-    // Formatting formData as list of django risk_note instances
-    const riskNotes = Object.keys(formData).map(key => ({
-      note: key,
-      description: formData[key].description,
-      status: formData[key].status
-    }));
-    console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
+      // Formatting formData as list of django risk_note instances
+      const riskNotes = Object.keys(formData).map(key => ({
+        note: key,
+        description: formData[key].description,
+        status: formData[key].status
+      }));
+      console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
 
-    // POST risk notes to the just made survey
-    postRiskNotes(surveyId, riskNotes)
-      .then(() => {
-        // navigate to front page when successful
-        setShowSuccessAlert(true);
-      })
+      // POST risk notes to the just made survey
+      return postRiskNotes(surveyId, riskNotes);
     })
-    setShowSuccessAlert(true);
-  };
+    .then(() => {
+      // navigate to front page when successful
+      setShowSuccessAlert(true);
+    })
+    .catch(error => {
+      console.error('Error during form submission:', error);
+      alert('Lomakkeen lähettäminen epäonnistui');
+    });
+};
 
   const handleClose = () => {
     setSelectedProject(null);
@@ -121,7 +124,7 @@ const WorkSafetyForm = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Työturvallisuuslomake</Text>
+        <Text style={styles.title}>Vaarojen tunnistus</Text>
   
         {error && <Text>Error fetching survey data</Text>}
   

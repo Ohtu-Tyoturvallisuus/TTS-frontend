@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Audio } from 'expo-av';
 import LanguageSelectMenu from './LanguageSelectMenu'
 import CountryFlag from 'react-native-country-flag';
 
 
-const SpeechToTextView = ({ setDescription=null }) => {
+const SpeechToTextView = ({ setDescription=null, translation=true}) => {
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
   const [recordingLanguage, setRecordingLanguage] = useState('')
@@ -104,9 +104,15 @@ const SpeechToTextView = ({ setDescription=null }) => {
       console.log("File uploaded successfully:", result);
       setTranscription(result.transcription)
       setTranslations(result.translations)
-      // Concatenate into description text
+
+      // Concatenate transcription into description
       if (setDescription) {
-        setDescription((prevDescription) => `${prevDescription} ${result.transcription}`);
+        // Add space if there is already text in the description
+        setDescription((prevDescription) => 
+          prevDescription 
+            ? `${prevDescription} ${result.transcription}` 
+            : result.transcription
+        );
       }
     } catch (error) {
       console.error("Failed to upload file:", error);
@@ -118,18 +124,23 @@ const SpeechToTextView = ({ setDescription=null }) => {
       <LanguageSelectMenu
         setRecordingLanguage={setRecordingLanguage}
       />
-      <LanguageSelectMenu
-        setTranslationLanguages={setTranslationLanguages}
-      />
+      {translation && (
+        <LanguageSelectMenu
+          setTranslationLanguages={setTranslationLanguages}
+        />
+      )}
       {recordingLanguage !== '' && (
         <View>
-          <Text>Paina alla olevaa nappia nauhoittaaksesi puhetta.</Text>
-          <Text>Maksimipituus puheentunnistukselle on {timeout/1000} sekuntia.</Text>
+          <Text>(Maksimipituus: {timeout/1000} sekuntia.)</Text>
           <View style={styles.buttonsContainer}>
-            <Button
-              title={recording ? 'Lopeta puheentunnistus' : 'Käynnistä puheentunnistus'}
+            <TouchableOpacity
+              style={[styles.recordButton, recording ? styles.stopButton : styles.startButton]}
               onPress={recording ? () => stopRecording(recording) : startRecording}
-            />
+            >
+              <Text style={styles.buttonText}>
+                {recording ? 'Lopeta' : 'Aloita puheentunnistus'}
+              </Text>
+            </TouchableOpacity>
           </View>
           {transcription !== '' && (
             <View style={styles.textContainer}>
@@ -152,7 +163,6 @@ const SpeechToTextView = ({ setDescription=null }) => {
   );
 }
 
-
 const styles = StyleSheet.create({
   buttonsContainer: {
     paddingVertical: 20,
@@ -160,7 +170,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   textContainer: {
     alignItems: 'center',
@@ -175,6 +184,22 @@ const styles = StyleSheet.create({
   translatedText: {
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  recordButton: {
+    alignItems: 'center',
+    borderRadius: 5,
+    padding: 10,
+  },
+  startButton: {
+    backgroundColor: 'green',
+  },
+  stopButton: {
+    backgroundColor: 'red',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
