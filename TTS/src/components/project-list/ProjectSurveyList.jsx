@@ -5,20 +5,7 @@ import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import useFetchSurveys from '@hooks/useFetchSurveys';
 import Loading from '@components/Loading';
 
-const SurveyList = () => {
-  const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
-  const navigate = useNavigate()
-  const { surveys, loading, error } = useFetchSurveys(project.id);
-
-  if (loading || error) {
-    return (
-        <Loading 
-          loading={loading} 
-          error={error} 
-        />
-    );
-  }
-
+export const SurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
     const now = new Date();
@@ -40,6 +27,12 @@ const SurveyList = () => {
       }`;
     }
 
+    const handleSurveyPress = (survey) => {
+      console.log('Valittu kartoitus:', survey);
+      setSelectedSurveyURL(survey.url);
+      navigate('worksafetyform');
+    };
+
     return (
       <View style={styles.surveyContainer}>
         <View style={styles.surveyInfo}>
@@ -47,13 +40,10 @@ const SurveyList = () => {
           <Text style={styles.surveyDate}>{formattedDate}</Text>
         </View>
         <View>
-          <TouchableOpacity 
+          <TouchableOpacity
+            testID={`use-survey-${survey.id}`}
             style={styles.button}
-            onPress={() => {
-              console.log('Valittu kartoitus:', survey);
-              setSelectedSurveyURL(survey.url);
-              navigate('worksafetyform')
-            }}
+            onPress={() => handleSurveyPress(survey)}
           >
             <Text style={styles.buttonText}>Käytä pohjana</Text>
           </TouchableOpacity>
@@ -80,6 +70,25 @@ const SurveyList = () => {
     </>
   );
 };
+
+const SurveyList = () => {
+  const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
+  const { surveys = [], loading, error } = useFetchSurveys(project.id);
+  const navigate = useNavigate();
+
+  if (loading || error) {
+    return (
+        <Loading 
+          loading={loading} 
+          error={error} 
+        />
+    );
+  }
+
+  return (
+    <SurveyListContainer surveys={surveys} setSelectedSurveyURL={setSelectedSurveyURL} navigate={navigate} />
+  );
+}
 
 const styles = StyleSheet.create({
   button: {

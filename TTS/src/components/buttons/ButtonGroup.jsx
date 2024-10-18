@@ -7,6 +7,7 @@ const ButtonGroup = ({ options = [], selectedValue, onChange }) => {
       {options.map((option, index) => (
         <TouchableOpacity
           key={index}
+          testID={`button-${option}`}
           onPress={() => onChange(option)}
           style={[
             styles.button,

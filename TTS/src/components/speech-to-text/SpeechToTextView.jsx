@@ -18,7 +18,8 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     'en': 'GB',
     'et': 'EE',
     'lv': 'LV',
-    'lt': 'LT',
+    'pl': 'PL',
+    'ru': 'RU',
   }
   const recordingLanguageFlagCode = recordingLanguage.slice(-2);
 

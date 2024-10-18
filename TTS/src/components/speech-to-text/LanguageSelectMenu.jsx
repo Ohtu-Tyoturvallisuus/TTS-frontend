@@ -14,10 +14,11 @@ const LanguageSelectMenu = ({
     ? [
       { label: 'Suomi', value: 'fi-FI', flagCode: 'FI' },
       { label: 'Ruotsi', value: 'sv-SE', flagCode: 'SE' },
-      { label: 'Englanti', value: 'en-US', flagCode: 'GB' },
+      { label: 'Englanti', value: 'en-GB', flagCode: 'GB' },
       { label: 'Viro', value: 'et-EE', flagCode: 'EE' },
       { label: 'Latvia', value: 'lv-LV', flagCode: 'LV' },
-      { label: 'Liettua', value: 'lt-LT', flagCode: 'LT' },
+      { label: 'Puola', value: 'pl-PL', flagCode: 'PL' },
+      { label: 'Venäjä', value: 'ru-RU', flagCode: 'RU' },
     ]
     : [
       { label: 'Suomi', value: 'fi', flagCode: 'FI' },
@@ -25,7 +26,8 @@ const LanguageSelectMenu = ({
       { label: 'Englanti', value: 'en', flagCode: 'GB' },
       { label: 'Viro', value: 'et', flagCode: 'EE' },
       { label: 'Latvia', value: 'lv', flagCode: 'LV' },
-      { label: 'Liettua', value: 'lt', flagCode: 'LT' },
+      { label: 'Puola', value: 'pl', flagCode: 'PL' },
+      { label: 'Venäjä', value: 'ru', flagCode: 'RU' },
     ]
 
   // Filter countries based on the search text
