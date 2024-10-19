@@ -101,18 +101,33 @@ const WorkSafetyForm = () => {
         ...prevFormData,
         [title]: {
           ...prevFormData[title],
-          [field]: value,
+          [field]: value || '', // Set value to empty string if it's undefined/null
         },
       };
     });
+  };
+
+  const validateFields = (fields) => {
+    const validatedFields = {};
+    Object.keys(fields).forEach(key => {
+      validatedFields[key] = fields[key] ?? "";  // Replace null/undefined with an empty string
+    });
+    return validatedFields;
   };
 
   const handleSubmit = () => {
   // ------------------------------------------------
   // TODO: Implement form submit checks
   // ------------------------------------------------
-  // POST a new survey instance 
-    postNewSurvey(project.id, taskDesc, task, scaffoldType)
+    const surveyData = {
+      task: task,
+      description: taskDesc,
+      scaffold_type: scaffoldType,
+    };
+    const validatedSurveyData = validateFields(surveyData);
+    
+    // POST a new survey instance
+    postNewSurvey(project.id, validatedSurveyData.description, validatedSurveyData.task, validatedSurveyData.scaffold_type)
     .then(response => {
       console.log('Server response:', response);
       const surveyId = response.id;
@@ -133,7 +148,7 @@ const WorkSafetyForm = () => {
     })
     .catch(error => {
       console.error('Error during form submission:', error);
-      alert(t('worksafetyform.errorSubmitting'));
+      alert(t('riskform.errorSubmitting'));
     });
   };
 
@@ -145,39 +160,39 @@ const WorkSafetyForm = () => {
   };
 
   if (!formData || !Object.keys(formData).length) {
-    return <Text>{t('worksiteform.loadingFormData')}</Text>;
+    return <Text>{t('riskform.loadingFormData')}</Text>;
   }
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>{t('worksafetyform.title')}</Text>
+        <Text style={styles.title}>{t('riskform.title')}</Text>
 
-        {error && <Text>{t('worksafetyform.errorFetchingData')}</Text>}
+        {error && <Text>{t('riskform.errorFetchingData')}</Text>}
         {/* Projektin tiedot */}
         {project ? (
           <View style={styles.infoContainer}>
-            <Text style={styles.label}>{t('worksafetyform.projectName')}:</Text>
+            <Text style={styles.label}>{t('riskform.projectName')}:</Text>
             <Text>{project.project_name}</Text>
 
-            <Text style={styles.label}>{t('worksafetyform.projectId')}: </Text>
+            <Text style={styles.label}>{t('riskform.projectId')}: </Text>
             <Text>{project.project_id}</Text>
 
-            <Text style={styles.label}>{t('worksafetyform.task')}:</Text>
+            <Text style={styles.label}>{t('riskform.task')}:</Text>
             <ButtonGroup 
-              options={[t('worksafetyform.installation'), t('worksafetyform.modification'), t('worksafetyform.dismantling')]} 
+              options={[t('riskform.installation'), t('riskform.modification'), t('riskform.dismantling')]} 
               selectedValue={task}
               onChange={(value) => setTask(value)} 
             />
 
-            <Text style={styles.label}>{t('worksafetyform.scaffoldType')}:</Text>
+            <Text style={styles.label}>{t('riskform.scaffoldType')}:</Text>
             <ButtonGroup 
-              options={[t('worksafetyform.workScaffold'), t('worksafetyform.nonWeatherproof'), t('worksafetyform.weatherproof')]} 
+              options={[t('riskform.workScaffold'), t('riskform.nonWeatherproof'), t('riskform.weatherproof')]} 
               selectedValue={scaffoldType} 
               onChange={(value) => setScaffoldType(value)} 
             />
 
-            <Text style={styles.label}>{t('worksafetyform.taskDescription')}:</Text>
+            <Text style={styles.label}>{t('riskform.taskDescription')}:</Text>
             <TextInput
               style={styles.input}
               value={taskDesc}
@@ -187,12 +202,12 @@ const WorkSafetyForm = () => {
             />
           </View>
         ) : (
-          <Text>{t('worksafetyform.noProject')}</Text>
+          <Text>{t('riskform.noProject')}</Text>
         )}
 
-        <Text style={styles.sectionTitle}>{t('worksafetyform.scaffoldRisks')}</Text>
+        <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith('other'))
+          .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith(t('other_scaffolding.title', { ns: 'formFields' })))
           .map(([key, value]) => (
             <RiskNote
               key={key}
@@ -214,9 +229,9 @@ const WorkSafetyForm = () => {
           />
         </View>
 
-        <Text style={styles.sectionTitle}>{t('worksafetyform.environmentRisks')}</Text>
+        <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.type === 'environment' && !key.startsWith('other'))
+          .filter(([key, value]) => value.type === 'environment' && !key.startsWith(t('other_environment.title', { ns: 'formFields' })))
           .map(([key, value]) => (
           <RiskNote
             key={key}
@@ -239,14 +254,14 @@ const WorkSafetyForm = () => {
         </View>
 
         <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>{t('worksafetyform.submit')}</Text>
+          <Text style={styles.buttonText}>{t('riskform.submit')}</Text>
         </TouchableOpacity>
 
         <CloseButton onPress={handleClose} />
       </ScrollView>
       {showSuccessAlert && (
         <SuccessAlert 
-          message={t('worksafetyform.successMessage')} 
+          message={t('riskform.successMessage')} 
           onDismiss={handleClose} 
         />
       )}

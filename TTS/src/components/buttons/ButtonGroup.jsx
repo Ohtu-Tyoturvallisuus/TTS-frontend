@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 5,
+    minHeight: 48,
+    minWidth: 48,
     paddingVertical: 10,
     textAlign: 'center',
   },

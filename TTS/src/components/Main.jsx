@@ -1,19 +1,20 @@
-import { StyleSheet, View, Modal, Button } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, View, Modal } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
 import WorkSafetyForm from '@components/risk-form/RiskForm';
 import SignIn from '@components/sign-in/SignIn';
 import AppBar from '@components/app-bar/AppBar';
+import CloseButton from '@components/buttons/CloseButton';
 import Settings from './Settings';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserContext } from '@contexts/UserContext';
-import { useTranslation } from 'react-i18next';
+
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
   const [settingsVisible, setSettingsVisible] = useState(false)
-  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchUsername = () => {
@@ -54,7 +55,7 @@ const Main = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Settings />
-            <Button title={t('main.close')} onPress={() => setSettingsVisible(false)} />
+            <CloseButton onPress={() => setSettingsVisible(false)} />
           </View>
         </View>
       </Modal>

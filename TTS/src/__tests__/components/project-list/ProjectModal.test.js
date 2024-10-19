@@ -1,10 +1,49 @@
-import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import ProjectModal from '@components/project-list/ProjectModal';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 
-jest.mock('@components/project-list/ProjectSurveyList', () => 'ProjectSurveyList');
-jest.mock('@components/buttons/RiskFormButton', () => 'RiskFormButton');
+jest.mock('@components/project-list/ProjectSurveyList', () => {
+  const { Text } = require('react-native');
+  const MockedSurveyList = () => {
+    return <Text>Mocked Survey List</Text>;
+  };
+  MockedSurveyList.displayName = 'MockedSurveyList';
+  return MockedSurveyList;
+});
+
+jest.mock('@components/buttons/RiskFormButton', () => {
+  const { Text } = require('react-native');
+  const MockedRiskFormButton = () => {
+    return <Text>Mocked Risk Form Button</Text>;
+  };
+  MockedRiskFormButton.displayName = 'MockedRiskFormButton';
+  return MockedRiskFormButton;
+});
+
+jest.mock('@components/buttons/CloseButton', () => {
+  const { TouchableOpacity, Text } = require('react-native');
+  const MockedCloseButton = (props) => {
+    return (
+      <TouchableOpacity onPress={props.onPress}>
+        <Text>Sulje</Text>
+      </TouchableOpacity>
+    );
+  };
+  MockedCloseButton.displayName = 'MockedCloseButton';
+  return MockedCloseButton;
+});
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'projectmodal.title': 'Täytä uusi riskilomake',
+        'closebutton.close': 'Sulje'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
 
 describe('ProjectModal Component', () => {
   const mockOnClose = jest.fn();

@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
 import RiskModal from './RiskModal';
 
 const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [status, setStatus] = useState(initialStatus);
   const [isModification, setIsModification] = useState(false);
+  const { t } = useTranslation();
 
   const handleModalSubmit = (newDescription) => {
     setModalVisible(false);
-    setStatus('Kunnossa');
+    setStatus(t('risknote.checked'));
     onChange(title, 'description', newDescription);
-    onChange(title, 'status', 'Kunnossa');
+    onChange(title, 'status', t('risknote.checked'));
   };
 
   const handleEditPress = () => {
@@ -31,10 +34,10 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
   return (
     <View>
       <Text style={styles.riskNote}>{title}</Text>
-      {status === 'Kunnossa' ? (
+      {status === t('risknote.checked') ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
-            <Text style={styles.statusText}>Kunnossa</Text>
+            <Text style={styles.statusText}>{t('risknote.checked')}</Text>
           </View>
           <TouchableOpacity
             style={styles.editButton}
@@ -43,10 +46,10 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
             <Text>✏️</Text>
           </TouchableOpacity>
         </View>
-      ) : status === 'Ei koske' ? (
+      ) : status === t('risknote.notRelevant') ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
-            <Text style={[styles.statusText, { color: 'grey' }]}>Ei koske</Text>
+            <Text style={[styles.statusText, { color: 'grey' }]}>{t('risknote.notRelevant')}</Text>
           </View>
           <TouchableOpacity
             style={styles.editButton}
@@ -60,17 +63,17 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
       <TouchableOpacity
         style={[styles.button, { borderColor: 'grey' }]}
         onPress={() => {
-          setStatus('Ei koske');
-          onChange(title, 'status', 'Ei koske');
+          setStatus(t('risknote.notRelevant'));
+          onChange(title, 'status', t('risknote.notRelevant'));
         }}
       >
-        <Text style={styles.buttonText}>Ei koske</Text>
+        <Text style={styles.buttonText}>{t('risknote.notRelevant')}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, { borderColor: '#FF8C00' }]}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={styles.buttonText}>Huomioitavaa</Text>
+        <Text style={styles.buttonText}>{t('risknote.toBeNoted')}</Text>
       </TouchableOpacity>
     </View>
       )}

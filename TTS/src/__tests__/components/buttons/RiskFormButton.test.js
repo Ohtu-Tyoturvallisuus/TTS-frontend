@@ -8,24 +8,19 @@ jest.mock('react-router-native', () => ({
 }));
 
 describe('RiskFormButton Component', () => {
-  it('renders with default title', () => {
-    const { getByText } = render(<RiskFormButton />);
+  it('renders with the provided title', () => {
+    const title = 'Täytä uusi riskilomake';
+    const { getByText } = render(<RiskFormButton title={title} />);
 
-    expect(getByText('Täytä uusi riskilomake')).toBeTruthy();
-  });
-
-  it('renders with a custom title', () => {
-    const customTitle = 'Submit Risk Form';
-    const { getByText } = render(<RiskFormButton title={customTitle} />);
-
-    expect(getByText(customTitle)).toBeTruthy();
+    expect(getByText(title)).toBeTruthy();
   });
 
   it('navigates to the correct route when the button is pressed', () => {
     const mockNavigate = jest.fn();
     useNavigate.mockReturnValue(mockNavigate);
 
-    const { getByText } = render(<RiskFormButton />);
+    const title = 'Täytä uusi riskilomake';
+    const { getByText } = render(<RiskFormButton title={title} />);
 
     fireEvent.press(getByText('Täytä uusi riskilomake'));
 

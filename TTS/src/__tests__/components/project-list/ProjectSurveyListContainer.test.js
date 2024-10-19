@@ -25,6 +25,38 @@ jest.mock('@hooks/useFetchSurveys', () => ({
   })),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key, options) => {
+      const translations = {
+        'projectsurveylistcontainer.minutesAgo_one': 'yksi minuutti sitten',
+        'projectsurveylistcontainer.minutesAgo_other': '{{count}} minuuttia sitten',
+        'projectsurveylistcontainer.hoursAgo_one': 'yksi tunti sitten',
+        'projectsurveylistcontainer.hoursAgo_other': '{{count}} tuntia sitten',
+        'projectsurveylistcontainer.daysAgo_one': 'yksi päivä sitten',
+        'projectsurveylistcontainer.daysAgo_other': '{{count}} päivää sitten',
+        'projectsurveylistcontainer.useTemplate': 'Käytä pohjana',
+        'projectsurveylistcontainer.noSurveys': 'Ei kartoituksia saatavilla.',
+      };
+
+      let translation = translations[key] || key;
+
+      if (options && options.count !== undefined) {
+        if (options.count === 1) {
+          translation = translations[`${key}_one`] || translation;
+        } else {
+          translation = translations[`${key}_other`] || translation;
+        }
+        translation = translation.replace('{{count}}', options.count);
+      }
+
+      return translation;
+    },
+  }),
+}));
+
+
+
 describe('ProjectSurveyListContainer Component', () => {
   const mockProjectContext = {
     setSelectedSurveyURL: jest.fn(),

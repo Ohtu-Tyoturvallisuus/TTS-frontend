@@ -4,6 +4,8 @@ import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigate } from 'react-router-native';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { UserContext } from '@contexts/UserContext';
 import { signIn } from '@services/apiService';
 
@@ -21,6 +23,7 @@ const initialValues = {
 const SignIn = () => {
   const navigate = useNavigate()
   const { setUsername } = useContext(UserContext)
+  const { t } = useTranslation();
 
   const onSubmit = async (values) => {
     try {
@@ -44,7 +47,7 @@ const SignIn = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        placeholder="Käyttäjänimi"
+        placeholder={t('signin.username')}
         onChangeText={formik.handleChange('username')}
         value={formik.values.username}
         style={[
@@ -62,7 +65,7 @@ const SignIn = () => {
         onPress={formik.handleSubmit}
         style={styles.button}
         >
-        <Text style={styles.buttonText}>Kirjaudu sisään</Text>
+        <Text style={styles.buttonText}>{t('signin.confirmLogin')}</Text>
       </Pressable>
     </View>
   );

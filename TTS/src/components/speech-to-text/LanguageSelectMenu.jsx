@@ -1,38 +1,27 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, ScrollView } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
+import countriesData from '@lang/locales/languages.json';
+import { useTranslation } from 'react-i18next';
+
+import CloseButton from '@components/buttons/CloseButton';
 
 const LanguageSelectMenu = ({
     setRecordingLanguage = null,
     setTranslationLanguages = null
   }) => {
+  const { t } = useTranslation();
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
 
   const countries = setRecordingLanguage
-    ? [
-      { label: 'Suomi', value: 'fi-FI', flagCode: 'FI' },
-      { label: 'Ruotsi', value: 'sv-SE', flagCode: 'SE' },
-      { label: 'Englanti', value: 'en-GB', flagCode: 'GB' },
-      { label: 'Viro', value: 'et-EE', flagCode: 'EE' },
-      { label: 'Latvia', value: 'lv-LV', flagCode: 'LV' },
-      { label: 'Puola', value: 'pl-PL', flagCode: 'PL' },
-      { label: 'Venäjä', value: 'ru-RU', flagCode: 'RU' },
-    ]
-    : [
-      { label: 'Suomi', value: 'fi', flagCode: 'FI' },
-      { label: 'Ruotsi', value: 'sv', flagCode: 'SE' },
-      { label: 'Englanti', value: 'en', flagCode: 'GB' },
-      { label: 'Viro', value: 'et', flagCode: 'EE' },
-      { label: 'Latvia', value: 'lv', flagCode: 'LV' },
-      { label: 'Puola', value: 'pl', flagCode: 'PL' },
-      { label: 'Venäjä', value: 'ru', flagCode: 'RU' },
-    ]
+    ? countriesData.countries.map(country => ({ ...country, value: `${country.value}-${country.flagCode}` }))  // Adjust value for recording
+    : countriesData.countries;
 
   // Filter countries based on the search text
   const filteredCountries = countries.filter(country =>
-    country.label.toLowerCase().includes(searchText.toLowerCase())
+    country.label_native.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const toggleCountry = (value) => {
@@ -41,9 +30,9 @@ const LanguageSelectMenu = ({
         return prevSelected.filter((country) => country !== value);
       } else {
         if (setRecordingLanguage) {
-          return [value];
+          return [value]; // Only allow one recording language to be selected
         } else {
-          return [...prevSelected, value];
+          return [...prevSelected, value]; // Allow multiple translation languages
         }
       }
     });
@@ -57,7 +46,7 @@ const LanguageSelectMenu = ({
       >
         {setRecordingLanguage ? (
           <View style={styles.buttonContent}>
-            <Text>Valitse tunnistettava kieli</Text>
+            <Text>{t('languageselectmenu.selectRecordingLanguage')}</Text>
             {selectedCountries.length > 0 && (
               <View style={{flexDirection: 'row'}}>
                 {selectedCountries.map(country => (
@@ -72,7 +61,7 @@ const LanguageSelectMenu = ({
           </View>
         ) : (
           <View style={styles.buttonContent}>
-            <Text>Valitse kielet, joille haluat kääntää</Text>
+            <Text>{t('languageselectmenu.selectTranslationLanguages')}</Text>
             {selectedCountries.length > 0 && (
               <View style={{flexDirection: 'row'}}>
                 {selectedCountries.map(country => (
@@ -92,14 +81,14 @@ const LanguageSelectMenu = ({
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.container}>
             {setRecordingLanguage ? (
-                <Text style={styles.label}>Valitse kieli:</Text>
+                <Text style={styles.label}>{t('languageselectmenu.selectLanguage')}:</Text>
               ) : (
-                <Text style={styles.label}>Valitse kielet:</Text>
+                <Text style={styles.label}>{t('languageselectmenu.selectLanguages')}:</Text>
               )
             }
             <TextInput
               style={styles.searchInput}
-              placeholder="Hae kieliä..."
+              placeholder={t('languageselectmenu.searchLanguages')}
               value={searchText}
               onChangeText={setSearchText}
             />
@@ -110,7 +99,7 @@ const LanguageSelectMenu = ({
                 onPress={() => toggleCountry(country.value)}
               >
                 <CountryFlag isoCode={country.flagCode} size={24} />
-                <Text style={styles.countryLabel}>{country.label}</Text>
+                <Text style={styles.countryLabel}>{country.label_native}</Text>
                 {selectedCountries.includes(country.value) && (
                   <Text style={styles.selectedText}>✓</Text>
                 )}
@@ -119,9 +108,9 @@ const LanguageSelectMenu = ({
             {selectedCountries.length > 0 && (
               <View style={styles.selectedCountriesContainer}>
                 {setRecordingLanguage ? (
-                    <Text style={styles.selectedCountriesLabel}>Valittu kieli:</Text>
+                    <Text style={styles.selectedCountriesLabel}>{t('languageselectmenu.selectedLanguage')}:</Text>
                   ) : (
-                    <Text style={styles.selectedCountriesLabel}>Valitut kielet:</Text>
+                    <Text style={styles.selectedCountriesLabel}>{t('languageselectmenu.selectedLanguages')}:</Text>
                   )
                 }
                 {selectedCountries.map((value) => {
@@ -129,7 +118,7 @@ const LanguageSelectMenu = ({
                   return (
                     <View key={value} style={styles.selectedCountry}>
                       <CountryFlag isoCode={countryData.flagCode} size={32} />
-                      <Text style={styles.countryName}>{countryData.label}</Text>
+                      <Text style={styles.countryName}>{countryData.label_native}</Text>
                     </View>
                   );
                 })}
@@ -137,15 +126,14 @@ const LanguageSelectMenu = ({
             )}
           </View>
           <View style={styles.button}>
-            <Button
-              title='Sulje'
+            <CloseButton
               onPress={() => {
-                setModalVisible(false)
+                setModalVisible(false);
                 setRecordingLanguage
                   ? selectedCountries.length > 0
                     ? setRecordingLanguage(selectedCountries[0])
                     : setRecordingLanguage('')
-                  : setTranslationLanguages(selectedCountries)
+                  : setTranslationLanguages(selectedCountries);
               }}
             />
           </View>
@@ -192,7 +180,6 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     backgroundColor: 'white',
     flexGrow: 1,
-
   },
   searchInput: {
     borderColor: '#c5c6c8',

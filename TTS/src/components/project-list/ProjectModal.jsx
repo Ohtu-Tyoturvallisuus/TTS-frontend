@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Modal } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
 import SurveyList from './ProjectSurveyList';
 import RiskFormButton from '@components/buttons/RiskFormButton';
-import { useContext } from 'react';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import CloseButton from '@components/buttons/CloseButton';
 
 const ProjectModal = ({ visible, onClose }) => {
   const { selectedProject: project } = useContext(ProjectSurveyContext);
+  const { t } = useTranslation();
 
   if (!project) {
     console.log('Projektia ei ole saatavilla');
@@ -25,7 +27,7 @@ const ProjectModal = ({ visible, onClose }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{project.formattedName}</Text>
-          <RiskFormButton title='Täytä uusi riskilomake'/>
+          <RiskFormButton title={t('projectmodal.title')}/>
           <SurveyList/>
           <CloseButton onPress={onClose}/>
         </View>

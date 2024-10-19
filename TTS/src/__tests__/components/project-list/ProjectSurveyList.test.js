@@ -30,6 +30,18 @@ jest.mock('@hooks/useFetchSurveys', () => ({
   })),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'projectsurveylist.loadingSurveys': 'Ladataan kartoituksia...',
+        'projectsurveylistcontainer.noSurveys': 'Ei kartoituksia saatavilla.'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 describe('ProjectSurveyList Component', () => {
   const mockSetSelectedSurveyURL = jest.fn();
   const mockNavigate = jest.fn();

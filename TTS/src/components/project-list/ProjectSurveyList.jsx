@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
+import { useTranslation } from 'react-i18next';
+
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import useFetchSurveys from '@hooks/useFetchSurveys';
 import Loading from '@components/Loading';
 
 export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
+  const { t } = useTranslation();
+
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
     const now = new Date();
@@ -16,11 +20,11 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
 
     let formattedDate;
     if (minutesDifference < 60) {
-      formattedDate = `${minutesDifference} minuuttia sitten`;
+      formattedDate = `${t('projectsurveylistcontainer.minutesAgo', { count: minutesDifference })}`;
     } else if (hoursDifference < 24) {
-      formattedDate = `${hoursDifference} tuntia sitten`;
+      formattedDate = `${t('projectsurveylistcontainer.hoursAgo', { count: hoursDifference })}`;
     } else if (daysDifference <= 14) {
-      formattedDate = `${daysDifference} päivää sitten`;
+      formattedDate = `${t('projectsurveylistcontainer.daysAgo', { count: daysDifference })}`;
     } else {
       formattedDate = `${surveyDate.toLocaleDateString()}, klo ${
         surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -45,7 +49,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
             style={styles.button}
             onPress={() => handleSurveyPress(survey)}
           >
-            <Text style={styles.buttonText}>Käytä pohjana</Text>
+            <Text style={styles.buttonText}>{t('projectsurveylistcontainer.useTemplate')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -64,7 +68,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
         </View>
       ) : (
         <View style={styles.noSurveysContainer}>
-          <Text style={styles.noSurveysText}>Ei kartoituksia saatavilla.</Text>
+          <Text style={styles.noSurveysText}>{t('projectsurveylistcontainer.noSurveys')}</Text>
         </View>
       )}
     </>
@@ -73,6 +77,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
 
 const ProjectSurveyList = () => {
   const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { surveys, loading, error } = useFetchSurveys(project.id);
 
@@ -80,7 +85,8 @@ const ProjectSurveyList = () => {
     return (
         <Loading 
           loading={loading} 
-          error={error} 
+          error={error}
+          title={t('projectsurveylist.loadingSurveys')}
         />
     );
   }

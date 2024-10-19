@@ -17,6 +17,32 @@ jest.mock('expo-av', () => ({
   },
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key, options) => {
+      const translations = {
+        'speechtotext.maxLength': 'Maksimipituus',
+        'speechtotext.seconds_one': 'yksi sekunti',
+        'speechtotext.seconds_other': '{{count}} sekuntia',
+        'speechtotext.stop': 'Lopeta',
+        'speechtotext.start': 'Aloita puheentunnistus'
+      };
+      let translation = translations[key] || key;
+
+      if (options && options.count !== undefined) {
+        if (options.count === 1) {
+          translation = translations[`${key}_one`] || translation;
+        } else {
+          translation = translations[`${key}_other`] || translation;
+        }
+        translation = translation.replace('{{count}}', options.count);
+      }
+
+      return translation;
+    },
+  }),
+}));
+
 jest.mock('@components/speech-to-text/LanguageSelectMenu', () => {
   return jest.fn(({ setRecordingLanguage, setTranslationLanguages }) => {
     const React = require('react');

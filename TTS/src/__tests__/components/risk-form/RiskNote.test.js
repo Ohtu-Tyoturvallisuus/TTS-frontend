@@ -2,6 +2,24 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import RiskNote from '@components/risk-form/RiskNote';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'risknote.checked': 'Kunnossa',
+        'risknote.notRelevant': 'Ei koske',
+        'risknote.toBeNoted': 'Huomioitavaa',
+        'riskmodal.extraInfo': 'Syötä lisätietoja',
+        'riskmodal.withSpeech': 'Syötä puheella',
+        'riskmodal.cancel': 'Peruuta',
+        'riskmodal.reset': 'Resetoi',
+        'riskmodal.checked': 'Kunnossa'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 describe('RiskNote Component', () => {
   const mockOnChange = jest.fn();
 

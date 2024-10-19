@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const LoadingErrorComponent = ({ loading, error, title }) => {
+  const { t } = useTranslation();
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -14,7 +17,7 @@ const LoadingErrorComponent = ({ loading, error, title }) => {
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Virhe lataamisessa</Text>
+        <Text style={styles.errorText}>{t('loading.error')}</Text>
       </View>
     );
   }
