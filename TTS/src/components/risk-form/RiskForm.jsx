@@ -41,7 +41,7 @@ const WorkSafetyForm = () => {
   const createInitialFormData = (formFields) => {
     const initialData = {};
     Object.keys(formFields).forEach((key) => {
-      initialData[t(`${key}.title`, { ns: 'formFields' })] = {
+      initialData[key] = {
         description: '',
         status: '',
         type: t(`${key}.type`, { ns: 'formFields' }),
@@ -69,7 +69,10 @@ const WorkSafetyForm = () => {
       return acc;
     }, {});
 
-    setFormData(mergedFormData);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ...mergedFormData,
+    }));
   }, [i18n.language]);
 
   //Fetches previous survey's data from API, if survey is in context
@@ -180,16 +183,18 @@ const WorkSafetyForm = () => {
 
             <Text style={styles.label}>{t('riskform.task')}:</Text>
             <ButtonGroup 
-              options={[t('riskform.installation'), t('riskform.modification'), t('riskform.dismantling')]} 
+              options={['installation', 'modification', 'dismantling']} 
               selectedValue={task}
-              onChange={(value) => setTask(value)} 
+              onChange={(value) => setTask(value)}
+              renderOption={(option) => t(`riskform.${option}`)}
             />
 
             <Text style={styles.label}>{t('riskform.scaffoldType')}:</Text>
             <ButtonGroup 
-              options={[t('riskform.workScaffold'), t('riskform.nonWeatherproof'), t('riskform.weatherproof')]} 
-              selectedValue={scaffoldType} 
-              onChange={(value) => setScaffoldType(value)} 
+              options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
+              selectedValue={scaffoldType}
+              onChange={(value) => setScaffoldType(value)}
+              renderOption={(option) => t(`riskform.${option}`)}
             />
 
             <Text style={styles.label}>{t('riskform.taskDescription')}:</Text>
@@ -207,11 +212,11 @@ const WorkSafetyForm = () => {
 
         <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith(t('other_scaffolding.title', { ns: 'formFields' })))
+          .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith('other_scaffolding'))
           .map(([key, value]) => (
             <RiskNote
               key={key}
-              title={key}
+              title={t(`${key}.title`, { ns: 'formFields' })}
               initialDescription={value.description}
               initialStatus={value.status}
               onChange={handleInputChange}
@@ -231,11 +236,11 @@ const WorkSafetyForm = () => {
 
         <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.type === 'environment' && !key.startsWith(t('other_environment.title', { ns: 'formFields' })))
+          .filter(([key, value]) => value.type === 'environment' && !key.startsWith('other_environment.title'))
           .map(([key, value]) => (
           <RiskNote
             key={key}
-            title={key}
+            title={t(`${key}.title`, { ns: 'formFields' })}
             initialDescription={value.description}
             initialStatus={value.status}
             onChange={handleInputChange}

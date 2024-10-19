@@ -34,6 +34,9 @@
     "title": "Fill in a new risk form"
   },
   "projectsurveylist": {
+    "loadingSurveys": "Loading surveys..."
+  },
+  "projectsurveylistcontainer": {
     "minutesAgo_one": "one minute ago",
     "minutesAgo_other": "{{count}} minutes ago",
     "hoursAgo_one": "one hour ago",
@@ -41,8 +44,7 @@
     "daysAgo_one": "one day ago",
     "daysAgo_other": "{{count}} days ago",
     "useTemplate": "Use as a template",
-    "noSurveys": "No surveys available.",
-    "loadingSurveys": "Loading surveys..."
+    "noSurveys": "No surveys available."
   },
   "riskform": {
     "successMessage": "Risk notes submitted successfully",

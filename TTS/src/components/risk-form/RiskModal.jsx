@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,10 @@ const RiskModal = ({
   const [description, setDescription] = useState(initialDescription);
   const [buttonHidden, setButtonHidden] = useState(false);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setDescription(initialDescription);
+  }, [initialDescription]);
 
   return (
     <Modal

@@ -12,7 +12,7 @@ jest.mock('react-i18next', () => ({
         'riskmodal.extraInfo': 'Syötä lisätietoja',
         'riskmodal.withSpeech': 'Syötä puheella',
         'riskmodal.cancel': 'Peruuta',
-        'riskmodal.reset': 'Resetoi',
+        'riskmodal.reset': 'Tyhjennä',
         'riskmodal.checked': 'Kunnossa'
       };
       return translations[key] || key;
@@ -50,14 +50,14 @@ describe('RiskNote Component', () => {
     fireEvent.press(getByText('Kunnossa'));
 
     expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'description', 'Lisätietoja');
-    expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', 'Kunnossa');
+    expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', 'checked');
   });
 
   it('displays "Ei koske" message when "Ei koske" is pressed', () => {
     const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
     
     fireEvent.press(getByText('Ei koske'));
-    expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', 'Ei koske');
+    expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', 'notRelevant');
     expect(getByText('Ei koske')).toBeTruthy();
   });
 
@@ -68,9 +68,9 @@ describe('RiskNote Component', () => {
     fireEvent.press(getByText('✏️'));
     expect(getByText('Syötä puheella')).toBeTruthy();
     expect(getByText('Peruuta')).toBeTruthy();
-    expect(getByText('Resetoi')).toBeTruthy();
+    expect(getByText('Tyhjennä')).toBeTruthy();
     expect(getByText('Kunnossa')).toBeTruthy();
-    fireEvent.press(getByText('Resetoi'));
+    fireEvent.press(getByText('Tyhjennä'));
     expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'description', '');
     expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', '');
   });
@@ -81,7 +81,7 @@ describe('RiskNote Component', () => {
     fireEvent.press(getByText('Ei koske'));
     fireEvent.press(getByText('✏️'));
     fireEvent.press(getByText('Peruuta'));
-    expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', 'Ei koske');
+    expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', 'notRelevant');
     expect(getByText('Ei koske')).toBeTruthy();
   });
 
@@ -92,7 +92,7 @@ describe('RiskNote Component', () => {
     fireEvent.press(getByText('✏️')); 
     expect(getByText('Syötä puheella')).toBeTruthy();
     expect(getByText('Peruuta')).toBeTruthy();
-    expect(getByText('Resetoi')).toBeTruthy();
+    expect(getByText('Tyhjennä')).toBeTruthy();
     expect(getByText('Kunnossa')).toBeTruthy();
   });
 });
