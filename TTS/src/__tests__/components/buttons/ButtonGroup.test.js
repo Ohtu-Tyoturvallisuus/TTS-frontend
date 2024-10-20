@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Text } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
 import ButtonGroup from '@components/buttons/ButtonGroup';
 
@@ -30,6 +31,26 @@ describe('ButtonGroup Component', () => {
     
     fireEvent.press(button);
     expect(mockOnChange).toHaveBeenCalledWith('Option 1');
+  });
+
+  it('renders buttons using the renderOption function when provided', () => {
+    const options = ['Option 1', 'Option 2', 'Option 3'];
+
+    const customRenderOption = (option) => {
+      return <Text>{`Custom: ${option}`}</Text>;
+    };
+
+    const { getByText } = render(
+      <ButtonGroup 
+        options={options} 
+        onChange={() => {}} 
+        renderOption={customRenderOption} 
+      />
+    );
+
+    options.forEach(option => {
+      expect(getByText(`Custom: ${option}`)).toBeTruthy();
+    });
   });
 
   it('should apply blue background to the selected option and gray to others', () => {

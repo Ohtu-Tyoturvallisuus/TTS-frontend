@@ -31,6 +31,9 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
         );
       }}
       renderItem={(item) => {
+        if (!item || !Array.isArray(item) || item.length < 2) {
+          return null; // Handle malformed item
+        }
         return (
           <View
             style={{
