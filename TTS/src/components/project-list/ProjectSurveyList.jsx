@@ -40,7 +40,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
     return (
       <View style={styles.surveyContainer}>
         <View style={styles.surveyInfo}>
-          <Text style={styles.surveyTitle}>{survey.scaffold_type}: {survey.task}</Text>
+          <Text style={styles.surveyTitle}>{`${t(`riskform.${survey.scaffold_type}`)}: ${t(`riskform.${survey.task}`)}`}</Text>
           <Text style={styles.surveyDate}>{formattedDate}</Text>
         </View>
         <View>

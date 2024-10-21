@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
 const RiskModal = ({ 
-  title, 
+  title,
+  renderTitle,
   visible, 
   onClose, 
   initialDescription, 
@@ -32,7 +33,7 @@ const RiskModal = ({
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <ScrollView>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
             
             <TextInput
               style={styles.input}

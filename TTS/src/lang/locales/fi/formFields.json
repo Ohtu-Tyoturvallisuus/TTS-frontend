@@ -1,79 +1,78 @@
 {
-    "personal_protection": {
-      "title": "Henkilökohtaiset suojaimet", 
-      "type": "scaffolding"
-    },
-    "personal_fall_protection": {
-      "title": "Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)", 
-      "type": "scaffolding"
-    },
-    "material_storage": {
-      "title": "Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)", 
-      "type": "scaffolding"
-    },
-    "lifting_accessories": {
-      "title": "Nostoapuvälineet (toimintakunnossa/tarkastettu)", 
-      "type": "scaffolding"
-    },
-    "danger_area": {
-      "title": "Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)", 
-      "type": "scaffolding"
-    },
-    "ground_stability": {
-      "title": "Alustan kestävyys (maa/hoitotaso/katto)", 
-      "type": "scaffolding"
-    },
-    "anchoring": {
-      "title": "Ankkurointi (telineen asennus/purku)", 
-      "type": "scaffolding"
-    },
-    "weather_conditions": {
-      "title": "Sääolosuhteet (tuuli/kylmyys/kuumuus)", 
-      "type": "scaffolding"
-    },
-    "environment_cleanliness": {
-      "title": "Ympäristö (siisteys/jätteiden lajittelu)", 
-      "type": "scaffolding"
-    },
-    "other_scaffolding": {
-      "title": "Muu telinetyöhön liittyvä vaara", 
-      "type": "scaffolding"
-    },
-    "slipping_tripping": {
-      "title": "Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)", 
-      "type": "environment"
-    },
-    "surrounding_structures": {
-      "title": "Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)", 
-      "type": "environment"
-    },
-    "vehicle_traffic": {
-      "title": "Ajoneuvoliikenne/jalankulkija", 
-      "type": "environment"
-    },
-    "hazards": {
-      "title": "Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)", 
-      "type": "environment"
-    },
-    "work_permit": {
-      "title": "Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)", 
-      "type": "environment"
-    },
-    "tank_work_permit": {
-      "title": "Säiliötyölupa", 
-      "type": "environment"
-    },
-    "energy_isolation": {
-      "title": "Energiasta erottaminen (turvalukitukset)", 
-      "type": "environment"
-    },
-    "emergency_procedure": {
-      "title": "Toiminta hätätilanteessa (hätäpoistumistie)", 
-      "type": "environment"
-    },
-    "other_environment": {
-      "title": "Muu työympäristöön liittyvä vaara", 
-      "type": "environment"
-    }
+  "personal_protection": {
+    "title": "Henkilökohtaiset suojaimet", 
+    "risk_type": "scaffolding"
+  },
+  "personal_fall_protection": {
+    "title": "Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)", 
+    "risk_type": "scaffolding"
+  },
+  "material_storage": {
+    "title": "Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)", 
+    "risk_type": "scaffolding"
+  },
+  "lifting_accessories": {
+    "title": "Nostoapuvälineet (toimintakunnossa/tarkastettu)", 
+    "risk_type": "scaffolding"
+  },
+  "danger_area": {
+    "title": "Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)", 
+    "risk_type": "scaffolding"
+  },
+  "ground_stability": {
+    "title": "Alustan kestävyys (maa/hoitotaso/katto)", 
+    "risk_type": "scaffolding"
+  },
+  "anchoring": {
+    "title": "Ankkurointi (telineen asennus/purku)", 
+    "risk_type": "scaffolding"
+  },
+  "weather_conditions": {
+    "title": "Sääolosuhteet (tuuli/kylmyys/kuumuus)", 
+    "risk_type": "scaffolding"
+  },
+  "environment_cleanliness": {
+    "title": "Ympäristö (siisteys/jätteiden lajittelu)", 
+    "risk_type": "scaffolding"
+  },
+  "other_scaffolding": {
+    "title": "Muu telinetyöhön liittyvä vaara", 
+    "risk_type": "scaffolding"
+  },
+  "slipping_tripping": {
+    "title": "Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)", 
+    "risk_type": "environment"
+  },
+  "surrounding_structures": {
+    "title": "Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)", 
+    "risk_type": "environment"
+  },
+  "vehicle_traffic": {
+    "title": "Ajoneuvoliikenne/jalankulkija", 
+    "risk_type": "environment"
+  },
+  "hazards": {
+    "title": "Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)", 
+    "risk_type": "environment"
+  },
+  "work_permit": {
+    "title": "Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)", 
+    "risk_type": "environment"
+  },
+  "tank_work_permit": {
+    "title": "Säiliötyölupa", 
+    "risk_type": "environment"
+  },
+  "energy_isolation": {
+    "title": "Energiasta erottaminen (turvalukitukset)", 
+    "risk_type": "environment"
+  },
+  "emergency_procedure": {
+    "title": "Toiminta hätätilanteessa (hätäpoistumistie)", 
+    "risk_type": "environment"
+  },
+  "other_environment": {
+    "title": "Muu työympäristöön liittyvä vaara", 
+    "risk_type": "environment"
   }
-  
+}

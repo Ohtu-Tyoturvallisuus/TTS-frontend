@@ -44,7 +44,7 @@ const WorkSafetyForm = () => {
       initialData[key] = {
         description: '',
         status: '',
-        type: t(`${key}.type`, { ns: 'formFields' }),
+        risk_type: t(`${key}.risk_type`, { ns: 'formFields' }),
       };
     });
     return initialData;
@@ -65,6 +65,7 @@ const WorkSafetyForm = () => {
         ...updatedFormData[key],
         description: formData[key]?.description || '',
         status: formData[key]?.status || '',
+        risk_type: formData[key]?.risk_type || ''
       };
       return acc;
     }, {});
@@ -89,7 +90,8 @@ const WorkSafetyForm = () => {
       // Update descriptions for each risk note
       surveyData.risk_notes.forEach(note => {
         if (updatedFormData[note.note]) {
-          updatedFormData[note.note].description = note.description;
+          updatedFormData[note.note].description = note.description || '';
+          updatedFormData[note.note].status = note.status || '';
         }
       });
       console.log('Updated form data:', JSON.stringify(updatedFormData, null, 2));
@@ -136,16 +138,24 @@ const WorkSafetyForm = () => {
       const surveyId = response.id;
 
       // Formatting formData as list of django risk_note instances
-      const riskNotes = Object.keys(formData).map(key => ({
-        note: key,
-        description: formData[key].description,
-        status: formData[key].status
-      }));
+      const riskNotes = Object.keys(formData).map(key => {
+        const { description, status } = formData[key]; // Retrieve description and status
+        const risk_type = formData[key].risk_type; // Keep the existing risk type
+
+        // Return a new object with only the necessary fields
+        return {
+          note: key, // Use the translation key
+          description: description || '', // Use existing description or empty string
+          status: status || '', // Use existing status or empty string
+          risk_type: risk_type // Use existing risk type
+        };
+      });
+
       console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
 
       // POST risk notes to the just made survey
       return postRiskNotes(surveyId, riskNotes);
-      })
+    })
     .then(() => {
       setShowSuccessAlert(true);
     })
@@ -212,13 +222,15 @@ const WorkSafetyForm = () => {
 
         <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.type === 'scaffolding' && !key.startsWith('other_scaffolding'))
+          .filter(([key, value]) => value.risk_type === 'scaffolding' && !key.startsWith('other_scaffolding'))
           .map(([key, value]) => (
             <RiskNote
               key={key}
-              title={t(`${key}.title`, { ns: 'formFields' })}
+              title={key}
+              renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
               initialDescription={value.description}
               initialStatus={value.status}
+              riskType={value.risk_type}
               onChange={handleInputChange}
             />
         ))}
@@ -236,13 +248,15 @@ const WorkSafetyForm = () => {
 
         <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.type === 'environment' && !key.startsWith('other_environment.title'))
+          .filter(([key, value]) => value.risk_type === 'environment' && !key.startsWith('other_environment.title'))
           .map(([key, value]) => (
           <RiskNote
             key={key}
-            title={t(`${key}.title`, { ns: 'formFields' })}
+            title={key}
+            renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
             initialDescription={value.description}
             initialStatus={value.status}
+            riskType={value.risk_type}
             onChange={handleInputChange}
           />
         ))}

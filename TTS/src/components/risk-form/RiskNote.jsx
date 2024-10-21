@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import RiskModal from './RiskModal';
 
-const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
+const RiskNote = ({ title, renderTitle, initialStatus, initialDescription, riskType, onChange }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [status, setStatus] = useState(initialStatus);
   const [description, setDescription] = useState(initialDescription);
@@ -21,6 +21,7 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
     setDescription(newDescription);
     onChange(title, 'description', newDescription);
     onChange(title, 'status', 'checked');
+    onChange(title, 'risk_type', riskType);
   };
 
   const handleEditPress = () => {
@@ -35,12 +36,13 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
     setDescription('');
     onChange(title, 'description', '');
     onChange(title, 'status', '');
+    onChange(title, 'risk_type', riskType);
     setModalVisible(false);
   };
 
   return (
     <View>
-      <Text style={styles.riskNote}>{title}</Text>
+      <Text style={styles.riskNote}>{renderTitle ? renderTitle(title) : title}</Text>
       {status === 'checked' ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
@@ -65,28 +67,30 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
             <Text>✏️</Text>
           </TouchableOpacity>
         </View>
-  ) : (
-    <View style={styles.buttonGroup}>
-      <TouchableOpacity
-        style={[styles.button, { borderColor: 'grey' }]}
-        onPress={() => {
-          setStatus('notRelevant');
-          onChange(title, 'status', 'notRelevant');
-        }}
-      >
-        <Text style={styles.buttonText}>{t('risknote.notRelevant')}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.button, { borderColor: '#FF8C00' }]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.buttonText}>{t('risknote.toBeNoted')}</Text>
-      </TouchableOpacity>
-    </View>
-      )}
+      ) : (
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+            style={[styles.button, { borderColor: 'grey' }]}
+            onPress={() => {
+              setStatus('notRelevant');
+              onChange(title, 'status', 'notRelevant');
+              onChange(title, 'risk_type', riskType);
+            }}
+          >
+            <Text style={styles.buttonText}>{t('risknote.notRelevant')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { borderColor: '#FF8C00' }]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>{t('risknote.toBeNoted')}</Text>
+          </TouchableOpacity>
+        </View>
+          )}
       {modalVisible && (
         <RiskModal
           title={title}
+          renderTitle={renderTitle}
           visible={modalVisible}
           initialDescription={description}
           onSubmit={handleModalSubmit}

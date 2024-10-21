@@ -37,6 +37,10 @@ jest.mock('react-i18next', () => ({
         'projectsurveylistcontainer.daysAgo_other': '{{count}} päivää sitten',
         'projectsurveylistcontainer.useTemplate': 'Käytä pohjana',
         'projectsurveylistcontainer.noSurveys': 'Ei kartoituksia saatavilla.',
+        'riskform.Type 1': 'Tyyppi 1',
+        'riskform.Task 1': 'Tehtävä 1',
+        'riskform.Type 2': 'Tyyppi 2',
+        'riskform.Task 2': 'Tehtävä 2',
       };
 
       let translation = translations[key] || key;
@@ -96,8 +100,8 @@ describe('ProjectSurveyListContainer Component', () => {
       </ProjectSurveyContext.Provider>
     );
 
-    expect(getByText('Type 1: Task 1')).toBeTruthy();
-    expect(getByText('Type 2: Task 2')).toBeTruthy();
+    expect(getByText('Tyyppi 1: Tehtävä 1')).toBeTruthy();
+    expect(getByText('Tyyppi 2: Tehtävä 2')).toBeTruthy();
   });
 
   it('displays "X tuntia sitten" when the survey was created less than 24 hours ago', () => {

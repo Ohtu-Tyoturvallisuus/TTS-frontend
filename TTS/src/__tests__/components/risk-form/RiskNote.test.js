@@ -33,16 +33,26 @@ describe('RiskNote Component', () => {
     initialDescription: ''
   };
 
+  const renderTitle = (key) => {
+    return `Translated: ${key}`; // Mocking the renderTitle function
+  };
+
   it('displays the risk note and buttons', () => {
-    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
+    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} renderTitle={renderTitle} />);
     
-    expect(getByText('Test Risk Note')).toBeTruthy();
+    expect(getByText('Translated: Test Risk Note')).toBeTruthy();
     expect(getByText('Huomioitavaa')).toBeTruthy();
     expect(getByText('Ei koske')).toBeTruthy();
   });
 
+  it('renders the title when renderTitle is not provided', () => {
+    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
+    
+    expect(getByText('Test Risk Note')).toBeTruthy();
+  });
+
   it('should submit new description and status as "Kunnossa"', () => {
-    const { getByText, getByPlaceholderText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
+    const { getByText, getByPlaceholderText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} renderTitle={renderTitle} />);
     
     fireEvent.press(getByText('Huomioitavaa'));
     const descriptionInput = getByPlaceholderText('Syötä lisätietoja');
@@ -54,7 +64,7 @@ describe('RiskNote Component', () => {
   });
 
   it('displays "Ei koske" message when "Ei koske" is pressed', () => {
-    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
+    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} renderTitle={renderTitle} />);
     
     fireEvent.press(getByText('Ei koske'));
     expect(mockOnChange).toHaveBeenCalledWith('Test Risk Note', 'status', 'notRelevant');
@@ -62,7 +72,7 @@ describe('RiskNote Component', () => {
   });
 
   it('should open the modal in edit mode and reset risk', () => {
-    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
+    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} renderTitle={renderTitle} />);
     
     fireEvent.press(getByText('Ei koske'));
     fireEvent.press(getByText('✏️'));
@@ -76,7 +86,7 @@ describe('RiskNote Component', () => {
   });
 
   it('should close modal when cancel is pressed', () => {
-    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
+    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} renderTitle={renderTitle} />);
     
     fireEvent.press(getByText('Ei koske'));
     fireEvent.press(getByText('✏️'));
@@ -86,7 +96,7 @@ describe('RiskNote Component', () => {
   });
 
   it('can edit after submitting', () => {
-    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} />);
+    const { getByText } = render(<RiskNote {...mockRisk} onChange={mockOnChange} renderTitle={renderTitle} />);
     
     fireEvent.press(getByText('Ei koske'));
     fireEvent.press(getByText('✏️')); 
