@@ -3,7 +3,7 @@ import 'dotenv/config'
 export default {
   name: "HazardHunt",
   slug: "HazardHunt",
-  version: "1.0.0",
+  version: "1.0.1",
   owner: "telinekataja",
   orientation: "portrait",
   icon: "./assets/icon.png",
@@ -27,7 +27,11 @@ export default {
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#ffffff"
-    }
+    },
+    package: "com.HazardHunt",
+    permissions: [
+      "RECORD_AUDIO"
+    ]
   },
   web: {
     favicon: "./assets/favicon.png"

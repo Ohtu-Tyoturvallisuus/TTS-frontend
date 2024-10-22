@@ -1,6 +1,6 @@
 {
   "name": "tts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -11,8 +11,12 @@
     "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern --fix",
     "eas": "npx eas-cli",
     "build:ios:production": "npx dotenv -- npx eas-cli build --platform ios --profile production",
+    "build:android:production": "npx dotenv -- npx eas-cli build --platform android --profile production",
+    "build:all:production": "npx dotenv -- npx eas-cli build --platform all --profile production",
     "submit:ios": "npx eas-cli submit --platform ios --latest --profile production",
-    "update:ios": "npx eas-cli update --branch production"
+    "submit:android": "npx eas-cli submit --platform android --latest --profile production",
+    "update:ios": "npx eas-cli update --branch production",
+    "update:android": "npx eas-cli update --branch production"
   },
   "jest": {
     "preset": "jest-expo",
