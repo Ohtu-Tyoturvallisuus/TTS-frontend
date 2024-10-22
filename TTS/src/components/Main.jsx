@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    flex: 10
+    flex: 1,
   },
   modalContainer: {
     alignItems: 'center',
