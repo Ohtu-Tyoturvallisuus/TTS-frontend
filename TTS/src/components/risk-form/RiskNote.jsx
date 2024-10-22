@@ -123,8 +123,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     letterSpacing: 1,
     textAlign: 'center',
-    fontSize: 14,
-    letterSpacing: 1,
   },
   choiceDisplay: {
     alignItems: 'center',
