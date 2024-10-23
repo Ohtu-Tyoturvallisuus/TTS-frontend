@@ -2,18 +2,16 @@ import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useTranslation } from 'react-i18next';
-
-import useFetchSurveyData from '@hooks/useFetchSurveyData';
+import useMergedSurveyData from '@hooks/useMergedSurveyData';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import { postNewSurvey, postRiskNotes } from '@services/apiService';
 import RiskNote from './RiskNote';
 import ButtonGroup from '@components/buttons/ButtonGroup';
 import CloseButton from '@components/buttons/CloseButton';
 import SuccessAlert from '@components/SuccessAlert';
-import enFormFields from '@lang/locales/en/formFields.json';
-import fiFormFields from '@lang/locales/fi/formFields.json';
+import useFormFields from '@hooks/useFormFields';
 
-const WorkSafetyForm = () => {
+const RiskForm = () => {
   const { 
     selectedProject: project, 
     setSelectedProject, 
@@ -21,84 +19,29 @@ const WorkSafetyForm = () => {
     setSelectedSurveyURL 
   } = useContext(ProjectSurveyContext);
   const navigate = useNavigate();
+  const { t } = useTranslation(['translation', 'formFields']);
   const [ task, setTask ] = useState('');
   const [ scaffoldType, setScaffoldType ] = useState('');
-  const [ taskDesc, setSubject ] = useState('');
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-
-  const { t, i18n } = useTranslation(['translation', 'formFields']);
-
-  const getFormFieldsByLanguage = () => {
-    switch (i18n.language) {
-      case 'fi':
-        return fiFormFields;
-      case 'en':
-      default:
-        return enFormFields; // Fallback to English if no match
-    }
-  };
-
-  const createInitialFormData = (formFields) => {
-    const initialData = {};
-    Object.keys(formFields).forEach((key) => {
-      initialData[key] = {
-        description: '',
-        status: '',
-        risk_type: t(`${key}.risk_type`, { ns: 'formFields' }),
-      };
-    });
-    return initialData;
-  };
-
-  const formFields = getFormFieldsByLanguage();
-
-  // Default risk objects for the form
-  const [formData, setFormData] = useState(createInitialFormData(formFields));
+  const [ taskDesc, setTaskDesc ] = useState('');
+  const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const { initialFormData } = useFormFields();
+  const [ formData, setFormData ] = useState(initialFormData);
+  // Fetch and merge survey data if prevSurveyURL is defined
+  const { mergedFormData, taskDetails, error, isMerged } = useMergedSurveyData(prevSurveyURL, initialFormData);
 
   useEffect(() => {
-    const updatedFormFields = getFormFieldsByLanguage();
-    const updatedFormData = createInitialFormData(updatedFormFields);
-
-    // Preserve existing input in formData (keep descriptions/status that have been filled)
-    const mergedFormData = Object.keys(updatedFormData).reduce((acc, key) => {
-      acc[key] = {
-        ...updatedFormData[key],
-        description: formData[key]?.description || '',
-        status: formData[key]?.status || '',
-        risk_type: formData[key]?.risk_type || ''
-      };
-      return acc;
-    }, {});
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      ...mergedFormData,
-    }));
-  }, [i18n.language]);
-
-  //Fetches previous survey's data from API, if survey is in context
-  const { surveyData, error } = useFetchSurveyData(prevSurveyURL);
-
-  // Merges previous surveys descriptions into formData
-  useEffect(() => {
-    if (surveyData) {
-      setTask(surveyData.task);
-      setScaffoldType(surveyData.scaffold_type);
-      setSubject(surveyData.description);
-      const updatedFormData = { ...formData };
-      
-      // Update descriptions for each risk note
-      surveyData.risk_notes.forEach(note => {
-        if (updatedFormData[note.note]) {
-          updatedFormData[note.note].description = note.description || '';
-          updatedFormData[note.note].status = note.status || '';
-        }
-      });
-      console.log('Updated form data:', JSON.stringify(updatedFormData, null, 2));
-      setFormData(updatedFormData);
+    if (isMerged) {
+      const { task, scaffoldType, taskDesc } = taskDetails;
+      setTask(task);
+      setScaffoldType(scaffoldType);
+      setTaskDesc(taskDesc);
+      setFormData(mergedFormData);
     }
-  }, [surveyData]);
+  }, [isMerged]);
 
+  if (error) {
+    alert(t('riskform.errorFetchingData'));
+  }
   const handleInputChange = (title, field, value) => {
     setFormData(prevFormData => {
       console.log('Changed', title, field, 'to', value);
@@ -124,12 +67,12 @@ const WorkSafetyForm = () => {
   // ------------------------------------------------
   // TODO: Implement form submit checks
   // ------------------------------------------------
-    const surveyData = {
+    const taskInfo = {
       task: task,
       description: taskDesc,
       scaffold_type: scaffoldType,
     };
-    const validatedSurveyData = validateFields(surveyData);
+    const validatedSurveyData = validateFields(taskInfo);
     
     // POST a new survey instance
     postNewSurvey(project.id, validatedSurveyData.description, validatedSurveyData.task, validatedSurveyData.scaffold_type)
@@ -150,8 +93,6 @@ const WorkSafetyForm = () => {
           risk_type: risk_type // Use existing risk type
         };
       });
-
-      console.log('Risk notes:', JSON.stringify(riskNotes, null, 2));
 
       // POST risk notes to the just made survey
       return postRiskNotes(surveyId, riskNotes);
@@ -211,7 +152,7 @@ const WorkSafetyForm = () => {
             <TextInput
               style={styles.input}
               value={taskDesc}
-              onChangeText={(value) => setSubject(value)}
+              onChangeText={(value) => setTaskDesc(value)}
               multiline={true}
               textAlignVertical="top"
             />
@@ -240,7 +181,7 @@ const WorkSafetyForm = () => {
           <TextInput
             style={styles.input}
             value={formData['other_scaffolding']?.description}
-            onChangeText={(value) => handleInputChange(t('other_scaffolding.title', { ns: 'formFields' }), 'description', value)}
+            onChangeText={(value) => handleInputChange('other_scaffolding', 'description', value)}
             multiline={true}
             textAlignVertical="top"
           />
@@ -266,7 +207,7 @@ const WorkSafetyForm = () => {
         <TextInput
           style={styles.input}
           value={formData['other_environment']?.description}
-          onChangeText={(value) => handleInputChange(t('other_environment.title', { ns: 'formFields' }), 'description', value)}
+          onChangeText={(value) => handleInputChange('other_environment', 'description', value)}
           multiline={true}
           textAlignVertical="top"
         />
@@ -348,4 +289,4 @@ textAlign: 'center',
 },
 });
 
-export default WorkSafetyForm;
+export default RiskForm;
