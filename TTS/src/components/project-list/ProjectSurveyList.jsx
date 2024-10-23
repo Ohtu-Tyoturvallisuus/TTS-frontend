@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import Loading from '@components/Loading';
 
 export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
   const { t } = useTranslation();
-
+ 
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
     const now = new Date();
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
+    width: '100%',
   },
   surveyDate: {
     color: '#555',
@@ -141,9 +142,11 @@ const styles = StyleSheet.create({
   surveyInfo: {
     flexDirection: 'column',
     justifyContent: 'space-between',
+    flex: 1,
   },
   surveyTitle: {
     fontWeight: 'bold',
+    flex: 1,
   },
 });
 
