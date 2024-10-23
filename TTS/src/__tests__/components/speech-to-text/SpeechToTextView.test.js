@@ -5,7 +5,7 @@ import { Audio } from 'expo-av';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
 jest.mock('expo-av', () => {
-  const ActualAudio = jest.requireActual('expo-av').Audio; // Get the actual Audio object
+  const ActualAudio = jest.requireActual('expo-av').Audio;
   const mockRecording = {
     prepareToRecordAsync: jest.fn(),
     startAsync: jest.fn(),
@@ -19,7 +19,7 @@ jest.mock('expo-av', () => {
 
   return {
     Audio: {
-      ...ActualAudio, // Spread the actual Audio methods
+      ...ActualAudio,
       requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
       setAudioModeAsync: jest.fn(),
       Recording,
@@ -99,7 +99,6 @@ describe('SpeechToTextView Component', () => {
   beforeEach(() => {
     mockConsole();
     jest.useFakeTimers();
-    
   });
 
   afterEach(() => {
