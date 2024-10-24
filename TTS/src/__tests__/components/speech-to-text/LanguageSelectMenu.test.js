@@ -2,6 +2,24 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import LanguageSelectMenu from '@components/speech-to-text/LanguageSelectMenu';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'languageselectmenu.selectRecordingLanguage': 'Valitse tunnistettava kieli',
+        'languageselectmenu.selectTranslationLanguages': 'Valitse kielet, joille haluat kääntää',
+        'languageselectmenu.selectLanguage': 'Valitse kieli',
+        'languageselectmenu.selectLanguages': 'Valitse kielet',
+        'languageselectmenu.selectedLanguage': 'Valittu kieli',
+        'languageselectmenu.selectedLanguages': 'Valitut kielet',
+        'languageselectmenu.searchLanguages': 'Hae kieliä...',
+        'closebutton.close': 'Sulje'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 describe('LanguageSelectMenu', () => {
   it('calls setRecordingLanguage with the correct language when a language is selected', async () => {
     const mockSetRecordingLanguage = jest.fn();
@@ -23,6 +41,7 @@ describe('LanguageSelectMenu', () => {
 
     expect(mockSetRecordingLanguage).toHaveBeenCalledWith('fi-FI');
   }, 10000);
+
   it('removes a selected language when clicked again', async () => {
     const mockSetRecordingLanguage = jest.fn();
     
@@ -45,6 +64,7 @@ describe('LanguageSelectMenu', () => {
 
     expect(mockSetRecordingLanguage).toHaveBeenCalledWith('');
   });
+
   it('adds another language to the selected languages list', async () => {
     const mockSetTranslationLanguages = jest.fn();
     
@@ -60,7 +80,7 @@ describe('LanguageSelectMenu', () => {
     const suomiOption = await findByText('Suomi');
     fireEvent.press(suomiOption);
 
-    const englantiOption = await findByText('Englanti');
+    const englantiOption = await findByText('English');
     fireEvent.press(englantiOption);
 
     const closeButton = getByText('Sulje');

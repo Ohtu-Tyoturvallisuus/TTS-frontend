@@ -23,6 +23,18 @@ jest.mock('expo-constants', () => ({
   }
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'signin.confirmLogin': 'Vahvista kirjautuminen',
+        'signin.username': 'Käyttäjänimi'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 console.error = jest.fn();
 
 describe('Sign in', () => {
@@ -44,7 +56,7 @@ describe('Sign in', () => {
     screen.debug();
 
     expect(screen.getByPlaceholderText('Käyttäjänimi')).toBeDefined();
-    expect(screen.getByText('Kirjaudu sisään')).toBeDefined();
+    expect(screen.getByText('Vahvista kirjautuminen')).toBeDefined();
   });
 
   it('calls onSubmit and saves username when the form is submitted', async () => {
@@ -63,7 +75,7 @@ describe('Sign in', () => {
     );
 
     const input = screen.getByPlaceholderText('Käyttäjänimi');
-    const button = screen.getByText('Kirjaudu sisään');
+    const button = screen.getByText('Vahvista kirjautuminen');
 
     fireEvent.changeText(input, 'testuser');
     fireEvent.press(button);
@@ -89,7 +101,7 @@ describe('Sign in', () => {
       </NativeRouter>
     );
 
-    fireEvent.press(screen.getByText('Kirjaudu sisään'));
+    fireEvent.press(screen.getByText('Vahvista kirjautuminen'));
 
     await waitFor(() => {
       expect(screen.getByText('Syötä käyttäjänimi')).toBeDefined();
@@ -111,7 +123,7 @@ describe('Sign in', () => {
     );
 
     const input = screen.getByPlaceholderText('Käyttäjänimi');
-    const button = screen.getByText('Kirjaudu sisään');
+    const button = screen.getByText('Vahvista kirjautuminen');
 
     fireEvent.changeText(input, 'testuser');
     fireEvent.press(button);

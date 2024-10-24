@@ -11,11 +11,12 @@ module.exports = function(api) {
             '@components': './src/components',
             '@contexts': './src/contexts',
             '@hooks': './src/hooks',
+            '@lang': './src/lang',
             '@services': './src/services',
           },
         },
       ],
-      'nativewind/babel',
+      'nativewind/babel'
     ],
   };
 };

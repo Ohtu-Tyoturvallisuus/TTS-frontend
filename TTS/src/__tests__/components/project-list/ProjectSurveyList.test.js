@@ -30,9 +30,26 @@ jest.mock('@hooks/useFetchSurveys', () => ({
   })),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'projectsurveylist.loadingSurveys': 'Ladataan kartoituksia...',
+        'projectsurveylistcontainer.noSurveys': 'Ei kartoituksia saatavilla.',
+        'loading.error': 'Virhe lataamisessa'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 describe('ProjectSurveyList Component', () => {
   const mockSetSelectedSurveyURL = jest.fn();
   const mockNavigate = jest.fn();
+  const mockProjectContext = {
+    selectedProject: { id: 123, formattedName: 'Test Project' },
+    setSelectedSurveyURL: mockSetSelectedSurveyURL,
+  };
 
   beforeEach(() => {
     useNavigate.mockReturnValue(mockNavigate);
@@ -42,12 +59,7 @@ describe('ProjectSurveyList Component', () => {
     jest.clearAllMocks();
   });
 
-  it('calls setSelectedSurveyURL and navigate when a survey is selected', () => {
-    const mockProjectContext = {
-      selectedProject: { id: 123, formattedName: 'Test Project' },
-      setSelectedSurveyURL: mockSetSelectedSurveyURL,
-    };
-
+  it('calls setSelectedSurveyURL and navigate when a survey is selected', () => {   
     const { getByTestId } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
         <ProjectSurveyList />
@@ -57,16 +69,11 @@ describe('ProjectSurveyList Component', () => {
     fireEvent.press(getByTestId('use-survey-1'));
 
     expect(mockSetSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('worksafetyform');
+    expect(mockNavigate).toHaveBeenCalledWith('riskform');
   });
 
   it('displays message when there are no surveys', () => {
     require('@hooks/useFetchSurveys').default.mockReturnValue({});
-
-    const mockProjectContext = {
-      selectedProject: { id: 123, formattedName: 'Test Project' },
-      setSelectedSurveyURL: mockSetSelectedSurveyURL,
-    };
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
@@ -75,5 +82,37 @@ describe('ProjectSurveyList Component', () => {
     );
 
     expect(getByText('Ei kartoituksia saatavilla.')).toBeTruthy();
+  });
+
+  it('displays loading state', () => {
+    require('@hooks/useFetchSurveys').default.mockReturnValue({
+      surveys: [],
+      loading: true,
+      error: null,
+    });
+
+    const { getByText } = render(
+      <ProjectSurveyContext.Provider value={mockProjectContext}>
+        <ProjectSurveyList />
+      </ProjectSurveyContext.Provider>
+    );
+
+    expect(getByText('Ladataan kartoituksia...')).toBeTruthy();
+  });
+
+  it('displays error state', () => {
+    require('@hooks/useFetchSurveys').default.mockReturnValue({
+      surveys: [],
+      loading: false,
+      error: new Error('Something went wrong'),
+    });
+
+    const { getByText } = render(
+      <ProjectSurveyContext.Provider value={mockProjectContext}>
+        <ProjectSurveyList />
+      </ProjectSurveyContext.Provider>
+    );
+
+    expect(getByText('Virhe lataamisessa')).toBeTruthy();
   });
 });

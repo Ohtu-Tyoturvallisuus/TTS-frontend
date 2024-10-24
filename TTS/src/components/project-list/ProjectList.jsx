@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
 import useFetchProjects from '@hooks/useFetchProjects';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import ProjectModal from '@components/project-list/ProjectModal';
@@ -11,13 +13,14 @@ const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
   const [searchFilter, setSearchFilter] = useState('');
-  const [filteredProjects, setFilteredProjects] = useState([]);  
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const { t } = useTranslation();
   const { projects, loading, error } = useFetchProjects();
   console.log('Project example:', projects[1]);
   
   const [areaFilter, setAreaFilter] = useState([]);
   const projectAreas = [
-    ["--Valitse kaikki--", ""],
+    [t('projectlist.chooseAll'), ""],
     ["Hallinto", "AL90"],
     ["Etelä-Suomi", "AL31"],
     ["Sisä-Suomi", "AL41"],
@@ -54,7 +57,7 @@ const ProjectsList = () => {
       <Loading 
         loading={loading} 
         error={error} 
-        title="Ladataan projekteja" 
+        title={t('projectlist.loading')}
       />
     );
   }
@@ -83,11 +86,11 @@ const ProjectsList = () => {
         keyExtractor={project => project.id.toString()}
         ListHeaderComponent={
           <>
-            <Text style={styles.title}>Projektit</Text>
+            <Text style={styles.title}>{t('projectlist.projects')}</Text>
             <DropdownOptions 
               onSelect={setAreaFilter} 
               options={projectAreas}
-              placeholderText='Valitse alue'
+              placeholderText={t('projectlist.chooseArea')}
               />
             <SearchBar setFilter={setSearchFilter} />
           </>

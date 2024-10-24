@@ -8,6 +8,18 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   removeItem: jest.fn(),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'appbar.signOut': 'Kirjaudu ulos',
+        'appbar.signIn': 'Kirjaudu sisään',
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 // Mock console.error to verify error handling
 console.error = jest.fn();
 

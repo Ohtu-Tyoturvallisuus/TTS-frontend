@@ -4,17 +4,53 @@ import { Audio } from 'expo-av';
 
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
-jest.mock('expo-av', () => ({
-  Audio: {
-    requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
-    setAudioModeAsync: jest.fn(),
-    Recording: jest.fn(() => ({
-      prepareToRecordAsync: jest.fn(),
-      startAsync: jest.fn(),
-      stopAndUnloadAsync: jest.fn(),
-      getURI: jest.fn(() => 'mock-uri'),
-    })),
-  },
+jest.mock('expo-av', () => {
+  const ActualAudio = jest.requireActual('expo-av').Audio;
+  const mockRecording = {
+    prepareToRecordAsync: jest.fn(),
+    startAsync: jest.fn(),
+    stopAndUnloadAsync: jest.fn(),
+    getURI: jest.fn(() => 'mock-uri'),
+  };
+
+  const Recording = jest.fn(() => {
+    return mockRecording;
+  });
+
+  return {
+    Audio: {
+      ...ActualAudio,
+      requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
+      setAudioModeAsync: jest.fn(),
+      Recording,
+    },
+  };
+});
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key, options) => {
+      const translations = {
+        'speechtotext.maxLength': 'Maksimipituus',
+        'speechtotext.seconds_one': 'yksi sekunti',
+        'speechtotext.seconds_other': '{{count}} sekuntia',
+        'speechtotext.stop': 'Lopeta',
+        'speechtotext.start': 'Aloita puheentunnistus'
+      };
+      let translation = translations[key] || key;
+
+      if (options && options.count !== undefined) {
+        if (options.count === 1) {
+          translation = translations[`${key}_one`] || translation;
+        } else {
+          translation = translations[`${key}_other`] || translation;
+        }
+        translation = translation.replace('{{count}}', options.count);
+      }
+
+      return translation;
+    },
+  }),
 }));
 
 jest.mock('@components/speech-to-text/LanguageSelectMenu', () => {
@@ -136,6 +172,31 @@ describe('SpeechToTextView Component', () => {
 
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith('Failed to start recording', expect.any(Error));
+    });
+  });
+
+  it('catches error when failing to upload file', async () => {
+    global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Upload failed')));
+
+    const { getByText, getAllByText } = render(<SpeechToTextView />);
+
+    startRecording(getByText, getAllByText);
+    await stopRecording(getByText);
+
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledWith('Failed to upload file:', expect.any(Error));
+    });
+  });
+
+  it('catches error when permission is denied', async () => {
+    Audio.requestPermissionsAsync.mockResolvedValueOnce({ status: 'denied' });
+
+    const { getByText, getAllByText } = render(<SpeechToTextView />);
+
+    startRecording(getByText, getAllByText);
+
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledWith('Permission to access audio was denied');
     });
   });
 });

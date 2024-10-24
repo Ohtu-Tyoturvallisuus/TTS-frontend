@@ -25,6 +25,42 @@ jest.mock('@hooks/useFetchSurveys', () => ({
   })),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key, options) => {
+      const translations = {
+        'projectsurveylistcontainer.minutesAgo_one': 'yksi minuutti sitten',
+        'projectsurveylistcontainer.minutesAgo_other': '{{count}} minuuttia sitten',
+        'projectsurveylistcontainer.hoursAgo_one': 'yksi tunti sitten',
+        'projectsurveylistcontainer.hoursAgo_other': '{{count}} tuntia sitten',
+        'projectsurveylistcontainer.daysAgo_one': 'yksi päivä sitten',
+        'projectsurveylistcontainer.daysAgo_other': '{{count}} päivää sitten',
+        'projectsurveylistcontainer.useTemplate': 'Käytä pohjana',
+        'projectsurveylistcontainer.noSurveys': 'Ei kartoituksia saatavilla.',
+        'riskform.Type 1': 'Tyyppi 1',
+        'riskform.Task 1': 'Tehtävä 1',
+        'riskform.Type 2': 'Tyyppi 2',
+        'riskform.Task 2': 'Tehtävä 2',
+      };
+
+      let translation = translations[key] || key;
+
+      if (options && options.count !== undefined) {
+        if (options.count === 1) {
+          translation = translations[`${key}_one`] || translation;
+        } else {
+          translation = translations[`${key}_other`] || translation;
+        }
+        translation = translation.replace('{{count}}', options.count);
+      }
+
+      return translation;
+    },
+  }),
+}));
+
+
+
 describe('ProjectSurveyListContainer Component', () => {
   const mockProjectContext = {
     setSelectedSurveyURL: jest.fn(),
@@ -64,8 +100,8 @@ describe('ProjectSurveyListContainer Component', () => {
       </ProjectSurveyContext.Provider>
     );
 
-    expect(getByText('Type 1: Task 1')).toBeTruthy();
-    expect(getByText('Type 2: Task 2')).toBeTruthy();
+    expect(getByText('Tyyppi 1: Tehtävä 1')).toBeTruthy();
+    expect(getByText('Tyyppi 2: Tehtävä 2')).toBeTruthy();
   });
 
   it('displays "X tuntia sitten" when the survey was created less than 24 hours ago', () => {
@@ -197,6 +233,6 @@ describe('ProjectSurveyListContainer Component', () => {
     fireEvent.press(getByText('Käytä pohjana'));
 
     expect(mockProjectContext.setSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('worksafetyform');
+    expect(mockNavigate).toHaveBeenCalledWith('riskform');
   });
 });

@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
 const RiskModal = ({ 
-  title, 
+  title,
+  renderTitle,
   visible, 
   onClose, 
   initialDescription, 
@@ -14,6 +17,11 @@ const RiskModal = ({
   const [useSpeech, setUseSpeech] = useState(false);
   const [description, setDescription] = useState(initialDescription);
   const [buttonHidden, setButtonHidden] = useState(false);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    setDescription(initialDescription);
+  }, [initialDescription]);
 
   return (
     <Modal
@@ -25,11 +33,11 @@ const RiskModal = ({
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <ScrollView>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
             
             <TextInput
               style={styles.input}
-              placeholder="Syötä lisätietoja"
+              placeholder={t('riskmodal.extraInfo')}
               value={description}
               onChangeText={setDescription}
               multiline={true}
@@ -44,7 +52,7 @@ const RiskModal = ({
                   setButtonHidden(true);
                 }}
               >
-                <Text style={styles.buttonText}>Syötä puheella</Text>
+                <Text style={styles.buttonText}>{t('riskmodal.withSpeech')}</Text>
               </TouchableOpacity>
             )}
             {useSpeech && (
@@ -59,14 +67,14 @@ const RiskModal = ({
                 style={[styles.button, styles.cancelButton]}
                 onPress={onClose}
               >
-                <Text style={styles.buttonText}>Peruuta</Text>
+                <Text style={styles.buttonText}>{t('riskmodal.cancel')}</Text>
               </TouchableOpacity>
               {isModification && (
                 <TouchableOpacity
                   style={styles.resetButton}
                   onPress={onReset}
                 >
-                  <Text style={styles.resetButtonText}>Resetoi</Text>
+                  <Text style={styles.resetButtonText}>{t('riskmodal.reset')}</Text>
                 </TouchableOpacity>
               )}
               <TouchableOpacity
@@ -81,7 +89,7 @@ const RiskModal = ({
                 }
                 disabled={description === ''}
               >
-                <Text style={styles.buttonText}>Kunnossa</Text>
+                <Text style={styles.buttonText}>{t('riskmodal.checked')}</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>

@@ -1,0 +1,11 @@
+{
+  "countries": [
+    { "label_native": "Suomi", "value": "fi", "flagCode": "FI" },
+    { "label_native": "Svenska", "value": "sv", "flagCode": "SE" },
+    { "label_native": "English", "value": "en", "flagCode": "GB" },
+    { "label_native": "Eesti", "value": "et", "flagCode": "EE" },
+    { "label_native": "Latvijas", "value": "lv", "flagCode": "LV" },
+    { "label_native": "Polski", "value": "pl", "flagCode": "PL" },
+    { "label_native": "Русский", "value": "ru", "flagCode": "RU" }
+  ]
+}

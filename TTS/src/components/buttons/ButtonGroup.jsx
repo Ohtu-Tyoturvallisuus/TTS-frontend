@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ButtonGroup = ({ options = [], selectedValue, onChange }) => {
+const ButtonGroup = ({ options = [], selectedValue, onChange, renderOption }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {options.map((option, index) => (
@@ -14,7 +14,9 @@ const ButtonGroup = ({ options = [], selectedValue, onChange }) => {
             selectedValue === option && styles.selectedButton,
           ]}
         >
-          <Text style={styles.buttonText}>{option}</Text>
+          <Text style={styles.buttonText}>
+            {renderOption ? renderOption(option) : option}
+          </Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -29,6 +31,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 5,
+    minHeight: 48,
+    minWidth: 48,
     paddingVertical: 10,
     textAlign: 'center',
   },

@@ -1,8 +1,25 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RiskModal from '@components/risk-form/RiskModal'; 
+import RiskModal from '@components/risk-form/RiskModal';
 
-describe('<RiskModal />', () => {
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'riskmodal.extraInfo': 'Syötä lisätietoja',
+        'riskmodal.withSpeech': 'Syötä puheella',
+        'riskmodal.cancel': 'Peruuta',
+        'riskmodal.reset': 'Resetoi',
+        'riskmodal.checked': 'Kunnossa',
+        'languageselectmenu.selectRecordingLanguage': 'Valitse tunnistettava kieli',
+        'languageselectmenu.selectTranslationLanguages': 'Valitse kielet, joille haluat kääntää'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
+describe('RiskModal Component', () => {
   const mockOnSubmit = jest.fn();
   const mockOnClose = jest.fn();
   const mockTitle = "Test Modal Title";

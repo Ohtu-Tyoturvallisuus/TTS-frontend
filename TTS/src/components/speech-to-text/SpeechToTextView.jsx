@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Audio } from 'expo-av';
-import LanguageSelectMenu from './LanguageSelectMenu'
 import CountryFlag from 'react-native-country-flag';
+import { Audio } from 'expo-av';
+import { useTranslation } from 'react-i18next';
 
+import LanguageSelectMenu from './LanguageSelectMenu'
+import countriesData from '@lang/locales/languages.json';
 
 const SpeechToTextView = ({ setDescription=null, translation=true}) => {
   const [recording, setRecording] = useState(null);
@@ -11,16 +13,12 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
   const [recordingLanguage, setRecordingLanguage] = useState('')
   const [translationLanguages, setTranslationLanguages] = useState([])
   const [translations, setTranslations] = useState({})
+  const { t } = useTranslation();
   const timeout = 60000
-  const languageToFlagMap = {
-    'fi': 'FI',
-    'sv': 'SE',
-    'en': 'GB',
-    'et': 'EE',
-    'lv': 'LV',
-    'pl': 'PL',
-    'ru': 'RU',
-  }
+  const languageToFlagMap = countriesData.countries.reduce((map, country) => {
+    map[country.value] = country.flagCode;
+    return map;
+  }, {});
   const recordingLanguageFlagCode = recordingLanguage.slice(-2);
 
   let recordingTimeout;
@@ -132,14 +130,14 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
       )}
       {recordingLanguage !== '' && (
         <View>
-          <Text>(Maksimipituus: {timeout/1000} sekuntia.)</Text>
+          <Text>({t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout/1000 })}.)</Text>
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
               style={[styles.recordButton, recording ? styles.stopButton : styles.startButton]}
               onPress={recording ? () => stopRecording(recording) : startRecording}
             >
               <Text style={styles.buttonText}>
-                {recording ? 'Lopeta' : 'Aloita puheentunnistus'}
+                {recording ? t('speechtotext.stop') : t('speechtotext.start')}
               </Text>
             </TouchableOpacity>
           </View>
