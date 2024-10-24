@@ -8,7 +8,7 @@ const RiskFormButton = ({ title, buttonStyle, textStyle }) => {
     <View>
       <TouchableOpacity 
         style={[styles.button, buttonStyle]}
-        onPress={() => navigate('worksafetyform')}
+        onPress={() => navigate('riskform')}
       >
         <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       </TouchableOpacity>

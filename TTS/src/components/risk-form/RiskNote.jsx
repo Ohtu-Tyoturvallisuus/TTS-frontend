@@ -41,7 +41,7 @@ const RiskNote = ({ title, renderTitle, initialStatus, initialDescription, riskT
   };
 
   return (
-    <View>
+    <View testID={`risknote-${title}`}>
       <Text style={styles.riskNote}>{renderTitle ? renderTitle(title) : title}</Text>
       {status === 'checked' ? (
         <View style={styles.choiceDisplay}>

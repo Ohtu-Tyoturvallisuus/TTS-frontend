@@ -230,63 +230,63 @@ const RiskForm = () => {
 };
 
 const styles = StyleSheet.create({
-button: {
-alignItems: 'center',
-borderRadius: 5,
-justifyContent: 'center',
-marginVertical: 10,
-padding: 15,
-},
-buttonText: {
-color: '#fff',
-fontSize: 16,
-fontWeight: 'bold',
-},
-container: {
-alignItems: 'center',
-justifyContent: 'center',
-},
-infoContainer: {
-marginBottom: 20,
-},
-input: {
-borderColor: '#ccc',
-borderRadius: 5,
-borderWidth: 1,
-flex: 1,
-height: 100,
-padding: 10,
-},
-inputContainer: {
-marginBottom: 20,
-},
-label: {
-fontSize: 16,
-fontWeight: 'bold',
-paddingVertical: 8,
-},
-scrollContainer: {
-backgroundColor: '#fff',
-flexGrow: 1,
-padding: 20,
-},
-sectionTitle: {
-borderBottomColor: '#ccc',
-borderBottomWidth: 1,
-fontSize: 20,
-fontWeight: 'bold',
-paddingBottom: 5,
-textAlign: 'center',
-},
-submitButton: {
-backgroundColor: 'green',
-},
-title: {
-fontSize: 24,
-fontWeight: 'bold',
-paddingBottom: 20,
-textAlign: 'center',
-},
+  button: {
+    alignItems: 'center',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: 10,
+    padding: 15,
+  },
+    buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+    container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+    infoContainer: {
+    marginBottom: 20,
+  },
+    input: {
+    borderColor: '#ccc',
+    borderRadius: 5,
+    borderWidth: 1,
+    flex: 1,
+    height: 100,
+    padding: 10,
+  },
+    inputContainer: {
+    marginBottom: 20,
+  },
+    label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingVertical: 8,
+  },
+    scrollContainer: {
+    backgroundColor: '#fff',
+    flexGrow: 1,
+    padding: 20,
+  },
+    sectionTitle: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingBottom: 5,
+    textAlign: 'center',
+  },
+    submitButton: {
+    backgroundColor: 'green',
+  },
+    title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    paddingBottom: 20,
+    textAlign: 'center',
+  },
 });
 
 export default RiskForm;

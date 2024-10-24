@@ -24,6 +24,6 @@ describe('RiskFormButton Component', () => {
 
     fireEvent.press(getByText('Täytä uusi riskilomake'));
 
-    expect(mockNavigate).toHaveBeenCalledWith('worksafetyform');
+    expect(mockNavigate).toHaveBeenCalledWith('riskform');
   });
 });

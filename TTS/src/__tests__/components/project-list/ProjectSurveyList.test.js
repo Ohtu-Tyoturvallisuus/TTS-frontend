@@ -69,7 +69,7 @@ describe('ProjectSurveyList Component', () => {
     fireEvent.press(getByTestId('use-survey-1'));
 
     expect(mockSetSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('worksafetyform');
+    expect(mockNavigate).toHaveBeenCalledWith('riskform');
   });
 
   it('displays message when there are no surveys', () => {

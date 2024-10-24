@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import Loading from '@components/Loading';
 
 export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
   const { t } = useTranslation();
- 
+
   const renderSurveyOption = ({ item: survey }) => {
     const surveyDate = new Date(survey.created_at);
     const now = new Date();
@@ -34,7 +34,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
     const handleSurveyPress = (survey) => {
       console.log('Valittu kartoitus:', survey);
       setSelectedSurveyURL(survey.url);
-      navigate('worksafetyform');
+      navigate('riskform');
     };
 
     return (
@@ -141,12 +141,12 @@ const styles = StyleSheet.create({
   },
   surveyInfo: {
     flexDirection: 'column',
-    justifyContent: 'space-between',
     flex: 1,
+    justifyContent: 'space-between',
   },
   surveyTitle: {
-    fontWeight: 'bold',
     flex: 1,
+    fontWeight: 'bold',
   },
 });
 

@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
-import WorkSafetyForm from '@components/risk-form/RiskForm';
+import RiskForm from '@components/risk-form/RiskForm';
 import SignIn from '@components/sign-in/SignIn';
 import AppBar from '@components/app-bar/AppBar';
 import CloseButton from '@components/buttons/CloseButton';
@@ -43,7 +43,7 @@ const Main = () => {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
-          <Route path='/worksafetyform' element={<WorkSafetyForm />}/>
+          <Route path='/riskform' element={<RiskForm />}/>
         </Routes>
       </View>
       <Modal
