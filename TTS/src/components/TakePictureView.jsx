@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Image, View, Platform } from 'react-native';
+import { Button, Image, View, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 const TakePictureView = () => {
@@ -64,12 +64,39 @@ const TakePictureView = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
-      <Button title="Take a photo" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={{ width: "100%", height: "50%" }} />}
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.roundButton} onPress={pickImage}>
+        <Image source={require('../../assets/camera.png')} style={styles.roundButton} />
+      </TouchableOpacity>
+      {image && <Image source={{ uri: image }} style={styles.displayImage} />}
       {image && <Button title="Upload Image" onPress={uploadImage} />}
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexGrow: 1,
+  },
+  roundButton: {
+    width: 50, 
+    height: 50, 
+    borderRadius: 25, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 5, 
+    marginBottom: 5
+  },
+  displayImage: {
+    width: 200, 
+    height: 150, 
+    borderRadius: 5,
+    marginTop: 5, 
+    marginBottom: 5
+  },
+});
 
 export default TakePictureView;
