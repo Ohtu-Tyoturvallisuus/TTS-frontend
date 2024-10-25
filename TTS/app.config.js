@@ -3,6 +3,7 @@ import 'dotenv/config'
 export default {
   name: "HazardHunt",
   slug: "HazardHunt",
+  scheme: "HazardHunt",
   version: "1.0.1",
   owner: "telinekataja",
   orientation: "portrait",
@@ -46,7 +47,7 @@ export default {
     eas: {
       projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID
     },
-    local_setup: process.env.LOCAL_SETUP, // true or false
+    local_setup: process.env.LOCAL_SETUP, // 1 or 0
     local_ip: process.env.LOCAL_IP
   }
 }
