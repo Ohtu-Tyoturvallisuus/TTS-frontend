@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Image, View, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { Button, View, Platform, StyleSheet, TouchableOpacity, Text, Image as RNImage } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Image from './Image';
 
 const TakePictureView = () => {
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
 
   const pickImage = async () => {
     // Request permission to access camera
@@ -18,29 +19,44 @@ const TakePictureView = () => {
     // Open camera to take a picture
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result)
+    console.log('TakePictureView:', result)
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const uri = result.assets[0].uri;
+      RNImage.getSize(uri, (width, height) => {
+        const isLandscape = width > height;
+        setImages(prevImages => {
+          if (prevImages.length < 3) {
+            return [...prevImages, { uri, isLandscape }];
+          } else {
+            console.log('Maximum of 3 images reached');
+            return prevImages;
+          }
+        });
+      }, (error) => {
+        console.error(error);
+      });
     }
   };
 
   const uploadImage = async () => {
-    if (!image) {
+    if (images.length === 0) {
       console.log('Attempted to upload without image');
       return;
     }
 
     const formData = new FormData();
-    formData.append('image', {
-      uri: image,
-      name: 'photo.jpg',
-      type: 'image/jpeg',
+    images.forEach((image, index) => {
+      formData.append('image', {
+        uri: image.uri,
+        name: `photo${index + 1}.jpg`,
+        type: 'image/jpeg',
+      });
     });
 
     try {
@@ -63,13 +79,26 @@ const TakePictureView = () => {
     }
   };
 
+  const removeImage = (uri) => {
+    setImages(images.filter(image => image.uri !== uri));
+  };
+
   return (
     <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        {images.map((image, index) => (
+          <Image
+            key={index}
+            uri={image.uri}
+            isLandscape={image.isLandscape}
+            onRemove={() => removeImage(image.uri)}
+          />
+        ))}
+      </View>
+      {images.length > 0 && <Button title="Upload Images" onPress={uploadImage} />}
       <TouchableOpacity style={styles.roundButton} onPress={pickImage}>
-        <Image source={require('../../assets/camera.png')} style={styles.roundButton} />
+        <Text style={styles.buttonText}>Ota kuva</Text>
       </TouchableOpacity>
-      {image && <Image source={{ uri: image }} style={styles.displayImage} />}
-      {image && <Button title="Upload Image" onPress={uploadImage} />}
     </View>
   );
 };
@@ -81,10 +110,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexGrow: 1,
   },
+  imageContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 2,
+  },
   roundButton: {
     width: 50, 
     height: 50, 
-    borderRadius: 25, 
+    borderRadius: 5, 
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 5, 
@@ -96,6 +133,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 5, 
     marginBottom: 5
+  },
+  smallImage: {
+    width: 100, 
+    height: 75, 
+    borderRadius: 5,
+    marginTop: 5, 
+    marginBottom: 5,
   },
 });
 

@@ -3,6 +3,7 @@ import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity 
 import { useTranslation } from 'react-i18next';
 
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
+import TakePictureView from '@components/take-picture/TakePictureView';
 
 const RiskModal = ({ 
   title,
@@ -61,6 +62,8 @@ const RiskModal = ({
                 translation={true}
               />
             )}
+
+            <TakePictureView />
             
             <View style={styles.buttonContainer}>
               <TouchableOpacity
