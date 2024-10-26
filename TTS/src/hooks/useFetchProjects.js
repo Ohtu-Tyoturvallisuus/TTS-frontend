@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchProjectList } from '../services/apiService';
+import { fetchProjectList } from '@services/apiService';
 
 const useFetchProjects = () => {
   const [projects, setProjects] = useState([]);

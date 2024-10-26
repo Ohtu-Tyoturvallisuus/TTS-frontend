@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
+import { useTranslation } from 'react-i18next';
 
-const DropdownOptions = ({ options = [], onSelect, placeholderText = 'Valitse' }) => {
+const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const { t } = useTranslation();
 
   return (
     <SelectDropdown
       data={options}
       onSelect={(item) => {
         setSelectedItem(item);
-        item[0] === '--Valitse kaikki--'
+        item[0] === t('dropdownoptions.chooseAll')
           ? onSelect(null)
           : onSelect(item);
       }}
@@ -29,6 +31,9 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText = 'Valitse' }
         );
       }}
       renderItem={(item) => {
+        if (!item || !Array.isArray(item) || item.length < 2) {
+          return null; // Handle malformed item
+        }
         return (
           <View
             style={{
@@ -36,7 +41,7 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText = 'Valitse' }
               ...(selectedItem === item && { backgroundColor: '#ADD8E6' }),
             }}
           >
-            <Text style={styles.dropdown1ItemTxtStyle}>{item}</Text>
+            <Text style={styles.dropdown1ItemTxtStyle}>{item[0]}, {item[1]}</Text>
           </View>
         );
       }}
@@ -45,7 +50,7 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText = 'Valitse' }
       search
       searchInputStyle={styles.dropdown1SearchInputStyle}
       searchInputTxtColor={'#000000'}
-      searchPlaceHolder={'Etsi...'}
+      searchPlaceHolder={t('dropdownoptions.search')}
       searchPlaceHolderColor={'#A9A9A9'}
       renderSearchInputLeftIcon={() => {
         return <Text style={{ color: '#000000', fontSize: 18 }}>🔍</Text>;

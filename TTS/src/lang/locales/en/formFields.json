@@ -1,0 +1,78 @@
+{
+  "personal_protection": {
+    "title": "Personal protective equipment", 
+    "risk_type": "scaffolding"
+  },
+  "personal_fall_protection": {
+    "title": "Personal fall protection (harness/lanyard/life line/rails/guardrails)", 
+    "risk_type": "scaffolding"
+  },
+  "material_storage": {
+    "title": "Material storage and packaging (consider access ways)", 
+    "risk_type": "scaffolding"
+  },
+  "lifting_accessories": {
+    "title": "Lifting accessories (functional/inspected)", 
+    "risk_type": "scaffolding"
+  },
+  "danger_area": {
+    "title": "Danger area and demarcation (risk of falling objects)", 
+    "risk_type": "scaffolding"
+  },
+  "ground_stability": {
+    "title": "Ground stability (soil/platform/roof)", 
+    "risk_type": "scaffolding"
+  },
+  "anchoring": {
+    "title": "Anchoring (scaffolding installation/removal)", 
+    "risk_type": "scaffolding"
+  },
+  "weather_conditions": {
+    "title": "Weather conditions (wind/cold/heat)", 
+    "risk_type": "scaffolding"
+  },
+  "environment_cleanliness": {
+    "title": "Environment (cleanliness/waste sorting)", 
+    "risk_type": "scaffolding"
+  },
+  "other_scaffolding": {
+    "title": "Other hazards related to scaffolding work", 
+    "risk_type": "scaffolding"
+  },
+  "slipping_tripping": {
+    "title": "Slipping/tripping (cleanliness/winter maintenance/lighting)", 
+    "risk_type": "environment"
+  },
+  "surrounding_structures": {
+    "title": "Surrounding structures and equipment (valves/electrical cables or lines/glass)", 
+    "risk_type": "environment"
+  },
+  "vehicle_traffic": {
+    "title": "Vehicle traffic/pedestrian", 
+    "risk_type": "environment"
+  },
+  "hazards": {
+    "title": "Hazards (scaffolding cleanliness during dismantling/dusts/chemicals/asbestos)", 
+    "risk_type": "environment"
+  },
+  "work_permit": {
+    "title": "Work permit (reporting to control room/personal protective equipment/meters)", 
+    "risk_type": "environment"
+  },
+  "tank_work_permit": {
+    "title": "Tank work permit", 
+    "risk_type": "environment"
+  },
+  "energy_isolation": {
+    "title": "Energy isolation (lockout)", 
+    "risk_type": "environment"
+  },
+  "emergency_procedure": {
+    "title": "Emergency procedure (emergency exit route)", 
+    "risk_type": "environment"
+  },
+  "other_environment": {
+    "title": "Other hazards related to the environment", 
+    "risk_type": "environment"
+  }
+}
