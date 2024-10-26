@@ -1,28 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-
+import { useFormContext } from '@contexts/FormContext';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import TakePictureView from '@components/take-picture/TakePictureView';
 
 const RiskModal = ({ 
   title,
   renderTitle,
-  visible, 
-  onClose, 
-  initialDescription, 
+  visible,
   onSubmit, 
-  onReset, 
+  onClose, 
   isModification 
 }) => {
+  const { updateFormData, getFormData } = useFormContext();
+  const [description, setDescription] = useState(getFormData(title, 'description'));
   const [useSpeech, setUseSpeech] = useState(false);
-  const [description, setDescription] = useState(initialDescription);
   const [buttonHidden, setButtonHidden] = useState(false);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    setDescription(initialDescription);
-  }, [initialDescription]);
+  const handleSubmit = () => {
+    updateFormData(title, 'description', description);
+    onSubmit();
+    onClose();
+  };
+
+  const handleReset = () => {
+    setDescription('');
+    updateFormData(title, 'description', '');
+    updateFormData(title, 'status', '');
+    onClose();
+  }
+
 
   return (
     <Modal
@@ -75,7 +84,7 @@ const RiskModal = ({
               {isModification && (
                 <TouchableOpacity
                   style={styles.resetButton}
-                  onPress={onReset}
+                  onPress={handleReset}
                 >
                   <Text style={styles.resetButtonText}>{t('riskmodal.reset')}</Text>
                 </TouchableOpacity>
@@ -87,9 +96,7 @@ const RiskModal = ({
                     ? styles.submitButton
                     : styles.disabledButton
                 ]}
-                onPress={() =>
-                  description !== '' && onSubmit(description)
-                }
+                onPress={handleSubmit}
                 disabled={description === ''}
               >
                 <Text style={styles.buttonText}>{t('riskmodal.checked')}</Text>

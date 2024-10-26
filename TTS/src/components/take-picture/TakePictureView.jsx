@@ -3,8 +3,9 @@ import { Button, View, Platform, StyleSheet, TouchableOpacity, Text, Image as RN
 import * as ImagePicker from 'expo-image-picker';
 import Image from './Image';
 
-const TakePictureView = () => {
-  const [images, setImages] = useState([]);
+const TakePictureView = ({ images: initialImages, setImages }) => {
+  console.log('TakePictureView:', initialImages);
+  const [images, setLocalImages] = useState(initialImages || []);
 
   const pickImage = async () => {
     // Request permission to access camera
@@ -30,13 +31,10 @@ const TakePictureView = () => {
       const uri = result.assets[0].uri;
       RNImage.getSize(uri, (width, height) => {
         const isLandscape = width > height;
-        setImages(prevImages => {
-          if (prevImages.length < 3) {
-            return [...prevImages, { uri, isLandscape }];
-          } else {
-            console.log('Maximum of 3 images reached');
-            return prevImages;
-          }
+        setLocalImages(prevImages => {
+          const newImages = [...prevImages, { uri, isLandscape }];
+          setImages(newImages); // Update the images state in RiskModal
+          return newImages;
         });
       }, (error) => {
         console.error(error);
@@ -80,7 +78,9 @@ const TakePictureView = () => {
   };
 
   const removeImage = (uri) => {
-    setImages(images.filter(image => image.uri !== uri));
+    const updatedImages = images.filter(image => image.uri !== uri);
+    setLocalImages(updatedImages);
+    setImages(updatedImages);
   };
 
   return (

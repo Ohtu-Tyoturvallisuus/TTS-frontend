@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-
+import { useFormContext } from '@contexts/FormContext';
 import RiskModal from './RiskModal';
 
-const RiskNote = ({ title, renderTitle, initialStatus, initialDescription, riskType, onChange }) => {
+const RiskNote = ({ title, renderTitle }) => {
+  const { updateFormData, getFormData } = useFormContext();
+  const status = getFormData(title, 'status');
+
   const [modalVisible, setModalVisible] = useState(false);
-  const [status, setStatus] = useState(initialStatus);
-  const [description, setDescription] = useState(initialDescription);
   const [isModification, setIsModification] = useState(false);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    setDescription(initialDescription);
-  }, [initialDescription]);
-
-  const handleModalSubmit = (newDescription) => {
+  const handleSubmit = () => {
+    updateFormData(title, 'status', 'checked');
     setModalVisible(false);
-    setStatus('checked');
-    setDescription(newDescription);
-    onChange(title, 'description', newDescription);
-    onChange(title, 'status', 'checked');
-    onChange(title, 'risk_type', riskType);
   };
 
   const handleEditPress = () => {
@@ -29,16 +22,7 @@ const RiskNote = ({ title, renderTitle, initialStatus, initialDescription, riskT
     setModalVisible(true);
   };
 
-  const handleReset = () => {
-    console.log('Resetoidaan riski:', title);
-    setIsModification(false);
-    setStatus('');
-    setDescription('');
-    onChange(title, 'description', '');
-    onChange(title, 'status', '');
-    onChange(title, 'risk_type', riskType);
-    setModalVisible(false);
-  };
+  // If status is checked then setIsModification is set to true
 
   return (
     <View testID={`risknote-${title}`}>
@@ -72,9 +56,7 @@ const RiskNote = ({ title, renderTitle, initialStatus, initialDescription, riskT
           <TouchableOpacity
             style={[styles.button, { borderColor: 'grey' }]}
             onPress={() => {
-              setStatus('notRelevant');
-              onChange(title, 'status', 'notRelevant');
-              onChange(title, 'risk_type', riskType);
+              updateFormData(title, 'status', 'notRelevant');
             }}
           >
             <Text style={styles.buttonText}>{t('risknote.notRelevant')}</Text>
@@ -92,10 +74,8 @@ const RiskNote = ({ title, renderTitle, initialStatus, initialDescription, riskT
           title={title}
           renderTitle={renderTitle}
           visible={modalVisible}
-          initialDescription={description}
-          onSubmit={handleModalSubmit}
+          onSubmit={handleSubmit}
           onClose={() => setModalVisible(false)}
-          onReset={handleReset}
           isModification={isModification}
         />
       )}

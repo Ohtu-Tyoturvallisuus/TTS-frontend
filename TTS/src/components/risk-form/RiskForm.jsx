@@ -1,59 +1,40 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useTranslation } from 'react-i18next';
-import useMergedSurveyData from '@hooks/useMergedSurveyData';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import { postNewSurvey, postRiskNotes } from '@services/apiService';
 import RiskNote from './RiskNote';
 import ButtonGroup from '@components/buttons/ButtonGroup';
 import CloseButton from '@components/buttons/CloseButton';
 import SuccessAlert from '@components/SuccessAlert';
-import useFormFields from '@hooks/useFormFields';
+import { useFormContext } from '@contexts/FormContext';
 
 const RiskForm = () => {
   const { 
     selectedProject: project, 
-    setSelectedProject, 
-    selectedSurveyURL: prevSurveyURL, 
-    setSelectedSurveyURL 
+    resetProjectAndSurvey
   } = useContext(ProjectSurveyContext);
+
+  const { 
+    formData, 
+    updateFormData, 
+    task, 
+    setTask, 
+    scaffoldType, 
+    setScaffoldType, 
+    taskDesc, 
+    setTaskDesc, 
+    error 
+  } = useFormContext();
+
   const navigate = useNavigate();
   const { t } = useTranslation(['translation', 'formFields']);
-  const [ task, setTask ] = useState('');
-  const [ scaffoldType, setScaffoldType ] = useState('');
-  const [ taskDesc, setTaskDesc ] = useState('');
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const { initialFormData } = useFormFields();
-  const [ formData, setFormData ] = useState(initialFormData);
-  // Fetch and merge survey data if prevSurveyURL is defined
-  const { mergedFormData, taskDetails, error, isMerged } = useMergedSurveyData(prevSurveyURL, initialFormData);
-
-  useEffect(() => {
-    if (isMerged) {
-      const { task, scaffoldType, taskDesc } = taskDetails;
-      setTask(task);
-      setScaffoldType(scaffoldType);
-      setTaskDesc(taskDesc);
-      setFormData(mergedFormData);
-    }
-  }, [isMerged]);
 
   if (error) {
     alert(t('riskform.errorFetchingData'));
   }
-  const handleInputChange = (title, field, value) => {
-    setFormData(prevFormData => {
-      console.log('Changed', title, field, 'to', value);
-      return {
-        ...prevFormData,
-        [title]: {
-          ...prevFormData[title],
-          [field]: value || '', // Set value to empty string if it's undefined/null
-        },
-      };
-    });
-  };
 
   const validateFields = (fields) => {
     const validatedFields = {};
@@ -107,8 +88,7 @@ const RiskForm = () => {
   };
 
   const handleClose = () => {
-    setSelectedProject(null);
-    setSelectedSurveyURL(null);
+    resetProjectAndSurvey();
     setShowSuccessAlert(false);
     navigate('/');
   };
@@ -169,10 +149,6 @@ const RiskForm = () => {
               key={key}
               title={key}
               renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
-              initialDescription={value.description}
-              initialStatus={value.status}
-              riskType={value.risk_type}
-              onChange={handleInputChange}
             />
         ))}
 
@@ -181,7 +157,7 @@ const RiskForm = () => {
           <TextInput
             style={styles.input}
             value={formData['other_scaffolding']?.description}
-            onChangeText={(value) => handleInputChange('other_scaffolding', 'description', value)}
+            onChangeText={(value) => updateFormData('other_scaffolding', 'description', value)}
             multiline={true}
             textAlignVertical="top"
           />
@@ -195,10 +171,6 @@ const RiskForm = () => {
             key={key}
             title={key}
             renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
-            initialDescription={value.description}
-            initialStatus={value.status}
-            riskType={value.risk_type}
-            onChange={handleInputChange}
           />
         ))}
 
@@ -207,7 +179,7 @@ const RiskForm = () => {
         <TextInput
           style={styles.input}
           value={formData['other_environment']?.description}
-          onChangeText={(value) => handleInputChange('other_environment', 'description', value)}
+          onChangeText={(value) => updateFormData('other_environment', 'description', value)}
           multiline={true}
           textAlignVertical="top"
         />

@@ -22,6 +22,7 @@ const createInitialFormData = (formFields, t) => {
       description: '',
       status: '',
       risk_type: t(`${key}.risk_type`, { ns: 'formFields' }),
+      images: [],
     };
   });
   return initialData;
