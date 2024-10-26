@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, View, Platform, StyleSheet, TouchableOpacity, Text, Image as RNImage } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Image from './Image';
+import { useFormContext } from '@contexts/FormContext';
 
-const TakePictureView = ({ images: initialImages, setImages }) => {
-  console.log('TakePictureView:', initialImages);
+const TakePictureView = ({ title }) => {
+  const { getFormData, updateFormData } = useFormContext();
+  const initialImages = getFormData(title, 'images');
   const [images, setLocalImages] = useState(initialImages || []);
+
+  useEffect(() => {
+    setLocalImages(initialImages);
+  }, [initialImages]);
 
   const pickImage = async () => {
     // Request permission to access camera
@@ -33,7 +39,10 @@ const TakePictureView = ({ images: initialImages, setImages }) => {
         const isLandscape = width > height;
         setLocalImages(prevImages => {
           const newImages = [...prevImages, { uri, isLandscape }];
-          setImages(newImages); // Update the images state in RiskModal
+          // Use a callback to update the context state after the render phase
+          setTimeout(() => {
+            updateFormData(title, 'images', newImages);
+          }, 0);
           return newImages;
         });
       }, (error) => {
@@ -80,7 +89,7 @@ const TakePictureView = ({ images: initialImages, setImages }) => {
   const removeImage = (uri) => {
     const updatedImages = images.filter(image => image.uri !== uri);
     setLocalImages(updatedImages);
-    setImages(updatedImages);
+    updateFormData(title, 'images', updatedImages);
   };
 
   return (
@@ -118,14 +127,21 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   roundButton: {
-    width: 50, 
-    height: 50, 
+    width: '50%',
     borderRadius: 5, 
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 5, 
+    padding: 5,
+    paddingVertical: 10,
+    marginTop: 10, 
     marginBottom: 5
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 15,
+    letterSpacing: 1,
+    textAlign: 'center',
   },
   displayImage: {
     width: 200, 
@@ -143,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TakePictureView;
+export default TakePictureView

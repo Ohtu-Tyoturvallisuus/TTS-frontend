@@ -29,6 +29,7 @@ const RiskModal = ({
     setDescription('');
     updateFormData(title, 'description', '');
     updateFormData(title, 'status', '');
+    updateFormData(title, 'images', []);
     onClose();
   }
 
@@ -72,7 +73,7 @@ const RiskModal = ({
               />
             )}
 
-            <TakePictureView />
+            <TakePictureView title={title}/>
             
             <View style={styles.buttonContainer}>
               <TouchableOpacity

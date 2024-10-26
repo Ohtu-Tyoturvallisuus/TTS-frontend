@@ -21,7 +21,7 @@ export const FormProvider = ({ children }) => {
   // Fetch merged survey data when prevSurveyURL is available
   const { mergedFormData, taskDetails, error, isMerged } = useMergedSurveyData(selectedSurveyURL, initialFormData);
 
-  // Merge previous survey data if available
+  // Use previous survey's data if available
   useEffect(() => {
     if (isMerged) {
       setFormData(mergedFormData);
@@ -32,21 +32,19 @@ export const FormProvider = ({ children }) => {
     }
   }, [isMerged]);
 
-  // Function to update specific field of a risk
-  const updateFormData = (category, field, value) => {
-    console.log(`Updating ${category}.${field} to ${value}`);
+  const updateFormData = (title, field, value) => {
+    console.log(`Updating ${title}.${field} to ${value}`);
     setFormData((prevData) => ({
       ...prevData,
-      [category]: {
-        ...prevData[category],
+      [title]: {
+        ...prevData[title],
         [field]: value,
       },
     }));
   };
 
-  // Function to get specific field data
-  const getFormData = (category, field) => {
-    return formData[category]?.[field] || '';
+  const getFormData = (title, field) => {
+    return formData[title]?.[field] || '';
   };
 
   return (
