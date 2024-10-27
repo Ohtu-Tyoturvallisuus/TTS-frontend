@@ -4,38 +4,17 @@ import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import constants from 'expo-constants'
+import { retrieveIdParams, getUserProfile } from '../../services/apiService';
+import { useTranslation } from 'react-i18next';
 
 const MicrosoftSignIn = () => {
-  const LOCAL_IP = constants.expoConfig.extra.local_ip;
-  const LOCAL_SETUP = constants.expoConfig.extra.local_setup === 'true';
-  const RETRIEVE_PARAMS_URL = LOCAL_SETUP 
-    ? `http://${LOCAL_IP}:8000/api/retrieve-params`
-    : `https://tts-app.azurewebsites.net/api/retrieve-params`
   const [CLIENT_ID, setClientId] = useState('');
   const [TENANT_ID, setTenantId] = useState('');
   const { username, setUsername } = useContext(UserContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    const retrieveIdParams = async () => {
-      try {
-        const response = await fetch(RETRIEVE_PARAMS_URL, {
-          method: 'GET'
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const data = await response.json();
-
-        setClientId(data.client_id)
-        setTenantId(data.tenant_id)
-      } catch (error) {
-        console.error('Error retrieving params:', error);
-      }
-    };
-    retrieveIdParams();
+    retrieveIdParams({ setClientId, setTenantId });
   }, []);
 
   const discovery = {
@@ -52,7 +31,7 @@ const MicrosoftSignIn = () => {
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: CLIENT_ID,
-      scopes: ['openid', 'profile', 'email'],
+      scopes: ['openid', 'profile', 'email', 'User.Read'],
       redirectUri: redirectUri,
     },
     discovery
@@ -70,20 +49,24 @@ const MicrosoftSignIn = () => {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
+            // eslint-disable-next-line no-undef
             body: new URLSearchParams({
               client_id: CLIENT_ID,
               grant_type: 'authorization_code',
               code: code,
               redirect_uri: redirectUri,
               code_verifier: request.codeVerifier,
+              scope: 'https://graph.microsoft.com/.default'
             }).toString(),
           });
 
           const tokenData = await tokenResponse.json();
 
           if (tokenResponse.ok) {
-            console.log('Token data:', tokenData);
-            getUserProfile(tokenData.access_token);
+            console.log('Token data retrieved successfully!');
+            const accessToken = tokenData.access_token
+            getUserProfile({ setUsername, accessToken });
+            await AsyncStorage.setItem('access_token', tokenData.access_token)
           } else {
             console.error('Error fetching token:', tokenData);
             Alert.alert('Token exchange failed', tokenData.error_description);
@@ -94,47 +77,24 @@ const MicrosoftSignIn = () => {
         }
       };
 
-      exchangeCodeForToken();
+      !username && exchangeCodeForToken();
     } else if (response?.type === 'error') {
       console.log('Authentication Error:', response);
     }
   }, [response]);
 
-  const getUserProfile = async (accessToken) => {
-    try {
-      const response = await fetch('https://graph.microsoft.com/v1.0/me', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-  
-      const profileData = await response.json();
-      
-      if (response.ok) {
-        console.log('User Profile:', profileData);
-        await AsyncStorage.setItem('username', profileData.displayName);
-        setUsername(profileData.displayName);
-      } else {
-        console.error('Error fetching profile:', profileData);
-      }
-    } catch (error) {
-      console.error('Network error:', error);
-    }
-  };
-
   return (
     <View style={{ paddingHorizontal: 20 }}>
       {username ? (
         <View style={{paddingVertical: 10}}>
-          <Text>Hello, {username}!</Text>
+          <Text>{t('microsoftsignin.greeting')}, {username}!</Text>
         </View>
       ) : (
         <TouchableOpacity 
           onPress={() => promptAsync()} 
           style={{ marginTop: 20, backgroundColor: '#007AFF', padding: 10, borderRadius: 5 }}
         >
-          <Text style={{ color: 'white', textAlign: 'center' }}>Login with Microsoft</Text>
+          <Text style={{ color: 'white', textAlign: 'center' }}>{t('microsoftsignin.signInText')}</Text>
         </TouchableOpacity>
       )}
     </View>

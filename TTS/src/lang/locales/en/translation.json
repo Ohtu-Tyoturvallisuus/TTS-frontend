@@ -67,7 +67,7 @@
     "loadingFormData": "Loading form data...",
     "scaffoldRisks": "Scaffold work risks",
     "environmentRisks": "Work environment risks",
-    "submit": "Submit"    
+    "submit": "Submit"
   },
   "riskmodal": {
     "extraInfo": "Enter additional information",
@@ -101,5 +101,9 @@
   "signin": {
     "confirmLogin": "Confirm login",
     "username": "Username"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft sign-in",
+    "greeting": "Hello"
   }
 }
