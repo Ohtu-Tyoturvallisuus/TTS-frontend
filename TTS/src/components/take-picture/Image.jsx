@@ -1,13 +1,36 @@
-import React from 'react';
-import { Image as RNImage, View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { Image as RNImage, View, TouchableOpacity, Text, StyleSheet, Modal } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
-const Image = ({ uri, onRemove, isLandscape }) => {
+const Image = ({ images, currentIndex, onRemove, isLandscape }) => {
+  const [isEnlarged, setIsEnlarged] = useState(false);
+
+  const handleImagePress = () => {
+    setIsEnlarged(!isEnlarged);
+  };
+
   return (
     <View style={styles.imageWrapper}>
-      <RNImage source={{ uri }} style={isLandscape ? styles.landscapeImage : styles.portraitImage}/>
-      <TouchableOpacity style={styles.removeButton} onPress={onRemove}>
+      <TouchableOpacity onPress={handleImagePress}>
+        <RNImage source={{ uri: images[currentIndex].uri }} style={isLandscape ? styles.landscapeImage : styles.portraitImage}/>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.removeButton} onPress={() => onRemove(images[currentIndex].uri)}>
         <Text style={styles.removeButtonText}>X</Text>
       </TouchableOpacity>
+      {isEnlarged && (
+        <Modal
+          transparent={true}
+          animationType="none"
+          visible={isEnlarged}
+          onRequestClose={() => setIsEnlarged(false)}
+        >
+          <ImageViewer
+            imageUrls={images.map(image => ({ url: image.uri }))}
+            index={currentIndex}
+            onClick={() => setIsEnlarged(false)}
+          />
+        </Modal>
+      )}
     </View>
   );
 };
@@ -19,13 +42,13 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   landscapeImage: {
-    width: 100,
-    height: 75,
+    width: 125, // 25% bigger than 100
+    height: 93.75, // 25% bigger than 75
     borderRadius: 4,
   },
   portraitImage: {
-    width: 75,
-    height: 100,
+    width: 93.75, // 25% bigger than 75
+    height: 125, // 25% bigger than 100
     borderRadius: 4,
   },
   removeButton: {
@@ -42,7 +65,12 @@ const styles = StyleSheet.create({
   removeButtonText: {
     color: 'white',
     fontSize: 12,
-    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 });
 

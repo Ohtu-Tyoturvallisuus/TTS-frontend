@@ -91,20 +91,27 @@ const TakePictureView = ({ title }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        {images.map((image, index) => (
-          <Image
-            key={index}
-            uri={image.uri}
-            isLandscape={image.isLandscape}
-            onRemove={() => removeImage(image.uri)}
-          />
-        ))}
-      </View>
-      {images.length > 0 && <Button title="Upload Images" onPress={uploadImage} />}
       <TouchableOpacity style={styles.roundButton} onPress={pickImage}>
         <Text style={styles.buttonText}>Ota kuva</Text>
       </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        {images.length === 0 ? (
+          <View style={{ margin: 10 }}>
+            <Text>Ei kuvia</Text>
+          </View>
+        ) : (
+          images.map((image, index) => (
+            <Image
+              key={index}
+              images={images}
+              currentIndex={index}
+              isLandscape={image.isLandscape}
+              onRemove={removeImage}
+            />
+          ))
+        )}
+      </View>
+        {images.length > 0 && <Button title="Lähetä kuvat pilveen" onPress={uploadImage} />}
     </View>
   );
 };
@@ -140,20 +147,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     letterSpacing: 1,
     textAlign: 'center',
-  },
-  displayImage: {
-    width: 200, 
-    height: 150, 
-    borderRadius: 5,
-    marginTop: 5, 
-    marginBottom: 5
-  },
-  smallImage: {
-    width: 100, 
-    height: 75, 
-    borderRadius: 5,
-    marginTop: 5, 
-    marginBottom: 5,
   },
 });
 
