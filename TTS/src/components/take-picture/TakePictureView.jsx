@@ -3,6 +3,7 @@ import { Button, View, Platform, StyleSheet, TouchableOpacity, Text, Image as RN
 import * as ImagePicker from 'expo-image-picker';
 import Image from './Image';
 import { useFormContext } from '@contexts/FormContext';
+import { postImages } from '@services/apiService';
 
 const TakePictureView = ({ title }) => {
   const { getFormData, updateFormData } = useFormContext();
@@ -42,6 +43,8 @@ const TakePictureView = ({ title }) => {
           // Use a callback to update the context state after the render phase
           setTimeout(() => {
             updateFormData(title, 'images', newImages);
+            // Example: 
+            // [{"isLandscape": false, "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FHazardHunt-45559436-e494-4c06-9d16-105489cdb499/ImagePicker/3a8580ac-588d-4c47-8670-8b94008906d3.jpeg"}]
           }, 0);
           return newImages;
         });
@@ -57,32 +60,26 @@ const TakePictureView = ({ title }) => {
       return;
     }
 
-    const formData = new FormData();
+    const imageData = new FormData();
     images.forEach((image, index) => {
-      formData.append('image', {
+      imageData.append(`image${index + 1}`, {
         uri: image.uri,
-        name: `photo${index + 1}.jpg`,
+        name: `${title}_photo${index + 1}.jpg`,
         type: 'image/jpeg',
       });
     });
-
+    console.log('Uploading images:', imageData);
     try {
-      const response = await fetch('https://tts-app.azurewebsites.net/api/upload-image/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: formData,
+      const response = await postImages(imageData);
+      console.log('Images uploaded successfully:', response);
+      const blobNames = response.urls.map(url => {
+        const parts = url.split('/');
+        return parts[parts.length - 1];
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Image uploaded successfully!', `Image URL: ${data.url}`);
-      } else {
-        console.log('Upload failed', data.message || 'Something went wrong');
-      }
+      console.log('Blob names:', blobNames);
+      alert('Images uploaded successfully');
     } catch (error) {
-      console.error(error);
+      console.error('Error uploading images:', error);
     }
   };
 
@@ -118,6 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexGrow: 1,
+    marginTop: 5,
   },
   imageContainer: {
     flexDirection: 'row',

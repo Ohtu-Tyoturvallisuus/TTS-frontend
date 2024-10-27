@@ -49,3 +49,14 @@ export const fetchSurveyData = async (url) => {
   const response = await axios.get(url);
   return response.data;
 };
+
+export const postImages = async (imageData) => {
+  const url = API_BASE_URL + 'upload-images/';
+  console.log('apiService/postImages:', url);
+  const response = await axios.post(url, imageData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
