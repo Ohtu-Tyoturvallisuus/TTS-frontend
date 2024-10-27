@@ -101,5 +101,9 @@
   "signin": {
     "confirmLogin": "Vahvista kirjautuminen",
     "username": "Käyttäjänimi"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft-kirjautuminen",
+    "greeting": "Hei"
   }
 }
