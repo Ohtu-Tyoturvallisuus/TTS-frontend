@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import RiskNote from './RiskNote';
 import useFetchSurveyData from '@hooks/useFetchSurveyData';
@@ -122,38 +122,38 @@ const WorkSafetyForm = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Vaarojen tunnistus</Text>
+    <View className="flex-1 items-center justify-center">
+      <ScrollView className="bg-white flex-grow p-5">
+        <Text className="text-2xl font-bold text-center pb-5">Vaarojen tunnistus</Text>
   
         {error && <Text>Error fetching survey data</Text>}
   
         {/* Projektin tiedot */}
         {project ? (
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>Projektin nimi:</Text>
+          <View className="mb-5">
+            <Text className="text-lg font-bold py-2">Projektin nimi:</Text>
             <Text>{project.project_name}</Text>
   
-            <Text style={styles.label}>Projektin ID: </Text>
+            <Text className="text-lg font-bold py-2">Projektin ID: </Text>
             <Text>{project.project_id}</Text>
   
-            <Text style={styles.label}>Tehtävä:</Text>
+            <Text className="text-lg font-bold py-2">Tehtävä:</Text>
             <ButtonGroup 
               options={['Asennus', 'Muokkaus', 'Purku']} 
               selectedValue={task}
               onChange={(value) => setTask(value)} 
             />
   
-            <Text style={styles.label}>Telinetyyppi:</Text>
+            <Text className="text-lg font-bold py-2">Telinetyyppi:</Text>
             <ButtonGroup 
               options={['Työteline', 'Sääsuojaton työteline', 'Sääsuoja']} 
               selectedValue={scaffoldType} 
               onChange={(value) => setScaffoldType(value)} 
             />
   
-            <Text style={styles.label}>Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
+            <Text className="text-lg font-bold py-2">Mitä olemme tekemässä/ telineen käyttötarkoitus:</Text>
             <TextInput
-              style={styles.input}
+              className="border border-dark-green rounded-md p-2 h-24"
               value={taskDesc}
               onChangeText={(value) => setSubject(value)}
               multiline={true}
@@ -164,7 +164,7 @@ const WorkSafetyForm = () => {
           <Text>Not seeing project...</Text>
         )}
   
-        <Text style={styles.sectionTitle}>Telinetöihin liittyvät vaarat</Text>
+        <Text className="text-xl font-bold text-center border-b pb-2">Telinetöihin liittyvät vaarat</Text>
         {Object.keys(formData)
           .slice(0, 9)
           .map(key => (
@@ -177,10 +177,10 @@ const WorkSafetyForm = () => {
             />
         ))}
   
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Muu telinetyöhön liittyvä vaara:</Text>
+        <View className="mb-5">
+          <Text className="text-lg font-bold py-2">Muu telinetyöhön liittyvä vaara:</Text>
           <TextInput
-            style={styles.input}
+            className="border border-dark-green rounded-md p-2 h-24"
             value={formData['Muu telinetyöhön liittyvä vaara'].description}
             onChangeText={(value) => handleInputChange('Muu telinetyöhön liittyvä vaara', 'description', value)}
             multiline={true}
@@ -188,7 +188,7 @@ const WorkSafetyForm = () => {
           />
         </View>
   
-        <Text style={styles.sectionTitle}>Työympäristön riskit</Text>
+        <Text className="text-xl font-bold text-center border-b pb-2">Työympäristön riskit</Text>
         {Object.keys(formData)
           .slice(10, 18)
           .map(key => (
@@ -201,10 +201,11 @@ const WorkSafetyForm = () => {
             />
         ))}
   
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Muu työympäristöön liittyvä vaara:</Text>
+        <View className="mb-5">
+          <Text className="text-lg font-bold py-2">Muu työympäristöön liittyvä vaara:</Text>
           <TextInput
-            style={styles.input}
+
+            className="border border-dark-green rounded-md p-2 h-24"
             value={formData['Muu työympäristöön liittyvä vaara'].description}
             onChangeText={(value) => handleInputChange('Muu työympäristöön liittyvä vaara', 'description', value)}
             multiline={true}
@@ -212,9 +213,9 @@ const WorkSafetyForm = () => {
           />
         </View>
   
-        <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Lähetä</Text>
-        </TouchableOpacity>
+        <TouchableOpacity className="bg-[#008000] rounded-md py-3 my-2 items-center" onPress={handleSubmit}>
+        <Text className="text-white font-bold text-lg">Lähetä</Text>
+      </TouchableOpacity>
 
         <CloseButton onPress={handleClose} />
       </ScrollView>
@@ -227,65 +228,5 @@ const WorkSafetyForm = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginVertical: 10,
-    padding: 15,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  infoContainer: {
-    marginBottom: 20,
-  },
-  input: {
-    borderColor: '#ccc',
-    borderRadius: 5,
-    borderWidth: 1,
-    flex: 1,
-    height: 100,
-    padding: 10,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    paddingVertical: 8,
-  },
-  scrollContainer: {
-    backgroundColor: '#fff',
-    flexGrow: 1,
-    padding: 20,
-  },
-  sectionTitle: {
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 5,
-    textAlign: 'center',
-  },
-  submitButton: {
-    backgroundColor: 'green',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingBottom: 20,
-    textAlign: 'center',
-  },
-});
 
 export default WorkSafetyForm;

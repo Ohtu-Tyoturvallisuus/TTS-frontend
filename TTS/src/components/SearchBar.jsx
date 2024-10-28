@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet } from 'react-native';
 
 const SearchBar = ({ setFilter }) => {
   return (
-    <View style={styles.container}>
+    <View className="flex items-center justify-center py-3">
       <TextInput
         style={styles.searchInput}
         placeholder="Etsi hakusanalla..."

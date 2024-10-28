@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import RiskModal from './RiskModal';
 
 const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
@@ -30,47 +30,47 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
 
   return (
     <View>
-      <Text style={styles.riskNote}>{title}</Text>
+      <Text className="self-center text-base font-bold my-2">{title}</Text>
       {status === 'Kunnossa' ? (
-        <View style={styles.choiceDisplay}>
-          <View style={styles.statusContainer}>
-            <Text style={styles.statusText}>Kunnossa</Text>
+        <View className="flex-row justify-between items-center mb-2">
+        <View className="flex-1 items-center justify-center">
+          <Text className="self-center text-[#008000] text-base font-bold my-2">Kunnossa</Text>
           </View>
           <TouchableOpacity
-            style={styles.editButton}
+            className="absolute right-0 w-10 h-10 items-center justify-center border border-light-grey rounded-lg"
             onPress={handleEditPress}
           >
             <Text>✏️</Text>
           </TouchableOpacity>
         </View>
       ) : status === 'Ei koske' ? (
-        <View style={styles.choiceDisplay}>
-          <View style={styles.statusContainer}>
-            <Text style={[styles.statusText, { color: 'grey' }]}>Ei koske</Text>
+        <View className="flex-row justify-between items-center mb-2">
+        <View className="flex-1 items-center justify-center">
+          <Text className="self-center text-light-grey text-base font-bold my-2">Ei koske</Text>
           </View>
           <TouchableOpacity
-            style={styles.editButton}
+            className="absolute right-0 w-10 h-10 items-center justify-center border border-light-grey rounded-lg"
             onPress={handleEditPress}
           >
             <Text>✏️</Text>
           </TouchableOpacity>
         </View>
   ) : (
-    <View style={styles.buttonGroup}>
+    <View className="flex-row justify-between mb-2">
       <TouchableOpacity
-        style={[styles.button, { borderColor: 'grey' }]}
+        className="flex-1 items-center justify-center mx-1 py-2 border border-light-grey rounded-lg"
         onPress={() => {
           setStatus('Ei koske');
           onChange(title, 'status', 'Ei koske');
         }}
       >
-        <Text style={styles.buttonText}>Ei koske</Text>
+        <Text className="text-black text-sm tracking-wide text-center">Ei koske</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, { borderColor: '#FF8C00' }]}
+        className="flex-1 items-center justify-center mx-1 py-2 border border-orange rounded-lg"
         onPress={() => setModalVisible(true)}
       >
-        <Text style={styles.buttonText}>Huomioitavaa</Text>
+        <Text className="text-black text-sm tracking-wide text-center">Huomioitavaa</Text>
       </TouchableOpacity>
     </View>
       )}
@@ -88,64 +88,5 @@ const RiskNote = ({ title, initialStatus, initialDescription, onChange }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    paddingVertical: 10,
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: 'black',
-    fontSize: 14,
-    letterSpacing: 1,
-    textAlign: 'center',
-  },
-  choiceDisplay: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  editButton: {
-    alignItems: 'center',
-    borderColor: '#ccc',
-    borderRadius: 10,
-    borderWidth: 1,
-    height: 40,
-    justifyContent: 'center',
-    position: 'absolute',
-    right: 0,
-    width: 40,
-  },
-  riskNote: {
-    alignSelf: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginVertical: 8
-  },
-  statusContainer: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  statusText: {
-    alignSelf: 'center',
-    color: 'green',
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-    marginVertical: 8,
-  },
-});
 
 export default RiskNote;

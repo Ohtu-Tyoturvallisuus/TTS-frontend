@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import React, { useEffect, useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';
 import ProjectList from '@components/project-list/ProjectList';
@@ -28,9 +28,9 @@ const Main = () => {
   }, [setUsername])
 
   return (
-    <View style={styles.container}>
+    <View className="bg-[#e1e4e8] flex-1 justify-center">
       <AppBar username={username} setUsername={setUsername} />
-      <View style={styles.content}>
+      <View className="flex-1">
         <Routes>
           <Route path='/' element={
             <>
@@ -46,16 +46,5 @@ const Main = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#e1e4e8',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  content: {
-    flex: 1,
-  },
-});
 
 export default Main;
