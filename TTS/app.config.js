@@ -20,7 +20,8 @@ export default {
     supportsTablet: true,
     bundleIdentifier: "com.HazardHunt",
     infoPlist: {
-        "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text."
+        "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text.",
+        "NSCameraUsageDescription": "We need access to your camera for taking pictures.",
     }
   },
   android: {
@@ -30,7 +31,8 @@ export default {
     },
     package: "com.HazardHunt",
     permissions: [
-      "RECORD_AUDIO"
+      "RECORD_AUDIO",
+      "CAMERA",
     ]
   },
   web: {
