@@ -101,5 +101,8 @@
   "signin": {
     "confirmLogin": "Vahvista kirjautuminen",
     "username": "Käyttäjänimi"
+  },
+  "takepicture": {
+    "takePicture": "Ota kuva"
   }
 }

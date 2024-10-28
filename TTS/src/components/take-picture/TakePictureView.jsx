@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Button, View, Platform, StyleSheet, TouchableOpacity, Text, Image as RNImage } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Image from './Image';
+import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
 import { postImages } from '@services/apiService';
 
 const TakePictureView = ({ title }) => {
+  const { t } = useTranslation();
   const { getFormData, updateFormData } = useFormContext();
   const initialImages = getFormData(title, 'images');
   const [images, setLocalImages] = useState(initialImages || []);
@@ -92,7 +94,7 @@ const TakePictureView = ({ title }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.roundButton} onPress={pickImage}>
-        <Text style={styles.buttonText}>Ota kuva</Text>
+        <Text style={styles.buttonText}>{t(takepicture.takePicture)}</Text>
       </TouchableOpacity>
       <View style={styles.imageContainer}>
         {images.length === 0 ? (
@@ -111,7 +113,7 @@ const TakePictureView = ({ title }) => {
           ))
         )}
       </View>
-        {images.length > 0 && <Button title="Lähetä kuvat pilveen" onPress={uploadImage} />}
+        {images.length > 0 && <Button title="Lähetä kuvat palvelimelle(test)" onPress={uploadImage} />}
     </View>
   );
 };

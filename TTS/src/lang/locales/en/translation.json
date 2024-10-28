@@ -101,5 +101,8 @@
   "signin": {
     "confirmLogin": "Confirm login",
     "username": "Username"
+  },
+  "takepicture": {
+    "takePicture": "Take a photo"
   }
 }
