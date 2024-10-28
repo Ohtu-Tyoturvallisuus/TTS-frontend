@@ -37,40 +37,40 @@ const Image = ({ images, currentIndex, onRemove, isLandscape }) => {
 
 const styles = StyleSheet.create({
   imageWrapper: {
-    position: 'relative',
-    marginTop: 10,
     marginRight: 5,
+    marginTop: 10,
+    position: 'relative',
   },
   landscapeImage: {
-    width: 125, // 25% bigger than 100
-    height: 93.75, // 25% bigger than 75
     borderRadius: 4,
+    height: 93.75, // 25% bigger than 75
+    width: 125, // 25% bigger than 100
+  },
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+    justifyContent: 'center',
   },
   portraitImage: {
-    width: 93.75, // 25% bigger than 75
-    height: 125, // 25% bigger than 100
     borderRadius: 4,
+    height: 125, // 25% bigger than 100
+    width: 93.75, // 25% bigger than 75
   },
   removeButton: {
-    position: 'absolute',
-    top: -5,
-    right: -5,
+    alignItems: 'center',
     backgroundColor: 'red',
     borderRadius: 10,
-    width: 20,
     height: 20,
     justifyContent: 'center',
-    alignItems: 'center',
+    position: 'absolute',
+    right: -5,
+    top: -5,
+    width: 20,
   },
   removeButtonText: {
     color: 'white',
     fontSize: 12,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 });
 

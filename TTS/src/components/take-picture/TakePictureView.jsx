@@ -94,12 +94,12 @@ const TakePictureView = ({ title }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.roundButton} onPress={pickImage}>
-        <Text style={styles.buttonText}>{t(takepicture.takePicture)}</Text>
+        <Text style={styles.buttonText}>{t('takepicture.takePicture')}</Text>
       </TouchableOpacity>
       <View style={styles.imageContainer}>
         {images.length === 0 ? (
           <View style={{ margin: 10 }}>
-            <Text>Ei kuvia</Text>
+            <Text>{t('takepicture.noPictures')}</Text>
           </View>
         ) : (
           images.map((image, index) => (
@@ -119,36 +119,36 @@ const TakePictureView = ({ title }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexGrow: 1,
-    marginTop: 5,
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 2,
-  },
-  roundButton: {
-    width: '50%',
-    borderRadius: 5, 
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    paddingVertical: 10,
-    marginTop: 10, 
-    marginBottom: 5
-  },
   buttonText: {
     color: 'black',
     fontSize: 15,
     letterSpacing: 1,
     textAlign: 'center',
+  },
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    flexGrow: 1,
+    justifyContent: 'center',
+    marginTop: 5,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 2,
+    justifyContent: 'center',
+  },
+  roundButton: {
+    alignItems: 'center',
+    borderRadius: 5, 
+    borderWidth: 1,
+    justifyContent: 'center',
+    marginBottom: 5,
+    marginTop: 10,
+    padding: 5,
+    paddingVertical: 10, 
+    width: '50%'
   },
 });
 

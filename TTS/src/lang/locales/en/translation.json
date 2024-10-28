@@ -103,6 +103,7 @@
     "username": "Username"
   },
   "takepicture": {
+    "noPictures": "No pictures",
     "takePicture": "Take a photo"
   }
 }

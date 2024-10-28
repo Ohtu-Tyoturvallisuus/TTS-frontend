@@ -103,6 +103,7 @@
     "username": "Käyttäjänimi"
   },
   "takepicture": {
+    "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva"
   }
 }
