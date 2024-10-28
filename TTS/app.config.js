@@ -21,7 +21,9 @@ export default {
     supportsTablet: true,
     bundleIdentifier: "com.HazardHunt",
     infoPlist: {
-        "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text."
+      "ITSAppUsesNonExemptEncryption": false,
+      "LSMinimumSystemVersion": "12.0",
+      "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text.",
     }
   },
   android: {
