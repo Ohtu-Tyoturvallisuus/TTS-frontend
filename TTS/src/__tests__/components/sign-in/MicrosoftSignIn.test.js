@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import MicrosoftSignIn from '../../../components/sign-in/MicrosoftSignIn';
-import { UserContext } from '../../../contexts/UserContext';
 import { useAuthRequest } from 'expo-auth-session';
+import MicrosoftSignIn from '@components/sign-in/MicrosoftSignIn';
+import { UserContext } from '@contexts/UserContext';
 
 jest.mock('expo-auth-session', () => ({
   useAuthRequest: jest.fn(),
@@ -16,7 +16,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   clear: jest.fn(),
 }));
 
-jest.mock('../../../services/apiService', () => ({
+jest.mock('@services/apiService', () => ({
   retrieveIdParams: jest.fn(),
   getUserProfile: jest.fn(),
 }));

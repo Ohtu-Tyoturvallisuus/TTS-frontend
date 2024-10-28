@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
-import { useContext } from 'react';
-import { UserContext } from '../../contexts/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { retrieveIdParams, getUserProfile } from '../../services/apiService';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { retrieveIdParams, getUserProfile } from '@services/apiService';
+import { UserContext } from '@contexts/UserContext';
+
 
 const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
