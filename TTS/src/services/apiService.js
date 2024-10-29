@@ -16,6 +16,7 @@ export const signIn = async (username, id = null) => {
 
 // Returns projects from the API
 export const fetchProjectList = async () => {
+  const token = await AsyncStorage.getItem('access_token')
   const response = await axios.get(API_BASE_URL + 'projects/');
   return response.data;
 };
