@@ -82,7 +82,8 @@ describe('Sign in', () => {
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
-        username: 'testuser'
+        username: 'testuser',
+        id: null
       });
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('username', 'testuser');
@@ -130,7 +131,8 @@ describe('Sign in', () => {
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
-        username: 'testuser'
+        username: 'testuser',
+        id: null
       });
 
       expect(console.error).toHaveBeenCalledWith('Error signing in:', mockError);
