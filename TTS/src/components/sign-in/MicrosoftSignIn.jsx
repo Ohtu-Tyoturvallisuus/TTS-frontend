@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { retrieveIdParams, getUserProfile } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
-
+import { signIn } from '@services/apiService';
 
 const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
@@ -65,8 +65,12 @@ const MicrosoftSignIn = () => {
           if (tokenResponse.ok) {
             console.log('Token data retrieved successfully!');
             const accessToken = tokenData.access_token
-            getUserProfile({ setUsername, accessToken });
-            await AsyncStorage.setItem('access_token', tokenData.access_token)
+            const userProfile = await getUserProfile({ setUsername, accessToken });
+            const name = userProfile[0]
+            const id = userProfile[1]
+            const data = await signIn(name, id);
+            console.log(data)
+            await AsyncStorage.setItem('access_token', data.access_token);
           } else {
             console.error('Error fetching token:', tokenData);
             Alert.alert('Token exchange failed', tokenData.error_description);

@@ -9,13 +9,14 @@ const API_BASE_URL = LOCAL_SETUP ? `http://${LOCAL_IP}:8000/api/` : `https://tts
 console.log('API_BASE_URL:', API_BASE_URL);
 const RETRIEVE_PARAMS_URL = API_BASE_URL + 'retrieve-params/'
 
-export const signIn = async (username) => {
-  const response = await axios.post(API_BASE_URL + 'signin/', { username });
+export const signIn = async (username, id = null) => {
+  const response = await axios.post(API_BASE_URL + 'signin/', { username, id });
   return response.data;
 };
 
 // Returns projects from the API
 export const fetchProjectList = async () => {
+  const token = await AsyncStorage.getItem('access_token')
   const response = await axios.get(API_BASE_URL + 'projects/');
   return response.data;
 };
@@ -98,6 +99,7 @@ export const getUserProfile = async ({ setUsername, accessToken }) => {
       console.log('User Profile:', profileData);
       await AsyncStorage.setItem('username', profileData.displayName);
       setUsername(profileData.displayName);
+      return [profileData.displayName, profileData.id];
     } else {
       console.error('Error fetching profile:', profileData);
     }
