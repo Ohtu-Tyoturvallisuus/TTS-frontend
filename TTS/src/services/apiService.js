@@ -16,7 +16,6 @@ export const signIn = async (username, id = null) => {
 
 // Returns projects from the API
 export const fetchProjectList = async () => {
-  const token = await AsyncStorage.getItem('access_token')
   const response = await axios.get(API_BASE_URL + 'projects/');
   return response.data;
 };
@@ -29,13 +28,15 @@ export const fetchProject = async (projectId) => {
 };
 
 export const postNewSurvey = async (projectId, desc, task, scaffoldType) => {
-  const token = await getToken();
+  const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + `projects/${projectId}/surveys/`;
   console.log('postNewSurvey:', url);
   const response = await axios.post(url, {
     description: desc,
     task: task,
     scaffold_type: scaffoldType,
+  },
+  {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -44,7 +45,7 @@ export const postNewSurvey = async (projectId, desc, task, scaffoldType) => {
 };
 
 export const postRiskNotes = async (surveyId, riskNotes) => {
-  const token = await getToken();
+  const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + `surveys/${surveyId}/risk_notes/`;
   console.log('postRiskNotes:', url);
   const response = await axios.post(
@@ -107,8 +108,3 @@ export const getUserProfile = async ({ setUsername, accessToken }) => {
     console.error('Network error:', error);
   }
 };
-
-export const getToken = async () => {
-  const token = await AsyncStorage.getItem('access_token');
-  return token
-}
