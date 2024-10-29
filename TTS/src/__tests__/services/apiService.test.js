@@ -144,7 +144,7 @@ describe('API Module', () => {
 
     const response = await signIn('testUser');
 
-    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/signin/'), { username: 'testUser' });
+    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/signin/'), { username: 'testUser', id: null });
     expect(response).toEqual('mock data');
   });
 
@@ -180,6 +180,8 @@ describe('API Module', () => {
       description: desc,
       task: task,
       scaffold_type: scaffoldType,
+    },
+    {
       headers: {
         Authorization: `Bearer undefined`,
       },
