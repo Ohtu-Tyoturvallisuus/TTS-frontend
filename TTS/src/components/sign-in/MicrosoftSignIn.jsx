@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,7 +10,7 @@ import { signIn } from '@services/apiService';
 const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
   const [TENANT_ID, setTenantId] = useState('');
-  const { username, setUsername } = useContext(UserContext);
+  const { username, setUsername, setEmail } = useContext(UserContext);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const MicrosoftSignIn = () => {
           if (tokenResponse.ok) {
             console.log('Token data retrieved successfully!');
             const accessToken = tokenData.access_token
-            const userProfile = await getUserProfile({ setUsername, accessToken });
+            const userProfile = await getUserProfile({ setUsername, setEmail, accessToken });
             const name = userProfile[0]
             const id = userProfile[1]
             const data = await signIn(name, id);
@@ -88,21 +88,46 @@ const MicrosoftSignIn = () => {
   }, [response]);
 
   return (
-    <View style={{ paddingHorizontal: 20 }}>
+    <View style={styles.container}>
       {username ? (
-        <View style={{paddingVertical: 10}}>
+        <View style={{ paddingVertical: 10 }}>
           <Text>{t('microsoftsignin.greeting')}, {username}!</Text>
         </View>
       ) : (
         <TouchableOpacity 
           onPress={() => promptAsync()} 
-          style={{ marginTop: 20, backgroundColor: '#007AFF', padding: 10, borderRadius: 5 }}
+          style={styles.button}
         >
-          <Text style={{ color: 'white', textAlign: 'center' }}>{t('microsoftsignin.signInText')}</Text>
+          <Text style={styles.buttonText}>{t('microsoftsignin.signInText')}</Text>
         </TouchableOpacity>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: 10,
+    minHeight: 48,
+    minWidth: 48,
+    padding: 15,
+    width: '75%',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+});
 
 export default MicrosoftSignIn;

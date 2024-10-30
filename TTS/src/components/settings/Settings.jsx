@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, View  } from 'react-native';
+import { Modal, StyleSheet, View, Text  } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -7,22 +7,25 @@ import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '@contexts/UserContext';
 import ChangeLanguage from './ChangeLanguage';
 import CloseButton from '@components/buttons/CloseButton';
+import SettingsButton from '@components/buttons/SettingsButton';
 
 const Settings = () => {
   const [settingsVisible, setSettingsVisible] = useState(false);
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { username, setUsername } = useContext(UserContext);
+  const { username, setUsername, email, setEmail } = useContext(UserContext);
 
   const handleSignOut = async () => {
     try {
       await Promise.all([
         AsyncStorage.removeItem('username'),
+        AsyncStorage.removeItem('email'),
         AsyncStorage.removeItem('access_token'),
       ]);
 
       setUsername(null);
-      console.log('User signed out and access_token removed');
+      setEmail(null)
+      console.log('User signed out, email and access_token removed');
 
       navigation.navigate('Main');
     } catch (error) {
@@ -32,26 +35,22 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.button}
+      <Text style={styles.text}>{username}</Text>
+      <Text style={styles.text}>{email}</Text>
+      <SettingsButton
         onPress={() => setSettingsVisible(true)}
-      >     
-        <Text style={styles.buttonText}>{t('settings.changeLanguage')}</Text>
-      </TouchableOpacity>
+        text={t('settings.changeLanguage')}
+      />     
       {username ? (
-        <TouchableOpacity
-          style={styles.button}
+        <SettingsButton
           onPress={handleSignOut}
-        >     
-          <Text style={styles.buttonText}>{t('settings.signOut')}</Text>
-        </TouchableOpacity>
+          text={t('settings.signOut')}
+        />
       ) : (
-        <TouchableOpacity
-          style={styles.button}
+        <SettingsButton
           onPress={() => navigation.navigate('MicrosoftSignIn')}
-        >     
-          <Text style={styles.buttonText}>{t('settings.signIn')}</Text>
-        </TouchableOpacity>
+          text={t('settings.signIn')}
+        />
       )}
       <Modal
         animationType="slide"
@@ -71,16 +70,8 @@ const Settings = () => {
 };
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: 'blue',
-    borderRadius: 5,
-    padding: 10,    
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
   container: {
+    alignItems: 'center',
     backgroundColor: '#e1e4e8',
     flex: 1,
     justifyContent: 'center',
@@ -98,6 +89,11 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '80%',
   },
+  text: {
+    color: '#333333',
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
 });
 
 export default Settings;

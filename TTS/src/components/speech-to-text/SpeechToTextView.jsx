@@ -24,7 +24,7 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
 
   let recordingTimeout;
 
-  async function startRecording() {
+  const startRecording = async () => {
     try {
       // Set the audio mode for recording on iOS
       await Audio.setAudioModeAsync({
@@ -52,9 +52,9 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     } catch (error) {
       console.error('Failed to start recording', error);
     }
-  }
+  };
 
-  async function stopRecording(currentRecording) {
+  const stopRecording = async (currentRecording) => {
     try {
       // Clear the timeout if stopRecording is called manually before it finishes
       if (recordingTimeout) {
@@ -77,9 +77,9 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     } catch (error) {
       console.error('Failed to stop recording', error);
     }
-  }
+  };
 
-  async function uploadToBackend(fileUri) {
+  const uploadToBackend = async (fileUri) => {
     let formData = new FormData();
     const fileType = "audio/3gp";
 
@@ -119,7 +119,7 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     } catch (error) {
       console.error("Failed to upload file:", error);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>

@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
@@ -35,11 +36,11 @@ const Main = () => {
     <Stack.Navigator>
       {username ? (
         <> 
-          <Stack.Screen name='ProjectList' component={ProjectList} />
-          <Stack.Screen name='RiskForm' component={RiskForm} />
+          <Stack.Screen name='ProjectList' component={ProjectList} options={{ headerShown: false }} />
+          <Stack.Screen name='RiskForm' component={RiskForm} options={{ headerShown: false }} />
         </>
         ) : (
-          <Stack.Screen name='MicrosoftSignIn' component={MicrosoftSignIn} options={{ headerShown: false }}/>
+          <Stack.Screen name='MicrosoftSignIn' component={MicrosoftSignIn} options={{ headerShown: false }} />
         )}
     </Stack.Navigator>
   )
@@ -47,7 +48,28 @@ const Main = () => {
   return (
     <View style={styles.container}>
         <View style={styles.content}>
-          <Tab.Navigator screenOptions={{ headerShown: false }}>
+          <Tab.Navigator 
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+                if (route.name === 'Main') {
+                  iconName = focused ? 'home' : 'home-outline';
+                } else if (route.name === 'Settings') {
+                  iconName = focused ? 'settings' : 'settings-outline';
+                }
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+              tabBarActiveTintColor: "blue",
+              tabBarInactiveTintColor: "gray",
+              tabBarStyle: [
+                {
+                  "display": "flex"
+                },
+                null
+              ],
+              headerShown: false,
+            })}
+          >
             <Tab.Screen name="Main" component={MainStack} />
             <Tab.Screen name="Settings" component={Settings} />
           </Tab.Navigator>
