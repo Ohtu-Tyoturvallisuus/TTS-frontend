@@ -67,7 +67,8 @@
     "loadingFormData": "Loading form data...",
     "scaffoldRisks": "Scaffold work risks",
     "environmentRisks": "Work environment risks",
-    "submit": "Submit"    
+    "submit": "Submit",
+    "emptyFieldsError": "Please fill in task, scaffold type and what you are doing."    
   },
   "riskmodal": {
     "extraInfo": "Enter additional information",

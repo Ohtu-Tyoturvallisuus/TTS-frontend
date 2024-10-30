@@ -11,6 +11,7 @@ const FormContext = createContext();
 export const FormProvider = ({ children }) => {
   // Initialize form data using the useFormFields hook
   const { initialFormData } = useFormFields();
+  
   const [formData, setFormData] = useState(initialFormData);
   const [task, setTask] = useState('');
   const [scaffoldType, setScaffoldType] = useState('');

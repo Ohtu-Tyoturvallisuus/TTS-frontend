@@ -47,7 +47,7 @@
     "noSurveys": "Ei kartoituksia saatavilla."
   },
   "riskform": {
-    "successMessage": "Riskimuistiinpanot lähetetty onnistuneesti",
+    "successMessage": "Vaarojen tunnistus lähetetty onnistuneesti",
     "close": "Sulje",
     "title": "Työturvallisuuslomake",
     "errorFetchingData": "Virhe haettaessa lomakkeen tietoja",
@@ -67,7 +67,8 @@
     "loadingFormData": "Ladataan lomaketietoja...",
     "scaffoldRisks": "Telinetöihin liittyvät vaarat",
     "environmentRisks": "Työympäristön vaarat",
-    "submit": "Lähetä"
+    "submit": "Lähetä",
+    "emptyFieldsError": "Täytä tehtävä, telinetyyppi ja mitä olet tekemässä."
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",

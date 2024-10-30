@@ -3,10 +3,10 @@ import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 
 import { useNavigate } from 'react-router-native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
-import { postNewSurvey, postRiskNotes } from '@services/apiService';
 import RiskNote from './RiskNote';
 import ButtonGroup from '@components/buttons/ButtonGroup';
 import CloseButton from '@components/buttons/CloseButton';
+import { submitForm } from '@services/formSubmission';
 import SuccessAlert from '@components/SuccessAlert';
 import { useFormContext } from '@contexts/FormContext';
 
@@ -36,55 +36,13 @@ const RiskForm = () => {
     alert(t('riskform.errorFetchingData'));
   }
 
-  const validateFields = (fields) => {
-    const validatedFields = {};
-    Object.keys(fields).forEach(key => {
-      validatedFields[key] = fields[key] ?? "";  // Replace null/undefined with an empty string
-    });
-    return validatedFields;
-  };
-
   const handleSubmit = () => {
-  // ------------------------------------------------
-  // TODO: Implement form submit checks
-  // ------------------------------------------------
     const taskInfo = {
       task: task,
       description: taskDesc,
       scaffold_type: scaffoldType,
     };
-    const validatedSurveyData = validateFields(taskInfo);
-    
-    // POST a new survey instance
-    postNewSurvey(project.id, validatedSurveyData.description, validatedSurveyData.task, validatedSurveyData.scaffold_type)
-    .then(response => {
-      console.log('Server response:', response);
-      const surveyId = response.id;
-
-      // Formatting formData as list of django risk_note instances
-      const riskNotes = Object.keys(formData).map(key => {
-        const { description, status } = formData[key]; // Retrieve description and status
-        const risk_type = formData[key].risk_type; // Keep the existing risk type
-
-        // Return a new object with only the necessary fields
-        return {
-          note: key, // Use the translation key
-          description: description || '', // Use existing description or empty string
-          status: status || '', // Use existing status or empty string
-          risk_type: risk_type // Use existing risk type
-        };
-      });
-
-      // POST risk notes to the just made survey
-      return postRiskNotes(surveyId, riskNotes);
-    })
-    .then(() => {
-      setShowSuccessAlert(true);
-    })
-    .catch(error => {
-      console.error('Error during form submission:', error);
-      alert(t('riskform.errorSubmitting'));
-    });
+    submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
   };
 
   const handleClose = () => {

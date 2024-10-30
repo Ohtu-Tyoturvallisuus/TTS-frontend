@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, Platform, StyleSheet, TouchableOpacity, Text, Image as RNImage } from 'react-native';
+import { View, Platform, StyleSheet, TouchableOpacity, Text, Image as RNImage } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Image from './Image';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
-import { postImages } from '@services/apiService';
 
 const TakePictureView = ({ title }) => {
   const { t } = useTranslation();
@@ -71,35 +70,6 @@ const TakePictureView = ({ title }) => {
     }
   };
 
-  const uploadImage = async () => {
-    if (images.length === 0) {
-      console.log('Attempted to upload without image');
-      return;
-    }
-
-    const imageData = new FormData();
-    images.forEach((image, index) => {
-      imageData.append(`image${index + 1}`, {
-        uri: image.uri,
-        name: `${title}_photo${index + 1}.jpg`,
-        type: 'image/jpeg',
-      });
-    });
-    console.log('Uploading images:', imageData);
-    try {
-      const response = await postImages(imageData);
-      console.log('Images uploaded successfully:', response);
-      const blobNames = response.urls.map(url => {
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-      });
-      console.log('Blob names:', blobNames);
-      alert('Images uploaded successfully');
-    } catch (error) {
-      console.error('Error uploading images:', error);
-    }
-  };
-
   const removeImage = (uri) => {
     const updatedImages = images.filter(image => image.uri !== uri);
     setImages(updatedImages);
@@ -133,7 +103,6 @@ const TakePictureView = ({ title }) => {
           ))
         )}
       </View>
-        {images.length > 0 && <Button title="Lähetä kuvat palvelimelle(test)" onPress={uploadImage} />}
     </View>
   );
 };
