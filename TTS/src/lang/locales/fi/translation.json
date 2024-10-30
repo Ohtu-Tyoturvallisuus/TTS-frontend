@@ -6,7 +6,7 @@
     "signIn": "Kirjaudu sisään"
   },
   "changelanguage": {
-    "changeLanguage": "Vaihda kieli",
+    "changeLanguage": "Valitse kielesi",
     "languages": {
       "english": "English",
       "finnish": "Suomi"
@@ -100,7 +100,7 @@
     "placeholder": "Etsi hakusanalla..."
   },
   "settings": {
-    "changeLanguage": "Valitse kielesi",
+    "changeLanguage": "Vaihda kieltä",
     "signIn": "Kirjaudu sisään",
     "signOut": "Kirjaudu ulos"
   },
