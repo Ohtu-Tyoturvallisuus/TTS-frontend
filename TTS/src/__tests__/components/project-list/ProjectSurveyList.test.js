@@ -2,10 +2,10 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import ProjectSurveyList from '@components/project-list/ProjectSurveyList';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 
-jest.mock('react-router-native', () => ({
-  useNavigate: jest.fn(),
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: jest.fn(),
 }));
 
 jest.mock('@hooks/useFetchSurveys', () => ({
@@ -52,7 +52,9 @@ describe('ProjectSurveyList Component', () => {
   };
 
   beforeEach(() => {
-    useNavigate.mockReturnValue(mockNavigate);
+    useNavigation.mockReturnValue({
+      navigate: mockNavigate,
+    });
   });
 
   afterEach(() => {
@@ -69,7 +71,7 @@ describe('ProjectSurveyList Component', () => {
     fireEvent.press(getByTestId('use-survey-1'));
 
     expect(mockSetSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('riskform');
+    expect(mockNavigate).toHaveBeenCalledWith('RiskForm');
   });
 
   it('displays message when there are no surveys', () => {

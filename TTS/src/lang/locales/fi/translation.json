@@ -5,6 +5,13 @@
     "signOut": "Kirjaudu ulos",
     "signIn": "Kirjaudu sisään"
   },
+  "changelanguage": {
+    "changeLanguage": "Vaihda kieli",
+    "languages": {
+      "english": "English",
+      "finnish": "Suomi"
+    }
+  },
   "closebutton": {
     "close": "Sulje"
   },
@@ -23,6 +30,10 @@
   },
   "loading": {
     "error": "Virhe lataamisessa"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft-kirjautuminen",
+    "greeting": "Hei"
   },
   "projectlist":{
     "chooseAll": "--Valitse kaikki--",
@@ -86,10 +97,12 @@
   },
   "settings": {
     "changeLanguage": "Vaihda kieli",
-    "languages": {
-      "english": "englanti",
-      "finnish": "suomi"
-    }
+    "signIn": "Kirjaudu sisään",
+    "signOut": "Kirjaudu ulos"
+  },
+  "signin": {
+    "confirmLogin": "Vahvista kirjautuminen",
+    "username": "Käyttäjänimi"
   },
   "speechtotext": {
     "maxLength": "Maksimipituus",
@@ -97,13 +110,5 @@
     "seconds_other": "{{count}} sekuntia",
     "stop": "Lopeta",
     "start": "Aloita puheentunnistus"
-  },
-  "signin": {
-    "confirmLogin": "Vahvista kirjautuminen",
-    "username": "Käyttäjänimi"
-  },
-  "microsoftsignin": {
-    "signInText": "Microsoft-kirjautuminen",
-    "greeting": "Hei"
   }
 }

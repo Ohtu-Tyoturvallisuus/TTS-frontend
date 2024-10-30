@@ -5,6 +5,13 @@
     "signOut": "Sign Out",
     "signIn": "Sign In"
   },
+  "changelanguage": {
+    "changeLanguage": "Change language",
+    "languages": {
+      "english": "English",
+      "finnish": "Suomi"
+    }
+  },
   "closebutton": {
     "close": "Close"
   },
@@ -23,6 +30,10 @@
   },
   "loading": {
     "error": "Error while loading"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft sign-in",
+    "greeting": "Hello"
   },
   "projectlist":{
     "chooseAll": "--Choose all--",
@@ -84,26 +95,20 @@
   "searchbar": {
     "placeholder": "Search by keyword..."
   },
-  "settings": {
+  "settings":{
     "changeLanguage": "Change language",
-    "languages": {
-      "english": "English",
-      "finnish": "Finnish"
-    }
+    "signIn": "Sign in",
+    "signOut": "Sign out"
   },
+  "signin": {
+    "confirmLogin": "Confirm login",
+    "username": "Username"
+  },  
   "speechtotext": {
     "maxLength": "Maximum length",
     "seconds_one": "one second",
     "seconds_other": "{{count}} seconds",
     "stop": "Stop",
     "start": "Start speech recognition"
-  },
-  "signin": {
-    "confirmLogin": "Confirm login",
-    "username": "Username"
-  },
-  "microsoftsignin": {
-    "signInText": "Microsoft sign-in",
-    "greeting": "Hello"
   }
 }

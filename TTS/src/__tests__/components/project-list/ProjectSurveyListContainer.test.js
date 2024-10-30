@@ -233,6 +233,6 @@ describe('ProjectSurveyListContainer Component', () => {
     fireEvent.press(getByText('Käytä pohjana'));
 
     expect(mockProjectContext.setSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('riskform');
+    expect(mockNavigate).toHaveBeenCalledWith('RiskForm');
   });
 });

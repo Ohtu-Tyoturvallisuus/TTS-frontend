@@ -1,14 +1,14 @@
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 
 const RiskFormButton = ({ title, buttonStyle, textStyle }) => {
-  const navigate = useNavigate()
+  const navigation = useNavigation()
 
   return (
     <View>
       <TouchableOpacity 
         style={[styles.button, buttonStyle]}
-        onPress={() => navigate('riskform')}
+        onPress={() => navigation.navigate('RiskForm')}
       >
         <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       </TouchableOpacity>

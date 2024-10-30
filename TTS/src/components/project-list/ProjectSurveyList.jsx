@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -34,7 +34,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
     const handleSurveyPress = (survey) => {
       console.log('Valittu kartoitus:', survey);
       setSelectedSurveyURL(survey.url);
-      navigate('riskform');
+      navigate('RiskForm');
     };
 
     return (
@@ -78,7 +78,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
 const ProjectSurveyList = () => {
   const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigation = useNavigation();
   const { surveys, loading, error } = useFetchSurveys(project.id);
 
   if (loading || error) {
@@ -92,7 +92,7 @@ const ProjectSurveyList = () => {
   }
 
   return (
-    <ProjectSurveyListContainer surveys={surveys} setSelectedSurveyURL={setSelectedSurveyURL} navigate={navigate} />
+    <ProjectSurveyListContainer surveys={surveys} setSelectedSurveyURL={setSelectedSurveyURL} navigate={navigation.navigate} />
   );
 }
 

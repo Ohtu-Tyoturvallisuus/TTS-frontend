@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 // Define your supported languages
 const langs = ['en', 'fi'];
 
-export const Settings = () => {
+export const ChangeLanguage = () => {
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language || 'en');
 
@@ -18,7 +18,7 @@ export const Settings = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.language}>
-        {t('settings.changeLanguage')}
+        {t('changelanguage.changeLanguage')}
       </Text>
 
       {langs.map((currentLang, i) => (
@@ -31,7 +31,7 @@ export const Settings = () => {
           onPress={() => handleLanguageChange(currentLang)}
         >
           <Text style={styles.listItemText}>
-            {currentLang === 'en' ? t('settings.languages.english') : t('settings.languages.finnish')}
+            {currentLang === 'en' ? t('changelanguage.languages.english') : t('changelanguage.languages.finnish')}
           </Text>
           {currentLang === lang && <Text style={styles.checkmark}>✔️</Text>}
         </TouchableOpacity>
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Settings;
+export default ChangeLanguage;

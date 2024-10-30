@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import RiskFormButton from '@components/buttons/RiskFormButton';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 
-jest.mock('react-router-native', () => ({
-  useNavigate: jest.fn(),
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: jest.fn(),
 }));
 
 describe('RiskFormButton Component', () => {
@@ -17,13 +17,15 @@ describe('RiskFormButton Component', () => {
 
   it('navigates to the correct route when the button is pressed', () => {
     const mockNavigate = jest.fn();
-    useNavigate.mockReturnValue(mockNavigate);
+    useNavigation.mockReturnValue({
+      navigate: mockNavigate,
+    });
 
     const title = 'Täytä uusi riskilomake';
     const { getByText } = render(<RiskFormButton title={title} />);
 
     fireEvent.press(getByText('Täytä uusi riskilomake'));
 
-    expect(mockNavigate).toHaveBeenCalledWith('riskform');
+    expect(mockNavigate).toHaveBeenCalledWith('RiskForm');
   });
 });

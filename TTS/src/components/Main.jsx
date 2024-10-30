@@ -1,67 +1,57 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Modal } from 'react-native';
-import { Route, Routes, Navigate } from 'react-router-native';
+import React, { useEffect, useContext } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
 import RiskForm from '@components/risk-form/RiskForm';
-import SignIn from '@components/sign-in/SignIn';
-import AppBar from '@components/app-bar/AppBar';
-import CloseButton from '@components/buttons/CloseButton';
-import Settings from './Settings';
-import MicrosoftSignIn from './sign-in/MicrosoftSignIn';
+import MicrosoftSignIn from '@components/sign-in/MicrosoftSignIn';
+import Settings from '@components/settings/Settings';
 
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
-  const [settingsVisible, setSettingsVisible] = useState(false)
 
   useEffect(() => {
-    const fetchUsername = () => {
-      AsyncStorage.getItem('username')
-        .then(storedUsername => {
-          if (storedUsername) {
-            setUsername(storedUsername)
-          }
-        })
-        .catch(error => {
-          console.error('Error retrieving username', error)
-        })
-    }
+    const fetchUsername = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem('username');
+        if (storedUsername) {
+          setUsername(storedUsername);
+        }
+      } catch (error) {
+        console.error('Error retrieving username', error);
+      }
+    };
   
-    fetchUsername()
-  }, [setUsername])
+    fetchUsername();
+  }, [setUsername]);
+
+  const MainStack = () => (
+    <Stack.Navigator>
+      {username ? (
+        <> 
+          <Stack.Screen name='ProjectList' component={ProjectList} />
+          <Stack.Screen name='RiskForm' component={RiskForm} />
+        </>
+        ) : (
+          <Stack.Screen name='MicrosoftSignIn' component={MicrosoftSignIn} options={{ headerShown: false }}/>
+        )}
+    </Stack.Navigator>
+  )
 
   return (
     <View style={styles.container}>
-      <AppBar username={username} setUsername={setUsername} openSettings={() => setSettingsVisible(true)} />
-      <View style={styles.content}>
-        <Routes>
-          <Route path='/' element={
-            <>
-              <MicrosoftSignIn />
-              {username ? (<ProjectList />) : (<></>)} 
-            </>
-          }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-          <Route path='/signin' element={<SignIn />} />
-          <Route path='/riskform' element={<RiskForm />}/>
-        </Routes>
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={settingsVisible}
-        onRequestClose={() => setSettingsVisible(false)} // Close the modal when back is pressed on Android
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Settings />
-            <CloseButton onPress={() => setSettingsVisible(false)} />
-          </View>
+        <View style={styles.content}>
+          <Tab.Navigator screenOptions={{ headerShown: false }}>
+            <Tab.Screen name="Main" component={MainStack} />
+            <Tab.Screen name="Settings" component={Settings} />
+          </Tab.Navigator>
         </View>
-      </Modal>
     </View>
   );
 }
@@ -74,19 +64,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-  },
-  modalContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContent: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    width: '80%',
   },
 });
 

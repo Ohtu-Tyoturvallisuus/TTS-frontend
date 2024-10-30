@@ -1,5 +1,5 @@
 import { screen, render, fireEvent, waitFor } from "@testing-library/react-native";
-import { NativeRouter } from "react-router-native";
+import { NavigationContainer } from "@react-navigation/native";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -46,11 +46,11 @@ describe('Sign in', () => {
     const mockSetUsername = jest.fn();
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
     screen.debug();
@@ -67,11 +67,11 @@ describe('Sign in', () => {
     });
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
     const input = screen.getByPlaceholderText('Käyttäjänimi');
@@ -95,11 +95,11 @@ describe('Sign in', () => {
     const mockSetUsername = jest.fn();
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
     fireEvent.press(screen.getByText('Vahvista kirjautuminen'));
@@ -116,11 +116,11 @@ describe('Sign in', () => {
     axios.post.mockRejectedValueOnce(mockError);
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
     const input = screen.getByPlaceholderText('Käyttäjänimi');

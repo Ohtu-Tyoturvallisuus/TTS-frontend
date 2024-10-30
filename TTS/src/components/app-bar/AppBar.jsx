@@ -2,27 +2,28 @@ import { StyleSheet, Pressable, View, Text } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native'; 
 
 import AppBarTab from './AppBarTab';
 
 const AppBar = ({ username, setUsername, openSettings }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigation = useNavigation();
 
-  const handleSignOut = () => {
-    Promise.all([
-      AsyncStorage.removeItem('username'),
-      AsyncStorage.removeItem('access_token'),
-    ])
-      .then(() => {
-        setUsername(null);
-        console.log('User signed out and access_token removed');
-        navigate('/');
-      })
-      .catch(error => {
-        console.error('Error signing out:', error);
-      });
+  const handleSignOut = async () => {
+    try {
+      await Promise.all([
+        AsyncStorage.removeItem('username'),
+        AsyncStorage.removeItem('access_token'),
+      ]);
+
+      setUsername(null);
+      console.log('User signed out and access_token removed');
+
+      navigation.navigate('Main');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (

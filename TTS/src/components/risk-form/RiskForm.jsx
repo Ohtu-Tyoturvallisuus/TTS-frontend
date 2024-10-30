@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import useMergedSurveyData from '@hooks/useMergedSurveyData';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -18,7 +18,7 @@ const RiskForm = () => {
     selectedSurveyURL: prevSurveyURL, 
     setSelectedSurveyURL 
   } = useContext(ProjectSurveyContext);
-  const navigate = useNavigate();
+  const navigation = useNavigation();
   const { t } = useTranslation(['translation', 'formFields']);
   const [ task, setTask ] = useState('');
   const [ scaffoldType, setScaffoldType ] = useState('');
@@ -110,7 +110,7 @@ const RiskForm = () => {
     setSelectedProject(null);
     setSelectedSurveyURL(null);
     setShowSuccessAlert(false);
-    navigate('/');
+    navigation.navigate('Main');
   };
 
   if (!formData || !Object.keys(formData).length) {
