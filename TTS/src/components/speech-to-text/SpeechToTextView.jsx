@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 import { Audio } from 'expo-av';
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LanguageSelectMenu from './LanguageSelectMenu'
 import countriesData from '@lang/locales/languages.json';
@@ -92,11 +93,13 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     formData.append('translationLanguages', JSON.stringify(translationLanguages));
 
     try {
+      const token = await AsyncStorage.getItem('access_token')
       const response = await fetch("https://tts-app.azurewebsites.net/api/transcribe/", {
         method: "POST",
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
         },
       });
       const result = await response.json();

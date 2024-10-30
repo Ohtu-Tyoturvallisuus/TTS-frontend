@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Modal } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
 import RiskForm from '@components/risk-form/RiskForm';
@@ -10,6 +9,7 @@ import SignIn from '@components/sign-in/SignIn';
 import AppBar from '@components/app-bar/AppBar';
 import CloseButton from '@components/buttons/CloseButton';
 import Settings from './Settings';
+import MicrosoftSignIn from './sign-in/MicrosoftSignIn';
 
 
 const Main = () => {
@@ -38,7 +38,10 @@ const Main = () => {
       <View style={styles.content}>
         <Routes>
           <Route path='/' element={
-            <ProjectList /> 
+            <>
+              <MicrosoftSignIn />
+              {username ? (<ProjectList />) : (<></>)} 
+            </>
           }
           />
           <Route path="*" element={<Navigate to="/" replace />} />

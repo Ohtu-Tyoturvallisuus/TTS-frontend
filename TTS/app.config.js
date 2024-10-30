@@ -3,6 +3,7 @@ import 'dotenv/config'
 export default {
   name: "HazardHunt",
   slug: "HazardHunt",
+  scheme: "HazardHunt",
   version: "1.0.1",
   owner: "telinekataja",
   orientation: "portrait",
@@ -20,7 +21,9 @@ export default {
     supportsTablet: true,
     bundleIdentifier: "com.HazardHunt",
     infoPlist: {
-        "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text."
+      "ITSAppUsesNonExemptEncryption": false,
+      "LSMinimumSystemVersion": "12.0",
+      "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text.",
     }
   },
   android: {

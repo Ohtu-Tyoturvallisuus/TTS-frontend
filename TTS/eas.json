@@ -24,6 +24,11 @@
         "appleId": "intentionally_left_blank",
         "ascAppId": "intentionally_left_blank",
         "appleTeamId": "intentionally_left_blank"
+      },
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft",
+        "changesNotSentForReview": true
       }
     }
   }
