@@ -4,29 +4,6 @@ import { Audio } from 'expo-av';
 
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
-jest.mock('expo-av', () => {
-  const ActualAudio = jest.requireActual('expo-av').Audio;
-  const mockRecording = {
-    prepareToRecordAsync: jest.fn(),
-    startAsync: jest.fn(),
-    stopAndUnloadAsync: jest.fn(),
-    getURI: jest.fn(() => 'mock-uri'),
-  };
-
-  const Recording = jest.fn(() => {
-    return mockRecording;
-  });
-
-  return {
-    Audio: {
-      ...ActualAudio,
-      requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
-      setAudioModeAsync: jest.fn(),
-      Recording,
-    },
-  };
-});
-
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key, options) => {

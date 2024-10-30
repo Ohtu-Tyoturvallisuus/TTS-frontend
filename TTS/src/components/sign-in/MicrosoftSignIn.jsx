@@ -82,7 +82,8 @@ const MicrosoftSignIn = () => {
       };
 
       !username && exchangeCodeForToken();
-    } else if (response?.type === 'error') {
+    }
+    if (response?.type === 'error') {
       console.log('Authentication Error:', response);
     }
   }, [response]);

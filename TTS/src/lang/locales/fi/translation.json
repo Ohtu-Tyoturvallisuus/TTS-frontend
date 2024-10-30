@@ -31,6 +31,10 @@
   "loading": {
     "error": "Virhe lataamisessa"
   },
+  "main": {
+    "navigationMain": "Pääsivu",
+    "navigationSettings": "Asetukset"
+  },
   "microsoftsignin": {
     "signInText": "Microsoft-kirjautuminen",
     "greeting": "Hei"
@@ -96,7 +100,7 @@
     "placeholder": "Etsi hakusanalla..."
   },
   "settings": {
-    "changeLanguage": "Vaihda kieli",
+    "changeLanguage": "Valitse kielesi",
     "signIn": "Kirjaudu sisään",
     "signOut": "Kirjaudu ulos"
   },

@@ -6,7 +6,7 @@
     "signIn": "Sign In"
   },
   "changelanguage": {
-    "changeLanguage": "Change language",
+    "changeLanguage": "Select your language",
     "languages": {
       "english": "English",
       "finnish": "Suomi"
@@ -30,6 +30,10 @@
   },
   "loading": {
     "error": "Error while loading"
+  },
+  "main": {
+    "navigationMain": "Main",
+    "navigationSettings": "Settings"
   },
   "microsoftsignin": {
     "signInText": "Microsoft sign-in",

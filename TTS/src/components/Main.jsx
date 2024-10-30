@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
@@ -16,6 +17,7 @@ const Stack = createStackNavigator();
 
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -70,8 +72,8 @@ const Main = () => {
               headerShown: false,
             })}
           >
-            <Tab.Screen name="Main" component={MainStack} />
-            <Tab.Screen name="Settings" component={Settings} />
+            <Tab.Screen name="Main" component={MainStack} options={{ title: t('main.navigationMain') }} />
+            <Tab.Screen name="Settings" component={Settings} options={{ title: t('main.navigationSettings') }} />
           </Tab.Navigator>
         </View>
     </View>

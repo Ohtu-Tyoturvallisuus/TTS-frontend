@@ -37,10 +37,11 @@ jest.mock('react-i18next', () => ({
 
 describe('MicrosoftSignIn Component', () => {
   const mockSetUsername = jest.fn();
+  const mockSetEmail = jest.fn();
 
-  const renderWithContext = (username = null) => {
+  const renderWithContext = (username = null, email = null) => {
     return render(
-      <UserContext.Provider value={{ username, setUsername: mockSetUsername }}>
+      <UserContext.Provider value={{ username, setUsername: mockSetUsername, email, setEmail: mockSetEmail }}>
         <MicrosoftSignIn />
       </UserContext.Provider>
     );
@@ -48,6 +49,8 @@ describe('MicrosoftSignIn Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+
+    jest.spyOn(console, 'log').mockImplementation(() => {});
 
     const mockPromptAsync = jest.fn().mockResolvedValue({ 
       type: 'success', 
@@ -107,6 +110,24 @@ describe('MicrosoftSignIn Component', () => {
     });
   });
 
+  it('handles authentication error gracefully', async () => {
+    useAuthRequest.mockReturnValueOnce([
+      { codeVerifier: 'mock_code_verifier' },
+      { type: 'error', params: { error: 'invalid_request', error_description: 'Invalid credentials' } },
+      jest.fn(),
+    ]);
+  
+    const { getByText } = renderWithContext();
+    fireEvent.press(getByText('Microsoft sign-in'));
+
+    await waitFor(() => {
+      expect(console.log).toHaveBeenCalledWith('Authentication Error:', {
+        type: 'error',
+        params: { error: 'invalid_request', error_description: 'Invalid credentials' },
+      });
+    });
+  });
+
   it('handles fetch error gracefully', async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
@@ -125,23 +146,6 @@ describe('MicrosoftSignIn Component', () => {
 
   it('handles network error gracefully', async () => {
     global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Network error')));
-
-    const { getByText } = renderWithContext();
-
-    fireEvent.press(getByText('Microsoft sign-in'));
-
-    await waitFor(() => {
-      expect(AsyncStorage.setItem).not.toHaveBeenCalled();
-      expect(mockSetUsername).not.toHaveBeenCalled();
-    });
-  });
-
-  it('handles authentication error', async () => {
-    useAuthRequest.mockReturnValueOnce([
-      { codeVerifier: 'mock_code_verifier' },
-      { type: 'error', params: { error: 'invalid_request' } },
-      jest.fn(),
-    ]);
 
     const { getByText } = renderWithContext();
 

@@ -51,11 +51,17 @@ describe('DropdownOptions Component', () => {
     ['Option 2', 'Description 2']
   ];
   const placeholderText = 'Select an option';
+  const mockButtonTextAfterSelection = (item) => `${item[0]}, ${item[1]}`;
 
   it('renders correctly with options and descriptions', () => {
     const mockOnSelect = jest.fn();
     const { getByText } = render(
-      <DropdownOptions options={options} onSelect={mockOnSelect} placeholderText={placeholderText} />
+      <DropdownOptions 
+        options={options}
+        onSelect={mockOnSelect}
+        placeholderText={placeholderText}
+        buttonTextAfterSelection={mockButtonTextAfterSelection}
+      />
     );
 
     expect(getByText(placeholderText)).toBeTruthy();
@@ -69,7 +75,11 @@ describe('DropdownOptions Component', () => {
   it('calls onSelect with null when "Choose All" is selected', () => {
     const mockOnSelect = jest.fn();
     const { getByText } = render(
-      <DropdownOptions options={options} onSelect={mockOnSelect} placeholderText={placeholderText} />
+      <DropdownOptions 
+        options={options}
+        onSelect={mockOnSelect}
+        placeholderText={placeholderText}
+      />
     );
 
     expect(getByText(placeholderText)).toBeTruthy();
@@ -82,7 +92,12 @@ describe('DropdownOptions Component', () => {
   it('calls onSelect when an option is selected and renders the button with selected item text', () => {
     const mockOnSelect = jest.fn();
     const { getByText } = render(
-      <DropdownOptions options={options} onSelect={mockOnSelect} placeholderText={placeholderText} />
+      <DropdownOptions 
+        options={options}
+        onSelect={mockOnSelect}
+        placeholderText={placeholderText}
+        buttonTextAfterSelection={mockButtonTextAfterSelection}
+      />
     );
     
     expect(getByText(placeholderText)).toBeTruthy();
@@ -92,8 +107,6 @@ describe('DropdownOptions Component', () => {
     expect(mockOnSelect).toHaveBeenCalledWith(['Option 1', 'Description 1']);
     expect(getByText('Option 1, Description 1')).toBeTruthy();
   });
-
-  
 
   it('renders the search input left icon correctly', () => {
     const mockOnSelect = jest.fn();

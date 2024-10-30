@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import AppBarTab from '@components/app-bar/AppBarTab'; // Adjust path as needed
+import AppBarTab from '@components/app-bar/AppBarTab';
 
 describe('AppBarTab Component', () => {
   const mockText = 'Projects';

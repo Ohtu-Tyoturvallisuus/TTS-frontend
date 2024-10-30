@@ -10,7 +10,7 @@ import CloseButton from '@components/buttons/CloseButton';
 import SettingsButton from '@components/buttons/SettingsButton';
 
 const Settings = () => {
-  const [settingsVisible, setSettingsVisible] = useState(false);
+  const [changeLanguageVisible, setChangeLanguageVisible] = useState(false);
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { username, setUsername, email, setEmail } = useContext(UserContext);
@@ -38,7 +38,7 @@ const Settings = () => {
       <Text style={styles.text}>{username}</Text>
       <Text style={styles.text}>{email}</Text>
       <SettingsButton
-        onPress={() => setSettingsVisible(true)}
+        onPress={() => setChangeLanguageVisible(true)}
         text={t('settings.changeLanguage')}
       />     
       {username ? (
@@ -55,13 +55,13 @@ const Settings = () => {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={settingsVisible}
-        onRequestClose={() => setSettingsVisible(false)} // Close the modal when back is pressed on Android
+        visible={changeLanguageVisible}
+        onRequestClose={() => setChangeLanguageVisible(false)} // Close the modal when back is pressed on Android
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <ChangeLanguage />
-            <CloseButton onPress={() => setSettingsVisible(false)} />
+            <CloseButton onPress={() => setChangeLanguageVisible(false)} />
           </View>
         </View>
       </Modal>
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e1e4e8',
     flex: 1,
     justifyContent: 'center',
+    padding: 20,
   },
   modalContainer: {
     alignItems: 'center',
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    width: '80%',
+    width: '75%',
   },
   text: {
     color: '#333333',
