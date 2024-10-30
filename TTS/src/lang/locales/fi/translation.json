@@ -104,6 +104,7 @@
   },
   "takepicture": {
     "noPictures": "Ei kuvia",
-    "takePicture": "Ota kuva"
+    "takePicture": "Ota kuva",
+    "selectFromGallery": "Valitse galleriasta"
   }
 }

@@ -33,7 +33,7 @@ export const FormProvider = ({ children }) => {
   }, [isMerged]);
 
   const updateFormData = (title, field, value) => {
-    console.log(`Updating ${title}.${field} to ${value}`);
+    console.log(`Updating ${title}.${field} to ${JSON.stringify(value, null, 2)}`);
     setFormData((prevData) => ({
       ...prevData,
       [title]: {

@@ -22,6 +22,7 @@ export default {
     infoPlist: {
         "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text.",
         "NSCameraUsageDescription": "We need access to your camera for taking pictures.",
+        "NSPhotoLibraryUsageDescription": "We need access to your photo library to select pictures."
     }
   },
   android: {
@@ -33,6 +34,7 @@ export default {
     permissions: [
       "RECORD_AUDIO",
       "CAMERA",
+      "READ_EXTERNAL_STORAGE"
     ]
   },
   web: {
