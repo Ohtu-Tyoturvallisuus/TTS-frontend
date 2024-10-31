@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
+import CustomModal from '@components/CustomModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import TakePictureView from '@components/take-picture/TakePictureView';
 
@@ -32,78 +33,74 @@ const RiskEditModal = ({
 
 
   return (
-    <Modal
+    <CustomModal
       visible={visible}
       transparent={true}
       animationType="fade"
       onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <ScrollView>
-            <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
-            
-            <TextInput
-              style={styles.input}
-              placeholder={t('riskeditmodal.extraInfo')}
-              value={description}
-              onChangeText={setDescription}
-              multiline={true}
-              textAlignVertical="top"
-            />
+      <ScrollView>
+        <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
+        
+        <TextInput
+          style={styles.input}
+          placeholder={t('riskeditmodal.extraInfo')}
+          value={description}
+          onChangeText={setDescription}
+          multiline={true}
+          textAlignVertical="top"
+        />
 
-            {!buttonHidden && (
-              <TouchableOpacity
-                style={[styles.button, styles.speechButton]}
-                onPress={() => {
-                  setUseSpeech(!useSpeech);
-                  setButtonHidden(true);
-                }}
-              >
-                <Text style={styles.buttonText}>{t('riskeditmodal.withSpeech')}</Text>
-              </TouchableOpacity>
-            )}
-            {useSpeech && (
-              <SpeechToTextView
-                setDescription={setDescription}
-                translate={false}
-              />
-            )}
+        {!buttonHidden && (
+          <TouchableOpacity
+            style={[styles.button, styles.speechButton]}
+            onPress={() => {
+              setUseSpeech(!useSpeech);
+              setButtonHidden(true);
+            }}
+          >
+            <Text style={styles.buttonText}>{t('riskeditmodal.withSpeech')}</Text>
+          </TouchableOpacity>
+        )}
+        {useSpeech && (
+          <SpeechToTextView
+            setDescription={setDescription}
+            translate={false}
+          />
+        )}
 
-            <TakePictureView title={title}/>
-            
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[styles.button, styles.cancelButton]}
-                onPress={onClose}
-              >
-                <Text style={styles.buttonText}>{t('riskeditmodal.cancel')}</Text>
-              </TouchableOpacity>
+        <TakePictureView title={title}/>
+        
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.cancelButton]}
+            onPress={onClose}
+          >
+            <Text style={styles.buttonText}>{t('riskeditmodal.cancel')}</Text>
+          </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.resetButton}
-                onPress={handleReset}
-              >
-                <Text style={styles.resetButtonText}>{t('riskeditmodal.reset')}</Text>
-              </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.resetButton}
+            onPress={handleReset}
+          >
+            <Text style={styles.resetButtonText}>{t('riskeditmodal.reset')}</Text>
+          </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[
-                  styles.button,
-                  description !== ''
-                    ? styles.submitButton
-                    : styles.disabledButton
-                ]}
-                onPress={handleSubmit}
-                disabled={description === ''}
-              >
-                <Text style={styles.buttonText}>{'Käännä (esikatselu)'}</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              description !== ''
+                ? styles.submitButton
+                : styles.disabledButton
+            ]}
+            onPress={handleSubmit}
+            disabled={description === ''}
+          >
+            <Text style={styles.buttonText}>{'Käännä (esikatselu)'}</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-    </Modal>
+      </ScrollView>
+    </CustomModal>
   );
 };
 
@@ -142,20 +139,6 @@ const styles = StyleSheet.create({
     height: 100,
     marginBottom: 20,
     padding: 10,
-  },
-  modalContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContent: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    maxWidth: 400,
-    padding: 20,
-    width: '95%',
   },
   resetButton: {
     alignItems: 'center',

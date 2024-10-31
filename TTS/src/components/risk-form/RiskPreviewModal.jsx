@@ -1,8 +1,9 @@
 import React from 'react';
-import { Modal, View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
 import Image from '@components/take-picture/Image';
+import CustomModal from '@components/CustomModal';
 
 const RiskPreviewModal = ({
   title,
@@ -18,51 +19,42 @@ const RiskPreviewModal = ({
   const { t } = useTranslation();
 
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      animationType="fade"
-      onRequestClose={onClose}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <ScrollView>
-            <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
-            <Text style={styles.description}>{description}</Text>
-            <View style={styles.imageContainer}>
-              {images.length === 0 ? (
-                <View style={{ margin: 10 }}>
-                  <Text>{t('takepicture.noPictures')}</Text>
-                </View>
-              ) : (
-                images.map((image, index) => (
-                  <Image
-                    key={index}
-                    images={images}
-                    currentIndex={index}
-                    isLandscape={image.isLandscape}
-                  />
-                ))
-              )}
+    <CustomModal visible={visible} onClose={onClose}>
+      <ScrollView>
+        <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <View style={styles.imageContainer}>
+          {images.length === 0 ? (
+            <View style={{ margin: 10 }}>
+              <Text>{t('takepicture.noPictures')}</Text>
             </View>
-            <View className="flex-row justify-between mt-4">
-              <TouchableOpacity
-                style={styles.editButton}
-                onPress={onEditPress}
-              >
-                <Text>{t('risknote.edit')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.checkedButton}
-                onPress={onSubmit}
-              >
-                <Text>{t('riskeditmodal.checked')}</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+          ) : (
+            images.map((image, index) => (
+              <Image
+                key={index}
+                images={images}
+                currentIndex={index}
+                isLandscape={image.isLandscape}
+              />
+            ))
+          )}
         </View>
-      </View>
-    </Modal>
+        <View className="flex-row justify-between mt-4">
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={onEditPress}
+          >
+            <Text>{t('risknote.edit')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.checkedButton}
+            onPress={onSubmit}
+          >
+            <Text>{t('riskeditmodal.checked')}</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </CustomModal>
   );
 };
 
