@@ -1,11 +1,23 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import { MemoryRouter } from 'react-router-native';
+import { NavigationContainer } from '@react-navigation/native';
 import AppBar from '@components/app-bar/AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   removeItem: jest.fn(),
+}));
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'appbar.signOut': 'Kirjaudu ulos',
+        'appbar.signIn': 'Kirjaudu sisään',
+      };
+      return translations[key] || key;
+    },
+  }),
 }));
 
 // Mock console.error to verify error handling
@@ -22,9 +34,9 @@ describe('AppBar Component', () => {
     AsyncStorage.removeItem.mockResolvedValueOnce(null);
 
     const { getByText } = render(
-      <MemoryRouter>
+      <NavigationContainer>
         <AppBar username="testUser" setUsername={mockSetUsername} />
-      </MemoryRouter>
+      </NavigationContainer>
     );
 
     const signOutButton = getByText('Kirjaudu ulos');
@@ -41,9 +53,9 @@ describe('AppBar Component', () => {
     AsyncStorage.removeItem.mockRejectedValueOnce(mockError);
 
     const { getByText } = render(
-      <MemoryRouter>
+      <NavigationContainer>
         <AppBar username="testUser" setUsername={mockSetUsername} />
-      </MemoryRouter>
+      </NavigationContainer>
     );
 
     const signOutButton = getByText('Kirjaudu ulos');
@@ -56,9 +68,9 @@ describe('AppBar Component', () => {
 
   it('renders the "Kirjaudu sisään" tab when username is null', () => {
     const { getByText } = render(
-      <MemoryRouter>
+      <NavigationContainer>
         <AppBar username={null} setUsername={mockSetUsername} />
-      </MemoryRouter>
+      </NavigationContainer>
     );
 
     const signInTab = getByText('Kirjaudu sisään');

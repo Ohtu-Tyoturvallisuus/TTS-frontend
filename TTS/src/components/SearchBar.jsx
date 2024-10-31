@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const SearchBar = ({ setFilter }) => {
+  const { t } = useTranslation();
+
   return (
     <View className="flex items-center justify-center py-3">
       <TextInput
         style={styles.searchInput}
-        placeholder="Etsi hakusanalla..."
+        placeholder={t('searchbar.placeholder')}
         placeholderTextColor="#A9A9A9"
         onChangeText={setFilter}
       />
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 12,
     textAlign: 'center',
-    width: 350,
+    width: '100%',
   },
 });
 

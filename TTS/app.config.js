@@ -3,7 +3,8 @@ import 'dotenv/config'
 export default {
   name: "HazardHunt",
   slug: "HazardHunt",
-  version: "1.0.0",
+  scheme: "HazardHunt",
+  version: "1.0.1",
   owner: "telinekataja",
   orientation: "portrait",
   icon: "./assets/icon.png",
@@ -13,18 +14,27 @@ export default {
     resizeMode: "contain",
     backgroundColor: "#ffffff"
   },
+  plugins: [
+    "expo-localization"
+  ],
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.HazardHunt",
     infoPlist: {
-        "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text."
+      "ITSAppUsesNonExemptEncryption": false,
+      "LSMinimumSystemVersion": "12.0",
+      "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text.",
     }
   },
   android: {
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#ffffff"
-    }
+    },
+    package: "com.HazardHunt",
+    permissions: [
+      "RECORD_AUDIO"
+    ]
   },
   web: {
     favicon: "./assets/favicon.png"

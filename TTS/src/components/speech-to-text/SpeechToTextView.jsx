@@ -1,31 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Audio } from 'expo-av';
-import LanguageSelectMenu from './LanguageSelectMenu'
 import CountryFlag from 'react-native-country-flag';
+import { Audio } from 'expo-av';
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import SelectTranslateLanguage from './SelectTranslateLanguage';
+import countriesData from '@lang/locales/languages.json';
 
 const SpeechToTextView = ({ setDescription=null, translation=true}) => {
+  const { t, i18n } = useTranslation();
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
-  const [recordingLanguage, setRecordingLanguage] = useState('')
-  const [translationLanguages, setTranslationLanguages] = useState([])
-  const [translations, setTranslations] = useState({})
+  const [recordingLanguage, setRecordingLanguage] = useState(i18n.language);
+  const [translationLanguages, setTranslationLanguages] = useState([]);
+  const [translations, setTranslations] = useState({});
+  
+
+  useEffect(() => {
+    setRecordingLanguage(i18n.language);
+  }, [i18n.language]);
+
   const timeout = 60000
-  const languageToFlagMap = {
-    'fi': 'FI',
-    'sv': 'SE',
-    'en': 'GB',
-    'et': 'EE',
-    'lv': 'LV',
-    'pl': 'PL',
-    'ru': 'RU',
-  }
+  const languageToFlagMap = countriesData.countries.reduce((map, country) => {
+    map[country.value] = country.flagCode;
+    return map;
+  }, {});
   const recordingLanguageFlagCode = recordingLanguage.slice(-2);
 
   let recordingTimeout;
 
-  async function startRecording() {
+  const startRecording = async () => {
     try {
       // Set the audio mode for recording on iOS
       await Audio.setAudioModeAsync({
@@ -53,9 +58,9 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     } catch (error) {
       console.error('Failed to start recording', error);
     }
-  }
+  };
 
-  async function stopRecording(currentRecording) {
+  const stopRecording = async (currentRecording) => {
     try {
       // Clear the timeout if stopRecording is called manually before it finishes
       if (recordingTimeout) {
@@ -78,9 +83,9 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     } catch (error) {
       console.error('Failed to stop recording', error);
     }
-  }
+  };
 
-  async function uploadToBackend(fileUri) {
+  const uploadToBackend = async (fileUri) => {
     let formData = new FormData();
     const fileType = "audio/3gp";
 
@@ -94,17 +99,19 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     formData.append('translationLanguages', JSON.stringify(translationLanguages));
 
     try {
+      const token = await AsyncStorage.getItem('access_token')
       const response = await fetch("https://tts-app.azurewebsites.net/api/transcribe/", {
         method: "POST",
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
         },
       });
       const result = await response.json();
       console.log("File uploaded successfully:", result);
-      setTranscription(result.transcription)
-      setTranslations(result.translations)
+      result.transcription && setTranscription(result.transcription)
+      result.translations && setTranslations(result.translations)
 
       // Concatenate transcription into description
       if (setDescription) {
@@ -118,37 +125,32 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
     } catch (error) {
       console.error("Failed to upload file:", error);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <LanguageSelectMenu
-        setRecordingLanguage={setRecordingLanguage}
-      />
-      {translation && (
-        <LanguageSelectMenu
-          setTranslationLanguages={setTranslationLanguages}
-        />
-      )}
-      {recordingLanguage !== '' && (
-        <View>
-          <Text>(Maksimipituus: {timeout/1000} sekuntia.)</Text>
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-              style={[styles.recordButton, recording ? styles.stopButton : styles.startButton]}
-              onPress={recording ? () => stopRecording(recording) : startRecording}
-            >
-              <Text style={styles.buttonText}>
-                {recording ? 'Lopeta' : 'Aloita puheentunnistus'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {transcription !== '' && (
+      <View style={styles.recordingContainer}>
+        <Text>{t('speechtotext.recognitionLanguage')}</Text>
+        <View style={{ marginTop: 5 }}>
+          <CountryFlag 
+            isoCode={recordingLanguageFlagCode} 
+            size={24} 
+          />
+        </View>
+      </View>
+      {transcription !== '' && (
             <View style={styles.textContainer}>
               <CountryFlag isoCode={recordingLanguageFlagCode} size={24} />
               <Text style={styles.translatedText}>{transcription}</Text>
             </View>
           )}
+      {translation && (
+        <SelectTranslateLanguage
+          setTranslationLanguages={setTranslationLanguages}
+        />
+      )}
+      {recordingLanguage !== '' && (
+        <View>
           {Object.entries(translations).map(([lang, text]) => {
             const flagCode = languageToFlagMap[lang] || lang.toUpperCase();
             return (
@@ -158,6 +160,17 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
               </View>
             )
           })}
+          <Text>({t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout/1000 })}.)</Text>
+          <View style={styles.buttonsContainer}>
+            <TouchableOpacity
+              style={[styles.recordButton, recording ? styles.stopButton : styles.startButton]}
+              onPress={recording ? () => stopRecording(recording) : startRecording}
+            >
+              <Text style={styles.buttonText}>
+                {recording ? t('speechtotext.stop') : t('speechtotext.start')}
+              </Text>
+            </TouchableOpacity>
+          </View>          
         </View>
       )}
     </View>
@@ -182,6 +195,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
   },
+  recordingContainer: {
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    borderColor: '#c5c6c8',
+    borderRadius: 4,
+    borderWidth: 1,
+    marginVertical: 5,
+    padding: 10,
+    width: '95%',
+  },
   startButton: {
     backgroundColor: 'green',
   },
@@ -190,11 +213,13 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     alignItems: 'center',
+    backgroundColor: '#f0f0f0',
     borderColor: 'light#c5c6c8',
     borderWidth: 1,
     flexDirection: 'row',
     flexShrink: 1,
     flexWrap: 'wrap',
+    marginVertical: 3,
     maxWidth: '90%',
     padding: 15,
   },

@@ -1,6 +1,17 @@
 import { render } from '@testing-library/react-native';
 import LoadingErrorComponent from '@components/Loading';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'loading.error': 'Virhe lataamisessa'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 describe('LoadingErrorComponent', () => {
   it('displays the loading indicator and title when loading is true', () => {
     const { getByText, getByTestId } = render(

@@ -1,5 +1,5 @@
 import { screen, render, fireEvent, waitFor } from "@testing-library/react-native";
-import { NativeRouter } from "react-router-native";
+import { NavigationContainer } from "@react-navigation/native";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -23,6 +23,18 @@ jest.mock('expo-constants', () => ({
   }
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'signin.confirmLogin': 'Vahvista kirjautuminen',
+        'signin.username': 'Käyttäjänimi'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
 console.error = jest.fn();
 
 describe('Sign in', () => {
@@ -34,17 +46,17 @@ describe('Sign in', () => {
     const mockSetUsername = jest.fn();
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
     screen.debug();
 
     expect(screen.getByPlaceholderText('Käyttäjänimi')).toBeDefined();
-    expect(screen.getByText('Kirjaudu sisään')).toBeDefined();
+    expect(screen.getByText('Vahvista kirjautuminen')).toBeDefined();
   });
 
   it('calls onSubmit and saves username when the form is submitted', async () => {
@@ -55,22 +67,23 @@ describe('Sign in', () => {
     });
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
     const input = screen.getByPlaceholderText('Käyttäjänimi');
-    const button = screen.getByText('Kirjaudu sisään');
+    const button = screen.getByText('Vahvista kirjautuminen');
 
     fireEvent.changeText(input, 'testuser');
     fireEvent.press(button);
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
-        username: 'testuser'
+        username: 'testuser',
+        id: null
       });
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('username', 'testuser');
@@ -82,14 +95,14 @@ describe('Sign in', () => {
     const mockSetUsername = jest.fn();
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
-    fireEvent.press(screen.getByText('Kirjaudu sisään'));
+    fireEvent.press(screen.getByText('Vahvista kirjautuminen'));
 
     await waitFor(() => {
       expect(screen.getByText('Syötä käyttäjänimi')).toBeDefined();
@@ -103,22 +116,23 @@ describe('Sign in', () => {
     axios.post.mockRejectedValueOnce(mockError);
 
     render(
-      <NativeRouter>
+      <NavigationContainer>
         <UserContext.Provider value={{ setUsername: mockSetUsername }}>
           <SignIn />
         </UserContext.Provider>
-      </NativeRouter>
+      </NavigationContainer>
     );
 
     const input = screen.getByPlaceholderText('Käyttäjänimi');
-    const button = screen.getByText('Kirjaudu sisään');
+    const button = screen.getByText('Vahvista kirjautuminen');
 
     fireEvent.changeText(input, 'testuser');
     fireEvent.press(button);
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
-        username: 'testuser'
+        username: 'testuser',
+        id: null
       });
 
       expect(console.error).toHaveBeenCalledWith('Error signing in:', mockError);

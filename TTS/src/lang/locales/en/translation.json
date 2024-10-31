@@ -1,0 +1,125 @@
+{
+  "appbar": {
+    "projects": "Projects",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "changelanguage": {
+    "changeLanguage": "Select your language",
+    "languages": {
+      "english": "English",
+      "finnish": "Suomi"
+    }
+  },
+  "closebutton": {
+    "close": "Close"
+  },
+  "dropdownoptions": {
+    "chooseAll": "--Choose all--",
+    "search": "Search..."
+  },
+  "languageselectmenu": {
+    "selectRecordingLanguage": "Select language for recognition",
+    "selectTranslationLanguages": "Select languages for translation",
+    "selectLanguage": "Select a language",
+    "selectLanguages": "Select languages",
+    "selectedLanguage": "Selected language",
+    "selectedLanguages": "Selected languages",
+    "searchLanguages": "Search for languages..."
+  },
+  "loading": {
+    "error": "Error while loading"
+  },
+  "main": {
+    "navigationMain": "Main",
+    "navigationSettings": "Settings"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft sign-in",
+    "greeting": "Hello"
+  },
+  "projectlist":{
+    "chooseAll": "--Choose all--",
+    "chooseArea": "Choose area",
+    "loading": "Loading projects",
+    "projects": "Projects"
+  },
+  "projectmodal": {
+    "title": "Fill in a new risk form"
+  },
+  "projectsurveylist": {
+    "loadingSurveys": "Loading surveys..."
+  },
+  "projectsurveylistcontainer": {
+    "minutesAgo_one": "one minute ago",
+    "minutesAgo_other": "{{count}} minutes ago",
+    "hoursAgo_one": "one hour ago",
+    "hoursAgo_other": "{{count}} hours ago",
+    "daysAgo_one": "one day ago",
+    "daysAgo_other": "{{count}} days ago",
+    "useTemplate": "Use as a template",
+    "noSurveys": "No surveys available."
+  },
+  "riskform": {
+    "successMessage": "Risk notes submitted successfully",
+    "close": "Close",
+    "title": "Work safety form",
+    "errorFetchingData": "Error fetching form data",
+    "errorSubmitting": "Error submitting form",
+    "projectName": "Project name",
+    "projectId": "Project ID",
+    "task": "Task",
+    "installation": "Installation",
+    "modification": "Modification",
+    "dismantling": "Dismantling",
+    "scaffoldType": "Scaffold type",
+    "workScaffold": "Work scaffold",
+    "nonWeatherproof": "Non-weatherproof work scaffold",
+    "weatherproof": "Weatherproof work scaffold",
+    "taskDescription": "What are we doing? (purpose of scaffolding)",
+    "noProject": "Not seeing a project...",
+    "loadingFormData": "Loading form data...",
+    "scaffoldRisks": "Scaffold work risks",
+    "environmentRisks": "Work environment risks",
+    "submit": "Submit"
+  },
+  "riskmodal": {
+    "extraInfo": "Enter additional information",
+    "withSpeech": "Enter with speech",
+    "cancel": "Cancel",
+    "reset": "Reset",
+    "checked": "Checked"
+  },
+  "risknote": {
+    "checked": "Checked",
+    "notRelevant": "Not relevant",
+    "toBeNoted": "To be noted"
+  },
+  "searchbar": {
+    "placeholder": "Search by keyword..."
+  },
+  "selecttranslate": {
+    "selectTranslationLanguages": "Select languages for translation",
+    "selectedLanguages": "Selected languages",
+    "searchLanguages": "Search for languages...",
+    "selectLanguages": "Select languages"
+  },
+  "settings":{
+    "changeLanguage": "Change language",
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "signin": {
+    "confirmLogin": "Confirm login",
+    "username": "Username"
+  },  
+  "speechtotext": {
+    "maxLength": "Maximum length",
+    "recognitionLanguage": "Speech recognition language",
+    "seconds_one": "one second",
+    "seconds_other": "{{count}} seconds",
+    "stop": "Stop",
+    "start": "Start speech recognition"
+  }
+}

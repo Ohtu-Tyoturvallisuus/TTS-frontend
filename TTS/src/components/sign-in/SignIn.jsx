@@ -2,8 +2,10 @@ import { TextInput, Pressable, View, StyleSheet, Text } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { UserContext } from '@contexts/UserContext';
 import { signIn } from '@services/apiService';
 
@@ -19,8 +21,9 @@ const initialValues = {
 };
 
 const SignIn = () => {
-  const navigate = useNavigate()
+  const navigation = useNavigation()
   const { setUsername } = useContext(UserContext)
+  const { t } = useTranslation();
 
   const onSubmit = async (values) => {
     try {
@@ -28,7 +31,7 @@ const SignIn = () => {
       console.log(data);
       await AsyncStorage.setItem('username', values.username);
       setUsername(values.username);
-      navigate('/');
+      navigation.navigate('Main');
     } catch (error) {
       console.error('Error signing in:', error);
     }
@@ -44,7 +47,7 @@ const SignIn = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        placeholder="Käyttäjänimi"
+        placeholder={t('signin.username')}
         onChangeText={formik.handleChange('username')}
         value={formik.values.username}
         style={[
@@ -62,7 +65,7 @@ const SignIn = () => {
         onPress={formik.handleSubmit}
         style={styles.button}
         >
-        <Text style={styles.buttonText}>Kirjaudu sisään</Text>
+        <Text style={styles.buttonText}>{t('signin.confirmLogin')}</Text>
       </Pressable>
     </View>
   );

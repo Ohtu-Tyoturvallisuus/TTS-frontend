@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+
 import useFetchProjects from '@hooks/useFetchProjects';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import ProjectModal from '@components/project-list/ProjectModal';
@@ -7,17 +10,18 @@ import SearchBar from '@components/SearchBar';
 import DropdownOptions from '@components/DropdownOptions';
 import Loading from '@components/Loading';
 
-const ProjectsList = () => {
+const ProjectList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
   const [searchFilter, setSearchFilter] = useState('');
-  const [filteredProjects, setFilteredProjects] = useState([]);  
+  const [filteredProjects, setFilteredProjects] = useState([]);
+  const { t } = useTranslation();
   const { projects, loading, error } = useFetchProjects();
   console.log('Project example:', projects[1]);
   
   const [areaFilter, setAreaFilter] = useState([]);
   const projectAreas = [
-    ["--Valitse kaikki--", ""],
+    [t('projectlist.chooseAll'), ""],
     ["Hallinto", "AL90"],
     ["Etelä-Suomi", "AL31"],
     ["Sisä-Suomi", "AL41"],
@@ -54,7 +58,7 @@ const ProjectsList = () => {
       <Loading 
         loading={loading} 
         error={error} 
-        title="Ladataan projekteja" 
+        title={t('projectlist.loading')}
       />
     );
   }
@@ -76,31 +80,34 @@ const ProjectsList = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={filteredProjects}
-        renderItem={ProjectButton}
-        keyExtractor={project => project.id.toString()}
-        ListHeaderComponent={
-          <>
-            <Text style={styles.title}>Projektit</Text>
-            <DropdownOptions 
-              onSelect={setAreaFilter} 
-              options={projectAreas}
-              placeholderText='Valitse alue'
-              />
-            <SearchBar setFilter={setSearchFilter} />
-          </>
-        }
-      />
-      <ProjectModal
-        visible={modalVisible}
-        onClose={() => {
-          setModalVisible(false);
-          setSelectedProject(null);
-        }}
-      />
-    </View>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <FlatList
+          data={filteredProjects}
+          renderItem={ProjectButton}
+          keyExtractor={project => project.id.toString()}
+          ListHeaderComponent={
+            <>
+              <Text style={styles.title}>{t('projectlist.projects')}</Text>
+              <DropdownOptions 
+                onSelect={setAreaFilter} 
+                options={projectAreas}
+                placeholderText={t('projectlist.chooseArea')}
+                />
+              <SearchBar setFilter={setSearchFilter} />
+            </>
+          }
+        />
+        <ProjectModal
+          visible={modalVisible}
+          setVisible={setModalVisible}
+          onClose={() => {
+            setModalVisible(false);
+            setSelectedProject(null);
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -133,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectsList;
+export default ProjectList;

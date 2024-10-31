@@ -1,8 +1,33 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RiskModal from '@components/risk-form/RiskModal'; 
+import RiskModal from '@components/risk-form/RiskModal';
 
-describe('<RiskModal />', () => {
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'riskmodal.extraInfo': 'Syötä lisätietoja',
+        'riskmodal.withSpeech': 'Syötä puheella',
+        'riskmodal.cancel': 'Peruuta',
+        'riskmodal.reset': 'Resetoi',
+        'riskmodal.checked': 'Kunnossa',
+        'speechtotext.recognitionLanguage': 'Puheentunnistuskieli',
+        'speechtotext.stop': 'Lopeta',
+        'speechtotext.start': 'Aloita puheentunnistus',
+        'speechtotext.maxLength': 'Maksimipituus',
+        'speechtotext.seconds': '{{count}} sekuntia',
+        'selecttranslate.selectTranslationLanguages': 'Valitse kielet käännöstä varten'
+      };
+      return translations[key] || key;
+    },
+    i18n: {
+      language: 'fi-FI',
+      changeLanguage: jest.fn().mockResolvedValue(true),
+    },
+  }),
+}));
+
+describe('RiskModal Component', () => {
   const mockOnSubmit = jest.fn();
   const mockOnClose = jest.fn();
   const mockTitle = "Test Modal Title";
@@ -73,9 +98,9 @@ describe('<RiskModal />', () => {
 
     expect(queryByText('Syötä puheella')).toBeNull();
 
-    const recordingLanguageText = getByText('Valitse tunnistettava kieli');
+    const recordingLanguageText = getByText('Puheentunnistuskieli');
     expect(recordingLanguageText).toBeTruthy();
-    const translatedLanguagesText = getByText('Valitse kielet, joille haluat kääntää');
+    const translatedLanguagesText = getByText('Valitse kielet käännöstä varten');
     expect(translatedLanguagesText).toBeTruthy();
   });
 });

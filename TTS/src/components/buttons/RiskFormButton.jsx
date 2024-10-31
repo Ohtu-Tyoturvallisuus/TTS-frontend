@@ -1,14 +1,19 @@
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 
-const RiskFormButton = ({ title='Täytä uusi riskilomake', buttonStyle, textStyle }) => {
-  const navigate = useNavigate()
+const RiskFormButton = ({ title, setVisible, buttonStyle, textStyle }) => {
+  const navigation = useNavigation()
+
+  const handlePress = () => {
+    navigation.navigate('RiskForm');
+    setVisible(false);
+  }
 
   return (
     <View>
       <TouchableOpacity 
         style={[styles.button, buttonStyle]}
-        onPress={() => navigate('worksafetyform')}
+        onPress={handlePress}
       >
         <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       </TouchableOpacity>
@@ -22,10 +27,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#32CD32',
     borderRadius: 5,
+    justifyContent: 'center',
+    minHeight: 48,
+    minWidth: 48,
     padding: 10,
     width: '80%',
   },
-  buttonText: {
+  buttonText: {    
     color: '#fff', 
     fontSize: 16,
     fontWeight: 'bold',

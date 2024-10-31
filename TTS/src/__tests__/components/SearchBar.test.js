@@ -1,6 +1,17 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import SearchBar from '@components/SearchBar';  
+import SearchBar from '@components/SearchBar';
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => {
+      const translations = {
+        'searchbar.placeholder': 'Etsi hakusanalla...'
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
 
 describe('SearchBar Component', () => {
   it('renders correctly', () => {
