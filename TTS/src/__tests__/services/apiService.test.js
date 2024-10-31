@@ -22,15 +22,6 @@ jest.mock('expo-constants', () => ({
 
 jest.mock('axios');
 
-jest.mock('expo-constants', () => ({
-  expoConfig: {
-    extra: {
-      local_ip: '192.168.1.1',
-      local_setup: 'true',
-    },
-  },
-}));
-
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
@@ -82,9 +73,11 @@ describe('API Module - retrieveIdParams and getUserProfile', () => {
   });
 
   describe('getUserProfile', () => {
-    it('should fetch user profile, call setUsername, and store displayName in AsyncStorage', async () => {
+    it('should fetch user profile, call setUsername, call setEmail and store displayName in AsyncStorage', async () => {
       const mockProfileData = {
         displayName: 'Test User',
+        mail: 'test@mail.com'
+
       };
       fetch.mockResolvedValueOnce({
         ok: true,
@@ -92,9 +85,10 @@ describe('API Module - retrieveIdParams and getUserProfile', () => {
       });
 
       const setUsername = jest.fn();
+      const setEmail = jest.fn();
       const accessToken = 'test-access-token';
 
-      await getUserProfile({ setUsername, accessToken });
+      await getUserProfile({ setUsername, setEmail, accessToken });
 
       expect(fetch).toHaveBeenCalledWith('https://graph.microsoft.com/v1.0/me', {
         method: 'GET',
@@ -103,7 +97,9 @@ describe('API Module - retrieveIdParams and getUserProfile', () => {
         },
       });
       expect(setUsername).toHaveBeenCalledWith('Test User');
+      expect(setEmail).toHaveBeenCalledWith('test@mail.com');
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('username', 'Test User');
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('email', 'test@mail.com');
     });
 
     it('should handle errors if fetch fails', async () => {

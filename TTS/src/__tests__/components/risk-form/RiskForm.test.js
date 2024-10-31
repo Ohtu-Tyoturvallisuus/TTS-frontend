@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor, within } from '@testing-library/react-native';
-import { MemoryRouter } from 'react-router-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import RiskForm from '@components/risk-form/RiskForm';
 import * as apiService from '@services/apiService';
@@ -170,7 +170,7 @@ describe('RiskForm Component', () => {
 
   const renderComponent = () => {
     return render(
-      <MemoryRouter>
+      <NavigationContainer>
         <ProjectSurveyContext.Provider value={{ 
           selectedProject: mockProject, 
           selectedSurveyURL: mockSurveyURL,
@@ -179,13 +179,13 @@ describe('RiskForm Component', () => {
         }}>
           <RiskForm />
         </ProjectSurveyContext.Provider>
-      </MemoryRouter>
+      </NavigationContainer>
     );
   };
 
   const renderComponentWithoutProject = () => {
     return render(
-      <MemoryRouter>
+      <NavigationContainer>
         <ProjectSurveyContext.Provider value={{ 
           selectedProject: null, // No project selected
           selectedSurveyURL: mockSurveyURL,
@@ -194,7 +194,7 @@ describe('RiskForm Component', () => {
         }}>
           <RiskForm />
         </ProjectSurveyContext.Provider>
-      </MemoryRouter>
+      </NavigationContainer>
     );
   };
 
@@ -334,23 +334,16 @@ describe('RiskForm Component', () => {
   });
 
   it('updates task state when a button is pressed in ButtonGroup', () => {
-    const { getByText } = renderComponent(); // Render the RiskForm component 
-    // Ensure the initial state is correct (for example, 'installation' should be the default)
-    expect(getByText('Asennus')).toBeTruthy(); // Assuming 'Asennus' is the translated text for 'installation'  
-    // Simulate pressing the 'modification' button
-    fireEvent.press(getByText('Muokkaus')); // Assuming 'Muokkaus' is the translated text for 'modification'  
-    // Now check if the task state has been updated correctly
-    // Since the task should now be 'modification', we can check if the corresponding text is there
-    expect(getByText('Muokkaus')).toBeTruthy(); // Ensure 'Muokkaus' is now displayed
+    const { getByText } = renderComponent();
+    expect(getByText('Asennus')).toBeTruthy();
+    fireEvent.press(getByText('Muokkaus'));
+    expect(getByText('Muokkaus')).toBeTruthy();
   });
 
   it('updates scaffoldType state when a button is pressed in ButtonGroup', () => {
-    const { getByText } = renderComponent(); // Render the RiskForm component
-    // Ensure the initial state is correct (for example, 'workScaffold' should be the default)
-    expect(getByText('Työteline')).toBeTruthy(); // Assuming 'Työteline' is the translated text for 'workScaffold'
-    // Simulate pressing the 'nonWeatherproof' button
-    fireEvent.press(getByText('Sääsuojaton työteline')); // Assuming this is the translated text for 'nonWeatherproof'
-    // Now check if the scaffoldType state has been updated correctly
-    expect(getByText('Sääsuojaton työteline')).toBeTruthy(); // Ensure 'Sääsuojaton työteline' is now displayed
+    const { getByText } = renderComponent();
+    expect(getByText('Työteline')).toBeTruthy();
+    fireEvent.press(getByText('Sääsuojaton työteline'));
+    expect(getByText('Sääsuojaton työteline')).toBeTruthy();
   });
 });

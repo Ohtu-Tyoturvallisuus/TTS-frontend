@@ -1,16 +1,16 @@
 import { render } from '@testing-library/react-native';
-import { MemoryRouter } from 'react-router-native';
-import AppBarTab from '@components/app-bar/AppBarTab'; // Adjust path as needed
+import { NavigationContainer } from '@react-navigation/native';
+import AppBarTab from '@components/app-bar/AppBarTab';
 
 describe('AppBarTab Component', () => {
   const mockText = 'Projects';
-  const mockTo = '/projects';
+  const mockTo = 'Main';
 
   it('renders the correct text', () => {
     const { getByText } = render(
-      <MemoryRouter>
+      <NavigationContainer>
         <AppBarTab text={mockText} to={mockTo} />
-      </MemoryRouter>
+      </NavigationContainer>
     );
 
     expect(getByText(mockText)).toBeTruthy();

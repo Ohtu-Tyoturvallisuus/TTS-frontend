@@ -85,7 +85,7 @@ export const retrieveIdParams = async ({ setClientId, setTenantId }) => {
   }
 };
 
-export const getUserProfile = async ({ setUsername, accessToken }) => {
+export const getUserProfile = async ({ setUsername, setEmail, accessToken }) => {
   try {
     const response = await fetch('https://graph.microsoft.com/v1.0/me', {
       method: 'GET',
@@ -100,6 +100,9 @@ export const getUserProfile = async ({ setUsername, accessToken }) => {
       console.log('User Profile:', profileData);
       await AsyncStorage.setItem('username', profileData.displayName);
       setUsername(profileData.displayName);
+      await AsyncStorage.setItem('email', profileData.mail);
+      setEmail(profileData.mail);
+
       return [profileData.displayName, profileData.id];
     } else {
       console.error('Error fetching profile:', profileData);

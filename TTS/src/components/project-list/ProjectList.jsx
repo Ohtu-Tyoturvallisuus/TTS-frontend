@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import useFetchProjects from '@hooks/useFetchProjects';
@@ -9,7 +10,7 @@ import SearchBar from '@components/SearchBar';
 import DropdownOptions from '@components/DropdownOptions';
 import Loading from '@components/Loading';
 
-const ProjectsList = () => {
+const ProjectList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
   const [searchFilter, setSearchFilter] = useState('');
@@ -79,31 +80,34 @@ const ProjectsList = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={filteredProjects}
-        renderItem={ProjectButton}
-        keyExtractor={project => project.id.toString()}
-        ListHeaderComponent={
-          <>
-            <Text style={styles.title}>{t('projectlist.projects')}</Text>
-            <DropdownOptions 
-              onSelect={setAreaFilter} 
-              options={projectAreas}
-              placeholderText={t('projectlist.chooseArea')}
-              />
-            <SearchBar setFilter={setSearchFilter} />
-          </>
-        }
-      />
-      <ProjectModal
-        visible={modalVisible}
-        onClose={() => {
-          setModalVisible(false);
-          setSelectedProject(null);
-        }}
-      />
-    </View>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <FlatList
+          data={filteredProjects}
+          renderItem={ProjectButton}
+          keyExtractor={project => project.id.toString()}
+          ListHeaderComponent={
+            <>
+              <Text style={styles.title}>{t('projectlist.projects')}</Text>
+              <DropdownOptions 
+                onSelect={setAreaFilter} 
+                options={projectAreas}
+                placeholderText={t('projectlist.chooseArea')}
+                />
+              <SearchBar setFilter={setSearchFilter} />
+            </>
+          }
+        />
+        <ProjectModal
+          visible={modalVisible}
+          setVisible={setModalVisible}
+          onClose={() => {
+            setModalVisible(false);
+            setSelectedProject(null);
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -136,4 +140,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectsList;
+export default ProjectList;

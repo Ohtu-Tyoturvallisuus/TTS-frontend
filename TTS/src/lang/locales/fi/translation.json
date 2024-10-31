@@ -5,6 +5,13 @@
     "signOut": "Kirjaudu ulos",
     "signIn": "Kirjaudu sisään"
   },
+  "changelanguage": {
+    "changeLanguage": "Valitse kielesi",
+    "languages": {
+      "english": "English",
+      "finnish": "Suomi"
+    }
+  },
   "closebutton": {
     "close": "Sulje"
   },
@@ -14,7 +21,7 @@
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",
-    "selectTranslationLanguages": "Valitse kielet, joille haluat kääntää",
+    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
     "selectLanguage": "Valitse kieli",
     "selectLanguages": "Valitse kielet",
     "selectedLanguage": "Valittu kieli",
@@ -23,6 +30,14 @@
   },
   "loading": {
     "error": "Virhe lataamisessa"
+  },
+  "main": {
+    "navigationMain": "Pääsivu",
+    "navigationSettings": "Asetukset"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft-kirjautuminen",
+    "greeting": "Hei"
   },
   "projectlist":{
     "chooseAll": "--Valitse kaikki--",
@@ -84,26 +99,27 @@
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."
   },
-  "settings": {
-    "changeLanguage": "Vaihda kieli",
-    "languages": {
-      "english": "englanti",
-      "finnish": "suomi"
-    }
+  "selecttranslate": {
+    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
+    "selectedLanguages": "Valitut kielet",
+    "searchLanguages": "Hae kieliä...",
+    "selectLanguages": "Valitse kielet"
   },
-  "speechtotext": {
-    "maxLength": "Maksimipituus",
-    "seconds_one": "yksi sekunti",
-    "seconds_other": "{{count}} sekuntia",
-    "stop": "Lopeta",
-    "start": "Aloita puheentunnistus"
+  "settings": {
+    "changeLanguage": "Vaihda kieltä",
+    "signIn": "Kirjaudu sisään",
+    "signOut": "Kirjaudu ulos"
   },
   "signin": {
     "confirmLogin": "Vahvista kirjautuminen",
     "username": "Käyttäjänimi"
   },
-  "microsoftsignin": {
-    "signInText": "Microsoft-kirjautuminen",
-    "greeting": "Hei"
+  "speechtotext": {
+    "maxLength": "Maksimipituus",
+    "recognitionLanguage": "Puheentunnistuskieli",
+    "seconds_one": "yksi sekunti",
+    "seconds_other": "{{count}} sekuntia",
+    "stop": "Lopeta",
+    "start": "Aloita puheentunnistus"
   }
 }

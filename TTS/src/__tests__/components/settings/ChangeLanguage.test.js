@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { Settings } from '@components/Settings';
+import { ChangeLanguage } from '@components/settings/ChangeLanguage';
 import { useTranslation } from 'react-i18next';
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
 }));
 
-describe('Settings Component', () => {
+describe('ChangeLanguage Component', () => {
   const mockChangeLanguage = jest.fn();
 
   beforeEach(() => {
@@ -18,21 +18,21 @@ describe('Settings Component', () => {
     useTranslation.mockReturnValue({
       t: (key) => {
         const translations = {
-          'settings.changeLanguage': 'Change Language',
-          'settings.languages.english': 'English',
-          'settings.languages.finnish': 'Finnish',
+          'changelanguage.changeLanguage': 'Change Language',
+          'changelanguage.languages.english': 'English',
+          'changelanguage.languages.finnish': 'Suomi',
         };
         return translations[key] || key;
       },
       i18n: {
-        language: 'fi',
+        language: 'fi-FI',
         changeLanguage: mockChangeLanguage,
       },
     });
 
-    const { getByText } = render(<Settings />);
+    const { getByText } = render(<ChangeLanguage />);
 
-    expect(getByText('Finnish')).toBeTruthy(); 
+    expect(getByText('Suomi')).toBeTruthy(); 
     expect(getByText('✔️')).toBeTruthy();
   });
 
@@ -40,9 +40,9 @@ describe('Settings Component', () => {
     useTranslation.mockReturnValue({
       t: (key) => {
         const translations = {
-          'settings.changeLanguage': 'Change Language',
-          'settings.languages.english': 'English',
-          'settings.languages.finnish': 'Finnish',
+          'changelanguage.changeLanguage': 'Change Language',
+          'changelanguage.languages.english': 'English',
+          'changelanguage.languages.finnish': 'Suomi',
         };
         return translations[key] || key;
       },
@@ -52,7 +52,7 @@ describe('Settings Component', () => {
       },
     });
 
-    const { getByText } = render(<Settings />);
+    const { getByText } = render(<ChangeLanguage />);
 
     expect(getByText('English')).toBeTruthy(); 
     expect(getByText('✔️')).toBeTruthy();
@@ -62,24 +62,24 @@ describe('Settings Component', () => {
     useTranslation.mockReturnValue({
       t: (key) => {
         const translations = {
-          'settings.changeLanguage': 'Change Language',
-          'settings.languages.english': 'English',
-          'settings.languages.finnish': 'Finnish',
+          'changelanguage.changeLanguage': 'Change Language',
+          'changelanguage.languages.english': 'English',
+          'changelanguage.languages.finnish': 'Suomi',
         };
         return translations[key] || key;
       },
       i18n: {
-        language: 'en',
+        language: 'en-GB',
         changeLanguage: mockChangeLanguage,
       },
     });
 
-    const { getByText } = render(<Settings />);
+    const { getByText } = render(<ChangeLanguage />);
 
-    fireEvent.press(getByText('Finnish'));
+    fireEvent.press(getByText('Suomi'));
 
     await waitFor(() => {
-      expect(mockChangeLanguage).toHaveBeenCalledWith('fi');
+      expect(mockChangeLanguage).toHaveBeenCalledWith('fi-FI');
     });
   });
 });

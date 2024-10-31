@@ -5,6 +5,13 @@
     "signOut": "Sign Out",
     "signIn": "Sign In"
   },
+  "changelanguage": {
+    "changeLanguage": "Select your language",
+    "languages": {
+      "english": "English",
+      "finnish": "Suomi"
+    }
+  },
   "closebutton": {
     "close": "Close"
   },
@@ -23,6 +30,14 @@
   },
   "loading": {
     "error": "Error while loading"
+  },
+  "main": {
+    "navigationMain": "Main",
+    "navigationSettings": "Settings"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft sign-in",
+    "greeting": "Hello"
   },
   "projectlist":{
     "chooseAll": "--Choose all--",
@@ -84,26 +99,27 @@
   "searchbar": {
     "placeholder": "Search by keyword..."
   },
-  "settings": {
-    "changeLanguage": "Change language",
-    "languages": {
-      "english": "English",
-      "finnish": "Finnish"
-    }
+  "selecttranslate": {
+    "selectTranslationLanguages": "Select languages for translation",
+    "selectedLanguages": "Selected languages",
+    "searchLanguages": "Search for languages...",
+    "selectLanguages": "Select languages"
   },
-  "speechtotext": {
-    "maxLength": "Maximum length",
-    "seconds_one": "one second",
-    "seconds_other": "{{count}} seconds",
-    "stop": "Stop",
-    "start": "Start speech recognition"
+  "settings":{
+    "changeLanguage": "Change language",
+    "signIn": "Sign in",
+    "signOut": "Sign out"
   },
   "signin": {
     "confirmLogin": "Confirm login",
     "username": "Username"
-  },
-  "microsoftsignin": {
-    "signInText": "Microsoft sign-in",
-    "greeting": "Hello"
+  },  
+  "speechtotext": {
+    "maxLength": "Maximum length",
+    "recognitionLanguage": "Speech recognition language",
+    "seconds_one": "one second",
+    "seconds_other": "{{count}} seconds",
+    "stop": "Stop",
+    "start": "Start speech recognition"
   }
 }

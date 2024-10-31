@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { useNavigate } from 'react-router-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import useMergedSurveyData from '@hooks/useMergedSurveyData';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -18,7 +19,7 @@ const RiskForm = () => {
     selectedSurveyURL: prevSurveyURL, 
     setSelectedSurveyURL 
   } = useContext(ProjectSurveyContext);
-  const navigate = useNavigate();
+  const navigation = useNavigation();
   const { t } = useTranslation(['translation', 'formFields']);
   const [ task, setTask ] = useState('');
   const [ scaffoldType, setScaffoldType ] = useState('');
@@ -110,7 +111,7 @@ const RiskForm = () => {
     setSelectedProject(null);
     setSelectedSurveyURL(null);
     setShowSuccessAlert(false);
-    navigate('/');
+    navigation.navigate('ProjectList');
   };
 
   if (!formData || !Object.keys(formData).length) {
@@ -118,53 +119,80 @@ const RiskForm = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>{t('riskform.title')}</Text>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <Text style={styles.title}>{t('riskform.title')}</Text>
 
-        {error && <Text>{t('riskform.errorFetchingData')}</Text>}
-        {/* Projektin tiedot */}
-        {project ? (
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>{t('riskform.projectName')}:</Text>
-            <Text>{project.project_name}</Text>
+          {error && <Text>{t('riskform.errorFetchingData')}</Text>}
+          {/* Projektin tiedot */}
+          {project ? (
+            <View style={styles.infoContainer}>
+              <Text style={styles.label}>{t('riskform.projectName')}:</Text>
+              <Text>{project.project_name}</Text>
 
-            <Text style={styles.label}>{t('riskform.projectId')}: </Text>
-            <Text>{project.project_id}</Text>
+              <Text style={styles.label}>{t('riskform.projectId')}: </Text>
+              <Text>{project.project_id}</Text>
 
-            <Text style={styles.label}>{t('riskform.task')}:</Text>
-            <ButtonGroup 
-              options={['installation', 'modification', 'dismantling']} 
-              selectedValue={task}
-              onChange={(value) => setTask(value)}
-              renderOption={(option) => t(`riskform.${option}`)}
-            />
+              <Text style={styles.label}>{t('riskform.task')}:</Text>
+              <ButtonGroup 
+                options={['installation', 'modification', 'dismantling']} 
+                selectedValue={task}
+                onChange={(value) => setTask(value)}
+                renderOption={(option) => t(`riskform.${option}`)}
+              />
 
-            <Text style={styles.label}>{t('riskform.scaffoldType')}:</Text>
-            <ButtonGroup 
-              options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
-              selectedValue={scaffoldType}
-              onChange={(value) => setScaffoldType(value)}
-              renderOption={(option) => t(`riskform.${option}`)}
-            />
+              <Text style={styles.label}>{t('riskform.scaffoldType')}:</Text>
+              <ButtonGroup 
+                options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
+                selectedValue={scaffoldType}
+                onChange={(value) => setScaffoldType(value)}
+                renderOption={(option) => t(`riskform.${option}`)}
+              />
 
-            <Text style={styles.label}>{t('riskform.taskDescription')}:</Text>
+              <Text style={styles.label}>{t('riskform.taskDescription')}:</Text>
+              <TextInput
+                style={styles.input}
+                value={taskDesc}
+                onChangeText={(value) => setTaskDesc(value)}
+                multiline={true}
+                textAlignVertical="top"
+              />
+            </View>
+          ) : (
+            <Text>{t('riskform.noProject')}</Text>
+          )}
+
+          <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
+          {Object.entries(formData)
+            .filter(([key, value]) => value.risk_type === 'scaffolding' && !key.startsWith('other_scaffolding'))
+            .map(([key, value]) => (
+              <RiskNote
+                key={key}
+                title={key}
+                renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
+                initialDescription={value.description}
+                initialStatus={value.status}
+                riskType={value.risk_type}
+                onChange={handleInputChange}
+              />
+          ))}
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>{t('other_scaffolding.title', { ns: 'formFields' })}:</Text>
             <TextInput
               style={styles.input}
-              value={taskDesc}
-              onChangeText={(value) => setTaskDesc(value)}
+              value={formData['other_scaffolding']?.description}
+              onChangeText={(value) => handleInputChange('other_scaffolding', 'description', value)}
               multiline={true}
               textAlignVertical="top"
             />
           </View>
-        ) : (
-          <Text>{t('riskform.noProject')}</Text>
-        )}
 
-        <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
-        {Object.entries(formData)
-          .filter(([key, value]) => value.risk_type === 'scaffolding' && !key.startsWith('other_scaffolding'))
-          .map(([key, value]) => (
+          <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
+          {Object.entries(formData)
+            .filter(([key, value]) => value.risk_type === 'environment' && !key.startsWith('other_environment.title'))
+            .map(([key, value]) => (
             <RiskNote
               key={key}
               title={key}
@@ -174,58 +202,33 @@ const RiskForm = () => {
               riskType={value.risk_type}
               onChange={handleInputChange}
             />
-        ))}
+          ))}
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>{t('other_scaffolding.title', { ns: 'formFields' })}:</Text>
+          <View style={styles.inputContainer}>
+          <Text style={styles.label}>{t('other_environment.title', { ns: 'formFields' })}:</Text>
           <TextInput
             style={styles.input}
-            value={formData['other_scaffolding']?.description}
-            onChangeText={(value) => handleInputChange('other_scaffolding', 'description', value)}
+            value={formData['other_environment']?.description}
+            onChangeText={(value) => handleInputChange('other_environment', 'description', value)}
             multiline={true}
             textAlignVertical="top"
           />
-        </View>
+          </View>
 
-        <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
-        {Object.entries(formData)
-          .filter(([key, value]) => value.risk_type === 'environment' && !key.startsWith('other_environment.title'))
-          .map(([key, value]) => (
-          <RiskNote
-            key={key}
-            title={key}
-            renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
-            initialDescription={value.description}
-            initialStatus={value.status}
-            riskType={value.risk_type}
-            onChange={handleInputChange}
+          <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>{t('riskform.submit')}</Text>
+          </TouchableOpacity>
+
+          <CloseButton onPress={handleClose} />
+        </ScrollView>
+        {showSuccessAlert && (
+          <SuccessAlert 
+            message={t('riskform.successMessage')} 
+            onDismiss={handleClose} 
           />
-        ))}
-
-        <View style={styles.inputContainer}>
-        <Text style={styles.label}>{t('other_environment.title', { ns: 'formFields' })}:</Text>
-        <TextInput
-          style={styles.input}
-          value={formData['other_environment']?.description}
-          onChangeText={(value) => handleInputChange('other_environment', 'description', value)}
-          multiline={true}
-          textAlignVertical="top"
-        />
-        </View>
-
-        <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>{t('riskform.submit')}</Text>
-        </TouchableOpacity>
-
-        <CloseButton onPress={handleClose} />
-      </ScrollView>
-      {showSuccessAlert && (
-        <SuccessAlert 
-          message={t('riskform.successMessage')} 
-          onDismiss={handleClose} 
-        />
-      )}
-    </View>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
