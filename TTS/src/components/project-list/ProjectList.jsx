@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import useFetchProjects from '@hooks/useFetchProjects';
@@ -79,32 +80,34 @@ const ProjectList = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={filteredProjects}
-        renderItem={ProjectButton}
-        keyExtractor={project => project.id.toString()}
-        ListHeaderComponent={
-          <>
-            <Text style={styles.title}>{t('projectlist.projects')}</Text>
-            <DropdownOptions 
-              onSelect={setAreaFilter} 
-              options={projectAreas}
-              placeholderText={t('projectlist.chooseArea')}
-              />
-            <SearchBar setFilter={setSearchFilter} />
-          </>
-        }
-      />
-      <ProjectModal
-        visible={modalVisible}
-        setVisible={setModalVisible}
-        onClose={() => {
-          setModalVisible(false);
-          setSelectedProject(null);
-        }}
-      />
-    </View>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <FlatList
+          data={filteredProjects}
+          renderItem={ProjectButton}
+          keyExtractor={project => project.id.toString()}
+          ListHeaderComponent={
+            <>
+              <Text style={styles.title}>{t('projectlist.projects')}</Text>
+              <DropdownOptions 
+                onSelect={setAreaFilter} 
+                options={projectAreas}
+                placeholderText={t('projectlist.chooseArea')}
+                />
+              <SearchBar setFilter={setSearchFilter} />
+            </>
+          }
+        />
+        <ProjectModal
+          visible={modalVisible}
+          setVisible={setModalVisible}
+          onClose={() => {
+            setModalVisible(false);
+            setSelectedProject(null);
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
