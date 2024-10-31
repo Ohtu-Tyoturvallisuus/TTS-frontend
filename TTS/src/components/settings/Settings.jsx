@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Modal, StyleSheet, View, Text  } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -32,6 +32,15 @@ const Settings = () => {
       console.error('Error signing out:', error);
     }
   };
+  
+  const getEmail = async () => {
+    const mail = await AsyncStorage.getItem('email')
+    await setEmail(mail)
+  }
+
+  useEffect(() => {
+    getEmail()
+  }, [])
 
   return (
     <View style={styles.container}>
