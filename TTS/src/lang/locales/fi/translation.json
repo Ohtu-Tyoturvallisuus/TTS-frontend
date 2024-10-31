@@ -21,7 +21,7 @@
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",
-    "selectTranslationLanguages": "Valitse kielet, joille haluat kääntää",
+    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
     "selectLanguage": "Valitse kieli",
     "selectLanguages": "Valitse kielet",
     "selectedLanguage": "Valittu kieli",
@@ -99,6 +99,12 @@
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."
   },
+  "selecttranslate": {
+    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
+    "selectedLanguages": "Valitut kielet",
+    "searchLanguages": "Hae kieliä...",
+    "selectLanguages": "Valitse kielet"
+  },
   "settings": {
     "changeLanguage": "Vaihda kieltä",
     "signIn": "Kirjaudu sisään",
@@ -110,6 +116,7 @@
   },
   "speechtotext": {
     "maxLength": "Maksimipituus",
+    "recognitionLanguage": "Puheentunnistuskieli",
     "seconds_one": "yksi sekunti",
     "seconds_other": "{{count}} sekuntia",
     "stop": "Lopeta",

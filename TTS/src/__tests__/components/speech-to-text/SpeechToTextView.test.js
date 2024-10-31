@@ -9,6 +9,7 @@ jest.mock('react-i18next', () => ({
     t: (key, options) => {
       const translations = {
         'speechtotext.maxLength': 'Maksimipituus',
+        'speechtotext.recognitionLanguage': 'Puheentunnistuskieli',
         'speechtotext.seconds_one': 'yksi sekunti',
         'speechtotext.seconds_other': '{{count}} sekuntia',
         'speechtotext.stop': 'Lopeta',
@@ -27,26 +28,23 @@ jest.mock('react-i18next', () => ({
 
       return translation;
     },
+    i18n: {
+      language: 'fi-FI',
+      changeLanguage: jest.fn().mockResolvedValue(true),
+    },
   }),
 }));
 
-jest.mock('@components/speech-to-text/LanguageSelectMenu', () => {
-  return jest.fn(({ setRecordingLanguage, setTranslationLanguages }) => {
+jest.mock('@components/speech-to-text/SelectTranslateLanguage', () => {
+  return jest.fn(({ setTranslationLanguages }) => {
     const React = require('react');
     const { View, Text } = require('react-native');
     
     return (
       <View>
-        {setRecordingLanguage && (
-          <Text onPress={() => setRecordingLanguage('fi-FI')}>
-            Mocked Recording Language Select
-          </Text>
-        )}
-        {setTranslationLanguages && (
           <Text onPress={() => setTranslationLanguages(['fi', 'sv'])}>
             Mocked Translation Language Select
           </Text>
-        )}
       </View>
     );
   });
@@ -85,8 +83,9 @@ describe('SpeechToTextView Component', () => {
     jest.restoreAllMocks();
   });
 
-  const startRecording = (getByText, getAllByText) => {
-    fireEvent.press(getAllByText('Mocked Recording Language Select')[0]);
+  const startRecording = (getByText) => {
+    expect(getByText('Puheentunnistuskieli')).toBeTruthy();
+    expect(getByText('Aloita puheentunnistus')).toBeTruthy();
     expect(getByText('(Maksimipituus: 60 sekuntia.)')).toBeTruthy();
     fireEvent.press(getByText('Aloita puheentunnistus'));
   };

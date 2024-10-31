@@ -50,9 +50,9 @@ jest.mock('@expo/vector-icons', () => {
 
 jest.mock('@components/project-list/ProjectList', () => {
   const { Text } = require('react-native');
-  const MockedProjectsList = () => <Text>Mocked Projects List</Text>;
-  MockedProjectsList.displayName = 'MockedProjectsList';
-  return MockedProjectsList;
+  const MockedProjectList = () => <Text>Mocked Projects List</Text>;
+  MockedProjectList.displayName = 'MockedProjectList';
+  return MockedProjectList;
 });
 
 jest.mock('@services/apiService', () => ({

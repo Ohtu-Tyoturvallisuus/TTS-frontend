@@ -9,7 +9,7 @@ import SearchBar from '@components/SearchBar';
 import DropdownOptions from '@components/DropdownOptions';
 import Loading from '@components/Loading';
 
-const ProjectsList = () => {
+const ProjectList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
   const [searchFilter, setSearchFilter] = useState('');
@@ -137,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectsList;
+export default ProjectList;

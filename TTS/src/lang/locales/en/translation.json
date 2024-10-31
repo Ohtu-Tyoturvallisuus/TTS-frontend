@@ -99,6 +99,12 @@
   "searchbar": {
     "placeholder": "Search by keyword..."
   },
+  "selecttranslate": {
+    "selectTranslationLanguages": "Select languages for translation",
+    "selectedLanguages": "Selected languages",
+    "searchLanguages": "Search for languages...",
+    "selectLanguages": "Select languages"
+  },
   "settings":{
     "changeLanguage": "Change language",
     "signIn": "Sign in",
@@ -110,6 +116,7 @@
   },  
   "speechtotext": {
     "maxLength": "Maximum length",
+    "recognitionLanguage": "Speech recognition language",
     "seconds_one": "one second",
     "seconds_other": "{{count}} seconds",
     "stop": "Stop",

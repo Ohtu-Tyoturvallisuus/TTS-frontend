@@ -11,10 +11,18 @@ jest.mock('react-i18next', () => ({
         'riskmodal.cancel': 'Peruuta',
         'riskmodal.reset': 'Resetoi',
         'riskmodal.checked': 'Kunnossa',
-        'languageselectmenu.selectRecordingLanguage': 'Valitse tunnistettava kieli',
-        'languageselectmenu.selectTranslationLanguages': 'Valitse kielet, joille haluat kääntää'
+        'speechtotext.recognitionLanguage': 'Puheentunnistuskieli',
+        'speechtotext.stop': 'Lopeta',
+        'speechtotext.start': 'Aloita puheentunnistus',
+        'speechtotext.maxLength': 'Maksimipituus',
+        'speechtotext.seconds': '{{count}} sekuntia',
+        'selecttranslate.selectTranslationLanguages': 'Valitse kielet käännöstä varten'
       };
       return translations[key] || key;
+    },
+    i18n: {
+      language: 'fi-FI',
+      changeLanguage: jest.fn().mockResolvedValue(true),
     },
   }),
 }));
@@ -90,9 +98,9 @@ describe('RiskModal Component', () => {
 
     expect(queryByText('Syötä puheella')).toBeNull();
 
-    const recordingLanguageText = getByText('Valitse tunnistettava kieli');
+    const recordingLanguageText = getByText('Puheentunnistuskieli');
     expect(recordingLanguageText).toBeTruthy();
-    const translatedLanguagesText = getByText('Valitse kielet, joille haluat kääntää');
+    const translatedLanguagesText = getByText('Valitse kielet käännöstä varten');
     expect(translatedLanguagesText).toBeTruthy();
   });
 });
