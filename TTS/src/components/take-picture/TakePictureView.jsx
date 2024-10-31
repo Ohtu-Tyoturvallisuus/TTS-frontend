@@ -134,15 +134,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   roundButton: {
-    flex: 1,
     alignItems: 'center',
-    borderRadius: 5, 
-    borderWidth: 1,
+    borderRadius: 5,
+    borderWidth: 1, 
+    flex: 1,
     justifyContent: 'center',
     marginBottom: 5,
-    marginTop: 10,
-    padding: 10, 
     marginHorizontal: 3,
+    marginTop: 10, 
+    padding: 10,
   },
 });
 

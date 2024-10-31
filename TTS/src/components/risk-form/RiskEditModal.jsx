@@ -5,13 +5,13 @@ import { useFormContext } from '@contexts/FormContext';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import TakePictureView from '@components/take-picture/TakePictureView';
 
-const RiskModal = ({ 
+const RiskEditModal = ({ 
   title,
   renderTitle,
   visible,
-  onSubmit, 
-  onClose, 
-  isModification 
+  onTranslate, 
+  onReset,
+  onClose
 }) => {
   const { updateFormData, getFormData } = useFormContext();
   const [description, setDescription] = useState(getFormData(title, 'description'));
@@ -21,16 +21,13 @@ const RiskModal = ({
 
   const handleSubmit = () => {
     updateFormData(title, 'description', description);
-    onSubmit();
+    onTranslate();
     onClose();
   };
 
   const handleReset = () => {
     setDescription('');
-    updateFormData(title, 'description', '');
-    updateFormData(title, 'status', '');
-    updateFormData(title, 'images', []);
-    onClose();
+    onReset();
   }
 
 
@@ -48,7 +45,7 @@ const RiskModal = ({
             
             <TextInput
               style={styles.input}
-              placeholder={t('riskmodal.extraInfo')}
+              placeholder={t('riskeditmodal.extraInfo')}
               value={description}
               onChangeText={setDescription}
               multiline={true}
@@ -63,13 +60,13 @@ const RiskModal = ({
                   setButtonHidden(true);
                 }}
               >
-                <Text style={styles.buttonText}>{t('riskmodal.withSpeech')}</Text>
+                <Text style={styles.buttonText}>{t('riskeditmodal.withSpeech')}</Text>
               </TouchableOpacity>
             )}
             {useSpeech && (
               <SpeechToTextView
                 setDescription={setDescription}
-                translation={true}
+                translate={false}
               />
             )}
 
@@ -80,16 +77,16 @@ const RiskModal = ({
                 style={[styles.button, styles.cancelButton]}
                 onPress={onClose}
               >
-                <Text style={styles.buttonText}>{t('riskmodal.cancel')}</Text>
+                <Text style={styles.buttonText}>{t('riskeditmodal.cancel')}</Text>
               </TouchableOpacity>
-              {isModification && (
-                <TouchableOpacity
-                  style={styles.resetButton}
-                  onPress={handleReset}
-                >
-                  <Text style={styles.resetButtonText}>{t('riskmodal.reset')}</Text>
-                </TouchableOpacity>
-              )}
+
+              <TouchableOpacity
+                style={styles.resetButton}
+                onPress={handleReset}
+              >
+                <Text style={styles.resetButtonText}>{t('riskeditmodal.reset')}</Text>
+              </TouchableOpacity>
+
               <TouchableOpacity
                 style={[
                   styles.button,
@@ -100,7 +97,7 @@ const RiskModal = ({
                 onPress={handleSubmit}
                 disabled={description === ''}
               >
-                <Text style={styles.buttonText}>{t('riskmodal.checked')}</Text>
+                <Text style={styles.buttonText}>{'Käännä (esikatselu)'}</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>
@@ -158,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     maxWidth: 400,
     padding: 20,
-    width: '90%',
+    width: '95%',
   },
   resetButton: {
     alignItems: 'center',
@@ -189,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RiskModal;
+export default RiskEditModal;

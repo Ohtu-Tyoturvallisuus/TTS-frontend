@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Image as RNImage, View, TouchableOpacity, Text, StyleSheet, Modal } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
-const Image = ({ images, currentIndex, onRemove, isLandscape }) => {
+const Image = ({ images, currentIndex, onRemove = null, isLandscape }) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
 
   const handleImagePress = () => {
@@ -12,11 +11,13 @@ const Image = ({ images, currentIndex, onRemove, isLandscape }) => {
   return (
     <View style={styles.imageWrapper}>
       <TouchableOpacity onPress={handleImagePress}>
-        <RNImage source={{ uri: images[currentIndex].uri }} style={isLandscape ? styles.landscapeImage : styles.portraitImage}/>
+        <RNImage source={{ uri: images[currentIndex].uri }} style={isLandscape ? styles.landscapeImage : styles.portraitImage} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.removeButton} onPress={() => onRemove(images[currentIndex].uri)}>
-        <Text style={styles.removeButtonText}>X</Text>
-      </TouchableOpacity>
+      {onRemove && (
+        <TouchableOpacity style={styles.removeButton} onPress={() => onRemove(images[currentIndex].uri)}>
+          <Text style={styles.removeButtonText}>X</Text>
+        </TouchableOpacity>
+      )}
       {isEnlarged && (
         <Modal
           transparent={true}
@@ -43,19 +44,13 @@ const styles = StyleSheet.create({
   },
   landscapeImage: {
     borderRadius: 4,
-    height: 93.75, // 25% bigger than 75
-    width: 125, // 25% bigger than 100
-  },
-  modalContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    flex: 1,
-    justifyContent: 'center',
+    height: 93.75,
+    width: 125, 
   },
   portraitImage: {
     borderRadius: 4,
-    height: 125, // 25% bigger than 100
-    width: 93.75, // 25% bigger than 75
+    height: 125, 
+    width: 93.75, 
   },
   removeButton: {
     alignItems: 'center',

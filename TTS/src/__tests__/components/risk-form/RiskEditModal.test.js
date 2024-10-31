@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RiskModal from '@components/risk-form/RiskModal';
+import RiskEditModal from '@components/risk-form/RiskEditModal';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => {
       const translations = {
-        'riskmodal.extraInfo': 'Syötä lisätietoja',
-        'riskmodal.withSpeech': 'Syötä puheella',
-        'riskmodal.cancel': 'Peruuta',
-        'riskmodal.reset': 'Resetoi',
-        'riskmodal.checked': 'Kunnossa',
+        'riskeditmodal.extraInfo': 'Syötä lisätietoja',
+        'riskeditmodal.withSpeech': 'Syötä puheella',
+        'riskeditmodal.cancel': 'Peruuta',
+        'riskeditmodal.reset': 'Resetoi',
+        'riskeditmodal.checked': 'Kunnossa',
         'languageselectmenu.selectRecordingLanguage': 'Valitse tunnistettava kieli',
         'languageselectmenu.selectTranslationLanguages': 'Valitse kielet, joille haluat kääntää'
       };
@@ -19,7 +19,7 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-describe('RiskModal Component', () => {
+describe('RiskEditModal Component', () => {
   const mockOnSubmit = jest.fn();
   const mockOnClose = jest.fn();
   const mockTitle = "Test Modal Title";
@@ -31,7 +31,7 @@ describe('RiskModal Component', () => {
 
   it('renders modal with title and closes when "Peruuta" is pressed', () => {
     const { getByText } = render(
-      <RiskModal
+      <RiskEditModal
         title={mockTitle}
         visible={true}
         onSubmit={mockOnSubmit}
@@ -48,7 +48,7 @@ describe('RiskModal Component', () => {
 
   it('calls onSubmit with description when "Kunnossa" is pressed', () => {
     const { getByText, getByPlaceholderText } = render(
-      <RiskModal
+      <RiskEditModal
         title={mockTitle}
         visible={true}
         onSubmit={mockOnSubmit}
@@ -72,7 +72,7 @@ describe('RiskModal Component', () => {
     const mockOnReset = jest.fn();
 
     const { getByText, queryByText } = render(
-      <RiskModal 
+      <RiskEditModal 
         title="Test Risk" 
         visible={true} 
         initialDescription="Test description" 

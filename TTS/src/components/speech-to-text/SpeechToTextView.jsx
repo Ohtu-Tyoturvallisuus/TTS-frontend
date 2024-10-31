@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import LanguageSelectMenu from './LanguageSelectMenu'
 import countriesData from '@lang/locales/languages.json';
 
-const SpeechToTextView = ({ setDescription=null, translation=true}) => {
+const SpeechToTextView = ({ setDescription=null, translate=true}) => {
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
   const [recordingLanguage, setRecordingLanguage] = useState('')
@@ -123,7 +123,7 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
       <LanguageSelectMenu
         setRecordingLanguage={setRecordingLanguage}
       />
-      {translation && (
+      {translate && (
         <LanguageSelectMenu
           setTranslationLanguages={setTranslationLanguages}
         />
@@ -141,7 +141,7 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          {transcription !== '' && (
+          {translate && transcription !== '' && (
             <View style={styles.textContainer}>
               <CountryFlag isoCode={recordingLanguageFlagCode} size={24} />
               <Text style={styles.translatedText}>{transcription}</Text>

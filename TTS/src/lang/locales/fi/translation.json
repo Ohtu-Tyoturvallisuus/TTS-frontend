@@ -70,7 +70,7 @@
     "submit": "Lähetä",
     "emptyFieldsError": "Täytä tehtävä, telinetyyppi ja mitä olet tekemässä."
   },
-  "riskmodal": {
+  "riskeditmodal": {
     "extraInfo": "Syötä lisätietoja",
     "withSpeech": "Syötä puheella",
     "cancel": "Peruuta",

@@ -2,27 +2,43 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
-import RiskModal from './RiskModal';
+import RiskEditModal from './RiskEditModal';
+import RiskPreviewModal from './RiskPreviewModal';
 
 const RiskNote = ({ title, renderTitle }) => {
   const { updateFormData, getFormData } = useFormContext();
   const status = getFormData(title, 'status');
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isModification, setIsModification] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [previewModalVisible, setPreviewModalVisible] = useState(false);
   const { t } = useTranslation();
 
   const handleSubmit = () => {
     updateFormData(title, 'status', 'checked');
-    setModalVisible(false);
+    setPreviewModalVisible(false);
   };
 
-  const handleEditPress = () => {
-    setIsModification(true);
-    setModalVisible(true);
+  handleTranslatePress = () => {
+    setEditModalVisible(false);
+    // TRANSLATION HAPPENS HERE (I GUESS) 
+    setPreviewModalVisible(true);
   };
 
-  // If status is checked then setIsModification is set to true
+  const handleReset = () => {
+    updateFormData(title, 'description', '');
+    updateFormData(title, 'status', '');
+    updateFormData(title, 'images', []);
+    setEditModalVisible(false);
+  };
+
+  const handlePreviewPress = () => {
+    setPreviewModalVisible(true);
+  };
+
+  const handlePreviewEditPress = () => {
+    setPreviewModalVisible(false);
+    setEditModalVisible(true);
+  };
 
   return (
     <View testID={`risknote-${title}`}>
@@ -33,10 +49,10 @@ const RiskNote = ({ title, renderTitle }) => {
             <Text style={styles.statusText}>{t('risknote.checked')}</Text>
           </View>
           <TouchableOpacity
-            style={styles.editButton}
-            onPress={handleEditPress}
+            style={styles.actionButton}
+            onPress={handlePreviewPress}
           >
-            <Text>✏️</Text>
+            <Text>Esikatsele</Text>
           </TouchableOpacity>
         </View>
       ) : status === 'notRelevant' ? (
@@ -45,10 +61,10 @@ const RiskNote = ({ title, renderTitle }) => {
             <Text style={[styles.statusText, { color: 'grey' }]}>{t('risknote.notRelevant')}</Text>
           </View>
           <TouchableOpacity
-            style={styles.editButton}
-            onPress={handleEditPress}
+            style={styles.actionButton}
+            onPress={handleReset}
           >
-            <Text>✏️</Text>
+            <Text>{t('undo')}</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -63,20 +79,30 @@ const RiskNote = ({ title, renderTitle }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, { borderColor: '#FF8C00' }]}
-            onPress={() => setModalVisible(true)}
+            onPress={() => setEditModalVisible(true)}
           >
             <Text style={styles.buttonText}>{t('risknote.toBeNoted')}</Text>
           </TouchableOpacity>
         </View>
           )}
-      {modalVisible && (
-        <RiskModal
+      {previewModalVisible && (
+        <RiskPreviewModal
           title={title}
           renderTitle={renderTitle}
-          visible={modalVisible}
+          visible={previewModalVisible}
+          onEditPress={handlePreviewEditPress}
           onSubmit={handleSubmit}
-          onClose={() => setModalVisible(false)}
-          isModification={isModification}
+          onClose={() => setPreviewModalVisible(false)}
+        />
+      )}
+      {editModalVisible && (
+        <RiskEditModal
+          title={title}
+          renderTitle={renderTitle}
+          visible={editModalVisible}
+          onTranslate={handleTranslatePress}
+          onReset={handleReset}
+          onClose={() => setEditModalVisible(false)}
         />
       )}
     </View>
@@ -110,16 +136,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  editButton: {
+  actionButton: {
     alignItems: 'center',
     borderColor: '#ccc',
     borderRadius: 10,
     borderWidth: 1,
-    height: 40,
+    padding: 10,
     justifyContent: 'center',
     position: 'absolute',
-    right: 0,
-    width: 40,
+    right: 30,
   },
   riskNote: {
     alignSelf: 'center',
