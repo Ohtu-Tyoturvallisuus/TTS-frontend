@@ -1,4 +1,4 @@
-name: CD(iOs)-HazardHunt
+name: CD-HazardHunt
 
 on:
   #workflow_run:
