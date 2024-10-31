@@ -110,8 +110,8 @@ const SpeechToTextView = ({ setDescription=null, translation=true}) => {
       });
       const result = await response.json();
       console.log("File uploaded successfully:", result);
-      setTranscription(result.transcription)
-      setTranslations(result.translations)
+      result.transcription && setTranscription(result.transcription)
+      result.translations && setTranslations(result.translations)
 
       // Concatenate transcription into description
       if (setDescription) {
