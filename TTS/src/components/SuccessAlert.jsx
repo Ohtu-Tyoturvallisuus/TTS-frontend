@@ -14,33 +14,14 @@ const SuccessAlert = ({ message, onDismiss }) => {
 
   return (
     <View style={styles.backdrop}>
-      <View style={styles.alertContainer}>
-        <Text style={styles.alertText}>{message}</Text>
+      <View className="absolute left-10 right-10 top-1/2 transform -translate-y-1/2 z-1000 p-4 bg-[#008000] rounded-lg">
+      <Text className="text-white text-2xl font-bold text-center">{message}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  alertContainer: {
-    alignItems: 'center',
-    backgroundColor: 'green',
-    borderRadius: 10,
-    justifyContent: 'center',
-    left: '10%',
-    padding: 15,
-    position: 'absolute',
-    right: '10%',
-    top: '50%',
-    transform: [{ translateY: -50 }], 
-    zIndex: 1000,
-  },
-  alertText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   backdrop: {
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',

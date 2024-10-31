@@ -48,7 +48,7 @@ const Main = () => {
   )
 
   return (
-    <View style={styles.container}>
+    <View className="bg-[#e1e4e8] flex-1 justify-center">
         <View style={styles.content}>
           <Tab.Navigator 
             screenOptions={({ route }) => ({
@@ -79,16 +79,5 @@ const Main = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#e1e4e8',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  content: {
-    flex: 1,
-  },
-});
 
 export default Main;
