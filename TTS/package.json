@@ -15,8 +15,8 @@
     "build:all:production": "npx dotenv -- npx eas-cli build --platform all --profile production",
     "submit:ios": "npx eas-cli submit --platform ios --latest --profile production",
     "submit:android": "npx eas-cli submit --platform android --latest --profile production",
-    "update:ios": "npx eas-cli update --branch production",
-    "update:android": "npx eas-cli update --branch production"
+    "submit:all": "npx eas-cli submit --platform all --latest --profile production",
+    "update:all": "npx dotenv -- npx eas-cli update --branch production"
   },
   "jest": {
     "preset": "jest-expo",
