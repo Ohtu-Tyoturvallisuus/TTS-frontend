@@ -3,7 +3,7 @@ import 'dotenv/config'
 export default {
   name: "HazardHunt",
   slug: "HazardHunt",
-  scheme: "HazardHunt",
+  scheme: ["hazardhunt"],
   version: "1.0.2",
   owner: "telinekataja",
   orientation: "portrait",
