@@ -110,7 +110,6 @@ describe('MicrosoftSignIn Component', () => {
     });
   });
 
-  it('handles authentication error gracefully', async () => {
     useAuthRequest.mockReturnValueOnce([
       { codeVerifier: 'mock_code_verifier' },
       { type: 'error', params: { error: 'invalid_request', error_description: 'Invalid credentials' } },
@@ -146,6 +145,23 @@ describe('MicrosoftSignIn Component', () => {
 
   it('handles network error gracefully', async () => {
     global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Network error')));
+
+    const { getByText } = renderWithContext();
+
+    fireEvent.press(getByText('Microsoft sign-in'));
+
+    await waitFor(() => {
+      expect(AsyncStorage.setItem).not.toHaveBeenCalled();
+      expect(mockSetUsername).not.toHaveBeenCalled();
+    });
+  });
+
+  it('handles authentication error', async () => {
+    useAuthRequest.mockReturnValueOnce([
+      { codeVerifier: 'mock_code_verifier' },
+      { type: 'error', params: { error: 'invalid_request' } },
+      jest.fn(),
+    ]);
 
     const { getByText } = renderWithContext();
 

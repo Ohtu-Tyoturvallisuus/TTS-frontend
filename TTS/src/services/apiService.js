@@ -102,6 +102,7 @@ export const getUserProfile = async ({ setUsername, setEmail, accessToken }) => 
       setUsername(profileData.displayName);
       await AsyncStorage.setItem('email', profileData.mail);
       setEmail(profileData.mail);
+
       return [profileData.displayName, profileData.id];
     } else {
       console.error('Error fetching profile:', profileData);

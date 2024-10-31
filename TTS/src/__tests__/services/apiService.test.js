@@ -77,6 +77,7 @@ describe('API Module - retrieveIdParams and getUserProfile', () => {
       const mockProfileData = {
         displayName: 'Test User',
         mail: 'test@mail.com'
+
       };
       fetch.mockResolvedValueOnce({
         ok: true,
