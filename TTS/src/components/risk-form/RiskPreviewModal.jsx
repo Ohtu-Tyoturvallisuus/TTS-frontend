@@ -44,7 +44,7 @@ const RiskPreviewModal = ({
             style={styles.editButton}
             onPress={onEditPress}
           >
-            <Text>{t('risknote.edit')}</Text>
+            <Text>{t('riskeditmodal.edit')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.checkedButton}
@@ -59,20 +59,7 @@ const RiskPreviewModal = ({
 };
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContent: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    maxWidth: 400,
-    padding: 20,
-    width: '95%',
-  },
+
   checkedButton: {
     alignItems: 'center',
     borderColor: '#ccc',

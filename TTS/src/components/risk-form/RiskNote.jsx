@@ -64,7 +64,7 @@ const RiskNote = ({ title, renderTitle }) => {
             style={styles.actionButton}
             onPress={handleReset}
           >
-            <Text>{t('undo')}</Text>
+            <Text>{t('risknote.undo')}</Text>
           </TouchableOpacity>
         </View>
       ) : (

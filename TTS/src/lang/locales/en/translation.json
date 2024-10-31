@@ -75,12 +75,15 @@
     "withSpeech": "Enter with speech",
     "cancel": "Cancel",
     "reset": "Reset",
-    "checked": "Checked"
+    "checked": "Checked",
+    "edit": "Edit"
   },
   "risknote": {
     "checked": "Checked",
+    "edit": "Edit",
     "notRelevant": "Not relevant",
-    "toBeNoted": "To be noted"
+    "toBeNoted": "To be noted",
+    "undo": "Undo"
   },
   "searchbar": {
     "placeholder": "Search by keyword..."

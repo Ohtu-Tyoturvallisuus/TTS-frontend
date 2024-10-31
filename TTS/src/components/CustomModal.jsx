@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
+    maxHeight: '85%',
     maxWidth: 400,
     padding: 20,
     width: '95%',

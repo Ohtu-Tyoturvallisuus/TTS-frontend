@@ -75,12 +75,15 @@
     "withSpeech": "Syötä puheella",
     "cancel": "Peruuta",
     "reset": "Tyhjennä",
-    "checked": "Kunnossa"
+    "checked": "Kunnossa",
+    "edit": "Muokkaa"
   },
   "risknote": {
     "checked": "Kunnossa",
+    "edit": "Muokkaa",
     "notRelevant": "Ei koske",
-    "toBeNoted": "Huomioitavaa"
+    "toBeNoted": "Huomioitavaa",
+    "undo": "Peruuta"
   },
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."

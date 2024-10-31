@@ -71,6 +71,7 @@ const RiskEditModal = ({
 
         <TakePictureView title={title}/>
         
+      </ScrollView>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button, styles.cancelButton]}
@@ -99,7 +100,6 @@ const RiskEditModal = ({
             <Text style={styles.buttonText}>{'Käännä (esikatselu)'}</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </CustomModal>
   );
 };
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 10,
     width: '100%',
   },
   buttonText: {
