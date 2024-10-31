@@ -8,9 +8,11 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('RiskFormButton Component', () => {
-  it('renders with the provided title', () => {
-    const title = 'Täytä uusi riskilomake';
-    const { getByText } = render(<RiskFormButton title={title} />);
+  const title = 'Täytä uusi riskilomake';
+  const mockSetVisible = jest.fn();
+
+  it('renders with the provided title', () => {    
+    const { getByText } = render(<RiskFormButton title={title} setVisible={mockSetVisible} />);
 
     expect(getByText(title)).toBeTruthy();
   });
@@ -20,12 +22,11 @@ describe('RiskFormButton Component', () => {
     useNavigation.mockReturnValue({
       navigate: mockNavigate,
     });
-
-    const title = 'Täytä uusi riskilomake';
-    const { getByText } = render(<RiskFormButton title={title} />);
+    const { getByText } = render(<RiskFormButton title={title} setVisible={mockSetVisible} />);
 
     fireEvent.press(getByText('Täytä uusi riskilomake'));
 
     expect(mockNavigate).toHaveBeenCalledWith('RiskForm');
+    expect(mockSetVisible).toHaveBeenCalledWith(false);
   });
 });

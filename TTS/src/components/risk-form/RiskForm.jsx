@@ -110,7 +110,7 @@ const RiskForm = () => {
     setSelectedProject(null);
     setSelectedSurveyURL(null);
     setShowSuccessAlert(false);
-    navigation.navigate('Main');
+    navigation.navigate('ProjectList');
   };
 
   if (!formData || !Object.keys(formData).length) {

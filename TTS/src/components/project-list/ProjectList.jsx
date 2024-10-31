@@ -98,6 +98,7 @@ const ProjectsList = () => {
       />
       <ProjectModal
         visible={modalVisible}
+        setVisible={setModalVisible}
         onClose={() => {
           setModalVisible(false);
           setSelectedProject(null);

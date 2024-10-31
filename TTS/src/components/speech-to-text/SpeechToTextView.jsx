@@ -11,10 +11,15 @@ import countriesData from '@lang/locales/languages.json';
 const SpeechToTextView = ({ setDescription=null, translation=true}) => {
   const [recording, setRecording] = useState(null);
   const [transcription, setTranscription] = useState('');
-  const [recordingLanguage, setRecordingLanguage] = useState('')
-  const [translationLanguages, setTranslationLanguages] = useState([])
-  const [translations, setTranslations] = useState({})
+  const [recordingLanguage, setRecordingLanguage] = useState('');
+  const [translationLanguages, setTranslationLanguages] = useState([]);
+  const [translations, setTranslations] = useState({});
   const { t } = useTranslation();
+
+  //useEffect(() => {
+  //  setRecordingLanguage(i18n.language);
+  //}, [i18n.language]);
+
   const timeout = 60000
   const languageToFlagMap = countriesData.countries.reduce((map, country) => {
     map[country.value] = country.flagCode;

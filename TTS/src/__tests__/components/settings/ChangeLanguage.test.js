@@ -25,7 +25,7 @@ describe('ChangeLanguage Component', () => {
         return translations[key] || key;
       },
       i18n: {
-        language: 'fi',
+        language: 'fi-FI',
         changeLanguage: mockChangeLanguage,
       },
     });
@@ -69,7 +69,7 @@ describe('ChangeLanguage Component', () => {
         return translations[key] || key;
       },
       i18n: {
-        language: 'en',
+        language: 'en-GB',
         changeLanguage: mockChangeLanguage,
       },
     });
@@ -79,7 +79,7 @@ describe('ChangeLanguage Component', () => {
     fireEvent.press(getByText('Suomi'));
 
     await waitFor(() => {
-      expect(mockChangeLanguage).toHaveBeenCalledWith('fi');
+      expect(mockChangeLanguage).toHaveBeenCalledWith('fi-FI');
     });
   });
 });

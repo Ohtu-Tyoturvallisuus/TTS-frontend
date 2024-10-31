@@ -3,11 +3,11 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 // Define your supported languages
-const langs = ['en', 'fi'];
+const langs = ['en-GB', 'fi-FI'];
 
 export const ChangeLanguage = () => {
   const { t, i18n } = useTranslation();
-  const [lang, setLang] = useState(i18n.language || 'en');
+  const [lang, setLang] = useState(i18n.language || 'en-GB');
 
   // Change the i18n language when the language state is changed
   const handleLanguageChange = (currentLang) => {
@@ -31,7 +31,7 @@ export const ChangeLanguage = () => {
           onPress={() => handleLanguageChange(currentLang)}
         >
           <Text style={styles.listItemText}>
-            {currentLang === 'en' ? t('changelanguage.languages.english') : t('changelanguage.languages.finnish')}
+            {currentLang === 'en-GB' ? t('changelanguage.languages.english') : t('changelanguage.languages.finnish')}
           </Text>
           {currentLang === lang && <Text style={styles.checkmark}>✔️</Text>}
         </TouchableOpacity>

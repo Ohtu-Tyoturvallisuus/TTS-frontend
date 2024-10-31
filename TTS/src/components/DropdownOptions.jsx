@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     paddingHorizontal: 12,
-    width: 350,
+    width: '100%',
   },
   dropdownButtonTxtStyle: {
     color: '#151E26',

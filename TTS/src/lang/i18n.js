@@ -12,10 +12,10 @@ const languageDetector = {
     detect: (callback) => {
       const locales = Localization.getLocales();
       if (locales && locales.length) {
-        const bestLanguage = locales[0].languageCode;
+        const bestLanguage = locales[0].languageTag;
         callback(bestLanguage);
       } else {
-        callback('en');
+        callback('en-GB');
       }
     },
     init: () => {},
@@ -26,7 +26,7 @@ i18n
   .use(languageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: 'en-GB',
     debug: true, // TODO: Set to false in production
 
     resources: {
