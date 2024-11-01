@@ -120,21 +120,21 @@ const RiskForm = () => {
 
   return (
     <SafeAreaView>
-      <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.title}>{t('riskform.title')}</Text>
+      <View className="flex-1 items-center justify-center">
+        <ScrollView className="bg-white flex-grow p-5">
+          <Text className="text-2xl font-bold text-center pb-5">{t('riskform.title')}</Text>
 
           {error && <Text>{t('riskform.errorFetchingData')}</Text>}
           {/* Projektin tiedot */}
           {project ? (
-            <View style={styles.infoContainer}>
-              <Text style={styles.label}>{t('riskform.projectName')}:</Text>
+            <View className="mb-5">
+              <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
               <Text>{project.project_name}</Text>
 
-              <Text style={styles.label}>{t('riskform.projectId')}: </Text>
+              <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
               <Text>{project.project_id}</Text>
 
-              <Text style={styles.label}>{t('riskform.task')}:</Text>
+              <Text className="text-lg font-bold py-2">{t('riskform.task')}:</Text>
               <ButtonGroup 
                 options={['installation', 'modification', 'dismantling']} 
                 selectedValue={task}
@@ -142,7 +142,7 @@ const RiskForm = () => {
                 renderOption={(option) => t(`riskform.${option}`)}
               />
 
-              <Text style={styles.label}>{t('riskform.scaffoldType')}:</Text>
+              <Text className="text-lg font-bold py-2">{t('riskform.scaffoldType')}:</Text>
               <ButtonGroup 
                 options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
                 selectedValue={scaffoldType}
@@ -150,9 +150,9 @@ const RiskForm = () => {
                 renderOption={(option) => t(`riskform.${option}`)}
               />
 
-              <Text style={styles.label}>{t('riskform.taskDescription')}:</Text>
+              <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
               <TextInput
-                style={styles.input}
+                className="border border-dark-green rounded-md p-2 h-24"
                 value={taskDesc}
                 onChangeText={(value) => setTaskDesc(value)}
                 multiline={true}
@@ -163,7 +163,7 @@ const RiskForm = () => {
             <Text>{t('riskform.noProject')}</Text>
           )}
 
-          <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
+          <Text className="text-xl font-bold text-center border-b pb-2">{t('riskform.scaffoldRisks')}</Text>
           {Object.entries(formData)
             .filter(([key, value]) => value.risk_type === 'scaffolding' && !key.startsWith('other_scaffolding'))
             .map(([key, value]) => (
@@ -178,10 +178,10 @@ const RiskForm = () => {
               />
           ))}
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>{t('other_scaffolding.title', { ns: 'formFields' })}:</Text>
+          <View className="mb-5">
+            <Text className="text-lg font-bold py-2">{t('other_scaffolding.title', { ns: 'formFields' })}:</Text>
             <TextInput
-              style={styles.input}
+              className="border border-dark-green rounded-md p-2 h-24"
               value={formData['other_scaffolding']?.description}
               onChangeText={(value) => handleInputChange('other_scaffolding', 'description', value)}
               multiline={true}
@@ -189,7 +189,7 @@ const RiskForm = () => {
             />
           </View>
 
-          <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
+          <Text className="text-xl font-bold text-center border-b pb-2">{t('riskform.environmentRisks')}</Text>
           {Object.entries(formData)
             .filter(([key, value]) => value.risk_type === 'environment' && !key.startsWith('other_environment.title'))
             .map(([key, value]) => (
@@ -204,10 +204,11 @@ const RiskForm = () => {
             />
           ))}
 
-          <View style={styles.inputContainer}>
-          <Text style={styles.label}>{t('other_environment.title', { ns: 'formFields' })}:</Text>
+          <View className="mb-5">
+          <Text className="text-lg font-bold py-2">{t('other_environment.title', { ns: 'formFields' })}:</Text>
           <TextInput
-            style={styles.input}
+
+            className="border border-dark-green rounded-md p-2 h-24"
             value={formData['other_environment']?.description}
             onChangeText={(value) => handleInputChange('other_environment', 'description', value)}
             multiline={true}
@@ -215,9 +216,9 @@ const RiskForm = () => {
           />
           </View>
 
-          <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>{t('riskform.submit')}</Text>
-          </TouchableOpacity>
+          <TouchableOpacity className="bg-[#008000] rounded-md py-3 my-2 items-center" onPress={handleSubmit}>
+          <Text className="text-white font-bold text-lg">{t('riskform.submit')}</Text>
+        </TouchableOpacity>
 
           <CloseButton onPress={handleClose} />
         </ScrollView>
@@ -231,65 +232,5 @@ const RiskForm = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginVertical: 10,
-    padding: 15,
-  },
-    buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-    container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-    infoContainer: {
-    marginBottom: 20,
-  },
-    input: {
-    borderColor: '#ccc',
-    borderRadius: 5,
-    borderWidth: 1,
-    flex: 1,
-    height: 100,
-    padding: 10,
-  },
-    inputContainer: {
-    marginBottom: 20,
-  },
-    label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    paddingVertical: 8,
-  },
-    scrollContainer: {
-    backgroundColor: '#fff',
-    flexGrow: 1,
-    padding: 20,
-  },
-    sectionTitle: {
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 5,
-    textAlign: 'center',
-  },
-    submitButton: {
-    backgroundColor: 'green',
-  },
-    title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingBottom: 20,
-    textAlign: 'center',
-  },
-});
 
 export default RiskForm;
