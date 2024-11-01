@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,8 +48,8 @@ const Main = () => {
   )
 
   return (
-    <View style={styles.container}>
-        <View style={styles.content}>
+    <View className="bg-[#e1e4e8] flex-1 justify-center">
+        <View className="flex-1">
           <Tab.Navigator 
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
@@ -61,7 +61,7 @@ const Main = () => {
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
-              tabBarActiveTintColor: "blue",
+              tabBarActiveTintColor: "#ef7d00",
               tabBarInactiveTintColor: "gray",
               tabBarStyle: [
                 {
@@ -79,16 +79,5 @@ const Main = () => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#e1e4e8',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  content: {
-    flex: 1,
-  },
-});
 
 export default Main;

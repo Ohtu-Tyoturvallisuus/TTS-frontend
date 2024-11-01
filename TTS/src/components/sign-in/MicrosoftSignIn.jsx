@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -90,46 +90,21 @@ const MicrosoftSignIn = () => {
   }, [response]);
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 justify-center items-center px-5">
       {username ? (
-        <View style={{ paddingVertical: 10 }}>
+         <View className="py-2">
           <Text>{t('microsoftsignin.greeting')}, {username}!</Text>
         </View>
       ) : (
         <TouchableOpacity 
           onPress={() => promptAsync()} 
-          style={styles.button}
+          className="bg-[#ef7d00] rounded-lg justify-center items-center py-4 px-6 w-3/4 my-2"
         >
-          <Text style={styles.buttonText}>{t('microsoftsignin.signInText')}</Text>
+          <Text className="text-white text-base font-bold">{t('microsoftsignin.signInText')}</Text>
         </TouchableOpacity>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#007AFF',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginVertical: 10,
-    minHeight: 48,
-    minWidth: 48,
-    padding: 15,
-    width: '75%',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  container: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-});
 
 export default MicrosoftSignIn;
