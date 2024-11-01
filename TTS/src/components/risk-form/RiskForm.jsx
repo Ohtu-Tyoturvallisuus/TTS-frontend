@@ -71,6 +71,12 @@ const RiskForm = () => {
     navigate('/');
   };
 
+  const addNewRiskNote = (title, type) => {
+    const newKey = `${title} ${Object.keys(formData).filter(key => key.startsWith(title)).length + 1}`;
+    updateFormField(newKey, 'description', '');
+    updateFormField(newKey, 'risk_type', type);
+  };
+
   if (loading || error) {
     return <Loading loading={loading} error={error} title={t('riskform.loadingFormData')} />;
   }
@@ -120,7 +126,7 @@ const RiskForm = () => {
 
         <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.risk_type === 'scaffolding' && !key.startsWith('other_scaffolding'))
+          .filter(([key, value]) => value.risk_type === 'scaffolding')
           .map(([key]) => (
             <RiskNote
               key={key}
@@ -129,20 +135,13 @@ const RiskForm = () => {
             />
         ))}
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>{t('other_scaffolding.title', { ns: 'formFields' })}:</Text>
-          <TextInput
-            style={styles.input}
-            value={formData['other_scaffolding']?.description}
-            onChangeText={(value) => updateFormField('other_scaffolding', 'description', value)}
-            multiline={true}
-            textAlignVertical="top"
-          />
-        </View>
+        <TouchableOpacity style={styles.addButton} onPress={() => addNewRiskNote(t('riskform.otherScaffolding'), 'scaffolding')}>
+          <Text style={styles.addButtonText}>+ {t('riskform.otherScaffolding')}</Text>
+        </TouchableOpacity>
 
         <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.risk_type === 'environment' && !key.startsWith('other_environment.title'))
+          .filter(([key, value]) => value.risk_type === 'environment')
           .map(([key]) => (
           <RiskNote
             key={key}
@@ -150,17 +149,9 @@ const RiskForm = () => {
             renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
           />
         ))}
-
-        <View style={styles.inputContainer}>
-        <Text style={styles.label}>{t('other_environment.title', { ns: 'formFields' })}:</Text>
-        <TextInput
-          style={styles.input}
-          value={formData['other_environment']?.description}
-          onChangeText={(value) => updateFormField('other_environment', 'description', value)}
-          multiline={true}
-          textAlignVertical="top"
-        />
-        </View>
+        <TouchableOpacity style={styles.addButton} onPress={() => addNewRiskNote(t('riskform.otherEnvironment'), 'environment')}>
+          <Text style={styles.addButtonText}>+{t('riskform.otherEnvironment')}</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
           <Text style={styles.buttonText}>{t('riskform.submit')}</Text>
@@ -186,19 +177,19 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 15,
   },
-    buttonText: {
+  buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
-    container: {
+  container: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-    infoContainer: {
+  infoContainer: {
     marginBottom: 20,
   },
-    input: {
+  input: {
     borderColor: '#ccc',
     borderRadius: 5,
     borderWidth: 1,
@@ -206,20 +197,20 @@ const styles = StyleSheet.create({
     height: 100,
     padding: 10,
   },
-    inputContainer: {
+  inputContainer: {
     marginBottom: 20,
   },
-    label: {
+  label: {
     fontSize: 16,
     fontWeight: 'bold',
     paddingVertical: 8,
   },
-    scrollContainer: {
+  scrollContainer: {
     backgroundColor: '#fff',
     flexGrow: 1,
     padding: 20,
   },
-    sectionTitle: {
+  sectionTitle: {
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
     fontSize: 20,
@@ -227,14 +218,27 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     textAlign: 'center',
   },
-    submitButton: {
+  submitButton: {
     backgroundColor: 'green',
   },
-    title: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
     paddingBottom: 20,
     textAlign: 'center',
+  },
+  addButton: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'green',
+    borderRadius: 5,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: 'green',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

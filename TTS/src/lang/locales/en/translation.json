@@ -68,7 +68,9 @@
     "scaffoldRisks": "Scaffold work risks",
     "environmentRisks": "Work environment risks",
     "submit": "Submit",
-    "emptyFieldsError": "Please fill in task, scaffold type and what you are doing."    
+    "emptyFieldsError": "Please fill in task, scaffold type and what you are doing.",
+    "otherScaffolding": "Other scaffold work hazard",
+    "otherEnvironment": "Other work environment hazard"
   },
   "riskeditmodal": {
     "extraInfo": "Enter additional information",

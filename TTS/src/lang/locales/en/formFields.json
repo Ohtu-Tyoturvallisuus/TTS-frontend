@@ -35,10 +35,7 @@
     "title": "Environment (cleanliness/waste sorting)", 
     "risk_type": "scaffolding"
   },
-  "other_scaffolding": {
-    "title": "Other hazards related to scaffolding work", 
-    "risk_type": "scaffolding"
-  },
+
   "slipping_tripping": {
     "title": "Slipping/tripping (cleanliness/winter maintenance/lighting)", 
     "risk_type": "environment"
@@ -69,10 +66,6 @@
   },
   "emergency_procedure": {
     "title": "Emergency procedure (emergency exit route)", 
-    "risk_type": "environment"
-  },
-  "other_environment": {
-    "title": "Other hazards related to the environment", 
     "risk_type": "environment"
   }
 }

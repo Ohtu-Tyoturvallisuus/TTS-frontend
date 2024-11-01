@@ -68,7 +68,9 @@
     "scaffoldRisks": "Telinetöihin liittyvät vaarat",
     "environmentRisks": "Työympäristön vaarat",
     "submit": "Lähetä",
-    "emptyFieldsError": "Täytä tehtävä, telinetyyppi ja mitä olet tekemässä."
+    "emptyFieldsError": "Täytä tehtävä, telinetyyppi ja mitä olet tekemässä.",
+    "otherScaffolding": "Muu telinetyöhön liittyvä vaara",
+    "otherEnvironment": "Muu työympäristöön liittyvä vaara"
   },
   "riskeditmodal": {
     "extraInfo": "Syötä lisätietoja",
