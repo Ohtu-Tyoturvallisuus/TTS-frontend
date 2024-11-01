@@ -9,8 +9,8 @@ const API_BASE_URL = LOCAL_SETUP ? `http://${LOCAL_IP}:8000/api/` : `https://tts
 console.log('API_BASE_URL:', API_BASE_URL);
 const RETRIEVE_PARAMS_URL = API_BASE_URL + 'retrieve-params/'
 
-export const signIn = async (username, id = null) => {
-  const response = await axios.post(API_BASE_URL + 'signin/', { username, id });
+export const signIn = async (username, id = null, guest = null) => {
+  const response = await axios.post(API_BASE_URL + 'signin/', { username, id, guest });
   return response.data;
 };
 

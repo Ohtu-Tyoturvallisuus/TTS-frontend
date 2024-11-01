@@ -140,7 +140,7 @@ describe('API Module', () => {
 
     const response = await signIn('testUser');
 
-    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/signin/'), { username: 'testUser', id: null });
+    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/signin/'), { username: 'testUser', id: null, guest: null });
     expect(response).toEqual('mock data');
   });
 

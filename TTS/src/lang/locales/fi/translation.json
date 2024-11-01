@@ -112,7 +112,11 @@
   },
   "signin": {
     "confirmLogin": "Vahvista kirjautuminen",
-    "username": "Käyttäjänimi"
+    "username": "Käyttäjänimi",
+    "guestSignInButton": "Kirjaudu vieraskäyttäjänä",
+    "close": "Sulje",
+    "first_name": "Etunimi",
+    "last_name": "Sukunimi"
   },
   "speechtotext": {
     "maxLength": "Maksimipituus",

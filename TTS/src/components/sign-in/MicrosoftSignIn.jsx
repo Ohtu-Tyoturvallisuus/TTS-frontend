@@ -90,7 +90,7 @@ const MicrosoftSignIn = () => {
   }, [response]);
 
   return (
-    <View className="flex-1 justify-center items-center px-5">
+    <View className="justify-center items-center px-5">
       {username ? (
          <View className="py-2">
           <Text>{t('microsoftsignin.greeting')}, {username}!</Text>
