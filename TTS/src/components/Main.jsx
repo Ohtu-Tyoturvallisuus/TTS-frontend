@@ -49,11 +49,7 @@ const Main = () => {
 
   return (
     <View className="bg-[#e1e4e8] flex-1 justify-center">
-<<<<<<< HEAD
-        <View style={styles.content}>
-=======
         <View className="flex-1">
->>>>>>> 3a697e1 (deleted fontfamily)
           <Tab.Navigator 
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
