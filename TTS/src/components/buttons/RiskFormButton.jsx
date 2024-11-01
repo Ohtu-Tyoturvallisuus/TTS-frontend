@@ -1,14 +1,23 @@
+import React, { useContext } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { useNavigate } from 'react-router-native';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 
+// Opens new empty risk form
 const RiskFormButton = ({ title, buttonStyle, textStyle }) => {
   const navigate = useNavigate()
+  const { setSelectedSurveyURL } = useContext(ProjectSurveyContext);
 
+  const handlePress = () => {
+    setSelectedSurveyURL(null);
+    navigate('riskform');
+  }
+    
   return (
     <View>
       <TouchableOpacity 
         style={[styles.button, buttonStyle]}
-        onPress={() => navigate('riskform')}
+        onPress={handlePress}
       >
         <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       </TouchableOpacity>

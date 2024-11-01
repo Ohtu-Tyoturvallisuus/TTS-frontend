@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useTranslation } from 'react-i18next';
@@ -9,32 +9,52 @@ import CloseButton from '@components/buttons/CloseButton';
 import { submitForm } from '@services/formSubmission';
 import SuccessAlert from '@components/SuccessAlert';
 import { useFormContext } from '@contexts/FormContext';
+import useFetchSurveyData from '@hooks/useFetchSurveyData';
+import Loading from '@components/Loading';
 
 const RiskForm = () => {
   const { 
     selectedProject: project, 
-    resetProjectAndSurvey
+    selectedSurveyURL: surveyURL,
+    resetProjectAndSurvey,
   } = useContext(ProjectSurveyContext);
 
   const { 
     formData, 
-    updateFormData, 
+    updateFormField, 
+    replaceFormData,
     task, 
     setTask, 
     scaffoldType, 
     setScaffoldType, 
     taskDesc, 
     setTaskDesc, 
-    error 
   } = useFormContext();
 
   const navigate = useNavigate();
   const { t } = useTranslation(['translation', 'formFields']);
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-  if (error) {
-    alert(t('riskform.errorFetchingData'));
-  }
+  const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
+
+  useEffect(() => {
+    if (surveyData) {
+      console.log("Merging prev survey's data")
+      replaceFormData(surveyData.risk_notes.reduce((acc, note) => {
+        acc[note.note] = {
+          description: note.description,
+          status: note.status,
+          risk_type: note.risk_type,
+          images: note.images,
+        };
+        return acc;
+      }, {}));
+      
+      setTask(surveyData.task);
+      setScaffoldType(surveyData.scaffold_type);
+      setTaskDesc(surveyData.description);
+    }
+  }, [surveyData]);
 
   const handleSubmit = () => {
     const taskInfo = {
@@ -51,8 +71,8 @@ const RiskForm = () => {
     navigate('/');
   };
 
-  if (!formData || !Object.keys(formData).length) {
-    return <Text>{t('riskform.loadingFormData')}</Text>;
+  if (loading || error) {
+    return <Loading loading={loading} error={error} title={t('riskform.loadingFormData')} />;
   }
 
   return (
@@ -69,7 +89,6 @@ const RiskForm = () => {
 
             <Text style={styles.label}>{t('riskform.projectId')}: </Text>
             <Text>{project.project_id}</Text>
-
             <Text style={styles.label}>{t('riskform.task')}:</Text>
             <ButtonGroup 
               options={['installation', 'modification', 'dismantling']} 
@@ -115,7 +134,7 @@ const RiskForm = () => {
           <TextInput
             style={styles.input}
             value={formData['other_scaffolding']?.description}
-            onChangeText={(value) => updateFormData('other_scaffolding', 'description', value)}
+            onChangeText={(value) => updateFormField('other_scaffolding', 'description', value)}
             multiline={true}
             textAlignVertical="top"
           />
@@ -137,7 +156,7 @@ const RiskForm = () => {
         <TextInput
           style={styles.input}
           value={formData['other_environment']?.description}
-          onChangeText={(value) => updateFormData('other_environment', 'description', value)}
+          onChangeText={(value) => updateFormField('other_environment', 'description', value)}
           multiline={true}
           textAlignVertical="top"
         />

@@ -69,18 +69,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 100,
   },
-  imageContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 2,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
   description: {
     fontSize: 16,
     marginBottom: 20,
@@ -93,6 +81,18 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     width: 100,
+  },
+  imageContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 2,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
 

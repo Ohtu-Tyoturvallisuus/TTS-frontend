@@ -3,6 +3,7 @@ import { StyleSheet, View, Modal } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { FormProvider } from '@contexts/FormContext';
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
 import RiskForm from '@components/risk-form/RiskForm';
@@ -43,7 +44,11 @@ const Main = () => {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/signin' element={<SignIn />} />
-          <Route path='/riskform' element={<RiskForm />}/>
+          <Route path='/riskform' element={
+            <FormProvider>
+              <RiskForm />
+            </FormProvider>
+          }/>
         </Routes>
       </View>
       <Modal

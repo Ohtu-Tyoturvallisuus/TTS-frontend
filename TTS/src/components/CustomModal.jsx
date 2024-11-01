@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Modal, TouchableOpacity, StyleSheet } from 'react-native';
 
 const CustomModal = ({ visible, onClose, children, ...props }) => {
   return (

@@ -13,20 +13,6 @@ jest.mock('@services/apiService', () => ({
   fetchSurveyData: jest.fn(),
 }));
 
-jest.mock('@hooks/useMergedSurveyData', () => {
-  return jest.fn(() => ({
-    mergedFormData: {
-      personal_protection: { description: '', status: 'notRelevant', risk_type: 'scaffolding' },
-      personal_fall_protection: { description: 'Valjaat käytössä', status: 'checked', risk_type: 'scaffolding' },
-      emergency_procedure: { description: 'Poistumistie merkitty', status: 'checked', risk_type: 'environment' },
-      vehicle_traffic: { description: '', status: 'notRelevant', risk_type: 'environment' },
-    },
-    taskDetails: { task: 'Asennus', scaffoldType: 'Työteline', taskDesc: 'Test Description' },
-    error: null,
-    isMerged: true,
-  }));
-});
-
 jest.mock('@hooks/useFormFields', () => {
   return jest.fn(() => ({
     initialFormData: {
@@ -219,15 +205,7 @@ describe('RiskForm Component', () => {
   });
 
   it('renders loading message when form data is empty', () => {
-    require('@hooks/useFormFields').mockImplementationOnce(() => ({
-      initialFormData: {},
-    }));
-    require('@hooks/useMergedSurveyData').mockImplementationOnce(() => ({
-      mergedFormData: {},
-      taskDetails: { task: '', scaffoldType: '', taskDesc: '' },
-      error: null,
-      isMerged: false,
-    }));
+    apiService.fetchSurveyData.mockResolvedValueOnce({});
     const { getByText } = renderComponent();
 
     expect(getByText('Ladataan lomaketietoja...')).toBeTruthy();
@@ -256,16 +234,13 @@ describe('RiskForm Component', () => {
     await waitFor(() => expect(getByText('Riskimuistiinpanot lähetetty onnistuneesti')).toBeTruthy());
   });
 
-  it('handles error correctly when fetching data', () => {
-    require('@hooks/useMergedSurveyData').mockImplementationOnce(() => ({
-      mergedFormData: {},
-      taskDetails: { task: '', scaffoldType: '', taskDesc: '' },
-      error: 'An error occurred',
-      isMerged: false,
-    }));
-    renderComponent();
+  it('handles error correctly when fetching data', async () => {
+    apiService.fetchSurveyData.mockRejectedValueOnce(new Error('An error occurred'));
+    const { getByText } = renderComponent();
 
-    expect(global.alert).toHaveBeenCalledWith('Virhe haettaessa lomakkeen tietoja');
+    await waitFor(() => {
+      expect(getByText('Virhe haettaessa lomakkeen tietoja')).toBeTruthy();
+    });
   });
 
   it('logs an error if API submission fails', async () => {

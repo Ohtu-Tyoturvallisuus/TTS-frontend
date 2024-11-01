@@ -7,7 +7,7 @@ import { useFormContext } from '@contexts/FormContext';
 
 const TakePictureView = ({ title }) => {
   const { t } = useTranslation();
-  const { getFormData, updateFormData } = useFormContext();
+  const { getFormData, updateFormField } = useFormContext();
   const initialImages = getFormData(title, 'images');
   const [images, setImages] = useState(initialImages || []);
 
@@ -60,7 +60,7 @@ const TakePictureView = ({ title }) => {
         setImages(prevImages => {
           const newImages = [...prevImages, { uri, isLandscape }];
           setTimeout(() => {
-            updateFormData(title, 'images', newImages);
+            updateFormField(title, 'images', newImages);
           }, 0);
           return newImages;
         });
@@ -73,7 +73,7 @@ const TakePictureView = ({ title }) => {
   const removeImage = (uri) => {
     const updatedImages = images.filter(image => image.uri !== uri);
     setImages(updatedImages);
-    updateFormData(title, 'images', updatedImages);
+    updateFormField(title, 'images', updatedImages);
   };
 
   return (

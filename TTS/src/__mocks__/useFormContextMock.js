@@ -13,7 +13,7 @@ export const mockUseFormContext = {
     slipping_tripping: { description: '', status: '', risk_type: 'environment', images: [] },
     surrounding_structures: { description: '', status: '', risk_type: 'environment', images: [] },
   },
-  updateFormData: jest.fn(),
+  updateFormField: jest.fn(),
   getFormData: jest.fn((title, field) => mockUseFormContext.formData[title]?.[field]),
   task: 'Asennus',
   setTask: jest.fn(),

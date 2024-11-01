@@ -14,14 +14,14 @@ const RiskEditModal = ({
   onReset,
   onClose
 }) => {
-  const { updateFormData, getFormData } = useFormContext();
+  const { updateFormField, getFormData } = useFormContext();
   const [description, setDescription] = useState(getFormData(title, 'description'));
   const [useSpeech, setUseSpeech] = useState(false);
   const [buttonHidden, setButtonHidden] = useState(false);
   const { t } = useTranslation();
 
   const handleSubmit = () => {
-    updateFormData(title, 'description', description);
+    updateFormField(title, 'description', description);
     onTranslate();
     onClose();
   };

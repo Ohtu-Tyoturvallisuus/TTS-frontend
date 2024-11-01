@@ -1,8 +1,5 @@
-// FormContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import useFormFields from '@hooks/useFormFields';
-import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
-import useMergedSurveyData from '@hooks/useMergedSurveyData';
 
 // Create a context for form data
 const FormContext = createContext();
@@ -11,29 +8,13 @@ const FormContext = createContext();
 export const FormProvider = ({ children }) => {
   // Initialize form data using the useFormFields hook
   const { initialFormData } = useFormFields();
-  
+
   const [formData, setFormData] = useState(initialFormData);
   const [task, setTask] = useState('');
   const [scaffoldType, setScaffoldType] = useState('');
   const [taskDesc, setTaskDesc] = useState('');
 
-  const { selectedSurveyURL } = useContext(ProjectSurveyContext);
-
-  // Fetch merged survey data when prevSurveyURL is available
-  const { mergedFormData, taskDetails, error, isMerged } = useMergedSurveyData(selectedSurveyURL, initialFormData);
-
-  // Use previous survey's data if available
-  useEffect(() => {
-    if (isMerged) {
-      setFormData(mergedFormData);
-      const { task, scaffoldType, taskDesc } = taskDetails;
-      setTask(task);
-      setScaffoldType(scaffoldType);
-      setTaskDesc(taskDesc);
-    }
-  }, [isMerged]);
-
-  const updateFormData = (title, field, value) => {
+  const updateFormField = (title, field, value) => {
     console.log(`Updating ${title}.${field} to ${JSON.stringify(value, null, 2)}`);
     setFormData((prevData) => ({
       ...prevData,
@@ -48,19 +29,23 @@ export const FormProvider = ({ children }) => {
     return formData[title]?.[field] || '';
   };
 
+  const replaceFormData = (newFormData) => {
+    setFormData(newFormData);
+  };
+
   return (
     <FormContext.Provider  
       value={{ 
         formData, 
-        updateFormData, 
+        updateFormField, 
         getFormData,
+        replaceFormData,
         task, 
         setTask, 
         scaffoldType, 
         setScaffoldType, 
         taskDesc, 
         setTaskDesc, 
-        error 
       }}
     >
       {children}

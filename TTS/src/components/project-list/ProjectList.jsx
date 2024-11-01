@@ -16,7 +16,6 @@ const ProjectsList = () => {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const { t } = useTranslation();
   const { projects, loading, error } = useFetchProjects();
-  console.log('Project example:', projects[1]);
   
   const [areaFilter, setAreaFilter] = useState([]);
   const projectAreas = [

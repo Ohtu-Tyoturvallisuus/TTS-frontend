@@ -6,7 +6,7 @@ import RiskEditModal from './RiskEditModal';
 import RiskPreviewModal from './RiskPreviewModal';
 
 const RiskNote = ({ title, renderTitle }) => {
-  const { updateFormData, getFormData } = useFormContext();
+  const { updateFormField, getFormData } = useFormContext();
   const status = getFormData(title, 'status');
 
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -14,20 +14,20 @@ const RiskNote = ({ title, renderTitle }) => {
   const { t } = useTranslation();
 
   const handleSubmit = () => {
-    updateFormData(title, 'status', 'checked');
+    updateFormField(title, 'status', 'checked');
     setPreviewModalVisible(false);
   };
 
-  handleTranslatePress = () => {
+  const handleTranslatePress = () => {
     setEditModalVisible(false);
     // TRANSLATION HAPPENS HERE (I GUESS) 
     setPreviewModalVisible(true);
   };
 
   const handleReset = () => {
-    updateFormData(title, 'description', '');
-    updateFormData(title, 'status', '');
-    updateFormData(title, 'images', []);
+    updateFormField(title, 'description', '');
+    updateFormField(title, 'status', '');
+    updateFormField(title, 'images', []);
     setEditModalVisible(false);
   };
 
@@ -72,7 +72,7 @@ const RiskNote = ({ title, renderTitle }) => {
           <TouchableOpacity
             style={[styles.button, { borderColor: 'grey' }]}
             onPress={() => {
-              updateFormData(title, 'status', 'notRelevant');
+              updateFormField(title, 'status', 'notRelevant');
             }}
           >
             <Text style={styles.buttonText}>{t('risknote.notRelevant')}</Text>
@@ -110,6 +110,16 @@ const RiskNote = ({ title, renderTitle }) => {
 };
 
 const styles = StyleSheet.create({
+  actionButton: {
+    alignItems: 'center',
+    borderColor: '#ccc',
+    borderRadius: 10,
+    borderWidth: 1,
+    justifyContent: 'center',
+    padding: 10,
+    position: 'absolute',
+    right: 30,
+  },
   button: {
     alignItems: 'center',
     borderRadius: 5,
@@ -135,16 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
-  },
-  actionButton: {
-    alignItems: 'center',
-    borderColor: '#ccc',
-    borderRadius: 10,
-    borderWidth: 1,
-    padding: 10,
-    justifyContent: 'center',
-    position: 'absolute',
-    right: 30,
   },
   riskNote: {
     alignSelf: 'center',
