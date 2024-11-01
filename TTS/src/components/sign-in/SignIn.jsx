@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
     fontFamily: 'Fuzzy Bubbles Regular',
+    fontWeight: 'bold',
   },
   container: {
     alignSelf: 'center',

@@ -18,11 +18,6 @@ const SearchBar = ({ setFilter }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-  },
   searchInput: {
     backgroundColor: '#FFFFFF',
     borderColor: '#000000',
