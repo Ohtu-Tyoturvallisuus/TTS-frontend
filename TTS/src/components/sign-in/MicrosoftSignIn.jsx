@@ -90,17 +90,17 @@ const MicrosoftSignIn = () => {
   }, [response]);
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 justify-center items-center px-5">
       {username ? (
-        <View style={{ paddingVertical: 10 }}>
+         <View className="py-2">
           <Text>{t('microsoftsignin.greeting')}, {username}!</Text>
         </View>
       ) : (
         <TouchableOpacity 
           onPress={() => promptAsync()} 
-          style={styles.button}
+          className="bg-[#ef7d00] rounded-lg justify-center items-center py-4 px-6 w-3/4 my-2"
         >
-          <Text style={styles.buttonText}>{t('microsoftsignin.signInText')}</Text>
+          <Text className="text-white text-base font-bold">{t('microsoftsignin.signInText')}</Text>
         </TouchableOpacity>
       )}
     </View>
