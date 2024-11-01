@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import useMergedSurveyData from '@hooks/useMergedSurveyData';
@@ -119,8 +118,7 @@ const RiskForm = () => {
   }
 
   return (
-    <SafeAreaView>
-      <View className="flex-1 items-center justify-center">
+      <View className="flex-1 items-center justify-center pt-5">
         <ScrollView className="bg-white flex-grow p-5">
           <Text className="text-2xl font-bold text-center pb-5">{t('riskform.title')}</Text>
 
@@ -229,7 +227,6 @@ const RiskForm = () => {
           />
         )}
       </View>
-    </SafeAreaView>
   );
 };
 
