@@ -99,12 +99,12 @@ describe('Settings Component', () => {
       });
   });
 
-  it('navigates to MicrosoftSignIn when sign-in button is pressed', () => {
+  it('navigates to CombinedSignIn when sign-in button is pressed', () => {
     const { getByText } = renderWithContext();
 
     fireEvent.press(getByText('Sign In'));
 
-    expect(mockNavigate).toHaveBeenCalledWith('MicrosoftSignIn');
+    expect(mockNavigate).toHaveBeenCalledWith('CombinedSignIn');
   });
 
   it('calls setSettingsVisible when change language button is pressed', () => {
