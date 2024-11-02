@@ -100,7 +100,7 @@ const MicrosoftSignIn = () => {
           onPress={() => promptAsync()} 
           className="bg-[#ef7d00] rounded-lg justify-center items-center py-4 px-6 w-3/4 my-2"
         >
-          <Text className="text-white text-base font-bold">{t('microsoftsignin.signInText')}</Text>
+          <Text className="text-white font-bold">{t('microsoftsignin.signInText')}</Text>
         </TouchableOpacity>
       )}
     </View>
