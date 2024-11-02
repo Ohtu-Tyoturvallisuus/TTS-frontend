@@ -18,21 +18,21 @@ import { useTranslation } from 'react-i18next';
 import { UserContext } from '@contexts/UserContext';
 import { signIn } from '@services/apiService';
 
-const validationSchema = yup.object().shape({
-  first_name: yup.string().required('Syötä etunimi'),
-  last_name: yup.string().required('Syötä sukunimi'),
-});
-
-const initialValues = {
-  first_name: '',
-  last_name: '',
-};
-
 const SignIn = () => {
   const navigation = useNavigation();
   const { setUsername } = useContext(UserContext);
   const { t } = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
+
+  const validationSchema = yup.object().shape({
+    first_name: yup.string().required(t('signin.error_first_name')),
+    last_name: yup.string().required(t('signin.error_last_name')),
+  });
+  
+  const initialValues = {
+    first_name: '',
+    last_name: '',
+  };
 
   const onSubmit = async (values) => {
     try {
@@ -65,27 +65,34 @@ const SignIn = () => {
       <Modal visible={modalVisible} transparent animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.container}>
-            <TextInput
-              placeholder={t('signin.first_name')}
-              onChangeText={formik.handleChange('first_name')}
-              value={formik.values.first_name}
-              style={[
-                styles.input,
-                hasError('first_name') && styles.errorInput,
-              ]}
-            />
-            {hasError('first_name') && (
-              <Text className="text-[#FF0000]">{formik.errors.first_name}</Text>
-            )}
-            <TextInput
-              placeholder={t('signin.last_name')}
-              onChangeText={formik.handleChange('last_name')}
-              value={formik.values.last_name}
-              style={[
-                styles.input,
-                hasError('last_name') && styles.errorInput,
-              ]}
-            />
+            <View className="pb-3">
+              <TextInput
+                placeholder={t('signin.first_name')}
+                onChangeText={formik.handleChange('first_name')}
+                value={formik.values.first_name}
+                style={[
+                  styles.input,
+                  hasError('first_name') && styles.errorInput,
+                ]}
+              />
+              {hasError('first_name') && (
+                <Text className="text-[#FF0000]">{formik.errors.first_name}</Text>
+              )}
+            </View>
+            <View>
+              <TextInput
+                placeholder={t('signin.last_name')}
+                onChangeText={formik.handleChange('last_name')}
+                value={formik.values.last_name}
+                style={[
+                  styles.input,
+                  hasError('last_name') && styles.errorInput,
+                ]}
+              />
+              {hasError('last_name') && (
+                <Text className="text-[#FF0000]">{formik.errors.last_name}</Text>
+              )}
+            </View>
 
             <Pressable onPress={formik.handleSubmit} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
               <Text className="text-white font-bold">{t('signin.confirmLogin')}</Text>
@@ -103,36 +110,31 @@ const SignIn = () => {
 export default SignIn;
 
 const styles = StyleSheet.create({
-  outerContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
   container: {
     alignSelf: 'center',
     backgroundColor: 'white',
+    borderRadius: 10,
     padding: 20,
     width: '90%',
-    borderRadius: 10,
+  },
+  errorInput: {
+    borderColor: 'red',
   },
   input: {
     borderColor: '#e1e4e8',
     borderRadius: 5,
     borderWidth: 1,
     padding: 10,
-    marginBottom: 10,
     width: '100%',
   },
-  errorInput: {
-    borderColor: 'red',
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
   },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
+  outerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

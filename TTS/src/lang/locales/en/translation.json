@@ -116,7 +116,9 @@
     "guestSignInButton": "Sign in as a guest",
     "close": "Close",
     "first_name": "First name",
-    "last_name": "Last name"
+    "last_name": "Last name",
+    "error_first_name": "Insert first name",
+    "error_last_name": "Insert last name"
   },  
   "speechtotext": {
     "maxLength": "Maximum length",

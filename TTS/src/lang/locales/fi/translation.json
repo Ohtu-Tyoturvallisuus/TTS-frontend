@@ -116,7 +116,9 @@
     "guestSignInButton": "Kirjaudu vieraskäyttäjänä",
     "close": "Sulje",
     "first_name": "Etunimi",
-    "last_name": "Sukunimi"
+    "last_name": "Sukunimi",
+    "error_first_name": "Syötä etunimi",
+    "error_last_name": "Syötä sukunimi"
   },
   "speechtotext": {
     "maxLength": "Maksimipituus",

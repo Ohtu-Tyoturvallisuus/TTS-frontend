@@ -98,26 +98,26 @@ describe('Sign in', () => {
     });
   });
 
-//  it('displays an error when empty form is submitted', async () => {
-//    const mockSetUsername = jest.fn();
-//
-//    render(
-//      <NavigationContainer>
-//        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
-//          <SignIn />
-//        </UserContext.Provider>
-//      </NavigationContainer>
-//    );
-//
-//    fireEvent.press(screen.getByText('Jatka vieraana'));
-//
-//    fireEvent.press(screen.getByText('Vahvista kirjautuminen'));
-//
-//    await waitFor(() => {
-//      expect(screen.getByText('Syötä etunimi')).toBeDefined();
-//      expect(screen.getByText('Syötä sukunimi')).toBeDefined();
-//    });
-//  });
+  it('displays an error when empty form is submitted', async () => {
+    const mockSetUsername = jest.fn();
+
+    render(
+      <NavigationContainer>
+        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+          <SignIn />
+        </UserContext.Provider>
+      </NavigationContainer>
+    );
+
+    fireEvent.press(screen.getByText('Jatka vieraana'));
+
+    fireEvent.press(screen.getByText('Vahvista kirjautuminen'));
+
+    await waitFor(() => {
+      expect(screen.getByText('signin.error_first_name')).toBeDefined();
+      expect(screen.getByText('signin.error_last_name')).toBeDefined();
+    });
+  });
 
   it('displays error when API call fails', async () => {
     const mockSetUsername = jest.fn();
