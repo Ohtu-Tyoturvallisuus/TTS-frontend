@@ -59,7 +59,7 @@ const SignIn = () => {
   return (
     <View style={styles.outerContainer}>
       <TouchableOpacity onPress={() => setModalVisible(true)} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
-        <Text style={styles.buttonText}>{t('signin.guestSignInButton')}</Text>
+        <Text className="text-white font-bold">{t('signin.guestSignInButton')}</Text>
       </TouchableOpacity>
 
       <Modal visible={modalVisible} transparent animationType="slide">
@@ -75,7 +75,7 @@ const SignIn = () => {
               ]}
             />
             {hasError('first_name') && (
-              <Text style={styles.errorText}>{formik.errors.first_name}</Text>
+              <Text className="text-[#FF0000]">{formik.errors.first_name}</Text>
             )}
             <TextInput
               placeholder={t('signin.last_name')}
@@ -87,11 +87,11 @@ const SignIn = () => {
               ]}
             />
 
-            <Pressable onPress={formik.handleSubmit} className="bg-[#ef7d00] rounded-lg justify-center items-center py-4 px-6 my-2">
-              <Text style={styles.buttonText}>{t('signin.confirmLogin')}</Text>
+            <Pressable onPress={formik.handleSubmit} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
+              <Text className="text-white font-bold">{t('signin.confirmLogin')}</Text>
             </Pressable>
-            <Pressable onPress={() => setModalVisible(false)} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>{t('signin.close')}</Text>
+            <Pressable onPress={() => setModalVisible(false)} className="bg-[#808080] rounded-lg justify-center items-center py-4 px-6 my-2">
+              <Text className="text-white font-bold">{t('signin.close')}</Text>
             </Pressable>
           </View>
         </View>
@@ -106,15 +106,6 @@ const styles = StyleSheet.create({
   outerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  openButton: {
-    backgroundColor: '#0366d6',
-    borderRadius: 5,
-    padding: 10,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
   },
   modalContainer: {
     flex: 1,
@@ -143,22 +134,5 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 10,
-  },
-  button: {
-    backgroundColor: '#0366d6',
-    borderRadius: 5,
-    padding: 10,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  closeButton: {
-    backgroundColor: 'gray',
-    borderRadius: 5,
-    padding: 10,
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
   },
 });
