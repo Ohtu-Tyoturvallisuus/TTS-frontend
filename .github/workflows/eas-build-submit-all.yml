@@ -1,4 +1,4 @@
-name: CD(iOs)-HazardHunt
+name: CD-HazardHunt
 
 on:
   #workflow_run:
@@ -61,6 +61,11 @@ jobs:
                   "appleId": "${{ secrets.EAS_APPLE_ID }}",
                   "ascAppId": "${{ secrets.EAS_ASC_APP_ID }}",
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
+                },
+                "android": {
+                  "track": "internal",
+                  "releaseStatus": "draft",
+                  "changesNotSentForReview": true
                 }
               }
             }
@@ -71,7 +76,7 @@ jobs:
         working-directory: ./TTS
 
       - name: Build on EAS
-        run: dotenv -- eas build -p ios --non-interactive --no-wait --profile production --auto-submit
+        run: dotenv -- eas build -p all --non-interactive --no-wait --profile production --auto-submit
         working-directory: ./TTS
         env:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}

@@ -6,7 +6,7 @@ const SearchBar = ({ setFilter }) => {
   const { t } = useTranslation();
 
   return (
-    <View style={styles.container}>
+    <View className="flex items-center justify-center py-3">
       <TextInput
         style={styles.searchInput}
         placeholder={t('searchbar.placeholder')}
@@ -18,11 +18,6 @@ const SearchBar = ({ setFilter }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-  },
   searchInput: {
     backgroundColor: '#FFFFFF',
     borderColor: '#000000',
@@ -33,7 +28,7 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 12,
     textAlign: 'center',
-    width: 350,
+    width: '100%',
   },
 });
 

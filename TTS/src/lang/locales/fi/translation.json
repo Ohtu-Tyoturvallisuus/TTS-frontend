@@ -5,6 +5,131 @@
     "signOut": "Kirjaudu ulos",
     "signIn": "Kirjaudu sisään"
   },
+  "changelanguage": {
+    "changeLanguage": "Valitse kielesi",
+    "languages": {
+      "english": "English",
+      "finnish": "Suomi"
+    }
+  },
+  "closebutton": {
+    "close": "Sulje"
+  },
+  "dropdownoptions": {
+    "chooseAll": "--Valitse kaikki--",
+    "search": "Etsi..."
+  },
+  "languageselectmenu": {
+    "selectRecordingLanguage": "Valitse tunnistettava kieli",
+    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
+    "selectLanguage": "Valitse kieli",
+    "selectLanguages": "Valitse kielet",
+    "selectedLanguage": "Valittu kieli",
+    "selectedLanguages": "Valitut kielet",
+    "searchLanguages": "Hae kieliä..."
+  },
+  "loading": {
+    "error": "Virhe lataamisessa"
+  },
+  "main": {
+    "navigationMain": "Pääsivu",
+    "navigationSettings": "Asetukset"
+  },
+  "microsoftsignin": {
+    "signInText": "Microsoft-kirjautuminen",
+    "greeting": "Hei"
+  },
+  "projectlist":{
+    "chooseAll": "--Valitse kaikki--",
+    "chooseArea": "Valitse alue",
+    "loading": "Ladataan projekteja",
+    "projects": "Projektit"
+  },
+  "projectmodal": {
+    "title": "Täytä uusi riskilomake"
+  },
+  "projectsurveylist": {
+    "loadingSurveys": "Ladataan kartoituksia..."
+  },
+  "projectsurveylistcontainer": {
+    "minutesAgo_one": "yksi minuutti sitten",
+    "minutesAgo_other": "{{count}} minuuttia sitten",
+    "hoursAgo_one": "yksi tunti sitten",
+    "hoursAgo_other": "{{count}} tuntia sitten",
+    "daysAgo_one": "yksi päivä sitten",
+    "daysAgo_other": "{{count}} päivää sitten",
+    "useTemplate": "Käytä pohjana",
+    "noSurveys": "Ei kartoituksia saatavilla."
+  },
+  "riskform": {
+    "successMessage": "Riskimuistiinpanot lähetetty onnistuneesti",
+    "close": "Sulje",
+    "title": "Työturvallisuuslomake",
+    "errorFetchingData": "Virhe haettaessa lomakkeen tietoja",
+    "errorSubmitting": "Lomakkeen lähettäminen epäonnistui",
+    "projectName": "Projektin nimi",
+    "projectId": "Projektin ID",
+    "task": "Tehtävä",
+    "installation": "Asennus",
+    "modification": "Muokkaus",
+    "dismantling": "Purku",
+    "scaffoldType": "Telinetyyppi",
+    "workScaffold": "Työteline",
+    "nonWeatherproof": "Sääsuojaton työteline",
+    "weatherproof": "Sääsuojattu työteline",
+    "taskDescription": "Mitä olemme tekemässä? (telineen käyttötarkoitus)",
+    "noProject": "Projekti ei näy...",
+    "loadingFormData": "Ladataan lomaketietoja...",
+    "scaffoldRisks": "Telinetöihin liittyvät vaarat",
+    "environmentRisks": "Työympäristön vaarat",
+    "submit": "Lähetä"
+  },
+  "riskmodal": {
+    "extraInfo": "Syötä lisätietoja",
+    "withSpeech": "Syötä puheella",
+    "cancel": "Peruuta",
+    "reset": "Tyhjennä",
+    "checked": "Kunnossa"
+  },
+  "risknote": {
+    "checked": "Kunnossa",
+    "notRelevant": "Ei koske",
+    "toBeNoted": "Huomioitavaa"
+  },
+  "searchbar": {
+    "placeholder": "Etsi hakusanalla..."
+  },
+  "selecttranslate": {
+    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
+    "selectedLanguages": "Valitut kielet",
+    "searchLanguages": "Hae kieliä...",
+    "selectLanguages": "Valitse kielet"
+  },
+  "settings": {
+    "changeLanguage": "Vaihda kieltä",
+    "signIn": "Kirjaudu sisään",
+    "signOut": "Kirjaudu ulos"
+  },
+  "signin": {
+    "confirmLogin": "Vahvista kirjautuminen",
+    "username": "Käyttäjänimi"
+  },
+  "speechtotext": {
+    "maxLength": "Maksimipituus",
+    "recognitionLanguage": "Puheentunnistuskieli",
+    "seconds_one": "yksi sekunti",
+    "seconds_other": "{{count}} sekuntia",
+    "stop": "Lopeta",
+    "start": "Aloita puheentunnistus"
+  }
+}
+{
+  "appbar": {
+    "projects": "Työmaat",
+    "settings": "Asetukset",
+    "signOut": "Kirjaudu ulos",
+    "signIn": "Kirjaudu sisään"
+  },
   "closebutton": {
     "close": "Sulje"
   },

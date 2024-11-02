@@ -2,10 +2,9 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import ProjectSurveyList from '@components/project-list/ProjectSurveyList';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
-import { useNavigate } from 'react-router-native';
 
-jest.mock('react-router-native', () => ({
-  useNavigate: jest.fn(),
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: jest.fn(),
 }));
 
 jest.mock('@hooks/useFetchSurveys', () => ({
@@ -46,13 +45,16 @@ jest.mock('react-i18next', () => ({
 describe('ProjectSurveyList Component', () => {
   const mockSetSelectedSurveyURL = jest.fn();
   const mockNavigate = jest.fn();
+  const mockSetVisible = jest.fn();
   const mockProjectContext = {
     selectedProject: { id: 123, formattedName: 'Test Project' },
     setSelectedSurveyURL: mockSetSelectedSurveyURL,
   };
 
   beforeEach(() => {
-    useNavigate.mockReturnValue(mockNavigate);
+    useNavigation.mockReturnValue({
+      navigate: mockNavigate,
+    });
   });
 
   afterEach(() => {
@@ -62,14 +64,15 @@ describe('ProjectSurveyList Component', () => {
   it('calls setSelectedSurveyURL and navigate when a survey is selected', () => {   
     const { getByTestId } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
-        <ProjectSurveyList />
+        <ProjectSurveyList setVisible={mockSetVisible} />
       </ProjectSurveyContext.Provider>
     );
 
     fireEvent.press(getByTestId('use-survey-1'));
 
     expect(mockSetSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('riskform');
+    expect(mockNavigate).toHaveBeenCalledWith('RiskForm');
+    expect(mockSetVisible).toHaveBeenCalledWith(false);
   });
 
   it('displays message when there are no surveys', () => {

@@ -3,7 +3,8 @@ import 'dotenv/config'
 export default {
   name: "HazardHunt",
   slug: "HazardHunt",
-  version: "1.0.1",
+  scheme: ["hazardhunt"],
+  version: "1.0.2",
   owner: "telinekataja",
   orientation: "portrait",
   icon: "./assets/icon.png",
@@ -20,9 +21,11 @@ export default {
     supportsTablet: true,
     bundleIdentifier: "com.HazardHunt",
     infoPlist: {
-        "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text.",
-        "NSCameraUsageDescription": "We need access to your camera for taking pictures.",
-        "NSPhotoLibraryUsageDescription": "We need access to your photo library to select pictures."
+      "ITSAppUsesNonExemptEncryption": false,
+      "LSMinimumSystemVersion": "12.0",
+      "NSMicrophoneUsageDescription": "App needs access to your microphone for speech to text.",
+      "NSCameraUsageDescription": "App needs access to your camera for taking pictures.",
+      "NSPhotoLibraryUsageDescription": "App needs access to your photo library to select pictures."
     }
   },
   android: {
@@ -50,7 +53,7 @@ export default {
     eas: {
       projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID
     },
-    local_setup: process.env.LOCAL_SETUP, // true or false
+    local_setup: process.env.LOCAL_SETUP,
     local_ip: process.env.LOCAL_IP
   }
 }

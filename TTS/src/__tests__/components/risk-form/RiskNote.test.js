@@ -9,11 +9,11 @@ jest.mock('react-i18next', () => ({
         'risknote.checked': 'Kunnossa',
         'risknote.notRelevant': 'Ei koske',
         'risknote.toBeNoted': 'Huomioitavaa',
-        'riskeditmodal.extraInfo': 'Syötä lisätietoja',
-        'riskeditmodal.withSpeech': 'Syötä puheella',
-        'riskeditmodal.cancel': 'Peruuta',
-        'riskeditmodal.reset': 'Tyhjennä',
-        'riskeditmodal.checked': 'Kunnossa'
+        'riskmodal.extraInfo': 'Syötä lisätietoja',
+        'riskmodal.withSpeech': 'Syötä puheella',
+        'riskmodal.cancel': 'Peruuta',
+        'riskmodal.reset': 'Tyhjennä',
+        'riskmodal.checked': 'Kunnossa'
       };
       return translations[key] || key;
     },

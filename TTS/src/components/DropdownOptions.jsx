@@ -21,10 +21,10 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
       renderButton={(selectedItem) => {
         return (
           <View style={styles.dropdownButtonStyle}>
-            <Text style={styles.dropdownButtonTxtStyle}>
+            <Text className="text-gray-800 flex-1 text-lg font-medium text-center">
               {selectedItem || placeholderText}
             </Text>
-            <View style={{ position: 'absolute', right: 20 }}>
+            <View className="absolute right-5">
               <Text>▼</Text>
             </View>
           </View>
@@ -41,19 +41,19 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
               ...(selectedItem === item && { backgroundColor: '#ADD8E6' }),
             }}
           >
-            <Text style={styles.dropdown1ItemTxtStyle}>{item[0]}, {item[1]}</Text>
+            <Text className="flex-1 text-lg font-medium">{item[0]}, {item[1]}</Text>
           </View>
         );
       }}
-      dropdownStyle={styles.dropdown1MenuStyle}
+      dropdownStyle={{ backgroundColor: '#FFFFFF', borderRadius: 8, minHeight: 420 }}
       showsVerticalScrollIndicator={true}
       search
-      searchInputStyle={styles.dropdown1SearchInputStyle}
+      searchInputStyle={{ backgroundColor: '#FFFFFF', borderBottomColor: '#000000', borderBottomWidth: 1 }}
       searchInputTxtColor={'#000000'}
       searchPlaceHolder={t('dropdownoptions.search')}
       searchPlaceHolderColor={'#A9A9A9'}
       renderSearchInputLeftIcon={() => {
-        return <Text style={{ color: '#000000', fontSize: 18 }}>🔍</Text>;
+        return <Text className="text-lg">🔍</Text>;
       }}
     />
   );
@@ -70,22 +70,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     width: '100%',
   },
-  dropdown1ItemTxtStyle: {
-    color: '#000000',
-    flex: 1,
-    fontSize: 18,
-    fontWeight: '500',
-  },
-  dropdown1MenuStyle: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    minHeight: 420,
-  },
-  dropdown1SearchInputStyle: {
-    backgroundColor: '#FFFFFF',
-    borderBottomColor: '#000000',
-    borderBottomWidth: 1,
-  },
   dropdownButtonStyle: {
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
@@ -96,14 +80,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     paddingHorizontal: 12,
-    width: 350,
-  },
-  dropdownButtonTxtStyle: {
-    color: '#151E26',
-    flex: 1,
-    fontSize: 18,
-    fontWeight: '500',
-    textAlign: 'center',
+    width: '100%',
   },
 });
 

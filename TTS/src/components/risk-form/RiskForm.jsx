@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigate } from 'react-router-native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -82,20 +82,20 @@ const RiskForm = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>{t('riskform.title')}</Text>
+    <View className="flex items-center justify-center">
+      <ScrollView className="bg-white flex-grow p-5">
+        <Text className="text-2xl font-bold pb-5 text-center">{t('riskform.title')}</Text>
 
         {error && <Text>{t('riskform.errorFetchingData')}</Text>}
         {/* Projektin tiedot */}
         {project ? (
-          <View style={styles.infoContainer}>
-            <Text style={styles.label}>{t('riskform.projectName')}:</Text>
+          <View className="mb-5">
+            <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
             <Text>{project.project_name}</Text>
 
-            <Text style={styles.label}>{t('riskform.projectId')}: </Text>
+            <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
             <Text>{project.project_id}</Text>
-            <Text style={styles.label}>{t('riskform.task')}:</Text>
+            <Text className="text-lg font-bold py-2">{t('riskform.task')}:</Text>
             <ButtonGroup 
               options={['installation', 'modification', 'dismantling']} 
               selectedValue={task}
@@ -103,7 +103,7 @@ const RiskForm = () => {
               renderOption={(option) => t(`riskform.${option}`)}
             />
 
-            <Text style={styles.label}>{t('riskform.scaffoldType')}:</Text>
+            <Text className="text-lg font-bold py-2">{t('riskform.scaffoldType')}:</Text>
             <ButtonGroup 
               options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
               selectedValue={scaffoldType}
@@ -111,9 +111,9 @@ const RiskForm = () => {
               renderOption={(option) => t(`riskform.${option}`)}
             />
 
-            <Text style={styles.label}>{t('riskform.taskDescription')}:</Text>
+            <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
             <TextInput
-              style={styles.input}
+              className="border border-gray-300 rounded p-2 h-24"
               value={taskDesc}
               onChangeText={(value) => setTaskDesc(value)}
               multiline={true}
@@ -124,7 +124,9 @@ const RiskForm = () => {
           <Text>{t('riskform.noProject')}</Text>
         )}
 
-        <Text style={styles.sectionTitle}>{t('riskform.scaffoldRisks')}</Text>
+        <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center">
+          {t('riskform.scaffoldRisks')}
+        </Text>
         {Object.entries(formData)
           .filter(([key, value]) => value.risk_type === 'scaffolding')
           .map(([key]) => (
@@ -135,11 +137,16 @@ const RiskForm = () => {
             />
         ))}
 
-        <TouchableOpacity style={styles.addButton} onPress={() => addNewRiskNote(t('riskform.otherScaffolding'), 'scaffolding')}>
-          <Text style={styles.addButtonText}>+ {t('riskform.otherScaffolding')}</Text>
+        <TouchableOpacity 
+          className="p-2 border border-green-500 rounded my-2 items-center" 
+          onPress={() => addNewRiskNote(t('riskform.otherScaffolding'), 'scaffolding')}
+        >
+          <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherScaffolding')}</Text>
         </TouchableOpacity>
 
-        <Text style={styles.sectionTitle}>{t('riskform.environmentRisks')}</Text>
+        <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center">
+          {t('riskform.environmentRisks')}
+        </Text>
         {Object.entries(formData)
           .filter(([key, value]) => value.risk_type === 'environment')
           .map(([key]) => (
@@ -149,12 +156,15 @@ const RiskForm = () => {
             renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
           />
         ))}
-        <TouchableOpacity style={styles.addButton} onPress={() => addNewRiskNote(t('riskform.otherEnvironment'), 'environment')}>
-          <Text style={styles.addButtonText}>+{t('riskform.otherEnvironment')}</Text>
+        <TouchableOpacity 
+          className="p-2 border border-green-500 rounded my-2 items-center" 
+          onPress={() => addNewRiskNote(t('riskform.otherEnvironment'), 'environment')}
+        >
+          <Text className="text-green-500 text-lg font-bold">+{t('riskform.otherEnvironment')}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>{t('riskform.submit')}</Text>
+        <TouchableOpacity className="bg-green-500 p-4 rounded my-2 items-center" onPress={handleSubmit}>
+          <Text className="text-white text-lg font-bold">{t('riskform.submit')}</Text>
         </TouchableOpacity>
 
         <CloseButton onPress={handleClose} />
@@ -168,78 +178,5 @@ const RiskForm = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginVertical: 10,
-    padding: 15,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  infoContainer: {
-    marginBottom: 20,
-  },
-  input: {
-    borderColor: '#ccc',
-    borderRadius: 5,
-    borderWidth: 1,
-    flex: 1,
-    height: 100,
-    padding: 10,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    paddingVertical: 8,
-  },
-  scrollContainer: {
-    backgroundColor: '#fff',
-    flexGrow: 1,
-    padding: 20,
-  },
-  sectionTitle: {
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingBottom: 5,
-    textAlign: 'center',
-  },
-  submitButton: {
-    backgroundColor: 'green',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    paddingBottom: 20,
-    textAlign: 'center',
-  },
-  addButton: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'green',
-    borderRadius: 5,
-    marginVertical: 10,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: 'green',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
 
 export default RiskForm;

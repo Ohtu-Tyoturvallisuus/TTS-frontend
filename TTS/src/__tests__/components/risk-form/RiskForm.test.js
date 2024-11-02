@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor, within } from '@testing-library/react-native';
 import { MemoryRouter } from 'react-router-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import RiskForm from '@components/risk-form/RiskForm';
 import * as apiService from '@services/apiService';
@@ -42,11 +43,11 @@ const mockTranslations = {
   'risknote.notRelevant.en': 'Not relevant',  
   'risknote.toBeNoted.en': 'To be noted',
   'risknote.checked': 'Kunnossa',
-  'riskeditmodal.extraInfo': 'Syötä lisätietoja',
-  'riskeditmodal.withSpeech': 'Syötä puheella',
-  'riskeditmodal.cancel': 'Peruuta',
-  'riskeditmodal.checked': 'Kunnossa',
-  'riskeditmodal.reset': 'Tyhjennä',
+  'riskmodal.extraInfo': 'Syötä lisätietoja',
+  'riskmodal.withSpeech': 'Syötä puheella',
+  'riskmodal.cancel': 'Peruuta',
+  'riskmodal.checked': 'Kunnossa',
+  'riskmodal.reset': 'Tyhjennä',
   'riskform.successMessage': 'Riskimuistiinpanot lähetetty onnistuneesti',
   'riskform.close': 'Sulje',
   'riskform.title': 'Työturvallisuuslomake',
@@ -156,7 +157,7 @@ describe('RiskForm Component', () => {
 
   const renderComponent = () => {
     return render(
-      <MemoryRouter>
+      <NavigationContainer>
         <ProjectSurveyContext.Provider value={{ 
           selectedProject: mockProject, 
           selectedSurveyURL: mockSurveyURL,
@@ -165,13 +166,13 @@ describe('RiskForm Component', () => {
         }}>
           <RiskForm />
         </ProjectSurveyContext.Provider>
-      </MemoryRouter>
+      </NavigationContainer>
     );
   };
 
   const renderComponentWithoutProject = () => {
     return render(
-      <MemoryRouter>
+      <NavigationContainer>
         <ProjectSurveyContext.Provider value={{ 
           selectedProject: null, // No project selected
           selectedSurveyURL: mockSurveyURL,
@@ -180,7 +181,7 @@ describe('RiskForm Component', () => {
         }}>
           <RiskForm />
         </ProjectSurveyContext.Provider>
-      </MemoryRouter>
+      </NavigationContainer>
     );
   };
 
@@ -206,6 +207,10 @@ describe('RiskForm Component', () => {
 
   it('renders loading message when form data is empty', () => {
     apiService.fetchSurveyData.mockResolvedValueOnce({});
+    require('@hooks/useFormFields').mockImplementationOnce(() => ({
+      initialFormData: {},
+    }));
+
     const { getByText } = renderComponent();
 
     expect(getByText('Ladataan lomaketietoja...')).toBeTruthy();
@@ -234,13 +239,16 @@ describe('RiskForm Component', () => {
     await waitFor(() => expect(getByText('Riskimuistiinpanot lähetetty onnistuneesti')).toBeTruthy());
   });
 
-  it('handles error correctly when fetching data', async () => {
-    apiService.fetchSurveyData.mockRejectedValueOnce(new Error('An error occurred'));
-    const { getByText } = renderComponent();
+  it('handles error correctly when fetching data', () => {
+    require('@hooks/useMergedSurveyData').mockImplementationOnce(() => ({
+      mergedFormData: {},
+      taskDetails: { task: '', scaffoldType: '', taskDesc: '' },
+      error: 'An error occurred',
+      isMerged: false,
+    }));
+    renderComponent();
 
-    await waitFor(() => {
-      expect(getByText('Virhe haettaessa lomakkeen tietoja')).toBeTruthy();
-    });
+    expect(global.alert).toHaveBeenCalledWith('Virhe haettaessa lomakkeen tietoja');
   });
 
   it('logs an error if API submission fails', async () => {
@@ -309,23 +317,16 @@ describe('RiskForm Component', () => {
   });
 
   it('updates task state when a button is pressed in ButtonGroup', () => {
-    const { getByText } = renderComponent(); // Render the RiskForm component 
-    // Ensure the initial state is correct (for example, 'installation' should be the default)
-    expect(getByText('Asennus')).toBeTruthy(); // Assuming 'Asennus' is the translated text for 'installation'  
-    // Simulate pressing the 'modification' button
-    fireEvent.press(getByText('Muokkaus')); // Assuming 'Muokkaus' is the translated text for 'modification'  
-    // Now check if the task state has been updated correctly
-    // Since the task should now be 'modification', we can check if the corresponding text is there
-    expect(getByText('Muokkaus')).toBeTruthy(); // Ensure 'Muokkaus' is now displayed
+    const { getByText } = renderComponent();
+    expect(getByText('Asennus')).toBeTruthy();
+    fireEvent.press(getByText('Muokkaus'));
+    expect(getByText('Muokkaus')).toBeTruthy();
   });
 
   it('updates scaffoldType state when a button is pressed in ButtonGroup', () => {
-    const { getByText } = renderComponent(); // Render the RiskForm component
-    // Ensure the initial state is correct (for example, 'workScaffold' should be the default)
-    expect(getByText('Työteline')).toBeTruthy(); // Assuming 'Työteline' is the translated text for 'workScaffold'
-    // Simulate pressing the 'nonWeatherproof' button
-    fireEvent.press(getByText('Sääsuojaton työteline')); // Assuming this is the translated text for 'nonWeatherproof'
-    // Now check if the scaffoldType state has been updated correctly
-    expect(getByText('Sääsuojaton työteline')).toBeTruthy(); // Ensure 'Sääsuojaton työteline' is now displayed
+    const { getByText } = renderComponent();
+    expect(getByText('Työteline')).toBeTruthy();
+    fireEvent.press(getByText('Sääsuojaton työteline'));
+    expect(getByText('Sääsuojaton työteline')).toBeTruthy();
   });
 });

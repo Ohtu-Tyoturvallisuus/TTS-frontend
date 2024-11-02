@@ -2,7 +2,7 @@ import { TextInput, Pressable, View, StyleSheet, Text } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +21,7 @@ const initialValues = {
 };
 
 const SignIn = () => {
-  const navigate = useNavigate()
+  const navigation = useNavigation()
   const { setUsername } = useContext(UserContext)
   const { t } = useTranslation();
 
@@ -31,7 +31,7 @@ const SignIn = () => {
       console.log(data);
       await AsyncStorage.setItem('username', values.username);
       setUsername(values.username);
-      navigate('/');
+      navigation.navigate('Main');
     } catch (error) {
       console.error('Error signing in:', error);
     }
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+    fontFamily: 'Fuzzy Bubbles Regular',
     fontWeight: 'bold',
   },
   container: {

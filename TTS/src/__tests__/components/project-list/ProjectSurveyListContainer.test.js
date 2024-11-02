@@ -219,6 +219,7 @@ describe('ProjectSurveyListContainer Component', () => {
     ];
 
     const mockNavigate = jest.fn();
+    const setVisible = jest.fn();
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={{ setSelectedSurveyURL: mockProjectContext.setSelectedSurveyURL }}>
@@ -226,6 +227,7 @@ describe('ProjectSurveyListContainer Component', () => {
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
           navigate={mockNavigate}
+          setVisible={setVisible}
         />
       </ProjectSurveyContext.Provider>
     );
@@ -233,6 +235,7 @@ describe('ProjectSurveyListContainer Component', () => {
     fireEvent.press(getByText('Käytä pohjana'));
 
     expect(mockProjectContext.setSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('riskform');
+    expect(mockNavigate).toHaveBeenCalledWith('RiskForm');
+    expect(setVisible).toHaveBeenCalledWith(false);
   });
 });
