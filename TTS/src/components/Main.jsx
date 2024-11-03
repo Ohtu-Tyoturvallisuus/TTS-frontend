@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
 import RiskForm from '@components/risk-form/RiskForm';
-import MicrosoftSignIn from '@components/sign-in/MicrosoftSignIn';
+import CombinedSignIn from '@components/sign-in/CombinedSignIn';
 import Settings from '@components/settings/Settings';
 
 const Tab = createBottomTabNavigator();
@@ -42,7 +42,7 @@ const Main = () => {
           <Stack.Screen name='RiskForm' component={RiskForm} options={{ headerShown: false }} />
         </>
         ) : (
-          <Stack.Screen name='MicrosoftSignIn' component={MicrosoftSignIn} options={{ headerShown: false }} />
+          <Stack.Screen name='CombinedSignIn' component={CombinedSignIn} options={{ headerShown: false }} />
         )}
     </Stack.Navigator>
   )

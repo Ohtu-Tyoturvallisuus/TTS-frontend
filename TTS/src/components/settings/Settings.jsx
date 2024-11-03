@@ -57,7 +57,7 @@ const Settings = () => {
         />
       ) : (
         <SettingsButton
-          onPress={() => navigation.navigate('MicrosoftSignIn')}
+          onPress={() => navigation.navigate('CombinedSignIn')}
           text={t('settings.signIn')}
         />
       )}

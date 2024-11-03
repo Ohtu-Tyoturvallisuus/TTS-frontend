@@ -28,7 +28,10 @@ jest.mock('react-i18next', () => ({
     t: (key) => {
       const translations = {
         'signin.confirmLogin': 'Vahvista kirjautuminen',
-        'signin.username': 'Käyttäjänimi'
+        'signin.first_name': 'Etunimi',
+        'signin.last_name': 'Sukunimi',
+        'signin.guestSignInButton': 'Jatka vieraana',
+        'signin.close': 'Sulje'
       };
       return translations[key] || key;
     },
@@ -55,8 +58,7 @@ describe('Sign in', () => {
 
     screen.debug();
 
-    expect(screen.getByPlaceholderText('Käyttäjänimi')).toBeDefined();
-    expect(screen.getByText('Vahvista kirjautuminen')).toBeDefined();
+    expect(screen.getByText('Jatka vieraana')).toBeDefined();
   });
 
   it('calls onSubmit and saves username when the form is submitted', async () => {
@@ -74,20 +76,25 @@ describe('Sign in', () => {
       </NavigationContainer>
     );
 
-    const input = screen.getByPlaceholderText('Käyttäjänimi');
+    fireEvent.press(screen.getByText('Jatka vieraana'));
+
+    const firstNameInput = screen.getByPlaceholderText('Etunimi');
+    const lastNameInput = screen.getByPlaceholderText('Sukunimi');
     const button = screen.getByText('Vahvista kirjautuminen');
 
-    fireEvent.changeText(input, 'testuser');
+    fireEvent.changeText(firstNameInput, 'testuser');
+    fireEvent.changeText(lastNameInput, 'testuser');
     fireEvent.press(button);
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
-        username: 'testuser',
-        id: null
+        username: 'testuser testuser',
+        id: null,
+        guest: true
       });
 
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith('username', 'testuser');
-      expect(mockSetUsername).toHaveBeenCalledWith('testuser');
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('username', 'testuser testuser');
+      expect(mockSetUsername).toHaveBeenCalledWith('testuser testuser');
     });
   });
 
@@ -102,10 +109,13 @@ describe('Sign in', () => {
       </NavigationContainer>
     );
 
+    fireEvent.press(screen.getByText('Jatka vieraana'));
+
     fireEvent.press(screen.getByText('Vahvista kirjautuminen'));
 
     await waitFor(() => {
-      expect(screen.getByText('Syötä käyttäjänimi')).toBeDefined();
+      expect(screen.getByText('signin.error_first_name')).toBeDefined();
+      expect(screen.getByText('signin.error_last_name')).toBeDefined();
     });
   });
 
@@ -123,16 +133,21 @@ describe('Sign in', () => {
       </NavigationContainer>
     );
 
-    const input = screen.getByPlaceholderText('Käyttäjänimi');
+    fireEvent.press(screen.getByText('Jatka vieraana'));
+
+    const firstNameInput = screen.getByPlaceholderText('Etunimi');
+    const lastNameInput = screen.getByPlaceholderText('Sukunimi');
     const button = screen.getByText('Vahvista kirjautuminen');
 
-    fireEvent.changeText(input, 'testuser');
+    fireEvent.changeText(firstNameInput, 'testuser');
+    fireEvent.changeText(lastNameInput, 'testuser');
     fireEvent.press(button);
 
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
-        username: 'testuser',
-        id: null
+        username: 'testuser testuser',
+        id: null,
+        guest: true
       });
 
       expect(console.error).toHaveBeenCalledWith('Error signing in:', mockError);
