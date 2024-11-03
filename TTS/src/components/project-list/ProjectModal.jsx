@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 
 import ProjectSurveyList from './ProjectSurveyList';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import CloseButton from '@components/buttons/CloseButton';
 
 const ProjectModal = ({ visible, onClose }) => {
-  const navigate = useNavigate()
+  const navigation = useNavigation();
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
 
@@ -32,7 +32,8 @@ const ProjectModal = ({ visible, onClose }) => {
             style={styles.newSurveyButton}
             onPress={() => {
               setSelectedSurveyURL(null);
-              navigate('riskform');
+              console.log('Uusi kartoitus, surveyUrl on null');
+              navigation.navigate('RiskForm');
             }}
           >
             <Text style={styles.buttonText}>{t('projectmodal.title')}</Text>

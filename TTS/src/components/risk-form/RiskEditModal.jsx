@@ -44,7 +44,7 @@ const RiskEditModal = ({
         
         <TextInput
           style={styles.input}
-          placeholder={t('riskeditmodal.extraInfo')}
+          placeholder={t('riskmodal.extraInfo')}
           value={description}
           onChangeText={setDescription}
           multiline={true}
@@ -59,17 +59,17 @@ const RiskEditModal = ({
               setButtonHidden(true);
             }}
           >
-            <Text style={styles.buttonText}>{t('riskeditmodal.withSpeech')}</Text>
+            <Text style={styles.buttonText}>{t('riskmodal.withSpeech')}</Text>
           </TouchableOpacity>
         )}
         {useSpeech && (
           <SpeechToTextView
             setDescription={setDescription}
-            translate={false}
+            translate={true}
           />
         )}
 
-        <TakePictureView title={title}/>
+      <TakePictureView title={title}/>
         
       </ScrollView>
         <View style={styles.buttonContainer}>
@@ -77,14 +77,14 @@ const RiskEditModal = ({
             style={[styles.button, styles.cancelButton]}
             onPress={onClose}
           >
-            <Text style={styles.buttonText}>{t('riskeditmodal.cancel')}</Text>
+            <Text style={styles.buttonText}>{t('riskmodal.cancel')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.resetButton}
             onPress={handleReset}
           >
-            <Text style={styles.resetButtonText}>{t('riskeditmodal.reset')}</Text>
+            <Text style={styles.resetButtonText}>{t('riskmodal.reset')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

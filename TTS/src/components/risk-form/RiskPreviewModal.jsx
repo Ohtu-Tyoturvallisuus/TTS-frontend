@@ -44,13 +44,13 @@ const RiskPreviewModal = ({
             style={styles.editButton}
             onPress={onEditPress}
           >
-            <Text>{t('riskeditmodal.edit')}</Text>
+            <Text>{t('riskmodal.edit')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.checkedButton}
             onPress={onSubmit}
           >
-            <Text>{t('riskeditmodal.checked')}</Text>
+            <Text>{t('riskmodal.checked')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

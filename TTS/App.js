@@ -5,7 +5,6 @@ import 'intl-pluralrules';
 
 import { UserProvider } from '@contexts/UserContext';
 import Main from './src/components/Main'
-import { FormProvider } from '@contexts/FormContext';
 import { ProjectSurveyProvider } from '@contexts/ProjectSurveyContext';
 import './src/lang/i18n';
 
@@ -16,9 +15,7 @@ export default function App() {
         <NavigationContainer>
           <UserProvider>
             <ProjectSurveyProvider>
-              <FormProvider>
-                <Main />
-              </FormProvider>
+              <Main />
             </ProjectSurveyProvider>
           </UserProvider>
         </NavigationContainer>

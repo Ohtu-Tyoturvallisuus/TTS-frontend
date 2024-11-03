@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { useNavigate } from 'react-router-native';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import RiskNote from './RiskNote';
@@ -31,7 +31,7 @@ const RiskForm = () => {
     setTaskDesc, 
   } = useFormContext();
 
-  const navigate = useNavigate();
+  const navigation = useNavigation();
   const { t } = useTranslation(['translation', 'formFields']);
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
 
@@ -45,7 +45,7 @@ const RiskForm = () => {
           description: note.description,
           status: note.status,
           risk_type: note.risk_type,
-          images: note.images,
+          images: [], // Images are not retrieved from the server
         };
         return acc;
       }, {}));
@@ -68,7 +68,7 @@ const RiskForm = () => {
   const handleClose = () => {
     resetProjectAndSurvey();
     setShowSuccessAlert(false);
-    navigate('/');
+    navigation.navigate('ProjectList');
   };
 
   const addNewRiskNote = (title, type) => {
@@ -163,7 +163,7 @@ const RiskForm = () => {
           <Text className="text-green-500 text-lg font-bold">+{t('riskform.otherEnvironment')}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className="bg-green-500 p-4 rounded my-2 items-center" onPress={handleSubmit}>
+        <TouchableOpacity className="bg-[#008000] rounded-md py-3 my-2 items-center" onPress={handleSubmit}>
           <Text className="text-white text-lg font-bold">{t('riskform.submit')}</Text>
         </TouchableOpacity>
 
