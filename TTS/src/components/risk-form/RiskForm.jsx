@@ -102,7 +102,10 @@ const RiskForm = () => {
 
   return (
     <View className="flex items-center justify-center mt-8">
-      <ScrollView className="bg-white flex-grow p-5 w-full">
+      <ScrollView 
+        className="bg-white flex-grow p-5 w-full" 
+        contentContainerStyle={{ paddingBottom: 30 }}
+      >
         <Text className="text-2xl font-bold pb-5 text-center">{t('riskform.title')}</Text>
 
         {error && <Text>{t('riskform.errorFetchingData')}</Text>}

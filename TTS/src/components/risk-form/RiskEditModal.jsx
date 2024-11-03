@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 1,
     height: 100,
-    marginBottom: 20,
     padding: 10,
   },
   resetButton: {

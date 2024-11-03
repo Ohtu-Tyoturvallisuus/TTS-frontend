@@ -101,7 +101,8 @@
   "risknote": {
     "checked": "Checked",
     "notRelevant": "Not relevant",
-    "toBeNoted": "To be noted"
+    "toBeNoted": "To be noted",
+    "undo": "Undo"
   },
   "searchbar": {
     "placeholder": "Search by keyword..."

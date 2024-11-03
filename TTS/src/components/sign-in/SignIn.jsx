@@ -62,7 +62,7 @@ const SignIn = () => {
         <Text className="text-white font-bold">{t('signin.guestSignInButton')}</Text>
       </TouchableOpacity>
 
-      <Modal visible={modalVisible} transparent animationType="slide">
+      <Modal visible={modalVisible} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.container}>
             <View className="pb-3">

@@ -103,7 +103,8 @@
   "risknote": {
     "checked": "Kunnossa",
     "notRelevant": "Ei koske",
-    "toBeNoted": "Huomioitavaa"
+    "toBeNoted": "Huomioitavaa",
+    "undo": "Kumoa"
   },
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."
