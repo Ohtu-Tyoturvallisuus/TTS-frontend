@@ -65,7 +65,7 @@ const RiskEditModal = ({
         {useSpeech && (
           <SpeechToTextView
             setDescription={setDescription}
-            translate={true}
+            translate={false}
           />
         )}
 

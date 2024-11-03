@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { View, TextInput, ScrollView, Text, TouchableOpacity, Modal, Button } from 'react-native';
+import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -12,6 +12,7 @@ import { useFormContext } from '@contexts/FormContext';
 import useFetchSurveyData from '@hooks/useFetchSurveyData';
 import Loading from '@components/Loading';
 import ConfirmationModal from '@components/ConfirmationModal';
+import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
 const RiskForm = () => {
   const { 
@@ -100,14 +101,14 @@ const RiskForm = () => {
   }
 
   return (
-    <View className="flex items-center justify-center">
-      <ScrollView className="bg-white flex-grow p-5">
+    <View className="flex items-center justify-center mt-8">
+      <ScrollView className="bg-white flex-grow p-5 w-full">
         <Text className="text-2xl font-bold pb-5 text-center">{t('riskform.title')}</Text>
 
         {error && <Text>{t('riskform.errorFetchingData')}</Text>}
         {/* Projektin tiedot */}
         {project ? (
-          <View className="mb-5">
+          <View className="mb-3">
             <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
             <Text>{project.project_name}</Text>
 
@@ -137,6 +138,10 @@ const RiskForm = () => {
               multiline={true}
               textAlignVertical="top"
             />
+            <SpeechToTextView
+              setDescription={setTaskDesc}
+              translate={false}
+            />
           </View>
         ) : (
           <Text>{t('riskform.noProject')}</Text>
@@ -162,7 +167,7 @@ const RiskForm = () => {
           <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherScaffolding')}</Text>
         </TouchableOpacity>
 
-        <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center">
+        <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center mt-5">
           {t('riskform.environmentRisks')}
         </Text>
         {Object.entries(formData)
@@ -178,7 +183,7 @@ const RiskForm = () => {
           className="p-2 border border-green-500 rounded my-2 items-center" 
           onPress={() => addNewRiskNote(t('riskform.otherEnvironment'), 'environment')}
         >
-          <Text className="text-green-500 text-lg font-bold">+{t('riskform.otherEnvironment')}</Text>
+          <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherEnvironment')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity className="bg-[#008000] rounded-md py-3 my-2 items-center" onPress={handleSubmit}>
