@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useContext, useEffect, useRef } from 'react';
+import { View, TextInput, ScrollView, Text, TouchableOpacity, Modal, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -11,6 +11,7 @@ import SuccessAlert from '@components/SuccessAlert';
 import { useFormContext } from '@contexts/FormContext';
 import useFetchSurveyData from '@hooks/useFetchSurveyData';
 import Loading from '@components/Loading';
+import ConfirmationModal from '@components/ConfirmationModal';
 
 const RiskForm = () => {
   const { 
@@ -34,6 +35,8 @@ const RiskForm = () => {
   const navigation = useNavigation();
   const { t } = useTranslation(['translation', 'formFields']);
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [ showExitModal, setShowExitModal] = useState(false);
+  const allowNavigationRef = useRef(false);
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
@@ -56,6 +59,19 @@ const RiskForm = () => {
     }
   }, [surveyData]);
 
+  // Displays confirmation modal when user tries to leave the form
+  useEffect(() => {
+    console.log('RiskForm useEffect');
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      if (!allowNavigationRef.current) {
+        e.preventDefault();
+        setShowExitModal(true);
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const handleSubmit = () => {
     const taskInfo = {
       task: task,
@@ -66,8 +82,10 @@ const RiskForm = () => {
   };
 
   const handleClose = () => {
+    allowNavigationRef.current = true;
     resetProjectAndSurvey();
     setShowSuccessAlert(false);
+    setShowExitModal(false);
     navigation.navigate('ProjectList');
   };
 
@@ -167,7 +185,7 @@ const RiskForm = () => {
           <Text className="text-white text-lg font-bold">{t('riskform.submit')}</Text>
         </TouchableOpacity>
 
-        <CloseButton onPress={handleClose} />
+        <CloseButton onPress={() => setShowExitModal(true)} />
       </ScrollView>
       {showSuccessAlert && (
         <SuccessAlert 
@@ -175,6 +193,11 @@ const RiskForm = () => {
           onDismiss={handleClose} 
         />
       )}
+      <ConfirmationModal
+        visible={showExitModal}
+        onCancel={() => setShowExitModal(false)}
+        onConfirm={handleClose}
+      />
     </View>
   );
 };

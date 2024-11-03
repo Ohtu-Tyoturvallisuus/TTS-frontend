@@ -15,6 +15,12 @@
   "closebutton": {
     "close": "Close"
   },
+  "confirmation": {
+    "confirmLeave": "Are you sure you want to leave?",
+    "changesWillBeLost": "NOTE! All changes will be lost",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
   "dropdownoptions": {
     "chooseAll": "--Choose all--",
     "search": "Search..."

@@ -15,6 +15,12 @@
   "closebutton": {
     "close": "Sulje"
   },
+  "confirmation": {
+    "confirmLeave": "Haluatko varmasti poistua?",
+    "changesWillBeLost": "HUOM! Kaikki muutokset menetetään",
+    "cancel": "Peruuta",
+    "confirm": "Vahvista"
+  },
   "dropdownoptions": {
     "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
