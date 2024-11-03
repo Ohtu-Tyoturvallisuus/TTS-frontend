@@ -7,7 +7,7 @@ import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import useFetchSurveys from '@hooks/useFetchSurveys';
 import Loading from '@components/Loading';
 
-export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate }) => {
+export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigateToRiskForm }) => {
   const { t } = useTranslation();
 
   const renderSurveyOption = ({ item: survey }) => {
@@ -34,7 +34,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
     const handleSurveyPress = (survey) => {
       console.log('Valittu kartoitus:', survey);
       setSelectedSurveyURL(survey.url);
-      navigate('RiskForm');
+      navigateToRiskForm();
     };
 
     return (
@@ -75,7 +75,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
   );
 };
 
-const ProjectSurveyList = ({ setVisible }) => {
+const ProjectSurveyList = ({ setVisible, navigateToRiskForm }) => {
   const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -95,7 +95,7 @@ const ProjectSurveyList = ({ setVisible }) => {
     <ProjectSurveyListContainer 
       surveys={surveys} 
       setSelectedSurveyURL={setSelectedSurveyURL} 
-      navigate={navigation.navigate} 
+      navigateToRiskForm={navigateToRiskForm} 
       setVisible={setVisible} 
     />
   );

@@ -7,7 +7,7 @@ import ProjectSurveyList from './ProjectSurveyList';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import CloseButton from '@components/buttons/CloseButton';
 
-const ProjectModal = ({ visible, onClose }) => {
+const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
   const navigation = useNavigation();
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
@@ -33,12 +33,12 @@ const ProjectModal = ({ visible, onClose }) => {
             onPress={() => {
               setSelectedSurveyURL(null);
               console.log('Uusi kartoitus, surveyUrl on null');
-              navigation.navigate('RiskForm');
+              navigateToRiskForm()
             }}
           >
             <Text style={styles.buttonText}>{t('projectmodal.title')}</Text>
           </TouchableOpacity>
-          <ProjectSurveyList/>
+          <ProjectSurveyList navigateToRiskForm={navigateToRiskForm}/>
           <CloseButton onPress={onClose}/>
         </View>
       </View>
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#FF8C00',
     borderRadius: 10,
-    borderWidth: 5,
+    borderWidth: 3,
     padding: 20,
     width: '95%',
   },
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#32CD32',
     borderRadius: 5,
+    justifyContent: 'center', 
     minHeight: 48,
     minWidth: 48,
     padding: 10,

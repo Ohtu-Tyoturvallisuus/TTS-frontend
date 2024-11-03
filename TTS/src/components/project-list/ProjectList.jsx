@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 import useFetchProjects from '@hooks/useFetchProjects';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -16,6 +17,7 @@ const ProjectsList = () => {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const { t } = useTranslation();
   const { projects, loading, error } = useFetchProjects();
+  const navigation = useNavigation();
   
   const [areaFilter, setAreaFilter] = useState([]);
   const projectAreas = [
@@ -98,8 +100,12 @@ const ProjectsList = () => {
       <ProjectModal
         visible={modalVisible}
         onClose={() => {
-          setModalVisible(false);
           setSelectedProject(null);
+          setModalVisible(false);
+        }}
+        navigateToRiskForm={() => {
+          setModalVisible(false);
+          navigation.navigate('RiskForm');
         }}
       />
     </View>
@@ -115,6 +121,7 @@ const styles = StyleSheet.create({
   },
   container: {
     display: 'flex',
+    paddingTop: 50,
     padding: 16,
   },
   projectContainer: {
