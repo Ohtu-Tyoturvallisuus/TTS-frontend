@@ -41,19 +41,24 @@ const RiskForm = () => {
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
-  useEffect(() => {
+  useEffect(() => {    
     if (surveyData) {
       console.log("Merging prev survey's data")
-      replaceFormData(surveyData.risk_notes.reduce((acc, note) => {
+      const currentNotes = surveyData.risk_notes.reduce((acc, note) => {
         acc[note.note] = {
           description: note.description,
           status: note.status,
           risk_type: note.risk_type,
-          images: [], // Images are not retrieved from the server
+          images: [],
         };
         return acc;
-      }, {}));
-      
+      }, {});
+
+      if (JSON.stringify(formData) !== JSON.stringify(currentNotes)) {
+        console.log("Merging prev survey's data");
+        replaceFormData(currentNotes);
+      }
+  
       setTask(surveyData.task);
       setScaffoldType(surveyData.scaffold_type);
       setTaskDesc(surveyData.description);
@@ -79,6 +84,7 @@ const RiskForm = () => {
       description: taskDesc,
       scaffold_type: scaffoldType,
     };
+    console.log('Submitting:', taskInfo);
     submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
   };
 
@@ -135,6 +141,7 @@ const RiskForm = () => {
 
             <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
             <TextInput
+              testID='taskDesc'
               className="border border-gray-300 rounded p-2 h-24"
               value={taskDesc}
               onChangeText={(value) => setTaskDesc(value)}

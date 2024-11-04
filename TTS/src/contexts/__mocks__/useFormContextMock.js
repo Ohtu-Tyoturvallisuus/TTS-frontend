@@ -20,7 +20,9 @@ export const mockUseFormContext = {
   scaffoldType: 'Työteline',
   setScaffoldType: jest.fn(),
   taskDesc: 'Test Description',
-  setTaskDesc: jest.fn(),
+  setTaskDesc: jest.fn((newValue) => {
+    mockUseFormContext.taskDesc = newValue;
+  }),
   error: null,
 };
 

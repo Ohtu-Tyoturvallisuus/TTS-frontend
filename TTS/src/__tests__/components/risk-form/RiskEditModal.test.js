@@ -127,7 +127,7 @@ describe('RiskEditModal Component', () => {
     );
 
     const input = getByPlaceholderText('Syötä lisätietoja');
-    expect(input.props.value).toBe(''); // Adjust according to initial form context state
+    expect(input.props.value).toBe('');
   });
 
   it('submits the form and updates form field', async () => {
