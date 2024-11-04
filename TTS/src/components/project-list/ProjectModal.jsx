@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 
 import ProjectSurveyList from './ProjectSurveyList';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import CloseButton from '@components/buttons/CloseButton';
 
 const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
-  const navigation = useNavigation();
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
 

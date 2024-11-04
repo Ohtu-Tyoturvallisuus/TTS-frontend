@@ -1,16 +1,11 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-<<<<<<<< HEAD:TTS/src/__tests__/components/risk-form/RiskEditModal.test.js
 import RiskEditModal from '@components/risk-form/RiskEditModal';
-========
-import RiskModal from '@components/risk-form/RiskModal';
->>>>>>>> main:TTS/src/__tests__/components/risk-form/RiskModal.test.js
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => {
       const translations = {
-<<<<<<<< HEAD:TTS/src/__tests__/components/risk-form/RiskEditModal.test.js
         'riskeditmodal.extraInfo': 'Syötä lisätietoja',
         'riskeditmodal.withSpeech': 'Syötä puheella',
         'riskeditmodal.cancel': 'Peruuta',
@@ -24,31 +19,7 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-describe('RiskEditModal Component', () => {
-========
-        'riskmodal.extraInfo': 'Syötä lisätietoja',
-        'riskmodal.withSpeech': 'Syötä puheella',
-        'riskmodal.cancel': 'Peruuta',
-        'riskmodal.reset': 'Resetoi',
-        'riskmodal.checked': 'Kunnossa',
-        'speechtotext.recognitionLanguage': 'Puheentunnistuskieli',
-        'speechtotext.stop': 'Lopeta',
-        'speechtotext.start': 'Aloita puheentunnistus',
-        'speechtotext.maxLength': 'Maksimipituus',
-        'speechtotext.seconds': '{{count}} sekuntia',
-        'selecttranslate.selectTranslationLanguages': 'Valitse kielet käännöstä varten'
-      };
-      return translations[key] || key;
-    },
-    i18n: {
-      language: 'fi-FI',
-      changeLanguage: jest.fn().mockResolvedValue(true),
-    },
-  }),
-}));
-
 describe('RiskModal Component', () => {
->>>>>>>> main:TTS/src/__tests__/components/risk-form/RiskModal.test.js
   const mockOnSubmit = jest.fn();
   const mockOnClose = jest.fn();
   const mockTitle = "Test Modal Title";

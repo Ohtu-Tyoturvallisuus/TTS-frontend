@@ -16,14 +16,6 @@ const AppBarTab = ({ text, to }) => {
   );
 };
 
-const AppBarTab = ({ text, to }) => {
-  return (
-    <Link to={to} component={Pressable} style={styles.button}>
-      <Text style={styles.text}>{text}</Text>
-    </Link>
-  );
-}
-
 const styles = StyleSheet.create({
   button: {
     borderRadius: 10,

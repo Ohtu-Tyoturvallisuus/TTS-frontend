@@ -34,26 +34,17 @@ const ConfirmationModal = ({ visible, onCancel, onConfirm }) => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    marginBottom: 20,
+  button: {
+    alignItems: 'center',
+    borderRadius: 5,
+    flex: 1,
+    maxWidth: '40%',
+    padding: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-  },
-  button: {
-    flex: 1,
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    maxWidth: '40%',
   },
   cancelButton: {
     backgroundColor: '#ccc',
@@ -64,6 +55,15 @@ const styles = StyleSheet.create({
   },
   confirmButtonText: {
     color: '#fff',
+  },
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });
 

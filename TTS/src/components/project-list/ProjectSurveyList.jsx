@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -75,10 +74,9 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
   );
 };
 
-const ProjectSurveyList = ({ setVisible, navigateToRiskForm }) => {
+const ProjectSurveyList = ({ navigateToRiskForm }) => {
   const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const { surveys, loading, error } = useFetchSurveys(project.id);
 
   if (loading || error) {
@@ -96,7 +94,6 @@ const ProjectSurveyList = ({ setVisible, navigateToRiskForm }) => {
       surveys={surveys} 
       setSelectedSurveyURL={setSelectedSurveyURL} 
       navigateToRiskForm={navigateToRiskForm} 
-      setVisible={setVisible} 
     />
   );
 }

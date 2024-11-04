@@ -10,7 +10,7 @@ const CustomModal = ({ visible, onClose, children, ...props }) => {
       onRequestClose={onClose}
       {...props}
     >
-      <TouchableOpacity style={styles.modalContainer} activeOpacity={1} onPress={onClose}>
+      <TouchableOpacity testID="modal-overlay" style={styles.modalContainer} activeOpacity={1} onPress={onClose}>
         <TouchableOpacity style={styles.modalContent} activeOpacity={1} onPress={() => {}}>
           {children}
         </TouchableOpacity>

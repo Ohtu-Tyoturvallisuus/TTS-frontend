@@ -11,15 +11,6 @@ jest.mock('@components/project-list/ProjectSurveyList', () => {
   return MockedSurveyList;
 });
 
-jest.mock('@components/buttons/RiskFormButton', () => {
-  const { Text } = require('react-native');
-  const MockedRiskFormButton = () => {
-    return <Text>Mocked Risk Form Button</Text>;
-  };
-  MockedRiskFormButton.displayName = 'MockedRiskFormButton';
-  return MockedRiskFormButton;
-});
-
 jest.mock('@components/buttons/CloseButton', () => {
   const { TouchableOpacity, Text } = require('react-native');
   const MockedCloseButton = (props) => {

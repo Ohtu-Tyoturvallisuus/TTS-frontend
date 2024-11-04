@@ -4,7 +4,7 @@ import { ProjectSurveyContext, ProjectSurveyProvider } from '@contexts/ProjectSu
 import { Text, Button } from 'react-native';
 
 const TestComponent = () => {
-  const { selectedProject, setSelectedProject, selectedSurveyURL, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
+  const { selectedProject, setSelectedProject, selectedSurveyURL, setSelectedSurveyURL, resetProjectAndSurvey } = useContext(ProjectSurveyContext);
 
   return (
     <>
@@ -13,6 +13,7 @@ const TestComponent = () => {
 
       <Button title="Set Project" onPress={() => setSelectedProject('New Project')} />
       <Button title="Set Survey URL" onPress={() => setSelectedSurveyURL('https://survey.example.com')} />
+      <Button title="Reset" onPress={resetProjectAndSurvey} />
     </>
   );
 };
@@ -33,5 +34,10 @@ describe('ProjectSurveyProvider', () => {
 
     fireEvent.press(getByText('Set Survey URL'));
     expect(getByTestId('surveyURL').props.children).toBe('https://survey.example.com');
+
+    fireEvent.press(getByText('Reset'));
+
+    expect(getByTestId('project').props.children).toBe('No project selected');
+    expect(getByTestId('surveyURL').props.children).toBe('No survey URL selected');
   });
 });

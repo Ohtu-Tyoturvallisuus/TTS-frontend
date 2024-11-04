@@ -88,7 +88,9 @@
     "loadingFormData": "Loading form data...",
     "scaffoldRisks": "Scaffold work risks",
     "environmentRisks": "Work environment risks",
-    "submit": "Submit"
+    "submit": "Submit",
+    "otherEnvironment": "Other workplace risk",
+    "otherScaffolding": "Other scaffolding risk"
   },
   "riskmodal": {
     "extraInfo": "Enter additional information",

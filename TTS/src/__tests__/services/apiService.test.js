@@ -5,6 +5,7 @@ import {
   fetchProject,
   postNewSurvey,
   postRiskNotes,
+  postImages,
   fetchSurveyData,
   retrieveIdParams,
   getUserProfile,
@@ -207,6 +208,20 @@ describe('API Module', () => {
     const response = await fetchSurveyData(url);
 
     expect(axios.get).toHaveBeenCalledWith(url);
+    expect(response).toEqual('mock data');
+  });
+
+  test('postImages calls the correct API and returns data', async () => {
+    const image = { uri: 'test-uri' };
+    axios.post.mockResolvedValueOnce(mockResponse);
+
+    const response = await postImages(image);
+
+    expect(axios.post).toHaveBeenCalledWith("http://192.168.1.1:8000/api/upload-images/", image, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+    });
     expect(response).toEqual('mock data');
   });
 });

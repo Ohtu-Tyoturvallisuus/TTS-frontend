@@ -13,12 +13,12 @@ const RecordingLanguageView = ({ recordingLanguageFlagCode, t }) => (
 
 const styles = StyleSheet.create({
   recordingContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
     borderColor: '#c5c6c8',
     borderRadius: 4,
     borderWidth: 1,
+    flexDirection: 'row',
     marginBottom: 5,
     padding: 5,
     width: '65%',

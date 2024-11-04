@@ -88,14 +88,14 @@ describe('ProjectSurveyListContainer Component', () => {
       },
     ];
 
-    const mockNavigate = jest.fn();
+    const mockNavigateToRiskForm = jest.fn();
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
         <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
-          navigate={mockNavigate}
+          navigateToRiskForm={mockNavigateToRiskForm}
         />
       </ProjectSurveyContext.Provider>
     );
@@ -115,14 +115,14 @@ describe('ProjectSurveyListContainer Component', () => {
       },
     ];
 
-    const mockNavigate = jest.fn();
+    const mockNavigateToRiskForm = jest.fn();
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
         <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
-          navigate={mockNavigate}
+          navigateToRiskForm={mockNavigateToRiskForm}
         />
       </ProjectSurveyContext.Provider>
     );
@@ -141,14 +141,14 @@ describe('ProjectSurveyListContainer Component', () => {
       },
     ];
 
-    const mockNavigate = jest.fn();
+    const mockNavigateToRiskForm = jest.fn();
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
         <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
-          navigate={mockNavigate}
+          navigateToRiskForm={mockNavigateToRiskForm}
         />
       </ProjectSurveyContext.Provider>
     );
@@ -167,14 +167,14 @@ describe('ProjectSurveyListContainer Component', () => {
       },
     ];
 
-    const mockNavigate = jest.fn();
+    const mockNavigateToRiskForm = jest.fn();
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
         <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
-          navigate={mockNavigate}
+          navigateToRiskForm={mockNavigateToRiskForm}
         />
       </ProjectSurveyContext.Provider>
     );
@@ -193,13 +193,13 @@ describe('ProjectSurveyListContainer Component', () => {
   });
 
   it('uses the default empty array for surveys when not passed', () => {
-    const mockNavigate = jest.fn();
+    const mockNavigateToRiskForm = jest.fn();
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
         <ProjectSurveyListContainer
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
-          navigate={mockNavigate}
+          navigateToRiskForm={mockNavigateToRiskForm}
         />
       </ProjectSurveyContext.Provider>
     );
@@ -218,16 +218,14 @@ describe('ProjectSurveyListContainer Component', () => {
       },
     ];
 
-    const mockNavigate = jest.fn();
-    const setVisible = jest.fn();
+    const mockNavigateToRiskForm = jest.fn();
 
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={{ setSelectedSurveyURL: mockProjectContext.setSelectedSurveyURL }}>
         <ProjectSurveyListContainer
           surveys={mockSurveys}
           setSelectedSurveyURL={mockProjectContext.setSelectedSurveyURL}
-          navigate={mockNavigate}
-          setVisible={setVisible}
+          navigateToRiskForm={mockNavigateToRiskForm}
         />
       </ProjectSurveyContext.Provider>
     );
@@ -235,7 +233,6 @@ describe('ProjectSurveyListContainer Component', () => {
     fireEvent.press(getByText('Käytä pohjana'));
 
     expect(mockProjectContext.setSelectedSurveyURL).toHaveBeenCalledWith('https://example.com/survey1');
-    expect(mockNavigate).toHaveBeenCalledWith('RiskForm');
-    expect(setVisible).toHaveBeenCalledWith(false);
+    expect(mockNavigateToRiskForm).toHaveBeenCalled();
   });
 });

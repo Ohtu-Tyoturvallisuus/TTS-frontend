@@ -154,7 +154,7 @@ const RiskForm = () => {
           {t('riskform.scaffoldRisks')}
         </Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.risk_type === 'scaffolding')
+          .filter(([, value]) => value.risk_type === 'scaffolding')
           .map(([key]) => (
             <RiskNote
               key={key}
@@ -174,7 +174,7 @@ const RiskForm = () => {
           {t('riskform.environmentRisks')}
         </Text>
         {Object.entries(formData)
-          .filter(([key, value]) => value.risk_type === 'environment')
+          .filter(([, value]) => value.risk_type === 'environment')
           .map(([key]) => (
           <RiskNote
             key={key}

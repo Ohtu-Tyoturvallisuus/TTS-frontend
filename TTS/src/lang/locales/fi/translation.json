@@ -89,8 +89,8 @@
     "scaffoldRisks": "Telinetöihin liittyvät vaarat",
     "environmentRisks": "Työympäristön vaarat",
     "submit": "Lähetä",
-    "otherEnvironment": "Muu työympäristö vaara",
-    "otherScaffolding": "Muu telinetyö vaara"
+    "otherEnvironment": "Muu työympäristövaara",
+    "otherScaffolding": "Muu telinetyövaara"
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",
