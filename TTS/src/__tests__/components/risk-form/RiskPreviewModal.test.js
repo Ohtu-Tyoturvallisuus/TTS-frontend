@@ -28,7 +28,7 @@ jest.mock('expo-constants', () => ({
   },
 }));
 
-describe('RiskModal Component', () => {
+describe('RiskPreviewModal Component', () => {
   const mockOnSubmit = jest.fn();
   const mockOnClose = jest.fn();
   const mockTitle = "Test Modal Title";

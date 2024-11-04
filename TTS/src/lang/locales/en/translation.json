@@ -98,13 +98,15 @@
     "cancel": "Cancel",
     "reset": "Reset",
     "checked": "Checked",
-    "edit": "Edit"
+    "edit": "Edit",
+    "translatePreview": "Translate (preview)"
   },
   "risknote": {
     "checked": "Checked",
     "notRelevant": "Not relevant",
     "toBeNoted": "To be noted",
-    "undo": "Undo"
+    "undo": "Undo",
+    "preview": "Preview"
   },
   "searchbar": {
     "placeholder": "Search by keyword..."

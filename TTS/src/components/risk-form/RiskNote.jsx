@@ -52,7 +52,7 @@ const RiskNote = ({ title, renderTitle }) => {
             style={styles.actionButton}
             onPress={handlePreviewPress}
           >
-            <Text>Esikatsele</Text>
+            <Text>{t('risknote.preview')}</Text>
           </TouchableOpacity>
         </View>
       ) : status === 'notRelevant' ? (

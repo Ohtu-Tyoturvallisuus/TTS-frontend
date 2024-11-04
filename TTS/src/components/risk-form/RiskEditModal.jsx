@@ -98,7 +98,7 @@ const RiskEditModal = ({
             onPress={handleSubmit}
             disabled={description === ''}
           >
-            <Text style={styles.buttonText}>{'Käännä (esikatselu)'}</Text>
+            <Text style={styles.buttonText}>{t('riskmodal.translatePreview')}</Text>
           </TouchableOpacity>
         </View>
     </CustomModal>

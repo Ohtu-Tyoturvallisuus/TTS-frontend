@@ -98,13 +98,15 @@
     "cancel": "Peruuta",
     "reset": "Tyhjennä",
     "checked": "Kunnossa",
-    "edit": "Muokkaa"
+    "edit": "Muokkaa",
+    "translatePreview": "Käännä (esikatselu)"
   },
   "risknote": {
     "checked": "Kunnossa",
     "notRelevant": "Ei koske",
     "toBeNoted": "Huomioitavaa",
-    "undo": "Kumoa"
+    "undo": "Kumoa",
+    "preview": "Esikatsele"
   },
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."
