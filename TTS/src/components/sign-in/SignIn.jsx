@@ -83,7 +83,7 @@ const SignIn = () => {
             <View>
               <TextInput
                 placeholder={t('signin.last_name')}
-                placeholderTextColor="#888"
+                placeholderTextColor="#C0C0C0"
                 onChangeText={formik.handleChange('last_name')}
                 value={formik.values.last_name}
                 style={[

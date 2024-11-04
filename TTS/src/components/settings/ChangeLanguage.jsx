@@ -42,7 +42,7 @@ export const ChangeLanguage = () => {
 
 const styles = StyleSheet.create({
   checkmark: {
-    color: 'red',
+    color: 'green',
     fontSize: 18,
   },
   container: {
