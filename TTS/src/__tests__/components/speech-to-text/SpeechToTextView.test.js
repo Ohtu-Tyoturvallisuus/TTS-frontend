@@ -35,6 +35,15 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
+jest.mock('expo-constants', () => ({
+  expoConfig: {
+    extra: {
+      local_ip: '192.168.1.1',
+      local_setup: 'true',
+    },
+  },
+}));
+
 jest.mock('@components/speech-to-text/SelectTranslateLanguage', () => {
   return jest.fn(({ setTranslationLanguages }) => {
     const React = require('react');

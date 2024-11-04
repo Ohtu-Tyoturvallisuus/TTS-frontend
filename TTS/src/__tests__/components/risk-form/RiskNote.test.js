@@ -20,6 +20,15 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
+jest.mock('expo-constants', () => ({
+  expoConfig: {
+    extra: {
+      local_ip: '192.168.1.1',
+      local_setup: 'true',
+    },
+  },
+}));
+
 describe('RiskNote Component', () => {
   const mockOnChange = jest.fn();
 
