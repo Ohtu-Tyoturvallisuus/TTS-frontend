@@ -12,7 +12,8 @@ jest.mock('react-i18next', () => ({
         'riskmodal.cancel': 'Peruuta',
         'riskmodal.reset': 'Resetoi',
         'riskmodal.checked': 'Kunnossa',
-        'riskmodal.edit': 'Muokkaa'
+        'riskmodal.edit': 'Muokkaa',
+        'riskmodal.translatePreview': 'Käännä (esikatselu)',
       };
       return translations[key] || key;
     },
