@@ -128,6 +128,7 @@ function mockConsole() {
 }
 
 describe('RiskForm Component', () => {
+  const mockOnFocusChange = jest.fn();
   const mockProject = { 
     id: 1, 
     project_name: 'Test Project', 
@@ -177,7 +178,7 @@ describe('RiskForm Component', () => {
           setSelectedProject: mockSetSelectedProject, 
           setSelectedSurveyURL: mockSetSelectedSurveyURL 
         }}>
-          <RiskForm />
+          <RiskForm onFocusChange={mockOnFocusChange} />
         </ProjectSurveyContext.Provider>
       </NavigationContainer>
     );
@@ -192,7 +193,7 @@ describe('RiskForm Component', () => {
           setSelectedProject: mockSetSelectedProject, 
           setSelectedSurveyURL: mockSetSelectedSurveyURL 
         }}>
-          <RiskForm />
+          <RiskForm onFocusChange={mockOnFocusChange} />
         </ProjectSurveyContext.Provider>
       </NavigationContainer>
     );
