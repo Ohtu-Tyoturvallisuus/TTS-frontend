@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Audio } from 'expo-av';
 import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uploadAudio } from '@services/apiService';
 
 import RecordingLanguageView from './RecordingLanguageView';
 import TranscriptionView from './TranscriptionView';
@@ -83,38 +83,8 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
   };
 
   const uploadToBackend = async (fileUri) => {
-    let formData = new FormData();
-    const fileType = "audio/3gp";
-
-    formData.append('audio', {
-      uri: fileUri,
-      name: 'audio.3gp',
-      type: fileType
-    });
-
-    formData.append('recordingLanguage', recordingLanguage);
-    formData.append('translationLanguages', JSON.stringify(translationLanguages));
-
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      const response = await fetch("https://tts-app.azurewebsites.net/api/transcribe/", {
-        method: "POST",
-        body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const result = await response.json();
-      if (result.error) {
-        if (result.error === "Invalid or expired token") {
-          console.error("Invalid or expired token. Please log in again.");
-        } else {
-          console.error("Error from server:", result.error);
-        }
-        return;
-      }
-      console.log("File uploaded successfully:", result);
+    const result = await uploadAudio(fileUri, recordingLanguage, translationLanguages);
+    if (result) {
       result.transcription && setTranscription(result.transcription);
       result.translations && setTranslations(result.translations);
 
@@ -125,8 +95,6 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
             : result.transcription
         );
       }
-    } catch (error) {
-      console.error("Failed to upload file:", error);
     }
   };
 

@@ -66,12 +66,54 @@ export const fetchSurveyData = async (url) => {
   return response.data;
 };
 
+export const uploadAudio = async (fileUri, recordingLanguage, translationLanguages) => {
+  const token = await AsyncStorage.getItem('access_token');
+  let formData = new FormData();
+  const fileType = "audio/3gp";
+
+  formData.append('audio', {
+    uri: fileUri,
+    name: 'audio.3gp',
+    type: fileType
+  });
+
+  formData.append('recordingLanguage', recordingLanguage);
+  formData.append('translationLanguages', JSON.stringify(translationLanguages));
+
+  const url = API_BASE_URL + 'transcribe/';
+  console.log('uploadAudio:', url);
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const result = await response.json();
+  if (result.error) {
+    if (result.error === "Invalid or expired token") {
+      console.error("Invalid or expired token. Please log in again.");
+    } else {
+      console.error("Error from server:", result.error);
+    }
+    return null;
+  }
+
+  console.log("File uploaded successfully:", result);
+  return result;
+};
+
 export const postImages = async (imageData) => {
+  const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + 'upload-images/';
   console.log('apiService/postImages:', url);
   const response = await axios.post(url, imageData, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
