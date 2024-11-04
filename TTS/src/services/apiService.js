@@ -83,27 +83,32 @@ export const uploadAudio = async (fileUri, recordingLanguage, translationLanguag
   const url = API_BASE_URL + 'transcribe/';
   console.log('uploadAudio:', url);
 
-  const response = await fetch(url, {
-    method: "POST",
-    body: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  const result = await response.json();
-  if (result.error) {
-    if (result.error === "Invalid or expired token") {
-      console.error("Invalid or expired token. Please log in again.");
-    } else {
-      console.error("Error from server:", result.error);
+    const result = await response.json();
+    if (result.error) {
+      if (result.error === "Invalid or expired token") {
+        console.error("Invalid or expired token. Please log in again.");
+      } else {
+        console.error("Error from server:", result.error);
+      }
+      return null;
     }
+
+    console.log("File uploaded successfully:", result);
+    return result;
+  } catch (error) {
+    console.error("Failed to upload file:", error);
     return null;
   }
-
-  console.log("File uploaded successfully:", result);
-  return result;
 };
 
 export const postImages = async (imageData) => {

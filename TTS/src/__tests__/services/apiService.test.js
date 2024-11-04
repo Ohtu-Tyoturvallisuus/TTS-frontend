@@ -9,6 +9,7 @@ import {
   fetchSurveyData,
   retrieveIdParams,
   getUserProfile,
+  uploadAudio,
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -224,5 +225,87 @@ describe('API Module', () => {
       },
     });
     expect(response).toEqual('mock data');
+  });
+
+  describe('uploadAudio', () => {
+    const mockFileUri = 'file://path/to/audio.3gp';
+    const mockRecordingLanguage = 'en';
+    const mockTranslationLanguages = ['fr', 'de'];
+
+    const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+  
+    it('should successfully upload audio and return the response data', async () => {
+      const mockToken = 'mock-token';
+      const mockResponseData = { transcription: 'Transcribed text', translations: {} };
+  
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+      global.fetch.mockResolvedValueOnce({
+        ok: true,
+        json: jest.fn().mockResolvedValueOnce(mockResponseData),
+      });
+  
+      const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
+  
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/transcribe/'), {
+        method: 'POST',
+        body: expect.any(FormData),
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${mockToken}`,
+        },
+      });
+  
+      expect(result).toEqual(mockResponseData);
+    });
+  
+    it('should handle invalid or expired token error', async () => {
+      const mockToken = 'mock-token';
+  
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+      global.fetch.mockResolvedValueOnce({
+        ok: false,
+        json: jest.fn().mockResolvedValueOnce({ error: 'Invalid or expired token' }),
+      });
+  
+      const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
+  
+      expect(consoleErrorMock).toHaveBeenCalledWith("Invalid or expired token. Please log in again.");
+      expect(result).toBeNull();
+    });
+  
+    it('should handle server errors', async () => {
+      const mockToken = 'mock-token';
+  
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+      global.fetch.mockResolvedValueOnce({
+        ok: false,
+        json: jest.fn().mockResolvedValueOnce({ error: 'Some server error' }),
+      });
+  
+      const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
+  
+      expect(consoleErrorMock).toHaveBeenCalledWith("Error from server:", 'Some server error');
+      expect(result).toBeNull();
+    });
+  
+    it('should handle network errors gracefully', async () => {
+      const mockToken = 'mock-token';
+  
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+      global.fetch.mockRejectedValueOnce(new Error('Network error'));
+  
+      const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
+  
+      expect(consoleErrorMock).toHaveBeenCalledWith("Failed to upload file:", expect.any(Error));
+      expect(result).toBeNull();
+    });
+
+    afterAll(() => {
+      consoleErrorMock.mockRestore();
+    });
   });
 });
