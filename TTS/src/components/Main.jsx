@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useContext, useState } from 'react';
+import { View, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,7 @@ const Stack = createStackNavigator();
 const Main = () => {
   const { username, setUsername } = useContext(UserContext)
   const { t } = useTranslation();
+  const [showImage, setShowImage] = useState(true);
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -39,7 +40,9 @@ const Main = () => {
       {username ? (
         <> 
           <Stack.Screen name='ProjectList' component={ProjectList} options={{ headerShown: false }} />
-          <Stack.Screen name='RiskForm' component={RiskForm} options={{ headerShown: false }} />
+          <Stack.Screen name="RiskForm" options={{ headerShown: false }}>
+            {(props) => <RiskForm {...props} onFocusChange={setShowImage} />}
+          </Stack.Screen>
         </>
         ) : (
           <Stack.Screen name='CombinedSignIn' component={CombinedSignIn} options={{ headerShown: false }} />
@@ -48,7 +51,11 @@ const Main = () => {
   )
 
   return (
-    <View className="bg-[#e1e4e8] flex-1 justify-center">
+    <View className="bg-white flex-1 justify-center">
+      {showImage && <Image
+        source={require('../../assets/telinekataja.png')}
+        style={{ width: '100%', height: 150, resizeMode: 'contain' }} />
+      }
         <View className="flex-1">
           <Tab.Navigator 
             screenOptions={({ route }) => ({

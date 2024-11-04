@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, TextInput, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import useMergedSurveyData from '@hooks/useMergedSurveyData';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -11,7 +11,8 @@ import CloseButton from '@components/buttons/CloseButton';
 import SuccessAlert from '@components/SuccessAlert';
 import useFormFields from '@hooks/useFormFields';
 
-const RiskForm = () => {
+const RiskForm = ({ onFocusChange }) => {
+  const isFocused = useIsFocused();
   const { 
     selectedProject: project, 
     setSelectedProject, 
@@ -38,6 +39,10 @@ const RiskForm = () => {
       setFormData(mergedFormData);
     }
   }, [isMerged]);
+
+  useEffect(() => {
+    onFocusChange(!isFocused);
+  }, [isFocused, onFocusChange]);
 
   if (error) {
     alert(t('riskform.errorFetchingData'));
@@ -120,6 +125,10 @@ const RiskForm = () => {
   return (
       <View className="flex-1 items-center justify-center pt-5">
         <ScrollView className="bg-white flex-grow p-5">
+        <Image
+          source={require('../../../assets/telinekataja.png')}
+          style={{ width: '100%', height: 150, resizeMode: 'contain' }}
+        />
           <Text className="text-2xl font-bold text-center pb-5">{t('riskform.title')}</Text>
 
           {error && <Text>{t('riskform.errorFetchingData')}</Text>}
