@@ -88,6 +88,7 @@ const RiskEditModal = ({
           </TouchableOpacity>
 
           <TouchableOpacity
+          testID='submit-button'
             style={[
               styles.button,
               description !== ''

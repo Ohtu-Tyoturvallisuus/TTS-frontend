@@ -1,98 +1,224 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import RiskEditModal from '@components/risk-form/RiskEditModal';
+import { FormProvider } from '@contexts/FormContext';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => {
       const translations = {
-        'riskeditmodal.extraInfo': 'Syötä lisätietoja',
-        'riskeditmodal.withSpeech': 'Syötä puheella',
-        'riskeditmodal.cancel': 'Peruuta',
-        'riskeditmodal.reset': 'Resetoi',
-        'riskeditmodal.checked': 'Kunnossa',
-        'languageselectmenu.selectRecordingLanguage': 'Valitse tunnistettava kieli',
-        'languageselectmenu.selectTranslationLanguages': 'Valitse kielet, joille haluat kääntää'
+        'riskmodal.extraInfo': 'Syötä lisätietoja',
+        'riskmodal.withSpeech': 'Syötä puheella',
+        'riskmodal.cancel': 'Peruuta',
+        'riskmodal.reset': 'Resetoi',
+        'riskmodal.checked': 'Kunnossa',
+        'riskmodal.edit': 'Muokkaa'
       };
       return translations[key] || key;
+    },
+    i18n: {
+      language: 'fi-FI',
     },
   }),
 }));
 
-describe('RiskEditModal Component', () => {
-  const mockOnSubmit = jest.fn();
-  const mockOnClose = jest.fn();
-  const mockTitle = "Test Modal Title";
+jest.mock('@hooks/useFormFields', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    initialFormData: {
+      personal_protection: { description: '', status: '', risk_type: 'scaffolding' },
+      personal_fall_protection: { description: '', status: '', risk_type: 'scaffolding' },
+    },
+  })),
+}));
 
-  beforeEach(() => {
-    mockOnSubmit.mockClear();
-    mockOnClose.mockClear();
+jest.mock('@components/CustomModal', () => {
+  const CustomModalMock = ({ children, visible }) => (
+    <>{visible && <>{children}</>}</>
+  );
+  CustomModalMock.displayName = 'CustomModalMock';
+  return CustomModalMock;
+});
+
+jest.mock('@components/speech-to-text/SpeechToTextView', () => {
+  const { Text, TouchableOpacity } = require('react-native');
+  const SpeechToTextViewMock = ({ setDescription }) => (
+    <TouchableOpacity onPress={() => setDescription('Speech input')}>
+      <Text>Speech to Text Component</Text>
+    </TouchableOpacity>
+  );
+  SpeechToTextViewMock.displayName = 'SpeechToTextViewMock';
+  return SpeechToTextViewMock;
+});
+
+jest.mock('@components/take-picture/TakePictureView', () => {
+  const { Text } = require('react-native');
+  const TakePictureViewMock = () => <Text>Take Picture Component</Text>;
+  TakePictureViewMock.displayName = 'TakePictureViewMock';
+  return TakePictureViewMock;
+});
+
+const Wrapper = ({ children }) => {
+  return (
+    <FormProvider>
+      {children}
+    </FormProvider>
+  );
+};
+
+describe('RiskEditModal Component', () => {
+  const mockOnClose = jest.fn();
+  const mockOnTranslate = jest.fn();
+  const mockOnReset = jest.fn();
+  const title = 'Test Title';
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('renders modal with title and closes when "Peruuta" is pressed', () => {
+  it('renders title using renderTitle function', () => {
+    const customRenderTitle = jest.fn((title) => `Rendered: ${title}`);
+
     const { getByText } = render(
-      <RiskEditModal
-        title={mockTitle}
-        visible={true}
-        onSubmit={mockOnSubmit}
-        onClose={mockOnClose}
-      />
+      <Wrapper>
+        <RiskEditModal 
+          title={title}
+          renderTitle={customRenderTitle}
+          visible={true}
+          onTranslate={mockOnTranslate}
+          onReset={mockOnReset}
+          onClose={mockOnClose}
+        />
+      </Wrapper>
     );
 
-    expect(getByText(mockTitle)).toBeTruthy();
-    expect(getByText('Peruuta')).toBeTruthy();
-
-    fireEvent.press(getByText('Peruuta'));
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
+    expect(getByText('Rendered: Test Title')).toBeTruthy();
+    expect(customRenderTitle).toHaveBeenCalledWith(title);
   });
 
-  it('calls onSubmit with description when "Kunnossa" is pressed', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <RiskEditModal
-        title={mockTitle}
-        visible={true}
-        onSubmit={mockOnSubmit}
-        onClose={mockOnClose}
-      />
+  it('renders title directly when renderTitle is not provided', () => {
+    const { getByText } = render(
+      <Wrapper>
+        <RiskEditModal 
+          title={title}
+          visible={true}
+          onTranslate={mockOnTranslate}
+          onReset={mockOnReset}
+          onClose={mockOnClose}
+        />
+      </Wrapper>
+    );
+
+    expect(getByText(title)).toBeTruthy();
+  });
+
+  it('initializes description from form context', () => {
+    const { getByPlaceholderText } = render(
+      <Wrapper>
+        <RiskEditModal 
+          title={title}
+          visible={true}
+          onTranslate={mockOnTranslate}
+          onReset={mockOnReset}
+          onClose={mockOnClose}
+        />
+      </Wrapper>
     );
 
     const input = getByPlaceholderText('Syötä lisätietoja');
-
-    fireEvent.changeText(input, 'This is a test description');
-
-    fireEvent.press(getByText('Kunnossa'));
-
-    expect(mockOnSubmit).toHaveBeenCalledWith('This is a test description');
-    expect(mockOnSubmit).toHaveBeenCalledTimes(1);
+    expect(input.props.value).toBe(''); // Adjust according to initial form context state
   });
 
-  it('should toggle useSpeech and hide the button when "Syötä puheella" is pressed', () => {
-    const mockOnClose = jest.fn();
-    const mockOnSubmit = jest.fn();
-    const mockOnReset = jest.fn();
-
-    const { getByText, queryByText } = render(
-      <RiskEditModal 
-        title="Test Risk" 
-        visible={true} 
-        initialDescription="Test description" 
-        onClose={mockOnClose}
-        onSubmit={mockOnSubmit}
-        onReset={mockOnReset}
-        isModification={false}
-      />
+  it('submits the form and updates form field', async () => {
+    const { getByPlaceholderText, getByText } = render(
+      <Wrapper>
+        <RiskEditModal 
+          title={title}
+          visible={true}
+          onTranslate={mockOnTranslate}
+          onReset={mockOnReset}
+          onClose={mockOnClose}
+        />
+      </Wrapper>
     );
 
-    const speechButton = getByText('Syötä puheella');
-    expect(speechButton).toBeTruthy();
+    const input = getByPlaceholderText('Syötä lisätietoja');
+    fireEvent.changeText(input, 'Test Description');
 
-    fireEvent.press(speechButton);
+    fireEvent.press(getByText('Käännä (esikatselu)'));
 
-    expect(queryByText('Syötä puheella')).toBeNull();
-
-    const recordingLanguageText = getByText('Valitse tunnistettava kieli');
-    expect(recordingLanguageText).toBeTruthy();
-    const translatedLanguagesText = getByText('Valitse kielet, joille haluat kääntää');
-    expect(translatedLanguagesText).toBeTruthy();
+    await waitFor(() => {
+      expect(mockOnTranslate).toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalled();
+    });
   });
+
+  it('resets the description on reset button click', async () => {
+    const { getByText } = render(
+      <Wrapper>
+        <RiskEditModal 
+          title={title}
+          visible={true}
+          onTranslate={mockOnTranslate}
+          onReset={mockOnReset}
+          onClose={mockOnClose}
+        />
+      </Wrapper>
+    );
+
+    fireEvent.press(getByText('Resetoi'));
+
+    await waitFor(() => {
+      expect(mockOnReset).toHaveBeenCalled();
+    });
+  });
+
+  it('toggles speech-to-text view', async () => {
+    const { getByText, queryByText } = render(
+      <Wrapper>
+        <RiskEditModal 
+          title={title}
+          visible={true}
+          onTranslate={mockOnTranslate}
+          onReset={mockOnReset}
+          onClose={mockOnClose}
+        />
+      </Wrapper>
+    );
+
+    expect(queryByText('Speech to Text Component')).toBeNull();
+
+    fireEvent.press(getByText('Syötä puheella'));
+
+    await waitFor(() => {
+      expect(getByText('Speech to Text Component')).toBeTruthy();
+    });
+  });
+
+  it('disables submit button when description is empty', async () => {
+    const { getByPlaceholderText, getByTestId } = render(
+      <Wrapper>
+        <RiskEditModal 
+          title={title}
+          visible={true}
+          onTranslate={mockOnTranslate}
+          onReset={mockOnReset}
+          onClose={mockOnClose}
+        />
+      </Wrapper>
+    );
+
+    const submitButton = getByTestId('submit-button');
+
+    expect(submitButton.props.style).toEqual(
+      expect.objectContaining({ backgroundColor: 'lightgray' })
+    );
+
+    const input = getByPlaceholderText('Syötä lisätietoja');
+    fireEvent.changeText(input, 'Test Description');
+
+    expect(submitButton.props.style).not.toEqual(
+      expect.objectContaining({ backgroundColor: 'lightgray' })
+    );
+  });  
 });
