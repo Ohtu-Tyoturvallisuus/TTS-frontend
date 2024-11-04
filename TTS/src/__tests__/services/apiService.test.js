@@ -219,7 +219,8 @@ describe('API Module', () => {
 
     expect(axios.post).toHaveBeenCalledWith("http://192.168.1.1:8000/api/upload-images/", image, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer undefined`
       },
     });
     expect(response).toEqual('mock data');
