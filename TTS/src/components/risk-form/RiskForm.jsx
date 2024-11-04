@@ -43,7 +43,6 @@ const RiskForm = () => {
 
   useEffect(() => {    
     if (surveyData) {
-      console.log("Merging prev survey's data")
       const currentNotes = surveyData.risk_notes.reduce((acc, note) => {
         acc[note.note] = {
           description: note.description,
