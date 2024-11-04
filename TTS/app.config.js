@@ -10,7 +10,7 @@ export default {
   icon: "./assets/icon.png",
   userInterfaceStyle: "light",
   splash: {
-    image: "./assets/splash.png",
+    image: "./assets/telinekataja.png",
     resizeMode: "contain",
     backgroundColor: "#ffffff"
   },
