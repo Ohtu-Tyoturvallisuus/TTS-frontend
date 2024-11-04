@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,7 +48,10 @@ const Main = () => {
   )
 
   return (
-    <View className="bg-[#e1e4e8] flex-1 justify-center">
+    <View className="bg-white flex-1 justify-center">
+      <Image source={require('../../assets/telinekataja.png')}
+      style={{ width: '100%', height: 150, resizeMode: 'contain' }}
+      />
         <View className="flex-1">
           <Tab.Navigator 
             screenOptions={({ route }) => ({
