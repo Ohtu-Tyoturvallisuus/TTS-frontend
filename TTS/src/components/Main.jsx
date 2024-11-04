@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import { useIsFocused } from '@react-navigation/native';
 
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
