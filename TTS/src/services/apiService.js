@@ -123,6 +123,33 @@ export const postImages = async (imageData) => {
   });
   return response.data;
 };
+// Add this function to apiService.js
+
+export const translateText = async (text, from='fi', to=['en']) => {
+  const token = await AsyncStorage.getItem('access_token');
+  const url = API_BASE_URL + 'translate/';
+  console.log('translateText:', url);
+
+  try {
+    const response = await axios.post(url,         
+    {
+      text: text,
+      from: from,
+      to: to,
+    },
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error translating text:', error);
+    throw error;
+  }
+};
 
 export const retrieveIdParams = async ({ setClientId, setTenantId }) => {
   try {
