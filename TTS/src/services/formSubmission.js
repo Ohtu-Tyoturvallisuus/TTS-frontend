@@ -6,8 +6,8 @@ const validateTaskInfo = (fields) => {
   let hasEmptyField = false;
 
   Object.keys(fields).forEach(key => {
-    validatedFields[key] = fields[key] ?? "";
-    if (validatedFields[key] === "") {
+    validatedFields[key] = (fields[key] != null ? fields[key].trim() : '') || '';
+    if (validatedFields[key] === '') {
       hasEmptyField = true;
     }
   });
@@ -40,6 +40,9 @@ export const submitForm = async (project, taskInfo, formData, setShowSuccessAler
     const riskNotes = await Promise.all(Object.keys(formData).map(async key => {
       const { description, status, risk_type, images } = formData[key];
 
+      const trimmedDescription = (description != null ? description.trim() : '');
+      const trimmedStatus = (status != null ? status.trim() : '');
+
       let blobNames = [];
       if (images && images.length > 0) {
         blobNames = await uploadImages(images, key);
@@ -47,8 +50,8 @@ export const submitForm = async (project, taskInfo, formData, setShowSuccessAler
 
       return {
         note: key,
-        description: description || '',
-        status: status || '',
+        description: trimmedDescription,
+        status: trimmedStatus,
         risk_type: risk_type,
         images: blobNames,
       };
@@ -63,5 +66,6 @@ export const submitForm = async (project, taskInfo, formData, setShowSuccessAler
     } else {
       alert(t('riskform.errorSubmitting'));
     }
+    throw error;
   }
 };
