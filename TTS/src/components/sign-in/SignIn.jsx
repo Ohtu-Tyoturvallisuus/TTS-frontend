@@ -66,8 +66,10 @@ const SignIn = () => {
         <View style={styles.modalContainer}>
           <View style={styles.container}>
             <View className="pb-3">
+              <Text className="pb-1">{t('signin.first_name')}</Text>
               <TextInput
                 placeholder={t('signin.first_name')}
+                placeholderTextColor="#C0C0C0"
                 onChangeText={formik.handleChange('first_name')}
                 value={formik.values.first_name}
                 style={[
@@ -79,9 +81,11 @@ const SignIn = () => {
                 <Text className="text-[#FF0000]">{formik.errors.first_name}</Text>
               )}
             </View>
-            <View>
+            <View className="pb-3">
+              <Text className="pb-1">{t('signin.last_name')}</Text>
               <TextInput
                 placeholder={t('signin.last_name')}
+                placeholderTextColor="#C0C0C0"
                 onChangeText={formik.handleChange('last_name')}
                 value={formik.values.last_name}
                 style={[

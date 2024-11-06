@@ -132,15 +132,16 @@ jest.mock('@services/formSubmission', () => ({
 }));
 
 describe('RiskForm Component', () => {
-  const project = {
-    id: 1,
-    project_name: 'Test Project',
-    project_id: '1234',
+  const mockOnFocusChange = jest.fn();
+  const mockProject = { 
+    id: 1, 
+    project_name: 'Test Project', 
+    project_id: '1234' 
   };
 
   const setup = () => {
     const contextValue = {
-      selectedProject: project,
+      selectedProject: mockProject,
       selectedSurveyURL: 'http://example.com/survey',
       resetProjectAndSurvey: jest.fn(),
     };
@@ -149,7 +150,7 @@ describe('RiskForm Component', () => {
       <NavigationContainer>
         <ProjectSurveyContext.Provider value={contextValue}>
           <FormProvider>
-            <RiskForm />
+            <RiskForm onFocusChange={mockOnFocusChange} />
           </FormProvider>
         </ProjectSurveyContext.Provider>
       </NavigationContainer>
@@ -167,7 +168,7 @@ describe('RiskForm Component', () => {
   });  
 
   it('shows success alert after successful submission', async () => {
-    submitForm.mockImplementationOnce((project, taskInfo, formData, setShowSuccessAlert) => {
+    submitForm.mockImplementationOnce((mockProject, taskInfo, formData, setShowSuccessAlert) => {
       setShowSuccessAlert(true);
     });
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { View, TextInput, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, TextInput, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import RiskNote from './RiskNote';
@@ -14,7 +14,8 @@ import Loading from '@components/Loading';
 import ConfirmationModal from '@components/ConfirmationModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
-const RiskForm = () => {
+const RiskForm = ({ onFocusChange }) => {
+  const isFocused = useIsFocused();
   const { 
     selectedProject: project, 
     selectedSurveyURL: surveyURL,
@@ -77,6 +78,10 @@ const RiskForm = () => {
     return unsubscribe;
   }, [navigation]);
 
+  useEffect(() => {
+    onFocusChange(!isFocused);
+  }, [isFocused, onFocusChange]);
+
   const handleSubmit = () => {
     const taskInfo = {
       task: task,
@@ -111,6 +116,10 @@ const RiskForm = () => {
         className="bg-white flex-grow p-5 w-full" 
         contentContainerStyle={{ paddingBottom: 30 }}
       >
+        <Image
+          source={require('../../../assets/telinekataja.png')}
+          style={{ width: '100%', height: 150, resizeMode: 'contain' }}
+        />
         <Text className="text-2xl font-bold pb-5 text-center">{t('riskform.title')}</Text>
 
         {error && <Text>{t('riskform.errorFetchingData')}</Text>}
