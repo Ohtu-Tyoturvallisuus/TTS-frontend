@@ -1,39 +1,43 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import CountryFlag from 'react-native-country-flag';
+import CountryFlag from '@components/CountryFlag';
 import { getLanguageToFlagMap } from '@utils/languageUtils';
 
-const TranslationsView = ({ translations, t, timeout }) => {
+const TranslationsView = ({ translations, t }) => {
   const languageToFlagMap = getLanguageToFlagMap();
 
   return (
-    <View>
+    <View style={{ alignItems: 'center' }}>
       {Object.entries(translations).map(([lang, text]) => {
         const flagCode = languageToFlagMap[lang] || lang.toUpperCase();
         return (
           <View style={styles.textContainer} key={lang}>
-            <CountryFlag isoCode={flagCode} size={24}/>
+            <CountryFlag isoCode={flagCode} size={24} style={styles.countryFlag} />
             <Text style={styles.translatedText}>{text}</Text>
           </View>
         );
       })}
-      <Text>({t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}.)</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   textContainer: {
-    alignItems: 'center',
+    position: 'relative',
     backgroundColor: '#f0f0f0',
-    borderColor: 'light#c5c6c8',
+    borderColor: '#c5c6c8',
     borderWidth: 1,
     flexDirection: 'row',
-    flexShrink: 1,
     flexWrap: 'wrap',
     marginVertical: 3,
-    maxWidth: '90%',
+    width: '90%',
     padding: 15,
+    paddingLeft: 40,
+  },
+  countryFlag: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   translatedText: {
     paddingHorizontal: 10,
