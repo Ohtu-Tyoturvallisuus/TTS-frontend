@@ -43,10 +43,24 @@ describe('ProjectModal Component', () => {
     selectedProject: {
       formattedName: 'Test Project',
     },
+    setSelectedSurveyURL: jest.fn(),
   };
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('navigates to RiskForm when selecting to fill a new risk form', () => {
+    const mockNavigate = jest.fn();
+    const { getByText } = render(
+      <ProjectSurveyContext.Provider value={mockProjectContext}>
+        <ProjectModal visible={true} onClose={mockOnClose} navigateToRiskForm={mockNavigate} />
+      </ProjectSurveyContext.Provider>
+    );
+
+    fireEvent.press(getByText('Täytä uusi riskilomake'));
+    expect(mockProjectContext.setSelectedSurveyURL).toHaveBeenCalledWith(null);
+    expect(mockNavigate).toHaveBeenCalled();
   });
 
   it('calls onClose when the close button is pressed', () => {
