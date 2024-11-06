@@ -41,7 +41,7 @@ const Main = () => {
         <> 
           <Stack.Screen name='ProjectList' component={ProjectList} options={{ headerShown: false }} />
           <Stack.Screen name="RiskForm" options={{ headerShown: false }}>
-            {(props) => <RiskForm {...props} onFocusChange={setShowImage} />}
+            {(props) => <RiskFormScreen {...props} onFocusChange={setShowImage} />}
           </Stack.Screen>
         </>
         ) : (

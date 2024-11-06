@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { View, TextInput, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import RiskNote from './RiskNote';
@@ -14,8 +14,7 @@ import Loading from '@components/Loading';
 import ConfirmationModal from '@components/ConfirmationModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 
-const RiskForm = ({ onFocusChange }) => {
-  const isFocused = useIsFocused();
+const RiskForm = () => {
   const { 
     selectedProject: project, 
     selectedSurveyURL: surveyURL,
@@ -78,10 +77,6 @@ const RiskForm = ({ onFocusChange }) => {
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {
-    onFocusChange(!isFocused);
-  }, [isFocused, onFocusChange]);
-
   const handleSubmit = () => {
     const taskInfo = {
       task: task,
@@ -89,6 +84,7 @@ const RiskForm = ({ onFocusChange }) => {
       scaffold_type: scaffoldType,
     };
     console.log('Submitting:', taskInfo);
+    console.log('FORMDATA:', formData)
     submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
   };
 
