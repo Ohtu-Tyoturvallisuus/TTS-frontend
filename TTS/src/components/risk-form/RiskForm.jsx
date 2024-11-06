@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { View, TextInput, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
@@ -13,6 +13,7 @@ import useFetchSurveyData from '@hooks/useFetchSurveyData';
 import Loading from '@components/Loading';
 import ConfirmationModal from '@components/ConfirmationModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
+import FilledRiskForm from './FilledRiskForm';
 
 const RiskForm = () => {
   const { 
@@ -38,6 +39,7 @@ const RiskForm = () => {
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [ showExitModal, setShowExitModal] = useState(false);
   const allowNavigationRef = useRef(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
@@ -78,6 +80,7 @@ const RiskForm = () => {
   }, [navigation]);
 
   const handleSubmit = () => {
+    setSubmitted(true)
     const taskInfo = {
       task: task,
       description: taskDesc,
@@ -200,11 +203,25 @@ const RiskForm = () => {
           <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherEnvironment')}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className="bg-[#008000] rounded-md py-3 my-2 items-center" onPress={handleSubmit}>
-          <Text className="text-white text-lg font-bold">{t('riskform.submit')}</Text>
-        </TouchableOpacity>
-
-        <CloseButton onPress={() => setShowExitModal(true)} />
+        {!submitted ? (
+          <>
+            <FilledRiskForm
+              formData={formData}
+              handleSubmit={handleSubmit}
+              projectName={project.project_name}
+              projectId={project.project_id}
+              task={task}
+              scaffoldType={scaffoldType}
+              taskDesc={taskDesc}
+            />
+            <CloseButton onPress={() => setShowExitModal(true)} />
+          </>
+        ) : (
+          <>
+            <ActivityIndicator size='large' color="#EF7D00" />
+            <Text className="self-center">{t('riskform.submitting')}</Text>
+          </>
+        )}
       </ScrollView>
       {showSuccessAlert && (
         <SuccessAlert 

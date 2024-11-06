@@ -171,15 +171,18 @@ describe('RiskForm Component', () => {
     submitForm.mockImplementationOnce((mockProject, taskInfo, formData, setShowSuccessAlert) => {
       setShowSuccessAlert(true);
     });
-
+  
     const { getByText } = setup();
-
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+  
     fireEvent.press(getByText('Lähetä'));
-
+  
     await waitFor(() => {
       expect(getByText('Riskimuistiinpanot lähetetty onnistuneesti')).toBeTruthy();
     });
   });
+  
 
   it('shows exit modal confirmation when close button is pressed', () => {
     const { getByText } = setup();
