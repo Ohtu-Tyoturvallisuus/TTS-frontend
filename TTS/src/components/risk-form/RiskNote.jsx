@@ -6,7 +6,7 @@ import RiskEditModal from './RiskEditModal';
 import RiskPreviewModal from './RiskPreviewModal';
 
 const RiskNote = ({ title, renderTitle }) => {
-  const { updateFormField, getFormData } = useFormContext();
+  const { updateFormField, getFormData, updateTranslations } = useFormContext();
   const status = getFormData(title, 'status');
 
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -19,8 +19,8 @@ const RiskNote = ({ title, renderTitle }) => {
   };
 
   const handleTranslatePress = () => {
+    updateTranslations(title, {}); // Clear translations before preview
     setEditModalVisible(false);
-    // TRANSLATION HAPPENS HERE (I GUESS) 
     setPreviewModalVisible(true);
   };
 
