@@ -7,6 +7,8 @@ import CustomModal from '@components/CustomModal';
 import TranslationsView from '@components/speech-to-text/TranslationsView';
 import { performTranslations } from '@services/performTranslations';
 import Loading from '@components/Loading';
+import { useTranslationLanguages } from '@contexts/TranslationContext';
+
 
 const RiskPreviewModal = ({
   title,
@@ -24,12 +26,13 @@ const RiskPreviewModal = ({
   const [newTranslations, setNewTranslations] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { fromLang, toLangs} = useTranslationLanguages();
 
   useEffect(() => {
     const translateDescription = async () => {
       setLoading(true);
       try {
-        const { translations: result, error } = await performTranslations(description, 'fi', ['en', 'sv']);
+        const { translations: result, error } = await performTranslations(description, fromLang, toLangs);
         console.log('TRANSLATIONS MADE: ', result);
         setNewTranslations(result);
         updateTranslations(title, result);
@@ -51,7 +54,7 @@ const RiskPreviewModal = ({
   return (
     <CustomModal visible={visible} onClose={onClose}>
       {loading ? (
-        <Loading loading={loading} error={error} title={t('loading.loading')} />
+        <Loading loading={loading} error={error} title={t('general.loading')} />
       ) : (
         <ScrollView>
           <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>

@@ -97,7 +97,6 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
 
   return (
     <View style={styles.container}>
-      <RecordingLanguageView recordingLanguageFlagCode={recordingLanguageFlagCode} t={t} />
       {transcription !== '' && translate && (
         <TranscriptionView recordingLanguageFlagCode={recordingLanguageFlagCode} transcription={transcription} />
       )}

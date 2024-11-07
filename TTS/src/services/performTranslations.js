@@ -3,13 +3,13 @@ import { translateText } from '@services/apiService';
 export const performTranslations = async (text, fromLang, toLangs) => {
   if (toLangs.length === 0) {
     return {
-      translations: null,
-      error: 'Please select at least one translating language',
+      translations: {},
+      error: 'No languages selected for translation',
     };
   }
 
   let state = {
-    translations: null,
+    translations: {},
     error: null,
   };
 
