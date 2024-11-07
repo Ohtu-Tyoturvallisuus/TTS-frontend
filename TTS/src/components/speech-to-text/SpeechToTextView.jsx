@@ -9,7 +9,7 @@ import TranscriptionView from './TranscriptionView';
 import TranslationsView from './TranslationsView';
 import RecordingControls from './RecordingControls';
 import SelectTranslateLanguage from './SelectTranslateLanguage';
-import countriesData from '@lang/locales/languages.json';
+import { getLanguageToFlagMap } from '@utils/languageUtils';
 
 const SpeechToTextView = ({ setDescription = null, translate = true }) => {
   const { t, i18n } = useTranslation();
@@ -19,10 +19,7 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
   const [translationLanguages, setTranslationLanguages] = useState([]);
   const [translations, setTranslations] = useState({});
 
-  const languageToFlagMap = countriesData.countries.reduce((map, country) => {
-    map[country.value] = country.flagCode;
-    return map;
-  }, {});
+  const languageToFlagMap = getLanguageToFlagMap();
   const recordingLanguageFlagCode = recordingLanguage.slice(-2);
   const timeout = 60000;
   let recordingTimeout;
@@ -108,9 +105,9 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
         <SelectTranslateLanguage setTranslationLanguages={setTranslationLanguages} />
       )}
       {recordingLanguage !== '' && (
-        <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} t={t} timeout={timeout} />
+        <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} t={t}/>
       )}
-      <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} t={t} />
+      <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} timeout={timeout} t={t} />
     </View>
   );
 };

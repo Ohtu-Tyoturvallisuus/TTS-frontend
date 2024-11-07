@@ -25,6 +25,20 @@
     "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
   },
+  "general": {
+    "done": "Valmis",
+    "loading": "Ladataan...",
+    "error": "Virhe",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "cancel": "Peruuta",
+    "save": "Tallenna",
+    "submit": "Lähetä",
+    "close": "Sulje",
+    "back": "Takaisin",
+    "next": "Seuraava",
+    "confirm": "Vahvista"
+  },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",
     "selectTranslationLanguages": "Valitse kielet käännöstä varten",
