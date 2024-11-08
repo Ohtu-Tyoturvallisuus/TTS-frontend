@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image as RNImage, View, TouchableOpacity, Text, StyleSheet, Modal } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+
 const Image = ({ images, currentIndex, onRemove = null, isLandscape }) => {
   const [isEnlarged, setIsEnlarged] = useState(false);
 
@@ -11,7 +12,11 @@ const Image = ({ images, currentIndex, onRemove = null, isLandscape }) => {
   return (
     <View style={styles.imageWrapper}>
       <TouchableOpacity onPress={handleImagePress}>
-        <RNImage source={{ uri: images[currentIndex].uri }} style={isLandscape ? styles.landscapeImage : styles.portraitImage} />
+        <RNImage
+          testID={`risk-image-${currentIndex}`}
+          source={{ uri: images[currentIndex].uri }}
+          style={isLandscape ? styles.landscapeImage : styles.portraitImage}
+        />
       </TouchableOpacity>
       {onRemove && (
         <TouchableOpacity style={styles.removeButton} onPress={() => onRemove(images[currentIndex].uri)}>
