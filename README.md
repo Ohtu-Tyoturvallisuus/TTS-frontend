@@ -47,8 +47,7 @@ This is the repository for the frontend of this project.
 
 ### Documentation
 - **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-practices.md)**
+- **[Branching workflow](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-workflow.md)**
 - **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/commit-practices.md)**
 - **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/definition-of-done.md)**
 - **[Guide to EAS Build, Submit and Update](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/guide-EAS.md)**
-
-### Installation and running instructions
