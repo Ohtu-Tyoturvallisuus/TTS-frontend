@@ -91,7 +91,7 @@ const FilledRiskForm = ({
             ) : (
               <View className="py-3">
                 <View className="border p-3 rounded-md w-full">
-                  <Text className="text-base font-bold">{t('filledriskform.norisks')}</Text>
+                  <Text className="text-lg font-bold">{t('filledriskform.norisks')}</Text>
                 </View>
               </View>
             )}
