@@ -38,8 +38,8 @@ const RiskForm = () => {
   const { t } = useTranslation(['translation', 'formFields']);
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [ showExitModal, setShowExitModal] = useState(false);
-  const allowNavigationRef = useRef(false);
   const [submitted, setSubmitted] = useState(false);
+  const allowNavigationRef = useRef(false);
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
@@ -169,17 +169,27 @@ const RiskForm = () => {
         </Text>
         {Object.entries(formData)
           .filter(([, value]) => value.risk_type === 'scaffolding')
-          .map(([key]) => (
-            <RiskNote
-              key={key}
-              title={key}
-              renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
-            />
-        ))}
+          .map(([key]) =>
+            key.startsWith('riskform.otherScaffolding') ? (
+              <RiskNote
+                key={key}
+                title={key}
+                renderTitle={() => `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`}
+              />
+            ) : (
+              <RiskNote
+                key={key}
+                title={key}
+                renderTitle={() => t(`${key}.title`, { ns: 'formFields' })}
+              />
+            )
+          )
+        }
+
 
         <TouchableOpacity 
           className="p-2 border border-green-500 rounded my-2 items-center" 
-          onPress={() => addNewRiskNote(t('riskform.otherScaffolding'), 'scaffolding')}
+          onPress={() => addNewRiskNote('riskform.otherScaffolding', 'scaffolding')}
         >
           <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherScaffolding')}</Text>
         </TouchableOpacity>
@@ -189,22 +199,30 @@ const RiskForm = () => {
         </Text>
         {Object.entries(formData)
           .filter(([, value]) => value.risk_type === 'environment')
-          .map(([key]) => (
-          <RiskNote
-            key={key}
-            title={key}
-            renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
-          />
-        ))}
+          .map(([key]) => 
+            key.startsWith('riskform.otherEnvironment') ? (
+              <RiskNote
+                key={key}
+                title={key}
+                renderTitle={() => `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`}
+              />
+            ) : (
+              <RiskNote
+                key={key}
+                title={key}
+                renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
+              />
+            )
+          )
+        }
         <TouchableOpacity 
           className="p-2 border border-green-500 rounded my-2 items-center" 
-          onPress={() => addNewRiskNote(t('riskform.otherEnvironment'), 'environment')}
+          onPress={() => addNewRiskNote('riskform.otherEnvironment', 'environment')}
         >
           <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherEnvironment')}</Text>
         </TouchableOpacity>
 
-        {!submitted ? (
-          project ? (
+        {project ? (
             <>
               <FilledRiskForm
                 formData={formData}
@@ -218,12 +236,7 @@ const RiskForm = () => {
               <CloseButton onPress={() => setShowExitModal(true)} />
             </>
           ) : (<></>)
-        ) : (
-          <>
-            <ActivityIndicator size='large' color="#EF7D00" />
-            <Text className="self-center">{t('riskform.submitting')}</Text>
-          </>
-        )}
+        }
       </ScrollView>
       {showSuccessAlert && (
         <SuccessAlert 
