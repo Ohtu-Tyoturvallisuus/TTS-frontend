@@ -40,6 +40,7 @@ const SignIn = () => {
       const data = await signIn(username, null, true);
       console.log(data);
       await AsyncStorage.setItem('username', username);
+      await AsyncStorage.setItem('access_token', data.access_token)
       setUsername(username);
       setModalVisible(false); // Close modal after successful sign-in
       navigation.navigate('Settings');
