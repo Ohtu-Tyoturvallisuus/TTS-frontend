@@ -7,6 +7,11 @@ const useFetchSurveys = (projectId) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!projectId) {
+      setLoading(false);
+      return;
+    }
+    
     const loadSurveys = async () => {
       setLoading(true);
       setError(null);
@@ -21,9 +26,7 @@ const useFetchSurveys = (projectId) => {
       }
     };
 
-    if (projectId) {
-      loadSurveys();
-    }
+    loadSurveys();
   }, [projectId]);
 
   return { surveys, loading, error };

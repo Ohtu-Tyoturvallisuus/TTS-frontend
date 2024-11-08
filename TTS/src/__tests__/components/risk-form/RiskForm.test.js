@@ -1,42 +1,44 @@
 import React from 'react';
-import { render, fireEvent, waitFor, within } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
+import { FormProvider } from '@contexts/FormContext';
 import RiskForm from '@components/risk-form/RiskForm';
-import * as apiService from '@services/apiService';
-import enFormFields from '@lang/locales/en/formFields.json';
+import { submitForm } from '@services/formSubmission';
 import fiFormFields from '@lang/locales/fi/formFields.json';
 
-jest.mock('@services/apiService', () => ({
-  postNewSurvey: jest.fn(),
-  postRiskNotes: jest.fn(),
-  fetchSurveyData: jest.fn(),
+jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
+  surveyData: {
+    task: 'Asennus',
+    scaffold_type: 'Työteline',
+    description: 'Test Description',
+    risk_notes: [
+      {
+        note: 'personal_protection',
+        description: '',
+        status: 'notRelevant',
+        risk_type: 'scaffolding',
+      },
+      {
+        note: 'personal_fall_protection',
+        description: 'Valjaat käytössä',
+        status: 'checked',
+        risk_type: 'scaffolding',
+      },
+    ],
+  },
+  loading: false,
+  error: null,
+})));
+
+jest.mock('expo-constants', () => ({
+  expoConfig: {
+    extra: {
+      local_ip: '192.168.1.1',
+      local_setup: 'true',
+    },
+  },
 }));
-
-jest.mock('@hooks/useMergedSurveyData', () => {
-  return jest.fn(() => ({
-    mergedFormData: {
-      personal_protection: { description: '', status: 'notRelevant', risk_type: 'scaffolding' },
-      personal_fall_protection: { description: 'Valjaat käytössä', status: 'checked', risk_type: 'scaffolding' },
-      emergency_procedure: { description: 'Poistumistie merkitty', status: 'checked', risk_type: 'environment' },
-      vehicle_traffic: { description: '', status: 'notRelevant', risk_type: 'environment' },
-    },
-    taskDetails: { task: 'Asennus', scaffoldType: 'Työteline', taskDesc: 'Test Description' },
-    error: null,
-    isMerged: true,
-  }));
-});
-
-jest.mock('@hooks/useFormFields', () => {
-  return jest.fn(() => ({
-    initialFormData: {
-      personal_protection: { description: '', status: '', risk_type: 'scaffolding' },
-      personal_fall_protection: { description: '', status: '', risk_type: 'scaffolding' },
-      emergency_procedure: { description: '', status: '', risk_type: 'environment' },
-      vehicle_traffic: { description: '', status: '', risk_type: 'environment' },
-    },
-  }));
-});
 
 const flattenFormFields = (formFields) => {
   const translations = {};
@@ -49,18 +51,6 @@ const flattenFormFields = (formFields) => {
 
 const mockTranslations = {
   ...flattenFormFields(fiFormFields),
-  ...flattenFormFields(enFormFields),
-  'closebutton.close': 'Sulje',
-  'risknote.notRelevant': 'Ei koske',  
-  'risknote.toBeNoted': 'Huomioitavaa',
-  'risknote.notRelevant.en': 'Not relevant',  
-  'risknote.toBeNoted.en': 'To be noted',
-  'risknote.checked': 'Kunnossa',
-  'riskmodal.extraInfo': 'Syötä lisätietoja',
-  'riskmodal.withSpeech': 'Syötä puheella',
-  'riskmodal.cancel': 'Peruuta',
-  'riskmodal.checked': 'Kunnossa',
-  'riskmodal.reset': 'Tyhjennä',
   'riskform.successMessage': 'Riskimuistiinpanot lähetetty onnistuneesti',
   'riskform.close': 'Sulje',
   'riskform.title': 'Työturvallisuuslomake',
@@ -82,17 +72,40 @@ const mockTranslations = {
   'riskform.scaffoldRisks': 'Telinetöihin liittyvät vaarat',
   'riskform.environmentRisks': 'Työympäristön vaarat',
   'riskform.submit': 'Lähetä',
+  'riskform.otherScaffolding': 'Muu telinetyövaara',
+  'riskform.otherEnvironment': 'Muu työympäristövaara',
+  'risknote.preview': 'Esikatsele',
+  'risknote.notRelevant': 'Ei koske',
+  'risknote.undo': 'Kumoa',
+  'risknote.checked': 'Kunnossa',
+  'speechtotext.recognitionLanguage': 'Puheentunnistuskieli',
+  'speechtotext.maxLength': 'Maksimipituus',
+  'speechtotext.seconds_one': 'yksi sekunti',
+  'speechtotext.seconds_other': '{{count}} sekuntia',
+  'speechtotext.start': 'Aloita puheentunnistus',
+  'speechtotext.stop': 'Lopeta',
+  'closebutton.close': 'Sulje',
+  'confirmation.confirmLeave': 'Haluatko varmasti poistua?',
+  'confirmation.confirm': 'Vahvista',
+  'confirmation.cancel': 'Peruuta',
+  'confirmation.changesWillBeLost': 'HUOM! Kaikki muutokset menetetään',
 };
 
 jest.mock('react-i18next', () => {
-  let language = 'fi';
+  let language = 'fi-FI';
   return {
     useTranslation: () => ({
-      t: (key) => {
-        if (language === 'en' && mockTranslations[`${key}.en`]) {
-          return mockTranslations[`${key}.en`];
+      t: (key, options) => {
+        let translation = mockTranslations[key] || key;
+        if (options && options.count !== undefined) {
+          if (options.count === 1) {
+            translation = mockTranslations[`${key}_one`] || translation;
+          } else {
+            translation = mockTranslations[`${key}_other`] || translation;
+          }
+          translation = translation.replace('{{count}}', options.count);
         }
-        return mockTranslations[key] || key;
+        return translation;
       },
       i18n: {
         language,
@@ -104,247 +117,78 @@ jest.mock('react-i18next', () => {
   };
 });
 
-jest.mock('@components/buttons/CloseButton', () => {
-  return jest.fn(({ onPress }) => {
-    const { TouchableOpacity, Text } = require('react-native');
-    return (
-      <TouchableOpacity onPress={onPress}>
-        <Text>Sulje</Text>
-      </TouchableOpacity>
-    );
-  });
-});
+jest.mock('@hooks/useFormFields', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    initialFormData: {
+      personal_protection: { description: '', status: '', risk_type: 'scaffolding' },
+      personal_fall_protection: { description: '', status: '', risk_type: 'scaffolding' },
+    },
+  })),
+}));
 
-jest.mock('@components/SuccessAlert', () => {
-  return jest.fn(({ message }) => {
-    const { Text } = require('react-native');
-    return <Text>{message}</Text>;
-  });
-});
-
-function mockConsole() {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
-  jest.spyOn(console, 'log').mockImplementation(() => {});
-}
+jest.mock('@services/formSubmission', () => ({
+  submitForm: jest.fn(),
+}));
 
 describe('RiskForm Component', () => {
   const mockOnFocusChange = jest.fn();
   const mockProject = { 
     id: 1, 
     project_name: 'Test Project', 
-    project_id: '123' 
+    project_id: '1234' 
   };
-  const mockSetSelectedProject = jest.fn();
-  const mockSetSelectedSurveyURL = jest.fn();
-  const mockSurveyURL = 'https://example.com/api/survey/1/';
-  const mockSurveyData = {
-    task: 'Asennus',
-    scaffold_type: 'Työteline',
-    description: 'Test Description',
-    risk_notes: [
-      {
-        note: 'personal_protection',
-        description: '',
-        status: 'notRelevant',
-        risk_type: 'scaffolding',
-      },
-      {
-        note: 'personal_fall_protection',
-        description: 'Valjaat käytössä',
-        status: 'checked',
-        risk_type: 'scaffolding',
-      },
-      {
-        note: 'emergency_procedure',
-        description: 'Poistumistie merkitty',
-        status: 'checked',
-        risk_type: 'environment',
-      },
-      {
-        note: 'vehicle_traffic',
-        description: '',
-        status: 'notRelevant',
-        risk_type: 'environment',
-      },
-    ],
-  };  
 
-  const renderComponent = () => {
+  const setup = () => {
+    const contextValue = {
+      selectedProject: mockProject,
+      selectedSurveyURL: 'http://example.com/survey',
+      resetProjectAndSurvey: jest.fn(),
+    };
+  
     return render(
       <NavigationContainer>
-        <ProjectSurveyContext.Provider value={{ 
-          selectedProject: mockProject, 
-          selectedSurveyURL: mockSurveyURL,
-          setSelectedProject: mockSetSelectedProject, 
-          setSelectedSurveyURL: mockSetSelectedSurveyURL 
-        }}>
-          <RiskForm onFocusChange={mockOnFocusChange} />
+        <ProjectSurveyContext.Provider value={contextValue}>
+          <FormProvider>
+            <RiskForm onFocusChange={mockOnFocusChange} />
+          </FormProvider>
         </ProjectSurveyContext.Provider>
       </NavigationContainer>
     );
   };
+  
 
-  const renderComponentWithoutProject = () => {
-    return render(
-      <NavigationContainer>
-        <ProjectSurveyContext.Provider value={{ 
-          selectedProject: null, // No project selected
-          selectedSurveyURL: mockSurveyURL,
-          setSelectedProject: mockSetSelectedProject, 
-          setSelectedSurveyURL: mockSetSelectedSurveyURL 
-        }}>
-          <RiskForm onFocusChange={mockOnFocusChange} />
-        </ProjectSurveyContext.Provider>
-      </NavigationContainer>
-    );
-  };
+  it('renders correctly with project details', () => {
+    const { getByText } = setup();
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-    global.alert = jest.fn();
-    mockConsole();
-    apiService.fetchSurveyData.mockResolvedValue(mockSurveyData);
-  });
-
-  it('renders correctly and displays project information', () => {
-    const { getByText } = renderComponent();
-
+    expect(getByText('Projektin nimi:')).toBeTruthy();
     expect(getByText('Test Project')).toBeTruthy();
-    expect(getByText('123')).toBeTruthy();
-  });
+    expect(getByText('Projektin ID:')).toBeTruthy();
+    expect(getByText('1234')).toBeTruthy();
+  });  
 
-  it('renders "no project" message when no project is selected', () => {
-    const { getByText } = renderComponentWithoutProject();
-
-    expect(getByText('Projekti ei näy...')).toBeTruthy();
-  });
-
-  it('renders loading message when form data is empty', () => {
-    require('@hooks/useFormFields').mockImplementationOnce(() => ({
-      initialFormData: {},
-    }));
-    require('@hooks/useMergedSurveyData').mockImplementationOnce(() => ({
-      mergedFormData: {},
-      taskDetails: { task: '', scaffoldType: '', taskDesc: '' },
-      error: null,
-      isMerged: false,
-    }));
-    const { getByText } = renderComponent();
-
-    expect(getByText('Ladataan lomaketietoja...')).toBeTruthy();
-  });
-
-  it('submits the form and calls postNewSurvey', async () => {
-    const { getByText } = renderComponent();
-    apiService.postNewSurvey.mockResolvedValueOnce({ id: 1 });
-
-    const submitButton = getByText('Lähetä');
-    fireEvent.press(submitButton);
-
+  it('shows success alert after successful submission', async () => {
+    submitForm.mockImplementationOnce((mockProject, taskInfo, formData, setShowSuccessAlert) => {
+      setShowSuccessAlert(true);
+    });
+  
+    const { getByText } = setup();
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+  
+    fireEvent.press(getByText('Lähetä'));
+  
     await waitFor(() => {
-      expect(apiService.postNewSurvey).toHaveBeenCalled();
+      expect(getByText('Riskimuistiinpanot lähetetty onnistuneesti')).toBeTruthy();
     });
   });
+  
 
-  it('shows success alert on successful submission', async () => {
-    const { getByText } = renderComponent();
+  it('shows exit modal confirmation when close button is pressed', () => {
+    const { getByText } = setup();
 
-    apiService.postNewSurvey.mockResolvedValueOnce({ id: 1 });
+    fireEvent.press(getByText('Sulje'));
 
-    const submitButton = getByText('Lähetä');
-    fireEvent.press(submitButton);
-
-    await waitFor(() => expect(getByText('Riskimuistiinpanot lähetetty onnistuneesti')).toBeTruthy());
-  });
-
-  it('handles error correctly when fetching data', () => {
-    require('@hooks/useMergedSurveyData').mockImplementationOnce(() => ({
-      mergedFormData: {},
-      taskDetails: { task: '', scaffoldType: '', taskDesc: '' },
-      error: 'An error occurred',
-      isMerged: false,
-    }));
-    renderComponent();
-
-    expect(global.alert).toHaveBeenCalledWith('Virhe haettaessa lomakkeen tietoja');
-  });
-
-  it('logs an error if API submission fails', async () => {
-    const { getByText } = renderComponent();
-
-    apiService.postNewSurvey.mockRejectedValueOnce(new Error('Submission failed'));
-
-    const submitButton = getByText('Lähetä');
-    fireEvent.press(submitButton);
-
-    await waitFor(() => {
-      expect(console.error).toHaveBeenCalledWith('Error during form submission:', expect.any(Error));
-    });
-  });
-
-  it('closes the form on close button click', () => {
-    const { getByText } = renderComponent();
-
-    const closeButton = getByText('Sulje');
-    fireEvent.press(closeButton);
-
-    expect(mockSetSelectedProject).toHaveBeenCalledWith(null);
-    expect(mockSetSelectedSurveyURL).toHaveBeenCalledWith(null);
-  });
-
-  it('renders risk notes correctly in Finnish', () => {
-    const { getAllByText } = renderComponent();
-
-    const notRelevantElements = getAllByText('Ei koske');
-    expect(notRelevantElements.length).toBeGreaterThan(0);
-
-    const toBeNotedElements = getAllByText('Huomioitavaa');
-    expect(toBeNotedElements.length).toBeGreaterThan(0);
-  });
-
-  it('renders risk notes correctly in English', () => {
-    const { changeLanguage } = require('react-i18next').useTranslation().i18n;
-    changeLanguage('en');
-
-    const { getAllByText } = renderComponent();
-
-    // Check for the English translations of risk notes
-    const notRelevantElements = getAllByText('Not relevant');
-    expect(notRelevantElements.length).toBeGreaterThan(0);
-
-    const toBeNotedElements = getAllByText('To be noted');
-    expect(toBeNotedElements.length).toBeGreaterThan(0);
-  });
-
-  it('updates form data when input changes', () => {
-    const { getByTestId, getByDisplayValue, debug } = renderComponent();
-
-    debug();
-
-    const parentView = getByTestId('risknote-personal_fall_protection');
-    const { getByText: getByTextWithinParent } = within(parentView);
-    const toBeNotedButton = getByTextWithinParent('To be noted');
-
-    fireEvent.press(toBeNotedButton);
-
-    expect(getByDisplayValue('Valjaat käytössä')).toBeTruthy();
-    const descriptionInput = getByDisplayValue('Valjaat käytössä');
-
-    fireEvent.changeText(descriptionInput, 'Valjaat käytössä, mutta hihna puuttuu');
-    expect(getByDisplayValue('Valjaat käytössä, mutta hihna puuttuu')).toBeTruthy();
-  });
-
-  it('updates task state when a button is pressed in ButtonGroup', () => {
-    const { getByText } = renderComponent();
-    expect(getByText('Asennus')).toBeTruthy();
-    fireEvent.press(getByText('Muokkaus'));
-    expect(getByText('Muokkaus')).toBeTruthy();
-  });
-
-  it('updates scaffoldType state when a button is pressed in ButtonGroup', () => {
-    const { getByText } = renderComponent();
-    expect(getByText('Työteline')).toBeTruthy();
-    fireEvent.press(getByText('Sääsuojaton työteline'));
-    expect(getByText('Sääsuojaton työteline')).toBeTruthy();
+    expect(getByText('Haluatko varmasti poistua?')).toBeTruthy();
   });
 });

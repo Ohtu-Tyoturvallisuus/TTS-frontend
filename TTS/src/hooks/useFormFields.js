@@ -6,9 +6,9 @@ import fiFormFields from '@lang/locales/fi/formFields.json';
 // Helper function to get form fields by language
 const getFormFieldsByLanguage = (language) => {
   switch (language) {
-    case 'fi':
+    case 'fi-FI':
       return fiFormFields;
-    case 'en':
+    case 'en-GB':
     default:
       return enFormFields; // Fallback to English if no match
   }
@@ -22,6 +22,7 @@ const createInitialFormData = (formFields, t) => {
       description: '',
       status: '',
       risk_type: t(`${key}.risk_type`, { ns: 'formFields' }),
+      images: [],
     };
   });
   return initialData;

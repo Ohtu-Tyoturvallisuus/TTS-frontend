@@ -15,6 +15,12 @@
   "closebutton": {
     "close": "Sulje"
   },
+  "confirmation": {
+    "confirmLeave": "Haluatko varmasti poistua?",
+    "changesWillBeLost": "HUOM! Kaikki muutokset menetetään",
+    "cancel": "Peruuta",
+    "confirm": "Vahvista"
+  },
   "dropdownoptions": {
     "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
@@ -82,19 +88,27 @@
     "loadingFormData": "Ladataan lomaketietoja...",
     "scaffoldRisks": "Telinetöihin liittyvät vaarat",
     "environmentRisks": "Työympäristön vaarat",
-    "submit": "Lähetä"
+    "submit": "Lähetä",
+    "otherEnvironment": "Muu työympäristövaara",
+    "otherScaffolding": "Muu telinetyövaara",
+    "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
+    "submitting": "Lähetetään lomaketta..."
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",
     "withSpeech": "Syötä puheella",
     "cancel": "Peruuta",
     "reset": "Tyhjennä",
-    "checked": "Kunnossa"
+    "checked": "Kunnossa",
+    "edit": "Muokkaa",
+    "translatePreview": "Käännä (esikatselu)"
   },
   "risknote": {
     "checked": "Kunnossa",
     "notRelevant": "Ei koske",
-    "toBeNoted": "Huomioitavaa"
+    "toBeNoted": "Huomioitavaa",
+    "undo": "Kumoa",
+    "preview": "Esikatsele"
   },
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."
@@ -122,10 +136,22 @@
   },
   "speechtotext": {
     "maxLength": "Maksimipituus",
+    "processingAudio": "Äänitiedostoasi käsitellään",
     "recognitionLanguage": "Puheentunnistuskieli",
     "seconds_one": "yksi sekunti",
     "seconds_other": "{{count}} sekuntia",
     "stop": "Lopeta",
     "start": "Aloita puheentunnistus"
+  },
+  "takepicture": {
+    "noPictures": "Ei kuvia",
+    "takePicture": "Ota kuva",
+    "selectFromGallery": "Valitse galleriasta"
+  },
+  "filledriskform": {
+    "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
+    "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
+    "edit": "Muokkaa lomaketta",
+    "preview": "Esikatsele täytettyä lomaketta"
   }
 }

@@ -23,7 +23,9 @@ export default {
     infoPlist: {
       "ITSAppUsesNonExemptEncryption": false,
       "LSMinimumSystemVersion": "12.0",
-      "NSMicrophoneUsageDescription": "We need access to your microphone for speech to text.",
+      "NSMicrophoneUsageDescription": "App needs access to your microphone for speech to text.",
+      "NSCameraUsageDescription": "App needs access to your camera for taking pictures.",
+      "NSPhotoLibraryUsageDescription": "App needs access to your photo library to select pictures."
     }
   },
   android: {
@@ -33,7 +35,9 @@ export default {
     },
     package: "com.HazardHunt",
     permissions: [
-      "RECORD_AUDIO"
+      "RECORD_AUDIO",
+      "CAMERA",
+      "READ_EXTERNAL_STORAGE"
     ]
   },
   web: {
@@ -49,7 +53,7 @@ export default {
     eas: {
       projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID
     },
-    local_setup: process.env.LOCAL_SETUP, // true or false
+    local_setup: process.env.LOCAL_SETUP,
     local_ip: process.env.LOCAL_IP
   }
 }

@@ -62,7 +62,7 @@ const Settings = () => {
         />
       )}
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={changeLanguageVisible}
         onRequestClose={() => setChangeLanguageVisible(false)} // Close the modal when back is pressed on Android

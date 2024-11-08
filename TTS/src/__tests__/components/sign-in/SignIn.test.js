@@ -30,7 +30,7 @@ jest.mock('react-i18next', () => ({
         'signin.confirmLogin': 'Vahvista kirjautuminen',
         'signin.first_name': 'Etunimi',
         'signin.last_name': 'Sukunimi',
-        'signin.guestSignInButton': 'Jatka vieraana',
+        'signin.guestSignInButton': 'Kirjaudu vieraskäyttäjänä',
         'signin.close': 'Sulje'
       };
       return translations[key] || key;
@@ -45,7 +45,7 @@ describe('Sign in', () => {
     jest.clearAllMocks();
   });
 
-  it('renders the sign-in page successfully', () => {
+  it('renders the sign-in page successfully and opens and closes modal', () => {
     const mockSetUsername = jest.fn();
 
     render(
@@ -56,9 +56,10 @@ describe('Sign in', () => {
       </NavigationContainer>
     );
 
-    screen.debug();
-
-    expect(screen.getByText('Jatka vieraana')).toBeDefined();
+    expect(screen.getByText('Kirjaudu vieraskäyttäjänä')).toBeDefined();
+    fireEvent.press(screen.getByText('Kirjaudu vieraskäyttäjänä'));
+    expect(screen.getByText('Sulje')).toBeDefined();
+    fireEvent.press(screen.getByText('Sulje'));
   });
 
   it('calls onSubmit and saves username when the form is submitted', async () => {
@@ -76,7 +77,7 @@ describe('Sign in', () => {
       </NavigationContainer>
     );
 
-    fireEvent.press(screen.getByText('Jatka vieraana'));
+    fireEvent.press(screen.getByText('Kirjaudu vieraskäyttäjänä'));
 
     const firstNameInput = screen.getByPlaceholderText('Etunimi');
     const lastNameInput = screen.getByPlaceholderText('Sukunimi');
@@ -109,7 +110,7 @@ describe('Sign in', () => {
       </NavigationContainer>
     );
 
-    fireEvent.press(screen.getByText('Jatka vieraana'));
+    fireEvent.press(screen.getByText('Kirjaudu vieraskäyttäjänä'));
 
     fireEvent.press(screen.getByText('Vahvista kirjautuminen'));
 
@@ -133,7 +134,7 @@ describe('Sign in', () => {
       </NavigationContainer>
     );
 
-    fireEvent.press(screen.getByText('Jatka vieraana'));
+    fireEvent.press(screen.getByText('Kirjaudu vieraskäyttäjänä'));
 
     const firstNameInput = screen.getByPlaceholderText('Etunimi');
     const lastNameInput = screen.getByPlaceholderText('Sukunimi');

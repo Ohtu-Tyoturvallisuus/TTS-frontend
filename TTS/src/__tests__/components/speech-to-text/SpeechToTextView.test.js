@@ -35,6 +35,15 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
+jest.mock('expo-constants', () => ({
+  expoConfig: {
+    extra: {
+      local_ip: '192.168.1.1',
+      local_setup: 'true',
+    },
+  },
+}));
+
 jest.mock('@components/speech-to-text/SelectTranslateLanguage', () => {
   return jest.fn(({ setTranslationLanguages }) => {
     const React = require('react');
@@ -173,6 +182,56 @@ describe('SpeechToTextView Component', () => {
 
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith('Permission to access audio was denied');
+    });
+  });
+
+  it('handles server errors during upload correctly', async () => {
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            error: "Invalid or expired token",
+          }),
+        ok: false,
+      })
+    );
+
+    const { getByText } = render(<SpeechToTextView />);
+
+    fireEvent.press(getByText('Aloita puheentunnistus'));
+
+    await waitFor(() => {
+      expect(getByText('Lopeta')).toBeTruthy();
+    });
+    fireEvent.press(getByText('Lopeta'));
+
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledWith("Invalid or expired token. Please log in again.");
+    });
+  });
+
+  it('handles other server errors during upload correctly', async () => {
+    global.fetch.mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            error: "Some other error occurred",
+          }),
+        ok: false,
+      })
+    );
+
+    const { getByText } = render(<SpeechToTextView />);
+
+    fireEvent.press(getByText('Aloita puheentunnistus'));
+
+    await waitFor(() => {
+      expect(getByText('Lopeta')).toBeTruthy();
+    });
+    fireEvent.press(getByText('Lopeta'));
+
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledWith("Error from server:", "Some other error occurred");
     });
   });
 });

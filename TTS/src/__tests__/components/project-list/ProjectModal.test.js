@@ -11,15 +11,6 @@ jest.mock('@components/project-list/ProjectSurveyList', () => {
   return MockedSurveyList;
 });
 
-jest.mock('@components/buttons/RiskFormButton', () => {
-  const { Text } = require('react-native');
-  const MockedRiskFormButton = () => {
-    return <Text>Mocked Risk Form Button</Text>;
-  };
-  MockedRiskFormButton.displayName = 'MockedRiskFormButton';
-  return MockedRiskFormButton;
-});
-
 jest.mock('@components/buttons/CloseButton', () => {
   const { TouchableOpacity, Text } = require('react-native');
   const MockedCloseButton = (props) => {
@@ -52,10 +43,24 @@ describe('ProjectModal Component', () => {
     selectedProject: {
       formattedName: 'Test Project',
     },
+    setSelectedSurveyURL: jest.fn(),
   };
 
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('navigates to RiskForm when selecting to fill a new risk form', () => {
+    const mockNavigate = jest.fn();
+    const { getByText } = render(
+      <ProjectSurveyContext.Provider value={mockProjectContext}>
+        <ProjectModal visible={true} onClose={mockOnClose} navigateToRiskForm={mockNavigate} />
+      </ProjectSurveyContext.Provider>
+    );
+
+    fireEvent.press(getByText('Täytä uusi riskilomake'));
+    expect(mockProjectContext.setSelectedSurveyURL).toHaveBeenCalledWith(null);
+    expect(mockNavigate).toHaveBeenCalled();
   });
 
   it('calls onClose when the close button is pressed', () => {

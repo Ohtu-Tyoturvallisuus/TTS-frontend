@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
-import RiskForm from '@components/risk-form/RiskForm';
 import CombinedSignIn from '@components/sign-in/CombinedSignIn';
+import RiskFormScreen from '@components/risk-form/RiskFormScreen';
 import Settings from '@components/settings/Settings';
 
 const Tab = createBottomTabNavigator();
@@ -41,7 +41,7 @@ const Main = () => {
         <> 
           <Stack.Screen name='ProjectList' component={ProjectList} options={{ headerShown: false }} />
           <Stack.Screen name="RiskForm" options={{ headerShown: false }}>
-            {(props) => <RiskForm {...props} onFocusChange={setShowImage} />}
+            {(props) => <RiskFormScreen {...props} onFocusChange={setShowImage} />}
           </Stack.Screen>
         </>
         ) : (
@@ -63,7 +63,8 @@ const Main = () => {
                 let iconName;
                 if (route.name === 'Main') {
                   iconName = focused ? 'home' : 'home-outline';
-                } else if (route.name === 'Settings') {
+                }
+                if (route.name === 'Settings') {
                   iconName = focused ? 'settings' : 'settings-outline';
                 }
                 return <Ionicons name={iconName} size={size} color={color} />;
@@ -79,12 +80,20 @@ const Main = () => {
               headerShown: false,
             })}
           >
-            <Tab.Screen name="Main" component={MainStack} options={{ title: t('main.navigationMain') }} />
-            <Tab.Screen name="Settings" component={Settings} options={{ title: t('main.navigationSettings') }} />
+            <Tab.Screen 
+              name="Main" 
+              component={MainStack} 
+              options={{ title: t('main.navigationMain') }} 
+            />
+            <Tab.Screen 
+              name="Settings" 
+              component={Settings} 
+              options={{ title: t('main.navigationSettings') }} 
+            />
           </Tab.Navigator>
         </View>
     </View>
   );
-}
+};
 
 export default Main;

@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; 
 
-
 import AppBarTab from './AppBarTab';
 
 const AppBar = ({ username, setUsername, openSettings }) => {

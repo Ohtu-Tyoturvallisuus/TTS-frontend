@@ -40,6 +40,7 @@ const SignIn = () => {
       const data = await signIn(username, null, true);
       console.log(data);
       await AsyncStorage.setItem('username', username);
+      await AsyncStorage.setItem('access_token', data.access_token)
       setUsername(username);
       setModalVisible(false); // Close modal after successful sign-in
       navigation.navigate('Settings');
@@ -62,7 +63,7 @@ const SignIn = () => {
         <Text className="text-white font-bold">{t('signin.guestSignInButton')}</Text>
       </TouchableOpacity>
 
-      <Modal visible={modalVisible} transparent animationType="slide">
+      <Modal visible={modalVisible} transparent animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.container}>
             <View className="pb-3">

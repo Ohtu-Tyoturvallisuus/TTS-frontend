@@ -3,9 +3,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native'; 
 import 'intl-pluralrules';
 
-import { UserProvider } from './src/contexts/UserContext';
+import { UserProvider } from '@contexts/UserContext';
 import Main from './src/components/Main'
-import { ProjectSurveyProvider } from './src/contexts/ProjectSurveyContext';
+import { ProjectSurveyProvider } from '@contexts/ProjectSurveyContext';
 import './src/lang/i18n';
 
 export default function App() {

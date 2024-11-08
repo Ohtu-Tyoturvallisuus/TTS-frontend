@@ -12,8 +12,22 @@ export const ProjectSurveyProvider = ({ children }) => {
     }
   }, [selectedProject]);
 
+  const resetProjectAndSurvey = () => {
+    console.log('Resetting project and survey URL');
+    setSelectedProject(null);
+    setSelectedSurveyURL(null);
+  };
+
   return (
-    <ProjectSurveyContext.Provider value={{ selectedProject, setSelectedProject, selectedSurveyURL, setSelectedSurveyURL }}>
+    <ProjectSurveyContext.Provider 
+      value={{ 
+        selectedProject, 
+        setSelectedProject, 
+        selectedSurveyURL, 
+        setSelectedSurveyURL, 
+        resetProjectAndSurvey
+      }}
+    >
       {children}
     </ProjectSurveyContext.Provider>
   );

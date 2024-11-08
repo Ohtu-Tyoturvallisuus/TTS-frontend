@@ -1,21 +1,20 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native';
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import SurveyList from './ProjectSurveyList';
-import RiskFormButton from '@components/buttons/RiskFormButton';
+import ProjectSurveyList from './ProjectSurveyList';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import CloseButton from '@components/buttons/CloseButton';
 
-const ProjectModal = ({ visible, setVisible, onClose }) => {
-  const { selectedProject: project } = useContext(ProjectSurveyContext);
+const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
+  const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
 
   if (!project) {
     console.log('Projektia ei ole saatavilla');
     return null;
   }
-  console.log('Projektin tiedot:', project);
+  console.log('Avattu projekti:', project.formattedName);
 
   return (
     <Modal
@@ -27,8 +26,17 @@ const ProjectModal = ({ visible, setVisible, onClose }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{project.formattedName}</Text>
-          <RiskFormButton title={t('projectmodal.title')} setVisible={setVisible} />
-          <SurveyList setVisible={setVisible} />
+          <TouchableOpacity 
+            style={styles.newSurveyButton}
+            onPress={() => {
+              setSelectedSurveyURL(null);
+              console.log('Uusi kartoitus, surveyUrl on null');
+              navigateToRiskForm()
+            }}
+          >
+            <Text style={styles.buttonText}>{t('projectmodal.title')}</Text>
+          </TouchableOpacity>
+          <ProjectSurveyList navigateToRiskForm={navigateToRiskForm}/>
           <CloseButton onPress={onClose}/>
         </View>
       </View>
@@ -37,6 +45,11 @@ const ProjectModal = ({ visible, setVisible, onClose }) => {
 };
 
 const styles = StyleSheet.create({
+  buttonText: {
+    color: '#fff', 
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   modalContainer: {
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -48,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#FF8C00',
     borderRadius: 10,
-    borderWidth: 5,
+    borderWidth: 3,
     padding: 20,
     width: '95%',
   },
@@ -57,6 +70,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
+  newSurveyButton: {
+    alignItems: 'center', 
+    alignSelf: 'center',
+    backgroundColor: '#32CD32',
+    borderRadius: 5,
+    justifyContent: 'center', 
+    minHeight: 48,
+    minWidth: 48,
+    padding: 10,
+    width: '80%',
+  }
 });
 
 export default ProjectModal;

@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import useFetchSurveys from '@hooks/useFetchSurveys';
 import Loading from '@components/Loading';
 
-export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigate, setVisible }) => {
+export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigateToRiskForm }) => {
   const { t } = useTranslation();
 
   const renderSurveyOption = ({ item: survey }) => {
@@ -34,8 +33,7 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
     const handleSurveyPress = (survey) => {
       console.log('Valittu kartoitus:', survey);
       setSelectedSurveyURL(survey.url);
-      navigate('RiskForm');
-      setVisible(false);
+      navigateToRiskForm();
     };
 
     return (
@@ -76,10 +74,9 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
   );
 };
 
-const ProjectSurveyList = ({ setVisible }) => {
+const ProjectSurveyList = ({ navigateToRiskForm }) => {
   const {selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const { surveys, loading, error } = useFetchSurveys(project.id);
 
   if (loading || error) {
@@ -93,7 +90,11 @@ const ProjectSurveyList = ({ setVisible }) => {
   }
 
   return (
-    <ProjectSurveyListContainer surveys={surveys} setSelectedSurveyURL={setSelectedSurveyURL} navigate={navigation.navigate} setVisible={setVisible} />
+    <ProjectSurveyListContainer 
+      surveys={surveys} 
+      setSelectedSurveyURL={setSelectedSurveyURL} 
+      navigateToRiskForm={navigateToRiskForm} 
+    />
   );
 }
 

@@ -8,7 +8,7 @@ const LoadingErrorComponent = ({ loading, error, title }) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator testID="activity-indicator" size="large" color="#FF8C00" />
+        <ActivityIndicator testID="activity-indicator" size="large" color="#ef7d00" />
         <Text style={styles.loadingText}>{title}</Text>
       </View>
     );
@@ -28,6 +28,7 @@ const LoadingErrorComponent = ({ loading, error, title }) => {
 const styles = StyleSheet.create({
   errorContainer: {
     alignItems: 'center',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
   },
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     alignItems: 'center',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     padding: 40,
