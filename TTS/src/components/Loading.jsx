@@ -28,9 +28,9 @@ const LoadingErrorComponent = ({ loading, error, title }) => {
 const styles = StyleSheet.create({
   errorContainer: {
     alignItems: 'center',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'white',
   },
   errorText: {
     color: 'red',
@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     alignItems: 'center',
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     padding: 40,
-    backgroundColor: 'white',
   },
   loadingText: {
     color: 'black',
