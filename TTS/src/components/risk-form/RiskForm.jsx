@@ -204,18 +204,20 @@ const RiskForm = () => {
         </TouchableOpacity>
 
         {!submitted ? (
-          <>
-            <FilledRiskForm
-              formData={formData}
-              handleSubmit={handleSubmit}
-              projectName={project.project_name}
-              projectId={project.project_id}
-              task={task}
-              scaffoldType={scaffoldType}
-              taskDesc={taskDesc}
-            />
-            <CloseButton onPress={() => setShowExitModal(true)} />
-          </>
+          project ? (
+            <>
+              <FilledRiskForm
+                formData={formData}
+                handleSubmit={handleSubmit}
+                projectName={project.project_name}
+                projectId={project.project_id}
+                task={task}
+                scaffoldType={scaffoldType}
+                taskDesc={taskDesc}
+              />
+              <CloseButton onPress={() => setShowExitModal(true)} />
+            </>
+          ) : (<></>)
         ) : (
           <>
             <ActivityIndicator size='large' color="#EF7D00" />
