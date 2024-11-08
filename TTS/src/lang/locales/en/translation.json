@@ -136,6 +136,7 @@
   },  
   "speechtotext": {
     "maxLength": "Maximum length",
+    "processingAudio": "Processing your audio",
     "recognitionLanguage": "Speech recognition language",
     "seconds_one": "one second",
     "seconds_other": "{{count}} seconds",

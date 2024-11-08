@@ -136,6 +136,7 @@
   },
   "speechtotext": {
     "maxLength": "Maksimipituus",
+    "processingAudio": "Äänitiedostoasi käsitellään",
     "recognitionLanguage": "Puheentunnistuskieli",
     "seconds_one": "yksi sekunti",
     "seconds_other": "{{count}} sekuntia",
