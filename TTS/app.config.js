@@ -4,10 +4,10 @@ export default {
   name: "HazardHunt",
   slug: "HazardHunt",
   scheme: ["hazardhunt"],
-  version: "1.0.2",
+  version: "1.0.3",
   owner: "telinekataja",
   orientation: "portrait",
-  icon: "./assets/icon.png",
+  icon: "./assets/HazardHunt-icon.png",
   userInterfaceStyle: "light",
   splash: {
     image: "./assets/telinekataja.png",
@@ -20,6 +20,7 @@ export default {
   ios: {
     supportsTablet: true,
     bundleIdentifier: "com.HazardHunt",
+    icon: "./assets/HazardHunt-icon.png",
     infoPlist: {
       "ITSAppUsesNonExemptEncryption": false,
       "LSMinimumSystemVersion": "12.0",
@@ -30,9 +31,10 @@ export default {
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
+      foregroundImage: "./assets/HazardHunt-icon.png",
       backgroundColor: "#ffffff"
     },
+    icon: "./assets/HazardHunt-icon.png",
     package: "com.HazardHunt",
     permissions: [
       "RECORD_AUDIO",
