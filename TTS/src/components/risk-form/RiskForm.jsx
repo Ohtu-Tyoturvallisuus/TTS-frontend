@@ -110,7 +110,7 @@ const RiskForm = () => {
   }
 
   return (
-    <View className="flex items-center justify-center mt-8">
+    <View className="flex items-center justify-center">
       <ScrollView 
         className="bg-white flex-grow p-5 w-full" 
         contentContainerStyle={{ paddingBottom: 30 }}
