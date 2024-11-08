@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
   errorText: {
     color: 'red',
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 40,
+    backgroundColor: 'white',
   },
   loadingText: {
     color: 'black',
