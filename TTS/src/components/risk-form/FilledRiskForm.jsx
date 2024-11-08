@@ -61,9 +61,6 @@ const FilledRiskForm = ({
               </>
             )}
 
-            {relevantRiskNotes.length > 0 && (
-              <Text className="font-bold text-lg">{t('')}</Text>
-            )}
             {relevantRiskNotes.length > 0 ? (
               relevantRiskNotes.map(([key, value]) => (
                 <View key={key} className="py-2">
@@ -92,10 +89,14 @@ const FilledRiskForm = ({
                 </View>
               ))
             ) : (
-              <Text className="text-base font-bold pt-4">{t('filledriskform.norisks')}</Text>
+              <View className="py-3">
+                <View className="border p-3 rounded-md w-full">
+                  <Text className="text-base font-bold">{t('filledriskform.norisks')}</Text>
+                </View>
+              </View>
             )}
             <TouchableOpacity
-              className="rounded-md py-3 my-2 items-center bg-orange"
+              className="rounded-md py-3 my-2 items-center bg-orange mt-7"
               onPress={() => setModalVisible(false)}
             >
               <Text className="text-white text-lg font-bold">{t('filledriskform.edit')}</Text>
