@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import RiskImage from "@components/take-picture/Image";
 
 const FilledRiskForm = ({
-  formData = null,
+  formData = {},
   handleSubmit = null,
-  projectName = null,
-  projectId = null,
+  projectName = '',
+  projectId = '',
   task = null,
   scaffoldType = null,
   taskDesc = null
@@ -16,8 +16,7 @@ const FilledRiskForm = ({
   const { t } = useTranslation(['translation', 'formFields']);
 
   const relevantRiskNotes = Object.entries(formData)
-    // eslint-disable-next-line no-unused-vars
-    .filter(([key, value]) => value.status === 'checked');
+    .filter(([, value]) => value.status === 'checked');
 
   return (
     <>
@@ -75,7 +74,7 @@ const FilledRiskForm = ({
                     {value.description}
                   </Text>
                   <View style={styles.imageContainer}>
-                    {value.images.length === 0 ? (
+                    {!value.images ? (
                       <View style={{ margin: 10 }}>
                       </View>
                     ) : (

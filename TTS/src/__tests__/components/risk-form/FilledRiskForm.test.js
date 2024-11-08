@@ -4,8 +4,8 @@ import FilledRiskForm from '@components/risk-form/FilledRiskForm';
 
 jest.mock('@components/take-picture/Image', () => {
   const { View } = require('react-native');
-  // eslint-disable-next-line react/display-name
-  return ({ testID }) => <View testID={testID} />;
+  const mockImage = ({ testID }) => <View testID={testID} />;
+  return mockImage;
 });
 
 describe('FilledRiskForm component', () => {
@@ -82,5 +82,17 @@ describe('FilledRiskForm component', () => {
     fireEvent.press(getByText('filledriskform.preview'));
   
     expect(getByTestId('risk-image-0')).toBeTruthy();
+  });
+
+  it('renders without crashing when all props are null', () => {
+    const props = {};
+    const { getByText } = render(<FilledRiskForm {...props} />);
+
+    fireEvent.press(getByText('filledriskform.preview'));
+
+    expect(getByText('filledriskform.preview')).toBeTruthy();
+    expect(getByText('riskform.submit')).toBeTruthy();
+
+    expect(getByText('filledriskform.norisks')).toBeTruthy();
   });
 });
