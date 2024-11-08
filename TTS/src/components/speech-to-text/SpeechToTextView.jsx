@@ -108,7 +108,7 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
       <RecordingLanguageView recordingLanguageFlagCode={recordingLanguageFlagCode} t={t} />
       {isLoading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FF8C00" />
+          <ActivityIndicator size="large" color="#ef7d00" />
           <Text style={styles.loadingText}>{t('speechtotext.processingAudio')}</Text>
         </View>
       ) : (
