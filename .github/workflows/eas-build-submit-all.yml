@@ -1,4 +1,4 @@
-name: CD-HazardHunt
+name: CD-HazardHunt-UAT
 
 on:
   #workflow_run:
@@ -63,7 +63,7 @@ jobs:
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
                 },
                 "android": {
-                  "track": "internal",
+                  "track": "alpha",
                   "releaseStatus": "draft",
                   "changesNotSentForReview": true
                 }
