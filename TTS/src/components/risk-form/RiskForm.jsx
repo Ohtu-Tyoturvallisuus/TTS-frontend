@@ -80,15 +80,22 @@ const RiskForm = () => {
   }, [navigation]);
 
   const handleSubmit = () => {
-    setSubmitted(true)
     const taskInfo = {
       task: task,
       description: taskDesc,
       scaffold_type: scaffoldType,
     };
     console.log('Submitting:', taskInfo);
-    console.log('FORMDATA:', formData)
-    submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
+    console.log('FORMDATA:', formData);
+    try {
+      setSubmitted(true)
+      const response = submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
+      response._j && setSubmitted(false);
+      console.log('RESPONSE:', response);
+    } catch (error) {
+      console.log('Could not submit form', error);
+      setSubmitted(false);
+    }
   };
 
   const handleClose = () => {
@@ -112,131 +119,139 @@ const RiskForm = () => {
   return (
     <View className="flex items-center justify-center">
       <ScrollView 
-        className="bg-white flex-grow p-5 w-full" 
+        className="bg-white flex-grow p-5 w-full h-full" 
         contentContainerStyle={{ paddingBottom: 30 }}
       >
         <Image
           source={require('../../../assets/telinekataja.png')}
           style={{ width: '100%', height: 150, resizeMode: 'contain' }}
         />
-        <Text className="text-2xl font-bold pb-5 text-center">{t('riskform.title')}</Text>
-
-        {error && <Text>{t('riskform.errorFetchingData')}</Text>}
-        {/* Projektin tiedot */}
-        {project ? (
-          <View className="mb-3">
-            <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
-            <Text>{project.project_name}</Text>
-
-            <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
-            <Text>{project.project_id}</Text>
-            <Text className="text-lg font-bold py-2">{t('riskform.task')}:</Text>
-            <ButtonGroup 
-              options={['installation', 'modification', 'dismantling']} 
-              selectedValue={task}
-              onChange={(value) => setTask(value)}
-              renderOption={(option) => t(`riskform.${option}`)}
-            />
-
-            <Text className="text-lg font-bold py-2">{t('riskform.scaffoldType')}:</Text>
-            <ButtonGroup 
-              options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
-              selectedValue={scaffoldType}
-              onChange={(value) => setScaffoldType(value)}
-              renderOption={(option) => t(`riskform.${option}`)}
-            />
-
-            <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
-            <TextInput
-              testID='taskDesc'
-              className="border border-gray-300 rounded p-2 h-24"
-              value={taskDesc}
-              onChangeText={(value) => setTaskDesc(value)}
-              multiline={true}
-              textAlignVertical="top"
-            />
-            <SpeechToTextView
-              setDescription={setTaskDesc}
-              translate={false}
-            />
-          </View>
+        {!submitted ? (
+          <>
+            <Text className="text-2xl font-bold pb-5 text-center">{t('riskform.title')}</Text>
+          
+            {error && <Text>{t('riskform.errorFetchingData')}</Text>}
+            {/* Projektin tiedot */}
+            {project ? (
+              <View className="mb-3">
+                <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
+                <Text>{project.project_name}</Text>
+            
+                <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
+                <Text>{project.project_id}</Text>
+                <Text className="text-lg font-bold py-2">{t('riskform.task')}:</Text>
+                <ButtonGroup 
+                  options={['installation', 'modification', 'dismantling']} 
+                  selectedValue={task}
+                  onChange={(value) => setTask(value)}
+                  renderOption={(option) => t(`riskform.${option}`)}
+                />
+  
+                <Text className="text-lg font-bold py-2">{t('riskform.scaffoldType')}:</Text>
+                <ButtonGroup 
+                  options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
+                  selectedValue={scaffoldType}
+                  onChange={(value) => setScaffoldType(value)}
+                  renderOption={(option) => t(`riskform.${option}`)}
+                />
+  
+                <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
+                <TextInput
+                  testID='taskDesc'
+                  className="border border-gray-300 rounded p-2 h-24"
+                  value={taskDesc}
+                  onChangeText={(value) => setTaskDesc(value)}
+                  multiline={true}
+                  textAlignVertical="top"
+                />
+                <SpeechToTextView
+                  setDescription={setTaskDesc}
+                  translate={false}
+                />
+              </View>
+            ) : (
+              <Text>{t('riskform.noProject')}</Text>
+            )}
+  
+            <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center">
+              {t('riskform.scaffoldRisks')}
+            </Text>
+            {Object.entries(formData)
+              .filter(([, value]) => value.risk_type === 'scaffolding')
+              .map(([key]) =>
+                key.startsWith('riskform.otherScaffolding') ? (
+                  <RiskNote
+                    key={key}
+                    title={key}
+                    renderTitle={() => `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`}
+                  />
+                ) : (
+                  <RiskNote
+                    key={key}
+                    title={key}
+                    renderTitle={() => t(`${key}.title`, { ns: 'formFields' })}
+                  />
+                )
+              )
+            }
+  
+          
+            <TouchableOpacity 
+              className="p-2 border border-green-500 rounded my-2 items-center" 
+              onPress={() => addNewRiskNote('riskform.otherScaffolding', 'scaffolding')}
+            >
+              <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherScaffolding')}</Text>
+            </TouchableOpacity>
+          
+            <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center mt-5">
+              {t('riskform.environmentRisks')}
+            </Text>
+            {Object.entries(formData)
+              .filter(([, value]) => value.risk_type === 'environment')
+              .map(([key]) => 
+                key.startsWith('riskform.otherEnvironment') ? (
+                  <RiskNote
+                    key={key}
+                    title={key}
+                    renderTitle={() => `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`}
+                  />
+                ) : (
+                  <RiskNote
+                    key={key}
+                    title={key}
+                    renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
+                  />
+                )
+              )
+            }
+            <TouchableOpacity 
+              className="p-2 border border-green-500 rounded my-2 items-center" 
+              onPress={() => addNewRiskNote('riskform.otherEnvironment', 'environment')}
+            >
+              <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherEnvironment')}</Text>
+            </TouchableOpacity>
+          
+            {project && (
+              <>
+                <FilledRiskForm
+                  formData={formData}
+                  handleSubmit={handleSubmit}
+                  projectName={project.project_name}
+                  projectId={project.project_id}
+                  task={task}
+                  scaffoldType={scaffoldType}
+                  taskDesc={taskDesc}
+                />
+                <CloseButton onPress={() => setShowExitModal(true)} />
+              </>
+            )}
+          </>
         ) : (
-          <Text>{t('riskform.noProject')}</Text>
+          <>
+            <ActivityIndicator size='large' color='#EF7D00' />
+            <Text className="self-center">{t('riskform.submitting')}</Text>
+          </>
         )}
-
-        <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center">
-          {t('riskform.scaffoldRisks')}
-        </Text>
-        {Object.entries(formData)
-          .filter(([, value]) => value.risk_type === 'scaffolding')
-          .map(([key]) =>
-            key.startsWith('riskform.otherScaffolding') ? (
-              <RiskNote
-                key={key}
-                title={key}
-                renderTitle={() => `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`}
-              />
-            ) : (
-              <RiskNote
-                key={key}
-                title={key}
-                renderTitle={() => t(`${key}.title`, { ns: 'formFields' })}
-              />
-            )
-          )
-        }
-
-
-        <TouchableOpacity 
-          className="p-2 border border-green-500 rounded my-2 items-center" 
-          onPress={() => addNewRiskNote('riskform.otherScaffolding', 'scaffolding')}
-        >
-          <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherScaffolding')}</Text>
-        </TouchableOpacity>
-
-        <Text className="border-b border-gray-300 text-xl font-bold pb-1 text-center mt-5">
-          {t('riskform.environmentRisks')}
-        </Text>
-        {Object.entries(formData)
-          .filter(([, value]) => value.risk_type === 'environment')
-          .map(([key]) => 
-            key.startsWith('riskform.otherEnvironment') ? (
-              <RiskNote
-                key={key}
-                title={key}
-                renderTitle={() => `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`}
-              />
-            ) : (
-              <RiskNote
-                key={key}
-                title={key}
-                renderTitle={(key) => t(`${key}.title`, { ns: 'formFields' })}
-              />
-            )
-          )
-        }
-        <TouchableOpacity 
-          className="p-2 border border-green-500 rounded my-2 items-center" 
-          onPress={() => addNewRiskNote('riskform.otherEnvironment', 'environment')}
-        >
-          <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherEnvironment')}</Text>
-        </TouchableOpacity>
-
-        {project ? (
-            <>
-              <FilledRiskForm
-                formData={formData}
-                handleSubmit={handleSubmit}
-                projectName={project.project_name}
-                projectId={project.project_id}
-                task={task}
-                scaffoldType={scaffoldType}
-                taskDesc={taskDesc}
-              />
-              <CloseButton onPress={() => setShowExitModal(true)} />
-            </>
-          ) : (<></>)
-        }
       </ScrollView>
       {showSuccessAlert && (
         <SuccessAlert 
