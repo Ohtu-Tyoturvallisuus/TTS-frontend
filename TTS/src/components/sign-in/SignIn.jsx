@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   TextInput,
   View,
-  Pressable,
   StyleSheet,
   Text,
   Modal,
@@ -99,12 +98,12 @@ const SignIn = () => {
               )}
             </View>
 
-            <Pressable onPress={formik.handleSubmit} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
+            <TouchableOpacity onPress={formik.handleSubmit} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
               <Text className="text-white font-bold">{t('signin.confirmLogin')}</Text>
-            </Pressable>
-            <Pressable onPress={() => setModalVisible(false)} className="bg-[#808080] rounded-lg justify-center items-center py-4 px-6 my-2">
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalVisible(false)} className="bg-[#808080] rounded-lg justify-center items-center py-4 px-6 my-2">
               <Text className="text-white font-bold">{t('signin.close')}</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
