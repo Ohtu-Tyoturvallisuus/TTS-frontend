@@ -1,21 +1,12 @@
-name: CD-HazardHunt
+name: CD-HazardHunt-UAT
 
 on:
-  #workflow_run:
-  #  workflows:
-  #    - CI-HazardHunt
-  #  types:
-  #    - completed
-  #  branches:
-  #    - main
   workflow_dispatch:
 
 jobs:
   build:
     name: EAS Build and Submit
     runs-on: ubuntu-latest
-    #if: >
-    #  ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request' }}  # Only deploy on successful builds triggered by push events
     steps:
       - uses: actions/checkout@v4
 
@@ -33,7 +24,7 @@ jobs:
       - name: Create .env file
         run: |
           echo "EXPO_PUBLIC_EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > ./TTS/.env
-          echo "ENVIRONMENT=main" >> ./TTS/.env
+          echo "ENVIRONMENT=uat" >> ./TTS/.env
 
       - name: Create eas.json with secrets
         run: |
@@ -65,7 +56,7 @@ jobs:
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
                 },
                 "android": {
-                  "track": "internal",
+                  "track": "alpha",
                   "releaseStatus": "draft",
                   "changesNotSentForReview": true
                 }
@@ -82,7 +73,7 @@ jobs:
         working-directory: ./TTS
         env:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
-          ENVIRONMENT: main
+          ENVIRONMENT: uat
 
       - name: Remove .env file
         run: rm ./TTS/.env

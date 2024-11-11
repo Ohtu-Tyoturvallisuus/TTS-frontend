@@ -4,8 +4,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LOCAL_IP = constants.expoConfig.extra.local_ip;
 const LOCAL_SETUP = constants.expoConfig.extra.local_setup === 'true';
-console.log('Local setup:', LOCAL_SETUP, 'Local IP:', LOCAL_IP);
-const API_BASE_URL = LOCAL_SETUP ? `http://${LOCAL_IP}:8000/api/` : `https://tts-app.azurewebsites.net/api/`;
+const ENVIRONMENT = constants.expoConfig.extra.environment;
+console.log('Local setup:', LOCAL_SETUP, 'Local IP:', LOCAL_IP, 'Environment:', ENVIRONMENT);
+
+let API_BASE_URL = '';
+if (LOCAL_SETUP) {
+  API_BASE_URL = `http://${constants.expoConfig.extra.local_ip}:8000/api/`;
+} else {
+  switch (ENVIRONMENT) {
+    case 'uat':
+      API_BASE_URL = 'https://tts-app-uat.azurewebsites.net/api/';
+      break;
+    case 'production':
+      API_BASE_URL = 'https://tts-app-prod.azurewebsites.net/api/';
+      break;
+    default:
+      API_BASE_URL = 'https://tts-app.azurewebsites.net/api/';
+      break;
+  }
+}
 console.log('API_BASE_URL:', API_BASE_URL);
 const RETRIEVE_PARAMS_URL = API_BASE_URL + 'retrieve-params/'
 

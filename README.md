@@ -1,17 +1,27 @@
 # Työturvallisuussovellus vaarojen tunnistamiseen työmaalla (HazardHunt)
 
-<p align="center">
+<p>
+  <!-- Main branch badges -->
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml" alt="Continuous Integration">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml/badge.svg"/>
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml/badge.svg?branch=main"/>
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml/badge.svg"/>
   </a>
-  <a href="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend" > 
-    <img src="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend/graph/badge.svg?token=R9CQLULY9J"/> 
+  <a href="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend">
+    <img src="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend/graph/badge.svg?token=R9CQLULY9J"/>
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/LICENSE" alt="License">
     <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-frontend"/>
+  </a>
+
+  <!-- UAT branch badges -->
+  <br />
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml" alt="Continuous Integration">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml/badge.svg?branch=uat"/>
+  </a>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml" alt="Continuous Deployment">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml/badge.svg"/>
   </a>
 </p>
 
