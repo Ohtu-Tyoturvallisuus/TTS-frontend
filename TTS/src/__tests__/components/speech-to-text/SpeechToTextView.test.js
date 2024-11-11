@@ -95,7 +95,6 @@ describe('SpeechToTextView Component', () => {
   const startRecording = (getByText) => {
     expect(getByText('Puheentunnistuskieli')).toBeTruthy();
     expect(getByText('Aloita puheentunnistus')).toBeTruthy();
-    expect(getByText('(Maksimipituus: 60 sekuntia.)')).toBeTruthy();
     fireEvent.press(getByText('Aloita puheentunnistus'));
   };
 

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import constants from 'expo-constants';
 import { retrieveIdParams, getUserProfile } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 import { signIn } from '@services/apiService';
@@ -23,9 +24,12 @@ const MicrosoftSignIn = () => {
     revocationEndpoint: `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/logout`,
   };
 
+  const ENVIRONMENT = constants.expoConfig.extra.environment;
+  const redirectPath = ENVIRONMENT === 'production' ? 'prod/redirect' : ENVIRONMENT === 'uat' ? 'uat/redirect' : 'redirect';
+
   const redirectUri = makeRedirectUri({
     scheme: 'hazardhunt',
-    path: 'uat/redirect',
+    path: redirectPath,
     useProxy: false,
   });
 

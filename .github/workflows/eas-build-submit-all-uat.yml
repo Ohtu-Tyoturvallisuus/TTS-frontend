@@ -22,7 +22,9 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Create .env file
-        run: echo "EXPO_PUBLIC_EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > ./TTS/.env
+        run: |
+          echo "EXPO_PUBLIC_EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > ./TTS/.env
+          echo "ENVIRONMENT=uat" >> ./TTS/.env
 
       - name: Create eas.json with secrets
         run: |
@@ -71,6 +73,8 @@ jobs:
         working-directory: ./TTS
         env:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
+          ENVIRONMENT: uat
+
 
       - name: Remove .env file
         run: rm ./TTS/.env

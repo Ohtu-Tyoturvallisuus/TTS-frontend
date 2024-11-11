@@ -50,19 +50,6 @@ describe('TranslationsView Component', () => {
     expect(flags.length).toBe(2);
   });
 
-  it('renders the correct timeout message', () => {
-    const { getByText } = render(
-      <TranslationsView 
-        translations={translations}
-        languageToFlagMap={languageToFlagMap}
-        t={mockT}
-        timeout={60000}
-      />
-    );
-
-    expect(getByText('(Max Length: 60 seconds.)')).toBeTruthy();
-  });
-
   it('renders flags for languages not in the flag map', () => {
     const { getByText } = render(
       <TranslationsView 

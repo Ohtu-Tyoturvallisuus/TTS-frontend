@@ -132,7 +132,8 @@
     "first_name": "First name",
     "last_name": "Last name",
     "error_first_name": "Insert first name",
-    "error_last_name": "Insert last name"
+    "error_last_name": "Insert last name",
+    "loading" : "Signing in..."
   },  
   "speechtotext": {
     "maxLength": "Maximum length",

@@ -1,4 +1,5 @@
 import { screen, render, fireEvent, waitFor } from "@testing-library/react-native";
+import { act } from 'react-test-renderer';
 import { NavigationContainer } from "@react-navigation/native";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,13 +15,15 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 
 jest.mock('axios');
 
+// Mock environment and constants for dynamic URL
 jest.mock('expo-constants', () => ({
   expoConfig: {
     extra: {
       local_ip: 'localhost',
-      local_setup: 'false'
-    }
-  }
+      local_setup: 'false',
+      environment: 'uat',  // You can change this to 'uat' or 'production' for different tests
+    },
+  },
 }));
 
 jest.mock('react-i18next', () => ({
@@ -44,6 +47,19 @@ describe('Sign in', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
+  // Helper function to get the expected API_BASE_URL based on the environment
+  const getApiBaseUrl = () => {
+    const environment = require('expo-constants').expoConfig.extra.environment;
+    switch (environment) {
+      case 'uat':
+        return 'https://tts-app-uat.azurewebsites.net/api/';
+      case 'production':
+        return 'https://tts-app-prod.azurewebsites.net/api/';
+      default:
+        return 'https://tts-app.azurewebsites.net/api/';
+    }
+  };
 
   it('renders the sign-in page successfully and opens and closes modal', () => {
     const mockSetUsername = jest.fn();
@@ -88,7 +104,7 @@ describe('Sign in', () => {
     fireEvent.press(button);
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith('https://tts-app-uat.azurewebsites.net/api/signin/', {
+      expect(axios.post).toHaveBeenCalledWith(`${getApiBaseUrl()}signin/`, {
         username: 'testuser testuser',
         id: null,
         guest: true
@@ -145,7 +161,7 @@ describe('Sign in', () => {
     fireEvent.press(button);
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith('https://tts-app-uat.azurewebsites.net/api/signin/', {
+      expect(axios.post).toHaveBeenCalledWith(`${getApiBaseUrl()}signin/`, {
         username: 'testuser testuser',
         id: null,
         guest: true
@@ -154,4 +170,53 @@ describe('Sign in', () => {
       expect(console.error).toHaveBeenCalledWith('Error signing in:', mockError);
     });
   });
+
+  it('prevents multiple submissions when loading is true', async () => {
+    const mockSetUsername = jest.fn();
+
+    axios.post.mockResolvedValue({
+      data: { token: 'mockToken' }
+    });
+
+    render(
+      <NavigationContainer>
+        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+          <SignIn />
+        </UserContext.Provider>
+      </NavigationContainer>
+    );
+
+    fireEvent.press(screen.getByText('Kirjaudu vieraskäyttäjänä'));
+
+    const firstNameInput = screen.getByPlaceholderText('Etunimi');
+    const lastNameInput = screen.getByPlaceholderText('Sukunimi');
+    const button = screen.getByText('Vahvista kirjautuminen');
+
+    fireEvent.changeText(firstNameInput, 'testuser');
+    fireEvent.changeText(lastNameInput, 'testuser');
+
+    // First press: start submission
+    fireEvent.press(button);
+
+    // Add a small delay to ensure loading state is set
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 50));
+    });
+
+    // Attempt a second submission while loading is still true
+    fireEvent.press(button);
+
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenCalledTimes(1);
+    });
+
+    expect(axios.post).toHaveBeenCalledWith(`${getApiBaseUrl()}signin/`, {
+      username: 'testuser testuser',
+      id: null,
+      guest: true
+    });
+
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('username', 'testuser testuser');
+    expect(mockSetUsername).toHaveBeenCalledWith('testuser testuser');
+  });  
 });
