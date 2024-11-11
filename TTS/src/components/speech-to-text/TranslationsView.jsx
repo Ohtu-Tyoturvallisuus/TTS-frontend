@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
 
-const TranslationsView = ({ translations, languageToFlagMap, t, timeout }) => (
+const TranslationsView = ({ translations, languageToFlagMap,}) => (
   <View>
     {Object.entries(translations).map(([lang, text]) => {
       const flagCode = languageToFlagMap[lang] || lang.toUpperCase();
@@ -13,7 +13,6 @@ const TranslationsView = ({ translations, languageToFlagMap, t, timeout }) => (
         </View>
       );
     })}
-    <Text>({t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}.)</Text>
   </View>
 );
 

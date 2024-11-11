@@ -131,6 +131,7 @@
     "close": "Sulje",
     "first_name": "Etunimi",
     "last_name": "Sukunimi",
+    "loading" : "Kirjautumistasi käsitellään...",
     "error_first_name": "Syötä etunimi",
     "error_last_name": "Syötä sukunimi"
   },

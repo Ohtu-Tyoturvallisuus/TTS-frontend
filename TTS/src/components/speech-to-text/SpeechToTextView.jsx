@@ -105,25 +105,32 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
 
   return (
     <View style={styles.container}>
-      <RecordingLanguageView recordingLanguageFlagCode={recordingLanguageFlagCode} t={t} />
-      {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#ef7d00" />
-          <Text style={styles.loadingText}>{t('speechtotext.processingAudio')}</Text>
-        </View>
-      ) : (
-        <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} t={t} />
-      )}
-      {transcription !== '' && translate && (
-        <TranscriptionView recordingLanguageFlagCode={recordingLanguageFlagCode} transcription={transcription} />
-      )}
-      {translate && (
-        <SelectTranslateLanguage setTranslationLanguages={setTranslationLanguages} />
-      )}
-      {recordingLanguage !== '' && (
-        <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} t={t} timeout={timeout} />
-      )}
+  <RecordingLanguageView recordingLanguageFlagCode={recordingLanguageFlagCode} t={t} />
+  {isLoading ? (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="#ef7d00" />
+      <Text style={styles.loadingText}>{t('speechtotext.processingAudio')}</Text>
     </View>
+  ) : (
+    <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} t={t} />
+  )}
+
+  {recording && (
+    <Text style={styles.maxLengthText}>
+      {t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}
+    </Text>
+  )}
+
+  {transcription !== '' && translate && (
+    <TranscriptionView recordingLanguageFlagCode={recordingLanguageFlagCode} transcription={transcription} />
+  )}
+  {translate && (
+    <SelectTranslateLanguage setTranslationLanguages={setTranslationLanguages} />
+  )}
+  {recordingLanguage !== '' && (
+    <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} t={t} timeout={timeout} />
+  )}
+  </View>
   );
 };
 

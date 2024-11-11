@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import {
   TextInput,
@@ -22,6 +23,7 @@ const SignIn = () => {
   const { setUsername } = useContext(UserContext);
   const { t } = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false); 
 
   const validationSchema = yup.object().shape({
     first_name: yup.string().required(t('signin.error_first_name')),
@@ -34,17 +36,22 @@ const SignIn = () => {
   };
 
   const onSubmit = async (values) => {
+    if (loading) return; 
+
+    setLoading(true); 
     try {
-      const username = `${values.first_name} ${values.last_name}`
+      const username = `${values.first_name} ${values.last_name}`;
       const data = await signIn(username, null, true);
       console.log(data);
       await AsyncStorage.setItem('username', username);
-      await AsyncStorage.setItem('access_token', data.access_token)
+      await AsyncStorage.setItem('access_token', data.access_token);
       setUsername(username);
       setModalVisible(false); // Close modal after successful sign-in
       navigation.navigate('Settings');
     } catch (error) {
       console.error('Error signing in:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,6 +88,7 @@ const SignIn = () => {
                 <Text className="text-[#FF0000]">{formik.errors.first_name}</Text>
               )}
             </View>
+
             <View className="pb-3">
               <Text className="pb-1">{t('signin.last_name')}</Text>
               <TextInput
@@ -98,9 +106,16 @@ const SignIn = () => {
               )}
             </View>
 
-            <TouchableOpacity onPress={formik.handleSubmit} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
-              <Text className="text-white font-bold">{t('signin.confirmLogin')}</Text>
+            <TouchableOpacity
+              onPress={formik.handleSubmit}
+              className={`bg-orange rounded-lg justify-center items-center py-4 px-6 my-2 ${loading ? 'opacity-50' : ''}`}
+              disabled={loading}
+            >
+              <Text className="text-white font-bold">
+                {loading ? t('signin.loading') : t('signin.confirmLogin')}
+              </Text>
             </TouchableOpacity>
+
             <TouchableOpacity onPress={() => setModalVisible(false)} className="bg-[#808080] rounded-lg justify-center items-center py-4 px-6 my-2">
               <Text className="text-white font-bold">{t('signin.close')}</Text>
             </TouchableOpacity>
@@ -110,6 +125,7 @@ const SignIn = () => {
     </View>
   );
 };
+
 
 export default SignIn;
 
