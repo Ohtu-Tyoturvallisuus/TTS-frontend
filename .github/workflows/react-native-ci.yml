@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - uat
   pull_request:
     branches:
       - main
+      - uat
   merge_group:
     types: [checks_requested]
   workflow_dispatch:
