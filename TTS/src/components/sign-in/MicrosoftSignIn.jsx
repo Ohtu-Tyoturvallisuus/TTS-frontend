@@ -25,7 +25,7 @@ const MicrosoftSignIn = () => {
 
   const redirectUri = makeRedirectUri({
     scheme: 'hazardhunt',
-    path: 'redirect',
+    path: 'uat/redirect',
     useProxy: false,
   });
 
