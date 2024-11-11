@@ -88,7 +88,7 @@ describe('Sign in', () => {
     fireEvent.press(button);
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
+      expect(axios.post).toHaveBeenCalledWith('https://tts-app-uat.azurewebsites.net/api/signin/', {
         username: 'testuser testuser',
         id: null,
         guest: true
@@ -145,7 +145,7 @@ describe('Sign in', () => {
     fireEvent.press(button);
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith('https://tts-app.azurewebsites.net/api/signin/', {
+      expect(axios.post).toHaveBeenCalledWith('https://tts-app-uat.azurewebsites.net/api/signin/', {
         username: 'testuser testuser',
         id: null,
         guest: true
