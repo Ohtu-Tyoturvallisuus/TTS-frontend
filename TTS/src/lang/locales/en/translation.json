@@ -104,7 +104,9 @@
     "environmentRisks": "Work environment risks",
     "submit": "Submit",
     "otherEnvironment": "Other workplace risk",
-    "otherScaffolding": "Other scaffolding risk"
+    "otherScaffolding": "Other scaffolding risk",
+    "emptyFieldsError": "Fill all the necessary fields before submitting",
+    "submitting": "Submitting form..."
   },
   "riskmodal": {
     "extraInfo": "Enter additional information",
@@ -149,6 +151,7 @@
   },  
   "speechtotext": {
     "maxLength": "Maximum length",
+    "processingAudio": "Processing your audio",
     "recognitionLanguage": "Speech recognition language",
     "seconds_one": "one second",
     "seconds_other": "{{count}} seconds",
@@ -159,5 +162,11 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
+  },
+  "filledriskform": {
+    "titlewithrisks": "Noted risks according to the form:",
+    "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
+    "edit": "Edit form",
+    "preview": "Preview the form"
   }
 }

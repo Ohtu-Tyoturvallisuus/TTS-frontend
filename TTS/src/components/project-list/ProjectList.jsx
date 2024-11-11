@@ -120,7 +120,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   container: {
+    backgroundColor: 'white',
     display: 'flex',
+    height: '100%',
     paddingTop: 50,
     padding: 16,
   },

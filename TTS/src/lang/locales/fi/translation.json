@@ -104,7 +104,9 @@
     "environmentRisks": "Työympäristön vaarat",
     "submit": "Lähetä",
     "otherEnvironment": "Muu työympäristövaara",
-    "otherScaffolding": "Muu telinetyövaara"
+    "otherScaffolding": "Muu telinetyövaara",
+    "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
+    "submitting": "Lähetetään lomaketta..."
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",
@@ -149,6 +151,7 @@
   },
   "speechtotext": {
     "maxLength": "Maksimipituus",
+    "processingAudio": "Äänitiedostoasi käsitellään",
     "recognitionLanguage": "Puheentunnistuskieli",
     "seconds_one": "yksi sekunti",
     "seconds_other": "{{count}} sekuntia",
@@ -159,5 +162,11 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
+  },
+  "filledriskform": {
+    "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
+    "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
+    "edit": "Muokkaa lomaketta",
+    "preview": "Esikatsele täytettyä lomaketta"
   }
 }
