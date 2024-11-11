@@ -13,7 +13,6 @@ const TranslationsView = ({ translations, languageToFlagMap, t, timeout }) => (
         </View>
       );
     })}
-    <Text>({t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}.)</Text>
   </View>
 );
 
