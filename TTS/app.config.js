@@ -38,8 +38,7 @@ export default {
     package: "com.HazardHunt",
     permissions: [
       "RECORD_AUDIO",
-      "CAMERA",
-      "READ_EXTERNAL_STORAGE"
+      "CAMERA"
     ]
   },
   web: {
@@ -57,6 +56,6 @@ export default {
     },
     local_setup: process.env.LOCAL_SETUP || 'false',
     local_ip: process.env.LOCAL_IP,
-    environment: process.env.ENVIRONMENT || 'main',
+    environment: process.env.EXPO_PUBLIC_ENVIRONMENT || 'main',
   }
 }
