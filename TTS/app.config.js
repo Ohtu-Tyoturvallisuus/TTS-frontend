@@ -39,7 +39,8 @@ export default {
     permissions: [
       "RECORD_AUDIO",
       "CAMERA",
-      "READ_EXTERNAL_STORAGE"
+      "READ_EXTERNAL_STORAGE",
+      "com.google.android.gms.permission.AD_ID"
     ]
   },
   web: {
