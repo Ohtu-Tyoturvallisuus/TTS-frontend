@@ -25,6 +25,12 @@
     "chooseAll": "--Choose all--",
     "search": "Search..."
   },
+  "filledriskform": {
+    "titlewithrisks": "Noted risks according to the form:",
+    "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
+    "edit": "Edit form",
+    "preview": "Preview the form"
+  },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",
     "selectTranslationLanguages": "Select languages for translation",
@@ -148,11 +154,5 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
-  },
-  "filledriskform": {
-    "titlewithrisks": "Noted risks according to the form:",
-    "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
-    "edit": "Edit form",
-    "preview": "Preview the form"
   }
 }

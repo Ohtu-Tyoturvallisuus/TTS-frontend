@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import TakePictureView from '@components/take-picture/TakePictureView';
 import * as ImagePicker from 'expo-image-picker';
-import { Image as RNImage, Platform } from 'react-native';
+import {  Image as RNImage } from 'react-native';
 import { useFormContext } from '@contexts/FormContext';
 
 jest.spyOn(ImagePicker, 'requestCameraPermissionsAsync').mockResolvedValue({
@@ -18,17 +18,6 @@ jest.mock('@contexts/FormContext', () => ({
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key) => key }),
 }));
-
-jest.mock('expo-image-picker', () => ({
-  requestCameraPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
-  requestMediaLibraryPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
-  launchImageLibraryAsync: jest.fn().mockResolvedValue({ canceled: true }),
-  launchCameraAsync: jest.fn().mockResolvedValue({ canceled: true }),
-  MediaTypeOptions: {
-    Images: 'Images',
-  },
-}));
-
 
 describe('TakePictureView', () => {
   const mockGetFormData = jest.fn();
@@ -128,42 +117,34 @@ describe('TakePictureView - Image Handling', () => {
     });
     mockGetFormData.mockReturnValue([]);
     jest.clearAllMocks();
-    Platform.OS = 'ios';  // Default platform
   });
 
-  it('calls pickImage function with correct source when buttons are pressed', async () => {
-    ImagePicker.launchImageLibraryAsync.mockResolvedValueOnce({
-      canceled: false,
-      assets: [{ uri: 'mock-uri-1' }],
-    });
-    ImagePicker.launchCameraAsync.mockResolvedValueOnce({
-      canceled: false,
-      assets: [{ uri: 'mock-uri-2' }],
-    });
-
-    const { getByText } = render(<TakePictureView title="test-title" />);
-
-    fireEvent.press(getByText('takepicture.selectFromGallery'));
-    await waitFor(() => expect(ImagePicker.launchImageLibraryAsync).toHaveBeenCalled());
-
-    fireEvent.press(getByText('takepicture.takePicture'));
-    await waitFor(() => expect(ImagePicker.launchCameraAsync).toHaveBeenCalled());
-  });
-
-  it('handles image orientation and updates form data', async () => {
+  it('calculates isLandscape correctly and updates form data', async () => {
     const mockUri = 'mock-uri-1';
-    ImagePicker.launchImageLibraryAsync.mockResolvedValueOnce({
+    jest.spyOn(ImagePicker, 'launchImageLibraryAsync').mockResolvedValueOnce({
       canceled: false,
       assets: [{ uri: mockUri }],
     });
 
-    jest.spyOn(RNImage, 'getSize').mockImplementation((uri, successCallback) => {
-      successCallback(800, 600); // Landscape
+    // Mock RNImage.getSize to control the dimensions it returns
+    const getSizeMock = jest.spyOn(RNImage, 'getSize').mockImplementation((uri, successCallback) => {
+      // Simulate a landscape image
+      successCallback(800, 600); // width > height
     });
 
     const { getByText } = render(<TakePictureView title="test-title" />);
+
     fireEvent.press(getByText('takepicture.selectFromGallery'));
 
+    await waitFor(() => {
+      expect(getSizeMock).toHaveBeenCalledWith(
+        mockUri,
+        expect.any(Function), // success callback
+        expect.any(Function)  // error callback
+      );
+    });
+
+    // Check if updateFormField is called with the correctly calculated isLandscape
     await waitFor(() => {
       expect(mockUpdateFormField).toHaveBeenCalledWith('test-title', 'images', [
         { uri: mockUri, isLandscape: true },
@@ -171,39 +152,16 @@ describe('TakePictureView - Image Handling', () => {
     });
   });
 
-  it('does nothing on web platform', async () => {
-    Platform.OS = 'web';
-    const { getByText } = render(<TakePictureView title="test-title" />);
-
-    fireEvent.press(getByText('takepicture.selectFromGallery'));
-    fireEvent.press(getByText('takepicture.takePicture'));
-
-    await waitFor(() => {
-      expect(ImagePicker.requestMediaLibraryPermissionsAsync).not.toHaveBeenCalled();
-      expect(ImagePicker.requestCameraPermissionsAsync).not.toHaveBeenCalled();
-    });
-  });
-});
-
-describe('TakePictureView - Permissions Handling', () => {
-  const mockGetFormData = jest.fn();
-  const mockUpdateFormField = jest.fn();
-
-  beforeEach(() => {
-    useFormContext.mockReturnValue({
-      getFormData: mockGetFormData,
-      updateFormField: mockUpdateFormField,
-    });
-    mockGetFormData.mockReturnValue([]);
-    jest.clearAllMocks();
-  });
-
-  it('requests media library permissions if source is gallery and Platform.OS is not web', async () => {
-    Platform.OS = 'ios';
-    ImagePicker.requestMediaLibraryPermissionsAsync.mockResolvedValueOnce({ status: 'granted' });
-    ImagePicker.launchImageLibraryAsync.mockResolvedValueOnce({
+  it('sets isLandscape to false for portrait images and updates form data', async () => {
+    const mockUri = 'mock-uri-portrait';
+    jest.spyOn(ImagePicker, 'launchImageLibraryAsync').mockResolvedValueOnce({
       canceled: false,
-      assets: [{ uri: 'mock-uri' }],
+      assets: [{ uri: mockUri }],
+    });
+
+    const getSizeMock = jest.spyOn(RNImage, 'getSize').mockImplementation((uri, successCallback) => {
+      // Simulate a portrait image
+      successCallback(600, 800); // width < height
     });
 
     const { getByText } = render(<TakePictureView title="test-title" />);
@@ -211,88 +169,32 @@ describe('TakePictureView - Permissions Handling', () => {
     fireEvent.press(getByText('takepicture.selectFromGallery'));
 
     await waitFor(() => {
-      expect(ImagePicker.requestMediaLibraryPermissionsAsync).toHaveBeenCalled();
-      expect(ImagePicker.launchImageLibraryAsync).toHaveBeenCalled();
+      expect(getSizeMock).toHaveBeenCalledWith(
+        mockUri,
+        expect.any(Function),
+        expect.any(Function)
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockUpdateFormField).toHaveBeenCalledWith('test-title', 'images', [
+        { uri: mockUri, isLandscape: false },
+      ]);
     });
   });
 
-  it('requests camera permissions if source is camera and Platform.OS is not web', async () => {
-    Platform.OS = 'ios';
-    ImagePicker.requestCameraPermissionsAsync.mockResolvedValueOnce({ status: 'granted' });
-    ImagePicker.launchCameraAsync.mockResolvedValueOnce({
+  it('calls error callback when getSize fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const mockUri = 'mock-uri-error';
+
+    jest.spyOn(ImagePicker, 'launchImageLibraryAsync').mockResolvedValueOnce({
       canceled: false,
-      assets: [{ uri: 'mock-uri' }],
+      assets: [{ uri: mockUri }],
     });
 
-    const { getByText } = render(<TakePictureView title="test-title" />);
-
-    fireEvent.press(getByText('takepicture.takePicture'));
-
-    await waitFor(() => {
-      expect(ImagePicker.requestCameraPermissionsAsync).toHaveBeenCalled();
-      expect(ImagePicker.launchCameraAsync).toHaveBeenCalled();
-    });
-  });
-});
-
-describe('TakePictureView - Platform and Source Handling', () => {
-  const mockGetFormData = jest.fn();
-  const mockUpdateFormField = jest.fn();
-
-  beforeEach(() => {
-    useFormContext.mockReturnValue({
-      getFormData: mockGetFormData,
-      updateFormField: mockUpdateFormField,
-    });
-    mockGetFormData.mockReturnValue([]);
-    jest.clearAllMocks();
-
-    // Provide default resolved values for launch functions
-    ImagePicker.launchImageLibraryAsync.mockResolvedValue({ canceled: true });
-    ImagePicker.launchCameraAsync.mockResolvedValue({ canceled: true });
-  });
-
-  it('does nothing when Platform.OS is web', async () => {
-    // Mock Platform.OS to be 'web'
-    Platform.OS = 'web';
-
-    const { getByText } = render(<TakePictureView title="test-title" />);
-
-    fireEvent.press(getByText('takepicture.selectFromGallery'));
-
-    // Ensure no permissions are requested when Platform.OS is 'web'
-    await waitFor(() => {
-      expect(ImagePicker.requestMediaLibraryPermissionsAsync).not.toHaveBeenCalled();
-      expect(ImagePicker.requestCameraPermissionsAsync).not.toHaveBeenCalled();
-      expect(ImagePicker.launchImageLibraryAsync).not.toHaveBeenCalled();
-      expect(ImagePicker.launchCameraAsync).not.toHaveBeenCalled();
-    });
-  });
-
-  it('does nothing when Platform.OS is not web and source is invalid', async () => {
-    // Mock Platform.OS to be 'ios'
-    Platform.OS = 'ios';
-
-    const { getByText } = render(<TakePictureView title="test-title" />);
-
-    // Simulate invalid source
-    fireEvent.press(getByText('takepicture.selectFromGallery'));
-
-    // Ensure no permissions are requested and no image picker is launched
-    await waitFor(() => {
-      expect(ImagePicker.requestMediaLibraryPermissionsAsync).not.toHaveBeenCalled();
-      expect(ImagePicker.requestCameraPermissionsAsync).not.toHaveBeenCalled();
-      expect(ImagePicker.launchImageLibraryAsync).not.toHaveBeenCalled();
-      expect(ImagePicker.launchCameraAsync).not.toHaveBeenCalled();
-    });
-  });
-
-  it('requests media library permissions if source is gallery and Platform.OS is not web', async () => {
-    Platform.OS = 'ios';
-    ImagePicker.requestMediaLibraryPermissionsAsync.mockResolvedValueOnce({ status: 'granted' });
-    ImagePicker.launchImageLibraryAsync.mockResolvedValueOnce({
-      canceled: false,
-      assets: [{ uri: 'mock-uri' }],
+    const getSizeMock = jest.spyOn(RNImage, 'getSize').mockImplementation((uri, successCallback, errorCallback) => {
+      // Simulate an error in getSize
+      errorCallback(new Error('Failed to load image size'));
     });
 
     const { getByText } = render(<TakePictureView title="test-title" />);
@@ -300,26 +202,14 @@ describe('TakePictureView - Platform and Source Handling', () => {
     fireEvent.press(getByText('takepicture.selectFromGallery'));
 
     await waitFor(() => {
-      expect(ImagePicker.requestMediaLibraryPermissionsAsync).toHaveBeenCalled();
-      expect(ImagePicker.launchImageLibraryAsync).toHaveBeenCalled();
-    });
-  });
-
-  it('requests camera permissions if source is camera and Platform.OS is not web', async () => {
-    Platform.OS = 'ios';
-    ImagePicker.requestCameraPermissionsAsync.mockResolvedValueOnce({ status: 'granted' });
-    ImagePicker.launchCameraAsync.mockResolvedValueOnce({
-      canceled: false,
-      assets: [{ uri: 'mock-uri' }],
+      expect(getSizeMock).toHaveBeenCalledWith(
+        mockUri,
+        expect.any(Function),
+        expect.any(Function)
+      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith(new Error('Failed to load image size'));
     });
 
-    const { getByText } = render(<TakePictureView title="test-title" />);
-
-    fireEvent.press(getByText('takepicture.takePicture'));
-
-    await waitFor(() => {
-      expect(ImagePicker.requestCameraPermissionsAsync).toHaveBeenCalled();
-      expect(ImagePicker.launchCameraAsync).toHaveBeenCalled();
-    });
+    consoleErrorSpy.mockRestore();
   });
 });

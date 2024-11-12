@@ -20,10 +20,10 @@ const TakePictureView = ({ title }) => {
     if (Platform.OS !== 'web') {
       let permissionStatus;
       if (source === 'camera') {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync() || {};
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
         permissionStatus = status;
       } else if (source === 'gallery') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync() || {};
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         permissionStatus = status;
       }
       if (permissionStatus !== 'granted') {

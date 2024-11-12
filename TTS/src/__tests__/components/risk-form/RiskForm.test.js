@@ -36,6 +36,7 @@ jest.mock('expo-constants', () => ({
     extra: {
       local_ip: '192.168.1.1',
       local_setup: 'true',
+      environment: 'main',
     },
   },
 }));
@@ -89,6 +90,7 @@ const mockTranslations = {
   'confirmation.confirm': 'Vahvista',
   'confirmation.cancel': 'Peruuta',
   'confirmation.changesWillBeLost': 'HUOM! Kaikki muutokset menetetään',
+  'filledriskform.preview': 'Esikatsele täytettyä lomaketta',
 };
 
 jest.mock('react-i18next', () => {
@@ -156,7 +158,10 @@ describe('RiskForm Component', () => {
       </NavigationContainer>
     );
   };
-  
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('renders correctly with project details', () => {
     const { getByText } = setup();
@@ -174,7 +179,7 @@ describe('RiskForm Component', () => {
   
     const { getByText } = setup();
   
-    fireEvent.press(getByText('filledriskform.preview'));
+    fireEvent.press(getByText('Esikatsele täytettyä lomaketta'));
   
     fireEvent.press(getByText('Lähetä'));
   
@@ -190,5 +195,5 @@ describe('RiskForm Component', () => {
     fireEvent.press(getByText('Sulje'));
 
     expect(getByText('Haluatko varmasti poistua?')).toBeTruthy();
-  });
+  });  
 });
