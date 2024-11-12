@@ -38,8 +38,7 @@ export default {
     package: "com.HazardHunt",
     permissions: [
       "RECORD_AUDIO",
-      "CAMERA",
-      "READ_EXTERNAL_STORAGE"
+      "CAMERA"
     ]
   },
   web: {
