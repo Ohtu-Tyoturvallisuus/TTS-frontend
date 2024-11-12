@@ -57,6 +57,6 @@ export default {
     },
     local_setup: process.env.LOCAL_SETUP || 'false',
     local_ip: process.env.LOCAL_IP,
-    environment: process.env.ENVIRONMENT || 'main',
+    environment: process.env.EXPO_PUBLIC_ENVIRONMENT || 'main',
   }
 }
