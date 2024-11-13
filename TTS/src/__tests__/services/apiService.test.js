@@ -10,6 +10,7 @@ import {
   retrieveIdParams,
   getUserProfile,
   uploadAudio,
+  translateText,
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -305,6 +306,53 @@ describe('API Module', () => {
     });
 
     afterAll(() => {
+      consoleErrorMock.mockRestore();
+    });
+  });
+
+  describe('translateText', () => {
+    const mockText = 'Hello';
+    const mockFrom = 'en';
+    const mockTo = ['fi'];
+    const mockToken = 'mock-token';
+    const mockResponseData = { translations: [{ text: 'Hei' }] };
+
+    beforeEach(() => {
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should successfully translate text and return the response data', async () => {
+      axios.post.mockResolvedValueOnce({ data: mockResponseData });
+
+      const result = await translateText(mockText, mockFrom, mockTo);
+
+      expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/translate/'), {
+        text: mockText,
+        from: mockFrom,
+        to: mockTo,
+      }, {
+        headers: {
+          Authorization: `Bearer ${mockToken}`,
+        },
+      });
+
+      expect(result).toEqual(mockResponseData);
+    });
+
+    it('should handle errors gracefully', async () => {
+      const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Translation error');
+
+      axios.post.mockRejectedValueOnce(mockError);
+
+      await expect(translateText(mockText, mockFrom, mockTo)).rejects.toThrow(mockError);
+
+      expect(consoleErrorMock).toHaveBeenCalledWith('Error translating text:', mockError);
+
       consoleErrorMock.mockRestore();
     });
   });

@@ -10,11 +10,18 @@ jest.mock('react-i18next', () => ({
         'selecttranslate.selectLanguages': 'Select languages',
         'selecttranslate.searchLanguages': 'Search languages...',
         'selecttranslate.selectedLanguages': 'Selected languages:',
-        'closebutton.close': 'Close',
+        'general.done': 'Done',
       };
       return translations[key] || key;
     },
   }),
+}));
+
+jest.mock('@contexts/TranslationContext', () => ({
+  useTranslationLanguages: jest.fn(() => ({
+    fromLang: 'fi',
+    toLangs: ['en', 'sv'],
+  })),
 }));
 
 describe('SelectTranslateLanguage Component', () => {
@@ -37,43 +44,43 @@ describe('SelectTranslateLanguage Component', () => {
 
     fireEvent.press(getByText('Select translation languages'));
     const searchInput = await findByPlaceholderText('Search languages...');
-    fireEvent.changeText(searchInput, 'Suomi');
-    const suomiOption = await findByText('Suomi');
-    expect(suomiOption).toBeTruthy();
+    fireEvent.changeText(searchInput, 'Svenska');
+    const svenskaOption = await findByText('Svenska');
+    expect(svenskaOption).toBeTruthy();
   });
 
   it('selects a language and displays it as selected', async () => {
     const mockSetTranslationLanguages = jest.fn();
-    const { getByText, findByPlaceholderText } = render(
+    const { getByText, findByPlaceholderText, queryByTestId } = render(
       <SelectTranslateLanguage setTranslationLanguages={mockSetTranslationLanguages} />
     );
 
     fireEvent.press(getByText('Select translation languages'));
     const searchInput = await findByPlaceholderText('Search languages...');
-    fireEvent.changeText(searchInput, 'Suomi');
+    fireEvent.changeText(searchInput, 'English');
 
-    fireEvent.press(getByText('Suomi'));
-    expect(getByText('✓')).toBeTruthy(); // Expect the checkmark to be there
+    fireEvent.press(getByText('English'));
+    expect(queryByTestId('check-icon')).toBeTruthy(); // Expect the checkmark icon to be there
   });
 
   it('removes a selected language when clicked again', async () => {
     const mockSetTranslationLanguages = jest.fn();
-    const { getByText, findByPlaceholderText, findByText, queryByText } = render(
+    const { getByText, findByPlaceholderText, findByText, queryByTestId } = render(
       <SelectTranslateLanguage setTranslationLanguages={mockSetTranslationLanguages} />
     );
 
     fireEvent.press(getByText('Select translation languages'));
     
     const searchInput = await findByPlaceholderText('Search languages...');
-    fireEvent.changeText(searchInput, 'Suomi');
+    fireEvent.changeText(searchInput, 'English');
 
-    const suomiOption = await findByText('Suomi');
-    fireEvent.press(suomiOption); // Select it
+    const englishOption = await findByText('English');
+    fireEvent.press(englishOption); // Select it
 
-    fireEvent.press(suomiOption); // Press again to remove it
+    fireEvent.press(englishOption); // Press again to remove it
 
     // Check that the checkmark is no longer displayed
-    expect(queryByText('✓')).toBeNull(); // Use queryByText for not found check
+    expect(queryByTestId('check-icon')).toBeNull(); // Use queryByTestId for not found check
   });
 
   it('calls setTranslationLanguages with the selected languages when modal is closed', async () => {
@@ -85,12 +92,26 @@ describe('SelectTranslateLanguage Component', () => {
     fireEvent.press(getByText('Select translation languages'));
 
     const searchInput = await findByPlaceholderText('Search languages...');
+    fireEvent.changeText(searchInput, 'English');
+
+    const englishOption = getByText('English');
+    fireEvent.press(englishOption); // Select 'English'
+
+    fireEvent.press(getByText('Done')); // Close the modal
+    expect(mockSetTranslationLanguages).toHaveBeenCalledWith(['en']);
+  });
+
+  it('does not allow selecting the form language as a translation language', async () => {
+    const mockSetTranslationLanguages = jest.fn();
+    const { getByText, findByPlaceholderText, queryByText } = render(
+      <SelectTranslateLanguage setTranslationLanguages={mockSetTranslationLanguages} />
+    );
+
+    fireEvent.press(getByText('Select translation languages'));
+    const searchInput = await findByPlaceholderText('Search languages...');
     fireEvent.changeText(searchInput, 'Suomi');
 
-    const suomiOption = getByText('Suomi');
-    fireEvent.press(suomiOption); // Select 'Suomi'
-
-    fireEvent.press(getByText('Close')); // Close the modal
-    expect(mockSetTranslationLanguages).toHaveBeenCalledWith(['fi']);
+    // Ensure 'Suomi' (form language) is not selectable
+    expect(queryByText('Suomi')).toBeNull();
   });
 });

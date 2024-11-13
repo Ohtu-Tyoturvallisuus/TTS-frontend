@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import RiskNote from '@components/risk-form/RiskNote';
 import { FormProvider } from '@contexts/FormContext';
+import { performTranslations } from '@services/performTranslations';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -50,6 +51,24 @@ jest.mock('@hooks/useFormFields', () => ({
   })),
 }));
 
+jest.mock('react-native-vector-icons/FontAwesome', () => 'Icon');
+
+jest.mock('@contexts/TranslationContext', () => ({
+    useTranslationLanguages: jest.fn(() => ({
+
+    fromLang: 'fi',
+
+     toLangs: ['en', 'sv'],
+
+    })),
+
+  toLangs: ['en', 'sv'],
+}));
+
+jest.mock('@services/performTranslations', () => ({
+  performTranslations: jest.fn(() => Promise.resolve({ translations: { en: 'Test Translation' }, error: null })),
+}));
+
 const Wrapper = ({ children }) => {
   return (
     <FormProvider>
@@ -90,7 +109,7 @@ describe('RiskNote Component', () => {
     expect(getByText('Test Risk Note')).toBeTruthy();
   });
 
-  it('should submit new description and status as "Kunnossa"', () => {
+  it('should submit new description and status as "Kunnossa"', async() => {
     const { getByText, getByPlaceholderText } = render(
       <Wrapper>
         <RiskNote
@@ -105,11 +124,13 @@ describe('RiskNote Component', () => {
     fireEvent.changeText(descriptionInput, 'Lisätietoja');
     fireEvent.press(getByText('Käännä (esikatselu)'));
 
-    expect(getByText('Kunnossa')).toBeTruthy();
+    await waitFor(() => {
+      expect(getByText('Kunnossa')).toBeTruthy();
+    });
     fireEvent.press(getByText('Kunnossa'));
   });
 
-  it('should open preview modal when "Esikatsele" is pressed', () => {
+  it('should open preview modal when "Esikatsele" is pressed', async () => {
     const { getByText, getByPlaceholderText } = render(
       <Wrapper>
         <RiskNote
@@ -124,13 +145,16 @@ describe('RiskNote Component', () => {
     fireEvent.changeText(descriptionInput, 'Lisätietoja');
     fireEvent.press(getByText('Käännä (esikatselu)'));
 
-    expect(getByText('Kunnossa')).toBeTruthy();
+    await waitFor(() => {
+      expect(getByText('Kunnossa')).toBeTruthy();
+    });
+
     fireEvent.press(getByText('Kunnossa'));
     expect(getByText('Esikatsele')).toBeTruthy();
     fireEvent.press(getByText('Esikatsele'));
   });
 
-  it('should open edit modal when "Muokkaa" is pressed', () => {
+  it('should open edit modal when "Muokkaa" is pressed', async () => {
     const { getByText, getByPlaceholderText } = render(
       <Wrapper>
         <RiskNote
@@ -145,10 +169,16 @@ describe('RiskNote Component', () => {
     fireEvent.changeText(descriptionInput, 'Lisätietoja');
     fireEvent.press(getByText('Käännä (esikatselu)'));
 
-    expect(getByText('Kunnossa')).toBeTruthy();
-    expect(getByText('Muokkaa')).toBeTruthy();
+    await waitFor(() => {
+      expect(getByText('Kunnossa')).toBeTruthy();
+      expect(getByText('Muokkaa')).toBeTruthy();
+    });
+
     fireEvent.press(getByText('Muokkaa'));
-    expect(getByText('Käännä (esikatselu)')).toBeTruthy();
+
+    await waitFor(() => {
+      expect(getByText('Käännä (esikatselu)')).toBeTruthy();
+    });
   });
 
   it('displays "Ei koske" message when "Ei koske" is pressed', () => {
@@ -196,7 +226,7 @@ describe('RiskNote Component', () => {
     expect(getByText('Huomioitavaa')).toBeTruthy();
   });
 
-  it('should close preview modal when "Muokkaa" is pressed', () => {
+  it('should close preview modal when "Muokkaa" is pressed', async () => {
     const { getByText, getByPlaceholderText } = render(
       <Wrapper>
         <RiskNote
@@ -205,12 +235,22 @@ describe('RiskNote Component', () => {
         />
       </Wrapper>
     );
-    
+
     fireEvent.press(getByText('Huomioitavaa'));
     const descriptionInput = getByPlaceholderText('Syötä lisätietoja');
     fireEvent.changeText(descriptionInput, 'Lisätietoja');
     fireEvent.press(getByText('Käännä (esikatselu)'));
+
+    // Wait for the translation to complete
+    await waitFor(() => {
+      expect(performTranslations).toHaveBeenCalled();
+    });
+
     fireEvent.press(getByText('Muokkaa'));
-    expect(getByText('Käännä (esikatselu)')).toBeTruthy();
+
+    // Wait for the modal to close
+    await waitFor(() => {
+      expect(getByText('Käännä (esikatselu)')).toBeTruthy();
+    });
   });
 });

@@ -93,7 +93,7 @@ const filteredCountries = countries.filter(country =>
                     <CountryFlag isoCode={country.flagCode} size={32} style={styles.countryFlag} />
                     <Text style={styles.countryLabel}>{country.label_native}</Text>
                     {selectedCountries.includes(country.value) && (
-                      <Icon name="check" size={20} color="green" style={styles.checkmark} />
+                      <Icon name="check" size={20} color="green" style={styles.checkmark} testID='check-icon' />
                     )}
                   </TouchableOpacity>
                 </View>
