@@ -10,6 +10,7 @@ import TranslationsView from './TranslationsView';
 import RecordingControls from './RecordingControls';
 import SelectTranslateLanguage from './SelectTranslateLanguage';
 import { getLanguageToFlagMap } from '@utils/languageUtils';
+import { getLanguageToFlagMap } from '@utils/languageUtils';
 
 const SpeechToTextView = ({ setDescription = null, translate = true }) => {
   const { t, i18n } = useTranslation();

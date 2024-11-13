@@ -138,7 +138,7 @@ const RiskForm = () => {
             {/* Projektin tiedot */}
             {project ? (
               <View className="mb-3">
-            <SelectTranslateLanguage setTranslationLanguages={setToLangs} />
+              <SelectTranslateLanguage setTranslationLanguages={setToLangs} />
 
                 <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
                 <Text>{project.project_name}</Text>

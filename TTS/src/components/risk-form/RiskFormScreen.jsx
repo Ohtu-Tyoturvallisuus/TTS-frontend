@@ -14,9 +14,9 @@ const RiskFormScreen = ({ onFocusChange }) => {
   return (
     <FormProvider>
       <TranslationProvider>
-        <RiskForm/>
+        <RiskForm />
       </TranslationProvider>
-  </FormProvider>
+    </FormProvider>
   )
 };
 
