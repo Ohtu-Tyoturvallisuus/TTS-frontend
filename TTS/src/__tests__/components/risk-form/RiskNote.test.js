@@ -31,15 +31,6 @@ jest.mock('react-i18next', () => ({
   }),
 }));
 
-jest.mock('expo-constants', () => ({
-  expoConfig: {
-    extra: {
-      local_ip: '192.168.1.1',
-      local_setup: 'true',
-    },
-  },
-}));
-
 jest.mock('@hooks/useFormFields', () => ({
   __esModule: true,
   default: jest.fn(() => ({

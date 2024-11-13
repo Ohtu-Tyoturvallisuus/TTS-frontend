@@ -10,17 +10,6 @@ jest.mock('expo-auth-session', () => ({
   makeRedirectUri: jest.fn(() => 'mock_redirect_uri'),
 }));
 
-// Mock environment and constants for dynamic URL
-jest.mock('expo-constants', () => ({
-  expoConfig: {
-    extra: {
-      local_ip: 'localhost',
-      local_setup: 'false',
-      environment: 'uat',  // You can change this to 'uat' or 'production' for different tests
-    },
-  },
-}));
-
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),

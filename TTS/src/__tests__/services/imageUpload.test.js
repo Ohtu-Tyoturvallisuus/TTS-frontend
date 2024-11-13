@@ -1,15 +1,6 @@
 import { uploadImages } from '@services/imageUpload';
 import { postImages } from '@services/apiService';
 
-jest.mock('expo-constants', () => ({
-  expoConfig: { "192.168.1.1": "",
-    extra: {
-      local_ip: '127.0.0.1',
-      local_setup: 'true'
-    }
-  }
-}));
-
 jest.mock('@services/apiService');
 
 describe('uploadImages', () => {

@@ -18,23 +18,22 @@ const TakePictureView = ({ title }) => {
   const pickImage = async (source) => {
     // Request appropriate permissions based on the source
     if (Platform.OS !== 'web') {
+      let permissionStatus;
       if (source === 'camera') {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('Camera permissions denied');
-          return;
-        }
+        permissionStatus = status;
       } else if (source === 'gallery') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('Gallery permissions denied');
-          return;
-        }
+        permissionStatus = status;
+      }
+      if (permissionStatus !== 'granted') {
+        console.log(`${source} permissions denied`);
+        return;
       }
     }
   
     // Open camera or gallery based on the source
-    let result;
+    let result = {};
     if (source === 'camera') {
       result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -42,7 +41,7 @@ const TakePictureView = ({ title }) => {
         aspect: [4, 3],
         quality: 1,
       });
-    } else {
+    } else if (source === 'gallery') {
       result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
