@@ -30,26 +30,26 @@ jobs:
         run: |
           echo '{
             "cli": {
-            "version": ">= 10.8.2",
-            "appVersionSource": "remote"
-          },
-          "build": {
-            "main": {
-              "autoIncrement": true,
-              "channel": "main"
+              "version": ">= 10.8.2",
+              "appVersionSource": "remote"
             },
-            "uat": {
-              "autoIncrement": true,
-              "channel": "uat"
+            "build": {
+              "main": {
+                "autoIncrement": true,
+                "channel": "main"
+              },
+              "uat": {
+                "autoIncrement": true,
+                "channel": "uat"
+              },
+              "production": {
+                "autoIncrement": true,
+                "channel": "production"
+              }
             },
-            "production": {
-              "autoIncrement": true,
-              "channel": "production"
-            }
-          },
-          "submit": {
-            "production": {
-              "ios": {
+            "submit": {
+              "production": {
+                "ios": {
                   "appleId": "${{ secrets.EAS_APPLE_ID }}",
                   "ascAppId": "${{ secrets.EAS_ASC_APP_ID }}",
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
@@ -59,10 +59,9 @@ jobs:
                   "releaseStatus": "draft",
                   "changesNotSentForReview": true
                 }
-              }
-            },
-            "uat": {
-              "ios": {
+              },
+              "uat": {
+                "ios": {
                   "appleId": "${{ secrets.EAS_APPLE_ID }}",
                   "ascAppId": "${{ secrets.EAS_ASC_APP_ID }}",
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
@@ -72,10 +71,9 @@ jobs:
                   "releaseStatus": "draft",
                   "changesNotSentForReview": true
                 }
-              }
-            },
-            "main": {
-              "ios": {
+              },
+              "main": {
+                "ios": {
                   "appleId": "${{ secrets.EAS_APPLE_ID }}",
                   "ascAppId": "${{ secrets.EAS_ASC_APP_ID }}",
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
@@ -88,6 +86,9 @@ jobs:
               }
             }
           }' > ./TTS/eas.json
+
+      - name: Print eas.json for debugging
+        run: cat ./TTS/eas.json
 
       - name: Install dependencies
         run: npm ci
