@@ -80,7 +80,6 @@ jobs:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
           EXPO_PUBLIC_ENVIRONMENT: ${{ secrets.ENVIRONMENT_UAT }}
 
-
       - name: Remove .env file
         run: rm ./TTS/.env
 
