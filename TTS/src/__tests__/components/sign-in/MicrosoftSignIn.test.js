@@ -18,7 +18,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 }));
 
 jest.mock('@services/apiService', () => ({
-  retrieveIdParams: jest.fn(),
+  retrieveIdParams: jest.fn().mockResolvedValue(),
   getUserProfile: jest.fn().mockResolvedValue(['John Doe', 'mock_id']),
   signIn: jest.fn().mockResolvedValue({ access_token: 'mock_access_token' }),
 }));
@@ -72,6 +72,8 @@ describe('MicrosoftSignIn Component', () => {
   it('stores token in AsyncStorage on successful login', async () => {
     const { getByText } = renderWithContext();
 
+    await waitFor(() => expect(getByText('Microsoft sign-in')).toBeTruthy());
+
     fireEvent.press(getByText('Microsoft sign-in'));
 
     await waitFor(() => {
@@ -94,13 +96,15 @@ describe('MicrosoftSignIn Component', () => {
     expect(getByText('Hello, John Doe!')).toBeTruthy();
   });
 
-  it('renders the sign-in button when no username is present', () => {
+  it('renders the sign-in button when no username is present', async () => {
     const { getByText } = renderWithContext();
+    await waitFor(() => expect(getByText('Microsoft sign-in')).toBeTruthy());
     expect(getByText('Microsoft sign-in')).toBeTruthy();
   });
 
   it('calls promptAsync when button is pressed', async () => {
     const { getByText } = renderWithContext();
+    await waitFor(() => expect(getByText('Microsoft sign-in')).toBeTruthy());
     const signInButton = getByText('Microsoft sign-in');
 
     fireEvent.press(signInButton);
@@ -118,6 +122,7 @@ describe('MicrosoftSignIn Component', () => {
     ]);
   
     const { getByText } = renderWithContext();
+    await waitFor(() => expect(getByText('Microsoft sign-in')).toBeTruthy());
     fireEvent.press(getByText('Microsoft sign-in'));
 
     await waitFor(() => {
@@ -135,7 +140,7 @@ describe('MicrosoftSignIn Component', () => {
     });
 
     const { getByText } = renderWithContext();
-
+    await waitFor(() => expect(getByText('Microsoft sign-in')).toBeTruthy());
     fireEvent.press(getByText('Microsoft sign-in'));
 
     await waitFor(() => {
@@ -148,7 +153,7 @@ describe('MicrosoftSignIn Component', () => {
     global.fetch.mockImplementationOnce(() => Promise.reject(new Error('Network error')));
 
     const { getByText } = renderWithContext();
-
+    await waitFor(() => expect(getByText('Microsoft sign-in')).toBeTruthy());
     fireEvent.press(getByText('Microsoft sign-in'));
 
     await waitFor(() => {

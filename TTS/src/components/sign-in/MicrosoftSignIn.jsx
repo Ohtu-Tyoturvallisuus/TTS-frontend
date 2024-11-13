@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,12 +10,20 @@ import { signIn } from '@services/apiService';
 const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
   const [TENANT_ID, setTenantId] = useState('');
+  const [loading, setLoading] = useState(true);
   const { username, setUsername, setEmail } = useContext(UserContext);
   const { t } = useTranslation();
 
   useEffect(() => {
-    retrieveIdParams({ setClientId, setTenantId });
+    const fetchParams = async () => {
+      setLoading(true);
+      await retrieveIdParams({ setClientId, setTenantId });
+      setLoading(false);
+    };
+  
+    fetchParams();
   }, []);
+  
 
   const discovery = {
     authorizationEndpoint: `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize`,
@@ -95,8 +103,13 @@ const MicrosoftSignIn = () => {
   return (
     <View className="justify-center items-center px-5">
       {username ? (
-         <View className="py-2">
+        <View className="py-2">
           <Text>{t('microsoftsignin.greeting')}, {username}!</Text>
+        </View>
+      ) : loading ? (
+        <View className="py-4">
+          <ActivityIndicator size="large" color="#ef7d00" />
+          <Text>{t('microsoftsignin.loading')}</Text>
         </View>
       ) : (
         <TouchableOpacity 
