@@ -65,7 +65,10 @@ const FilledRiskForm = ({
               relevantRiskNotes.map(([key, value]) => (
                 <View key={key} className="py-2">
                   <Text className="text-base font-bold">
-                    {t(`${key}.title`, { ns: 'formFields' })}:
+                    {key.startsWith('riskform.otherEnvironment')
+                      ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
+                      : t(`${key}.title`, { ns: 'formFields' })
+                    }:
                   </Text>
                   <Text>
                     {value.description}
