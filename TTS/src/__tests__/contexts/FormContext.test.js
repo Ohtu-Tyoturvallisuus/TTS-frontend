@@ -18,6 +18,7 @@ const TestComponent = () => {
     updateFormField,
     getFormData,
     replaceFormData,
+    updateTranslations,
     task,
     setTask,
     scaffoldType,
@@ -35,6 +36,7 @@ const TestComponent = () => {
 
       <Button title="Update Description" onPress={() => updateFormField('personal_protection', 'description', 'Updated Description')} />
       <Button title="Replace Form Data" onPress={() => replaceFormData({ personal_protection: { description: 'New Desc' } })} />
+      <Button title="Update Translations" onPress={() => updateTranslations('personal_protection', 'invalid translation')} />
       
       <TextInput 
         testID="taskInput"
@@ -59,6 +61,10 @@ const TestComponent = () => {
 };
 
 describe('FormProvider Component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('initializes with default values', () => {
     const { getByTestId } = render(
       <FormProvider>
@@ -110,5 +116,23 @@ describe('FormProvider Component', () => {
     expect(getByTestId('task').props.children).toBe('New Task');
     expect(getByTestId('scaffoldType').props.children).toBe('New Scaffold Type');
     expect(getByTestId('taskDesc').props.children).toBe('New Task Description');
+  });
+
+  it('does not update form data if updateTranslations is called with invalid translations', () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    const { getByTestId, getByText } = render(
+      <FormProvider>
+        <TestComponent />
+      </FormProvider>
+    );
+
+    expect(getByTestId('personal_protection_desc').props.children).toBe('');
+
+    fireEvent.press(getByText('Update Translations'));
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Translations must be a dictionary');
+    expect(getByTestId('personal_protection_desc').props.children).toBe('');
+  
+    consoleErrorSpy.mockRestore();
   });
 });
