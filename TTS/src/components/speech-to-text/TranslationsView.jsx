@@ -1,20 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import CountryFlag from 'react-native-country-flag';
+import { getLanguageToFlagMap } from '@utils/languageUtils';
 
-const TranslationsView = ({ translations, languageToFlagMap,}) => (
-  <View>
-    {Object.entries(translations).map(([lang, text]) => {
-      const flagCode = languageToFlagMap[lang] || lang.toUpperCase();
-      return (
-        <View style={styles.textContainer} key={lang}>
-          <CountryFlag isoCode={flagCode} size={24} />
-          <Text style={styles.translatedText}>{text}</Text>
-        </View>
-      );
-    })}
-  </View>
-);
+const TranslationsView = ({ translations, t, timeout }) => {
+  const languageToFlagMap = getLanguageToFlagMap();
+
+  return (
+    <View>
+      {Object.entries(translations).map(([lang, text]) => {
+        const flagCode = languageToFlagMap[lang] || lang.toUpperCase();
+        return (
+          <View style={styles.textContainer} key={lang}>
+            <CountryFlag isoCode={flagCode} size={24}/>
+            <Text style={styles.translatedText}>{text}</Text>
+          </View>
+        );
+      })}
+      <Text>({t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}.)</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   textContainer: {

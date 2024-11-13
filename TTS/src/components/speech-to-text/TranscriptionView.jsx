@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import CountryFlag from 'react-native-country-flag';
+import CountryFlag from '@components/CountryFlag';
 
 const TranscriptionView = ({ recordingLanguageFlagCode, transcription }) => (
   <View style={styles.textContainer}>
-    <CountryFlag isoCode={recordingLanguageFlagCode} size={24} />
+    <CountryFlag isoCode={recordingLanguageFlagCode} size={24}/>
     <Text style={styles.translatedText}>{transcription}</Text>
   </View>
 );

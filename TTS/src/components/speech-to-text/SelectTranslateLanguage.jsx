@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, ScrollView } from 'react-native';
-import CountryFlag from 'react-native-country-flag';
+import CountryFlag from '@components/CountryFlag';
 import countriesData from '@lang/locales/languages.json';
 import { useTranslation } from 'react-i18next';
+import Icon from 'react-native-vector-icons/FontAwesome'; 
 
 import CloseButton from '@components/buttons/CloseButton';
 
@@ -61,34 +62,41 @@ const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
               value={searchText}
               onChangeText={setSearchText}
             />
-            {filteredCountries.map((country) => (
-              <TouchableOpacity
-                key={country.value}
-                style={styles.countryItem}
-                onPress={() => toggleCountry(country.value)}
-              >
-                <CountryFlag isoCode={country.flagCode} size={24} />
-                <Text style={styles.countryLabel}>{country.label_native}</Text>
-                {selectedCountries.includes(country.value) && (
-                  <Text style={styles.selectedText}>✓</Text>
-                )}
-              </TouchableOpacity>
-            ))}
-            {selectedCountries.length > 0 && (
-              <View style={styles.selectedCountriesContainer}>
-                <Text style={styles.selectedCountriesLabel}>{t('selecttranslate.selectedLanguages')}:</Text>
-                {selectedCountries.map((value) => {
-                  const countryData = countries.find((country) => country.value === value);
-                  return (
-                    <View key={value} style={styles.selectedCountry}>
-                      <CountryFlag isoCode={countryData.flagCode} size={32} />
-                      <Text style={styles.countryName}>{countryData.label_native}</Text>
-                    </View>
-                  );
-                })}
-              </View>
-            )}
+            
+            <View style={styles.languagesContainer}>
+              {filteredCountries.map((country) => (
+                <View key={country.value} style={styles.countryItemContainer}>
+                  <TouchableOpacity
+                    style={styles.countryItem}
+                    onPress={() => toggleCountry(country.value)}
+                  >
+                    <CountryFlag isoCode={country.flagCode} size={32} style={styles.countryFlag} />
+                    <Text style={styles.countryLabel}>{country.label_native}</Text>
+                    {selectedCountries.includes(country.value) && (
+                      <Icon name="check" size={20} color="green" style={styles.checkmark} />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
           </View>
+          </ScrollView>
+          {selectedCountries.length > 0 && (
+          <View style={styles.selectedCountriesContainer}>
+            <Text style={styles.selectedCountriesLabel}>{t('selecttranslate.selectedLanguages')}:</Text>
+            <View style={styles.selectedCountriesRow}>
+              {selectedCountries.map((value) => {
+                const countryData = countries.find((country) => country.value === value);
+                return (
+                  <View key={value} style={styles.selectedCountry}>
+                    <CountryFlag isoCode={countryData.flagCode} size={32} style={styles.countryFlag} />
+                    <Text style={styles.countryName}>{countryData.label_native}</Text>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        )}
           <View style={styles.button}>
             <CloseButton
               onPress={() => {
@@ -97,7 +105,6 @@ const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
               }}
             />
           </View>
-        </ScrollView>
       </Modal>
     </>
   );
@@ -112,7 +119,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-start',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     padding: 20,
   },
   countryItem: {
@@ -124,6 +131,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
     width: '100%',
+  },
+  countryItemContainer: {
+    width: '48%',
   },
   countryLabel: {
     flex: 1,
@@ -142,6 +152,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 10,
+  },
+  languagesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   scrollViewContent: {
     backgroundColor: 'white',
@@ -179,10 +194,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
-  selectedCountry: {
-    alignItems: 'center',
+  selectedCountriesRow: {
     flexDirection: 'row',
-    marginVertical: 5,
+    flexWrap: 'wrap',
+  },
+  selectedCountry: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '50%',
   },
   selectedText: {
     color: 'green',
