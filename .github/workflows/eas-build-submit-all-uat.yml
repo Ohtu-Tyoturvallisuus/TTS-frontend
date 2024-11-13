@@ -62,10 +62,30 @@ jobs:
               }
             },
             "uat": {
-              "extends": "production"
+              "ios": {
+                  "appleId": "${{ secrets.EAS_APPLE_ID }}",
+                  "ascAppId": "${{ secrets.EAS_ASC_APP_ID }}",
+                  "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
+                },
+                "android": {
+                  "track": "internal",
+                  "releaseStatus": "draft",
+                  "changesNotSentForReview": true
+                }
+              }
             },
             "main": {
-              "extends": "production"
+              "ios": {
+                  "appleId": "${{ secrets.EAS_APPLE_ID }}",
+                  "ascAppId": "${{ secrets.EAS_ASC_APP_ID }}",
+                  "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
+                },
+                "android": {
+                  "track": "internal",
+                  "releaseStatus": "draft",
+                  "changesNotSentForReview": true
+                }
+              }
             }
           }' > ./TTS/eas.json
 
