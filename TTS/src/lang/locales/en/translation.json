@@ -129,6 +129,7 @@
   },
   "selecttranslate": {
     "selectTranslationLanguages": "Select languages for translation",
+    "selectedTranslationLanguages": "Selected languages for translation",
     "selectedLanguages": "Selected languages",
     "searchLanguages": "Search for languages...",
     "selectLanguages": "Select languages"

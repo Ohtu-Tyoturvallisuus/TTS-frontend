@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonsContainer: {
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   recordButton: {
     alignItems: 'center',

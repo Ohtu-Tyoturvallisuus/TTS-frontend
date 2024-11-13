@@ -1,24 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, ScrollView } from 'react-native';
 import CountryFlag from '@components/CountryFlag';
 import countriesData from '@lang/locales/languages.json';
 import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
-
-import CloseButton from '@components/buttons/CloseButton';
+import { useTranslationLanguages } from '@contexts/TranslationContext';
 
 const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
   const { t } = useTranslation();
   const [selectedCountries, setSelectedCountries] = useState([]);
+  const countries = countriesData.countries;
+  const { fromLang } = useTranslationLanguages();
+  const [fromCountry, setFromCountry] = useState(() => {
+    const initialCountry = countries.find(country => country.value === fromLang);
+    return initialCountry ? initialCountry : countries[0];
+  });
   const [searchText, setSearchText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-  const countries = countriesData.countries;
+  // Update origin value if fromLang changes
+  useEffect(() => {
+    const newOriginCountry = countries.find(country => country.value === fromLang);
+    if (newOriginCountry) {
+      setFromCountry(newOriginCountry);
+    } else if (countries.length > 0) {
+      setFromCountry(countries[0]);
+    }
+  }, [fromLang, countries]);
 
-  // Filter countries based on the search text
-  const filteredCountries = countries.filter(country =>
-    country.label_native.toLowerCase().includes(searchText.toLowerCase())
-  );
+// Filter countries based on the search text and exclude the origin country
+const filteredCountries = countries.filter(country =>
+  country.label_native.toLowerCase().includes(searchText.toLowerCase()) &&
+  country.value !== fromCountry.value
+);
 
   const toggleCountry = (value) => {
     setSelectedCountries((prevSelected) => {
@@ -37,19 +51,25 @@ const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
         onPress={() => setModalVisible(true)}
       >
         <View>
-          <Text>{t('selecttranslate.selectTranslationLanguages')}</Text>
-          {selectedCountries.length > 0 && (
-            <View style={styles.flagsContainer}>
-              {selectedCountries.map(country => (
+          {selectedCountries.length === 0 ? (
+            <Text>{t('selecttranslate.selectTranslationLanguages')}</Text>
+          ) : (
+            <Text>{t('selecttranslate.selectedTranslationLanguages')}</Text>
+          )}
+          <View style={styles.flagsContainer}>
+            <CountryFlag isoCode={fromCountry.flagCode} size={24} style={styles.countryFlag} />
+            <Icon name="arrow-right" size={20} color="black" className={'mr-4 ml-1'}/>
+            {selectedCountries.length > 0 && (
+              selectedCountries.map(country => (
                <View key={country} style={{marginRight: 5, marginBottom: 5}}>
                   <CountryFlag 
                     isoCode={countries.find(c => c.value === country).flagCode} 
                     size={24} 
                   />
                 </View>
-              ))}
-            </View>
-          )}
+              ))
+            )}
+          </View>
         </View>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='slide'>
@@ -82,21 +102,30 @@ const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
           </View>
           </ScrollView>
           {selectedCountries.length > 0 && (
-          <View style={styles.selectedCountriesContainer}>
-            <Text style={styles.selectedCountriesLabel}>{t('selecttranslate.selectedLanguages')}:</Text>
-            <View style={styles.selectedCountriesRow}>
-              {selectedCountries.map((value) => {
-                const countryData = countries.find((country) => country.value === value);
-                return (
-                  <View key={value} style={styles.selectedCountry}>
-                    <CountryFlag isoCode={countryData.flagCode} size={32} style={styles.countryFlag} />
-                    <Text style={styles.countryName}>{countryData.label_native}</Text>
+            <View style={styles.selectedCountriesContainer}>
+              <Text style={styles.selectedCountriesLabel}>{t('selecttranslate.selectedLanguages')}:</Text>
+              <View style={styles.selectedCountriesRow}>
+                <View style={styles.originLanguageContainer}>
+                  <View className="flex-col items-center ml-10">
+                    <CountryFlag isoCode={fromCountry.flagCode} size={32} style={styles.countryFlag} />
+                    <Text style={styles.countryName}>{fromCountry.label_native}</Text>
                   </View>
-                );
-              })}
+                  <Icon name="arrow-right" size={20} color="black" />
+                </View>
+                <View style={styles.selectedCountriesColumn}>
+                  {selectedCountries.map((value) => {
+                    const countryData = countries.find((country) => country.value === value);
+                    return (
+                      <View key={value} style={styles.selectedCountry}>
+                        <CountryFlag isoCode={countryData.flagCode} size={32} style={styles.countryFlag} />
+                        <Text style={styles.countryName}>{countryData.label_native}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
             </View>
-          </View>
-        )}
+          )}
           <View style={styles.button}>
             <TouchableOpacity style={styles.readyButton} onPress={() =>{
                 setModalVisible(false);
@@ -163,7 +192,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 5
+    marginTop: 5,
   },
   label: {
     fontSize: 16,
@@ -212,17 +241,31 @@ const styles = StyleSheet.create({
   },
   selectedCountriesRow: {
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  originLanguageContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginRight: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  selectedCountriesColumn: {
+    flex: 1,
+    flexDirection: 'column',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
   selectedCountry: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    width: '50%',
   },
-  selectedText: {
-    color: 'green',
-    fontWeight: 'bold',
+  countryFlag: {
+    marginRight: 10,
+  },
+  countryName: {
+    fontSize: 18,
   },
 });
 
