@@ -60,6 +60,12 @@ jobs:
                   "changesNotSentForReview": true
                 }
               }
+            },
+            "uat": {
+              "extends": "production"
+            },
+            "main": {
+              "extends": "production"
             }
           }' > ./TTS/eas.json
 
