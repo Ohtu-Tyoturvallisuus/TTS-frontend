@@ -53,9 +53,6 @@ export default {
   extra: {
     eas: {
       projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID
-    },
-    local_setup: process.env.LOCAL_SETUP || 'false',
-    local_ip: process.env.LOCAL_IP,
-    environment: process.env.EXPO_PUBLIC_ENVIRONMENT || 'main',
+    }
   }
 }

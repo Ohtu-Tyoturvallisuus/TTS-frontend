@@ -25,6 +25,12 @@
     "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
   },
+  "filledriskform": {
+    "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
+    "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
+    "edit": "Muokkaa lomaketta",
+    "preview": "Esikatsele täytettyä lomaketta"
+  },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",
     "selectTranslationLanguages": "Valitse kielet käännöstä varten",
@@ -148,11 +154,5 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
-  },
-  "filledriskform": {
-    "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
-    "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
-    "edit": "Muokkaa lomaketta",
-    "preview": "Esikatsele täytettyä lomaketta"
   }
 }

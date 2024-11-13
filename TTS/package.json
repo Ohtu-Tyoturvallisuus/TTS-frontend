@@ -10,13 +10,34 @@
     "test": "jest",
     "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern --fix",
     "eas": "npx eas-cli",
-    "build:ios:production": "npx dotenv -- npx eas-cli build --platform ios --profile production",
-    "build:android:production": "npx dotenv -- npx eas-cli build --platform android --profile production",
-    "build:all:production": "npx dotenv -- npx eas-cli build --platform all --profile production",
-    "submit:ios": "npx eas-cli submit --platform ios --latest --profile production",
-    "submit:android": "npx eas-cli submit --platform android --latest --profile production",
-    "submit:all": "npx eas-cli submit --platform all --latest --profile production",
-    "update:all": "npx dotenv -- npx eas-cli update --branch production"
+
+    "build:ios:main": "dotenv -- npx eas-cli build --platform ios --profile main",
+    "build:android:main": "dotenv -- npx eas-cli build --platform android --profile main",
+    "build:all:main": "dotenv -- npx eas-cli build --platform all --profile main",
+
+    "build:ios:uat": "dotenv -- npx eas-cli build --platform ios --profile uat",
+    "build:android:uat": "dotenv -- npx eas-cli build --platform android --profile uat",
+    "build:all:uat": "dotenv -- npx eas-cli build --platform all --profile uat",
+
+    "build:ios:production": "dotenv -- npx eas-cli build --platform ios --profile production",
+    "build:android:production": "dotenv -- npx eas-cli build --platform android --profile production",
+    "build:all:production": "dotenv -- npx eas-cli build --platform all --profile production",
+
+    "submit:ios:main": "npx eas-cli submit --platform ios --latest --profile main",
+    "submit:android:main": "npx eas-cli submit --platform android --latest --profile main",
+    "submit:all:main": "npx eas-cli submit --platform all --latest --profile main",
+    
+    "submit:ios:uat": "npx eas-cli submit --platform ios --latest --profile uat",
+    "submit:android:uat": "npx eas-cli submit --platform android --latest --profile uat",
+    "submit:all:uat": "npx eas-cli submit --platform all --latest --profile uat",
+    
+    "submit:ios:production": "npx eas-cli submit --platform ios --latest --profile production",
+    "submit:android:production": "npx eas-cli submit --platform android --latest --profile production",
+    "submit:all:production": "npx eas-cli submit --platform all --latest --profile production",
+
+    "update:all:main": "dotenv -- npx eas-cli update --branch main",
+    "update:all:uat": "dotenv -- npx eas-cli update --branch uat",
+    "update:all:production": "dotenv -- npx eas-cli update --branch production"
   },
   "jest": {
     "preset": "jest-expo",
@@ -29,7 +50,7 @@
       "clover"
     ],
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.jsx?$": ["babel-jest", { "caller": { "preserveEnvVars": true } }]
     },
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-router-native)"

@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SignIn from "@components/sign-in/SignIn";
 import { UserContext } from "@contexts/UserContext";
+import Config from "@utils/Config";
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(() => Promise.resolve()),
@@ -14,17 +15,6 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 }));
 
 jest.mock('axios');
-
-// Mock environment and constants for dynamic URL
-jest.mock('expo-constants', () => ({
-  expoConfig: {
-    extra: {
-      local_ip: 'localhost',
-      local_setup: 'false',
-      environment: 'uat',  // You can change this to 'uat' or 'production' for different tests
-    },
-  },
-}));
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -44,22 +34,13 @@ jest.mock('react-i18next', () => ({
 console.error = jest.fn();
 
 describe('Sign in', () => {
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   // Helper function to get the expected API_BASE_URL based on the environment
-  const getApiBaseUrl = () => {
-    const environment = require('expo-constants').expoConfig.extra.environment;
-    switch (environment) {
-      case 'uat':
-        return 'https://tts-app-uat.azurewebsites.net/api/';
-      case 'production':
-        return 'https://tts-app-prod.azurewebsites.net/api/';
-      default:
-        return 'https://tts-app.azurewebsites.net/api/';
-    }
-  };
+  const apiBaseUrl = Config.apiUrl;
 
   it('renders the sign-in page successfully and opens and closes modal', () => {
     const mockSetUsername = jest.fn();
@@ -104,7 +85,7 @@ describe('Sign in', () => {
     fireEvent.press(button);
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith(`${getApiBaseUrl()}signin/`, {
+      expect(axios.post).toHaveBeenCalledWith(`${apiBaseUrl}signin/`, {
         username: 'testuser testuser',
         id: null,
         guest: true
@@ -161,7 +142,7 @@ describe('Sign in', () => {
     fireEvent.press(button);
 
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith(`${getApiBaseUrl()}signin/`, {
+      expect(axios.post).toHaveBeenCalledWith(`${apiBaseUrl}signin/`, {
         username: 'testuser testuser',
         id: null,
         guest: true
@@ -210,7 +191,7 @@ describe('Sign in', () => {
       expect(axios.post).toHaveBeenCalledTimes(1);
     });
 
-    expect(axios.post).toHaveBeenCalledWith(`${getApiBaseUrl()}signin/`, {
+    expect(axios.post).toHaveBeenCalledWith(`${apiBaseUrl}signin/`, {
       username: 'testuser testuser',
       id: null,
       guest: true

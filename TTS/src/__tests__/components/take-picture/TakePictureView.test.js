@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import TakePictureView from '@components/take-picture/TakePictureView';
 import * as ImagePicker from 'expo-image-picker';
+import {  Image as RNImage } from 'react-native';
 import { useFormContext } from '@contexts/FormContext';
 
 jest.spyOn(ImagePicker, 'requestCameraPermissionsAsync').mockResolvedValue({
@@ -105,3 +106,110 @@ describe('TakePictureView', () => {
   });
 });
 
+describe('TakePictureView - Image Handling', () => {
+  const mockGetFormData = jest.fn();
+  const mockUpdateFormField = jest.fn();
+
+  beforeEach(() => {
+    useFormContext.mockReturnValue({
+      getFormData: mockGetFormData,
+      updateFormField: mockUpdateFormField,
+    });
+    mockGetFormData.mockReturnValue([]);
+    jest.clearAllMocks();
+  });
+
+  it('calculates isLandscape correctly and updates form data', async () => {
+    const mockUri = 'mock-uri-1';
+    jest.spyOn(ImagePicker, 'launchImageLibraryAsync').mockResolvedValueOnce({
+      canceled: false,
+      assets: [{ uri: mockUri }],
+    });
+
+    // Mock RNImage.getSize to control the dimensions it returns
+    const getSizeMock = jest.spyOn(RNImage, 'getSize').mockImplementation((uri, successCallback) => {
+      // Simulate a landscape image
+      successCallback(800, 600); // width > height
+    });
+
+    const { getByText } = render(<TakePictureView title="test-title" />);
+
+    fireEvent.press(getByText('takepicture.selectFromGallery'));
+
+    await waitFor(() => {
+      expect(getSizeMock).toHaveBeenCalledWith(
+        mockUri,
+        expect.any(Function), // success callback
+        expect.any(Function)  // error callback
+      );
+    });
+
+    // Check if updateFormField is called with the correctly calculated isLandscape
+    await waitFor(() => {
+      expect(mockUpdateFormField).toHaveBeenCalledWith('test-title', 'images', [
+        { uri: mockUri, isLandscape: true },
+      ]);
+    });
+  });
+
+  it('sets isLandscape to false for portrait images and updates form data', async () => {
+    const mockUri = 'mock-uri-portrait';
+    jest.spyOn(ImagePicker, 'launchImageLibraryAsync').mockResolvedValueOnce({
+      canceled: false,
+      assets: [{ uri: mockUri }],
+    });
+
+    const getSizeMock = jest.spyOn(RNImage, 'getSize').mockImplementation((uri, successCallback) => {
+      // Simulate a portrait image
+      successCallback(600, 800); // width < height
+    });
+
+    const { getByText } = render(<TakePictureView title="test-title" />);
+
+    fireEvent.press(getByText('takepicture.selectFromGallery'));
+
+    await waitFor(() => {
+      expect(getSizeMock).toHaveBeenCalledWith(
+        mockUri,
+        expect.any(Function),
+        expect.any(Function)
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockUpdateFormField).toHaveBeenCalledWith('test-title', 'images', [
+        { uri: mockUri, isLandscape: false },
+      ]);
+    });
+  });
+
+  it('calls error callback when getSize fails', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const mockUri = 'mock-uri-error';
+
+    jest.spyOn(ImagePicker, 'launchImageLibraryAsync').mockResolvedValueOnce({
+      canceled: false,
+      assets: [{ uri: mockUri }],
+    });
+
+    const getSizeMock = jest.spyOn(RNImage, 'getSize').mockImplementation((uri, successCallback, errorCallback) => {
+      // Simulate an error in getSize
+      errorCallback(new Error('Failed to load image size'));
+    });
+
+    const { getByText } = render(<TakePictureView title="test-title" />);
+
+    fireEvent.press(getByText('takepicture.selectFromGallery'));
+
+    await waitFor(() => {
+      expect(getSizeMock).toHaveBeenCalledWith(
+        mockUri,
+        expect.any(Function),
+        expect.any(Function)
+      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith(new Error('Failed to load image size'));
+    });
+
+    consoleErrorSpy.mockRestore();
+  });
+});
