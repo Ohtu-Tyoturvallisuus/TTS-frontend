@@ -31,16 +31,6 @@ jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
   error: null,
 })));
 
-jest.mock('expo-constants', () => ({
-  expoConfig: {
-    extra: {
-      local_ip: '192.168.1.1',
-      local_setup: 'true',
-      environment: 'main',
-    },
-  },
-}));
-
 const flattenFormFields = (formFields) => {
   const translations = {};
   for (const [key, value] of Object.entries(formFields)) {

@@ -24,43 +24,48 @@ jobs:
       - name: Create .env file
         run: |
           echo "EXPO_PUBLIC_EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > ./TTS/.env
-          echo "ENVIRONMENT=uat" >> ./TTS/.env
+          echo "EXPO_PUBLIC_ENVIRONMENT=${{ secrets.ENVIRONMENT_UAT }}" >> ./TTS/.env
 
       - name: Create eas.json with secrets
         run: |
           echo '{
             "cli": {
-              "version": ">= 10.8.2",
-              "appVersionSource": "remote"
+            "version": ">= 10.8.2",
+            "appVersionSource": "remote"
+          },
+          "build": {
+            "main": {
+              "autoIncrement": true,
+              "channel": "main"
             },
-            "build": {
-              "development": {
-                "developmentClient": true,
-                "distribution": "internal",
-                "channel": "development"
-              },
-              "preview": {
-                "distribution": "internal",
-                "channel": "preview"
-              },
-              "production": {
-                "autoIncrement": true,
-                "channel": "production"
-              }
+            "uat": {
+              "autoIncrement": true,
+              "channel": "uat"
             },
-            "submit": {
-              "production": {
-                "ios": {
+            "production": {
+              "autoIncrement": true,
+              "channel": "production"
+            }
+          },
+          "submit": {
+            "production": {
+              "ios": {
                   "appleId": "${{ secrets.EAS_APPLE_ID }}",
                   "ascAppId": "${{ secrets.EAS_ASC_APP_ID }}",
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
                 },
                 "android": {
-                  "track": "alpha",
+                  "track": "internal",
                   "releaseStatus": "draft",
                   "changesNotSentForReview": true
                 }
               }
+            },
+            "uat": {
+              "extends": "production"
+            },
+            "main": {
+              "extends": "production"
             }
           }' > ./TTS/eas.json
 
@@ -69,11 +74,11 @@ jobs:
         working-directory: ./TTS
 
       - name: Build on EAS
-        run: dotenv -- eas build -p all --non-interactive --no-wait --profile production --auto-submit
+        run: dotenv -- eas build -p all --non-interactive --no-wait --profile uat --auto-submit
         working-directory: ./TTS
         env:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
-          ENVIRONMENT: uat
+          EXPO_PUBLIC_ENVIRONMENT: ${{ secrets.ENVIRONMENT_UAT }}
 
 
       - name: Remove .env file

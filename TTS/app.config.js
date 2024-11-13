@@ -38,9 +38,7 @@ export default {
     package: "com.HazardHunt",
     permissions: [
       "RECORD_AUDIO",
-      "CAMERA",
-      "READ_EXTERNAL_STORAGE",
-      "com.google.android.gms.permission.AD_ID"
+      "CAMERA"
     ]
   },
   web: {
@@ -55,9 +53,6 @@ export default {
   extra: {
     eas: {
       projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID
-    },
-    local_setup: process.env.LOCAL_SETUP || 'false',
-    local_ip: process.env.LOCAL_IP,
-    environment: process.env.ENVIRONMENT || 'main',
+    }
   }
 }
