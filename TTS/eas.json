@@ -29,6 +29,12 @@
         "releaseStatus": "draft",
         "changesNotSentForReview": true
       }
+    },
+    "uat": {
+      "extends": "production"
+    },
+    "main": {
+      "extends": "production"
     }
   }
 }
