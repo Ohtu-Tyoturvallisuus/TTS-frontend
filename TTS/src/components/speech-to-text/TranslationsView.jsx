@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import CountryFlag from '@components/CountryFlag';
 import { getLanguageToFlagMap } from '@utils/languageUtils';
 
-const TranslationsView = ({ translations, t }) => {
+const TranslationsView = ({ translations }) => {
   const languageToFlagMap = getLanguageToFlagMap();
 
   return (
@@ -22,22 +22,22 @@ const TranslationsView = ({ translations, t }) => {
 };
 
 const styles = StyleSheet.create({
+  countryFlag: {
+    left: 0,
+    position: 'absolute',
+    top: 0,
+  },
   textContainer: {
-    position: 'relative',
     backgroundColor: '#f0f0f0',
     borderColor: '#c5c6c8',
     borderWidth: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginVertical: 3,
-    width: '90%',
     padding: 15,
     paddingLeft: 40,
-  },
-  countryFlag: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
+    position: 'relative',
+    width: '90%',
   },
   translatedText: {
     paddingHorizontal: 10,

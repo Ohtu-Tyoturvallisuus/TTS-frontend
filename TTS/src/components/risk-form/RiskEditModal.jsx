@@ -139,10 +139,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  speechButton: {
-    backgroundColor: '#ef7d00',
-    width: 'auto',
-  },
   submitButton: {
     backgroundColor: 'green',
     flex: 1,

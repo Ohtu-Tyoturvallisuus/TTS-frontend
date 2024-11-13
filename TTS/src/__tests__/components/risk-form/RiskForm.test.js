@@ -170,6 +170,10 @@ describe('RiskForm Component', () => {
     jest.clearAllMocks();
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders correctly with project details', () => {
     const { getByText } = setup();
 

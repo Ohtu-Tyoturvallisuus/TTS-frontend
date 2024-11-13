@@ -4,7 +4,6 @@ import { Audio } from 'expo-av';
 import { useTranslation } from 'react-i18next';
 import { uploadAudio } from '@services/apiService';
 
-import RecordingLanguageView from './RecordingLanguageView';
 import TranscriptionView from './TranscriptionView';
 import TranslationsView from './TranslationsView';
 import RecordingControls from './RecordingControls';
@@ -118,7 +117,7 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
     <SelectTranslateLanguage setTranslationLanguages={setTranslationLanguages} />
   )}
   {recordingLanguage !== '' && (
-    <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} t={t} timeout={timeout} />
+    <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} timeout={timeout} />
   )}
   </View>
   );

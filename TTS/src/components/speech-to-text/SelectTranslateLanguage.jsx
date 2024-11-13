@@ -146,16 +146,6 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
   },
-  readyButton: {
-    alignItems: 'center',
-    backgroundColor: 'green',
-    borderRadius: 5,
-    justifyContent: 'center',
-    marginVertical: 10,
-    minHeight: 48,
-    minWidth: 48,
-    padding: 15,
-  },
   buttonText: {
     color: '#fff',
     fontSize: 16,
@@ -166,6 +156,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     padding: 20,
+  },
+  countryFlag: {
+    marginRight: 10,
   },
   countryItem: {
     alignItems: 'center',
@@ -203,6 +196,23 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
+  originLanguageContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginRight: 20,
+  },
+  readyButton: {
+    alignItems: 'center',
+    backgroundColor: 'green',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: 10,
+    minHeight: 48,
+    minWidth: 48,
+    padding: 15,
+  },
   scrollViewContent: {
     backgroundColor: 'white',
     flexGrow: 1,
@@ -227,6 +237,12 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '95%',
   },
+  selectedCountriesColumn: {
+    alignItems: 'flex-start',
+    flex: 1,
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+  },
   selectedCountriesContainer: {
     borderColor: '#c5c6c8',
     borderRadius: 4,
@@ -240,32 +256,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   selectedCountriesRow: {
-    flexDirection: 'row',
     alignItems: 'center',
-  },
-  originLanguageContainer: {
-    flex: 1,
     flexDirection: 'row',
-    marginRight: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  selectedCountriesColumn: {
-    flex: 1,
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
   },
   selectedCountry: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     marginBottom: 10,
-  },
-  countryFlag: {
-    marginRight: 10,
-  },
-  countryName: {
-    fontSize: 18,
   },
 });
 

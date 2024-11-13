@@ -22,7 +22,7 @@ jest.mock('@hooks/useFormFields', () => ({
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key, options) => key, // Mock the t function to return the key
+    t: (key, ) => key, // Mock the t function to return the key
     i18n: {
       language: 'fi',
     },
