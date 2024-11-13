@@ -25,6 +25,20 @@
     "chooseAll": "--Choose all--",
     "search": "Search..."
   },
+  "general": {
+    "done": "Done",
+    "loading": "Loading...",
+    "error": "Error",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm"
+  },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",
     "selectTranslationLanguages": "Select languages for translation",

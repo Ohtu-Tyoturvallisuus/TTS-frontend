@@ -98,12 +98,12 @@ const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
           </View>
         )}
           <View style={styles.button}>
-            <CloseButton
-              onPress={() => {
+            <TouchableOpacity style={styles.readyButton} onPress={() =>{
                 setModalVisible(false);
                 setTranslationLanguages(selectedCountries);
-              }}
-            />
+              }}>
+              <Text style={styles.buttonText}>{t('general.done')}</Text>
+            </TouchableOpacity>
           </View>
       </Modal>
     </>
@@ -113,8 +113,24 @@ const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
 const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
+    justifyContent: 'center',
     padding: 20,
     width: '100%',
+  },
+  readyButton: {
+    alignItems: 'center',
+    backgroundColor: 'green',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: 10,
+    minHeight: 48,
+    minWidth: 48,
+    padding: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   container: {
     alignItems: 'flex-start',
