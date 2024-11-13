@@ -2,6 +2,8 @@ import { useState } from "react";
 import { View, ScrollView, Text, Image, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import RiskImage from "@components/take-picture/Image";
+import { Ionicons } from '@expo/vector-icons';
+import CloseButton from '@components/buttons/CloseButton';
 
 const FilledRiskForm = ({
   formData = {},
@@ -10,7 +12,10 @@ const FilledRiskForm = ({
   projectId = '',
   task = null,
   scaffoldType = null,
-  taskDesc = null
+  taskDesc = null,
+  submitted = false,
+  formattedDate = '',
+  survey = {}
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { t } = useTranslation(['translation', 'formFields']);
@@ -20,12 +25,37 @@ const FilledRiskForm = ({
 
   return (
     <>
+    {submitted ? (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text className="text-lg font-semibold">
+          {t('filledriskform.project')}: {survey.project_name}
+        </Text>
+
+        <View className="flex flex-row items-center">
+          <Text className="text-base">{t('filledriskform.filledat')}: </Text>
+          <Ionicons name="calendar-outline" size={16} color="black" style={{ marginRight: 4 }} />
+          <Text className="text-base text-gray-600 mr-4">
+            {formattedDate.date}
+          </Text>
+
+          <Ionicons name="time-outline" size={16} color="black" style={{ marginRight: 4 }} />
+          <Text className="text-base text-gray-600">
+            {formattedDate.time}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    ) : (
       <TouchableOpacity
         className="bg-[#ef7d00] rounded-md justify-center items-center py-4 px-6 w-full my-2"
         onPress={() => setModalVisible(true)}
       >
         <Text className="text-white font-bold">{t('filledriskform.preview')}</Text>
       </TouchableOpacity>
+    )}
+    <>
       <Modal visible={modalVisible} animationType='slide'>
         <View className="flex items-center justify-center">
           <ScrollView 
@@ -62,62 +92,86 @@ const FilledRiskForm = ({
             )}
 
             {relevantRiskNotes.length > 0 ? (
-              relevantRiskNotes.map(([key, value]) => (
-                <View key={key} className="py-2">
-                  <Text className="text-base font-bold">
-                    {t(`${key}.title`, { ns: 'formFields' })}:
-                  </Text>
-                  <Text>
-                    {value.description}
-                  </Text>
-                  <View style={styles.imageContainer}>
-                    {!value.images ? (
-                      <View style={{ margin: 10 }}>
-                      </View>
-                    ) : (
-                      value.images.map((image, index) => (
-                        <RiskImage
-                          key={index}
-                          images={value.images}
-                          currentIndex={index}
-                          isLandscape={image.isLandscape}
-                          testID={`risk-image-${index}`}
-                        />
-                      ))
-                    )}
+              relevantRiskNotes.map(([key, value]) => {
+                const renderTitle = () => {
+                  return key.startsWith('riskform.otherScaffolding')
+                    ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
+                    : key.startsWith('riskform.otherEnvironment')
+                      ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
+                      : t(`${key}.title`, { ns: 'formFields' })
+                };
+              
+                return (
+                  <View key={key} className="py-2">
+                    <Text className="text-base font-bold">
+                      {renderTitle()}:
+                    </Text>
+                    <Text>
+                      {value.description}
+                    </Text>
+                    <View style={styles.imageContainer}>
+                      {!value.images ? (
+                        <View style={{ margin: 10 }}>
+                        </View>
+                      ) : (
+                        value.images.map((image, index) => (
+                          <RiskImage
+                            key={index}
+                            images={value.images}
+                            currentIndex={index}
+                            isLandscape={image.isLandscape}
+                            testID={`risk-image-${index}`}
+                          />
+                        ))
+                      )}
+                    </View>
                   </View>
-                </View>
-              ))
+                );
+              })
+              
             ) : (
               <View className="py-3">
                 <View className="border p-3 rounded-md w-full">
-                  <Text className="text-lg font-bold">{t('filledriskform.norisks')}</Text>
+                  <Text className="text-lg font-bold">{submitted ? t('filledriskform.emptyform') : t('filledriskform.norisks')}</Text>
                 </View>
               </View>
             )}
-            <TouchableOpacity
-              className="rounded-md py-3 my-2 items-center bg-orange mt-7"
-              onPress={() => setModalVisible(false)}
-            >
-              <Text className="text-white text-lg font-bold">{t('filledriskform.edit')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="rounded-md py-3 my-2 items-center bg-[#008000]"
-              onPress={() => {
-                setModalVisible(false)
-                handleSubmit()
-              }}
-            >
-              <Text className="text-white text-lg font-bold">{t('riskform.submit')}</Text>
-            </TouchableOpacity>
+            {submitted ? (
+              <CloseButton onPress={() => setModalVisible(false)} />
+            ) : (
+              <>
+                <TouchableOpacity
+                  className="rounded-md py-3 my-2 items-center bg-orange mt-7"
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text className="text-white text-lg font-bold">{t('filledriskform.edit')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="rounded-md py-3 my-2 items-center bg-[#008000]"
+                  onPress={() => {
+                    setModalVisible(false)
+                    handleSubmit()
+                  }}
+                >
+                  <Text className="text-white text-lg font-bold">{t('riskform.submit')}</Text>
+                </TouchableOpacity>
+              </>
+            )}
           </ScrollView>
         </View>
       </Modal>
+    </>
     </>
   )
 };
 
 const styles = StyleSheet.create({
+  button: {
+    borderColor: '#ef7d00',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 5
+  },
   imageContainer: {
     alignItems: 'center',
     flexDirection: 'row',

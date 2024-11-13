@@ -167,7 +167,6 @@ export const getUserProfile = async ({ setUsername, setEmail, accessToken }) => 
 };
 
 export const getUserSurveys = async () => {
-  console.log('GETTING USER SURVEYS')
   const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + 'filled-surveys/'
   const response = await axios.get(url, {
