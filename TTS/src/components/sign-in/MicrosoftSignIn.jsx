@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { retrieveIdParams, getUserProfile } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 import { signIn } from '@services/apiService';
+import Config from '@utils/Config';
 
 const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
@@ -23,7 +24,6 @@ const MicrosoftSignIn = () => {
   
     fetchParams();
   }, []);
-  
 
   const discovery = {
     authorizationEndpoint: `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize`,
@@ -31,8 +31,13 @@ const MicrosoftSignIn = () => {
     revocationEndpoint: `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/logout`,
   };
 
-  const ENVIRONMENT = process.env.EXPO_PUBLIC_ENVIRONMENT;
-  const redirectPath = ENVIRONMENT === 'production' ? 'prod/redirect' : ENVIRONMENT === 'uat' ? 'uat/redirect' : 'redirect';
+  const apiUrl = Config.apiUrl;
+  // redirect uri for production is 'prod/redirect', for uat is 'uat/redirect', otherwise 'redirect'
+  const redirectPath = apiUrl.includes('prod')
+    ? 'prod/redirect'
+    : apiUrl.includes('uat')
+      ? 'uat/redirect'
+      : 'redirect';
 
   const redirectUri = makeRedirectUri({
     scheme: 'hazardhunt',

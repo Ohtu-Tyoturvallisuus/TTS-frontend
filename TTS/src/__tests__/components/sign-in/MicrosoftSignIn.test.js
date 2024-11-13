@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { useAuthRequest } from 'expo-auth-session';
+import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
 import MicrosoftSignIn from '@components/sign-in/MicrosoftSignIn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '@contexts/UserContext';
+import Config from '@utils/Config';
 
 jest.mock('expo-auth-session', () => ({
   useAuthRequest: jest.fn(),
@@ -67,6 +68,45 @@ describe('MicrosoftSignIn Component', () => {
       ok: true,
       json: jest.fn().mockResolvedValue({ access_token: 'mock_access_token' }),
     });
+  });
+
+  it('sets redirectUri correctly for production environment', () => {
+    Config.apiUrl = 'https://tts-app-prod.azurewebsites.net/api/';
+    const expectedRedirectUri = makeRedirectUri({
+      scheme: 'hazardhunt',
+      path: 'prod/redirect',
+      useProxy: false,
+    });
+
+    renderWithContext();
+    expect(makeRedirectUri).toHaveBeenCalledWith(expect.objectContaining({ path: 'prod/redirect' }));
+    expect(makeRedirectUri).toHaveReturnedWith(expectedRedirectUri);
+  });
+
+  it('sets redirectUri correctly for UAT environment', () => {
+    Config.apiUrl = 'https://tts-app-uat.azurewebsites.net/api/';
+    const expectedRedirectUri = makeRedirectUri({
+      scheme: 'hazardhunt',
+      path: 'uat/redirect',
+      useProxy: false,
+    });
+
+    renderWithContext();
+    expect(makeRedirectUri).toHaveBeenCalledWith(expect.objectContaining({ path: 'uat/redirect' }));
+    expect(makeRedirectUri).toHaveReturnedWith(expectedRedirectUri);
+  });
+
+  it('sets redirectUri correctly for development environment', () => {
+    Config.apiUrl = 'https://tts-app.azurewebsites.net/api/';
+    const expectedRedirectUri = makeRedirectUri({
+      scheme: 'hazardhunt',
+      path: 'redirect',
+      useProxy: false,
+    });
+
+    renderWithContext();
+    expect(makeRedirectUri).toHaveBeenCalledWith(expect.objectContaining({ path: 'redirect' }));
+    expect(makeRedirectUri).toHaveReturnedWith(expectedRedirectUri);
   });
 
   it('stores token in AsyncStorage on successful login', async () => {
