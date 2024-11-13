@@ -14,15 +14,6 @@ import {
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-jest.mock('expo-constants', () => ({
-    expoConfig: {
-      extra: {
-        local_ip: '192.168.1.1',
-        local_setup: 'true',
-      },
-    },
-  }));
-
 jest.mock('axios');
 
 // Mock AsyncStorage
@@ -219,7 +210,7 @@ describe('API Module', () => {
 
     const response = await postImages(image);
 
-    expect(axios.post).toHaveBeenCalledWith("http://192.168.1.1:8000/api/upload-images/", image, {
+    expect(axios.post).toHaveBeenCalledWith("https://tts-app.azurewebsites.net/api/upload-images/", image, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer undefined`

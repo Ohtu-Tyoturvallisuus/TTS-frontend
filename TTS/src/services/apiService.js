@@ -1,29 +1,8 @@
 import axios from "axios";
-import constants from 'expo-constants';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Config from "@utils/Config";
 
-const LOCAL_IP = constants.expoConfig.extra.local_ip;
-const LOCAL_SETUP = constants.expoConfig.extra.local_setup === 'true';
-const ENVIRONMENT = constants.expoConfig.extra.environment;
-console.log('Local setup:', LOCAL_SETUP, 'Local IP:', LOCAL_IP, 'Environment:', ENVIRONMENT);
-
-let API_BASE_URL = '';
-if (LOCAL_SETUP) {
-  API_BASE_URL = `http://${constants.expoConfig.extra.local_ip}:8000/api/`;
-} else {
-  switch (ENVIRONMENT) {
-    case 'uat':
-      API_BASE_URL = 'https://tts-app-uat.azurewebsites.net/api/';
-      break;
-    case 'production':
-      API_BASE_URL = 'https://tts-app-prod.azurewebsites.net/api/';
-      break;
-    default:
-      API_BASE_URL = 'https://tts-app.azurewebsites.net/api/';
-      break;
-  }
-}
-console.log('API_BASE_URL:', API_BASE_URL);
+const API_BASE_URL = Config.apiUrl;
 const RETRIEVE_PARAMS_URL = API_BASE_URL + 'retrieve-params/'
 
 export const signIn = async (username, id = null, guest = null) => {

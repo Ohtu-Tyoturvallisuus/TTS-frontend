@@ -4,14 +4,13 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "channel": "development"
+    "main": {
+      "autoIncrement": true,
+      "channel": "main"
     },
-    "preview": {
-      "distribution": "internal",
-      "channel": "preview"
+    "uat": {
+      "autoIncrement": true,
+      "channel": "uat"
     },
     "production": {
       "autoIncrement": true,
@@ -20,6 +19,30 @@
   },
   "submit": {
     "production": {
+      "ios": {
+        "appleId": "intentionally_left_blank",
+        "ascAppId": "intentionally_left_blank",
+        "appleTeamId": "intentionally_left_blank"
+      },
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft",
+        "changesNotSentForReview": true
+      }
+    },
+    "uat": {
+      "ios": {
+        "appleId": "intentionally_left_blank",
+        "ascAppId": "intentionally_left_blank",
+        "appleTeamId": "intentionally_left_blank"
+      },
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft",
+        "changesNotSentForReview": true
+      }
+    },
+    "main": {
       "ios": {
         "appleId": "intentionally_left_blank",
         "ascAppId": "intentionally_left_blank",

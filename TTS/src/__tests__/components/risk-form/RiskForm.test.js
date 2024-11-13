@@ -166,6 +166,10 @@ describe('RiskForm Component', () => {
     );
   };
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders correctly with project details', () => {
     const { getByText } = setup();
 
@@ -197,5 +201,5 @@ describe('RiskForm Component', () => {
     fireEvent.press(getByText('Sulje'));
 
     expect(getByText('Haluatko varmasti poistua?')).toBeTruthy();
-  });
+  });  
 });

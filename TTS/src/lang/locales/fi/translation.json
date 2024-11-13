@@ -25,6 +25,12 @@
     "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
   },
+  "filledriskform": {
+    "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
+    "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
+    "edit": "Muokkaa lomaketta",
+    "preview": "Esikatsele täytettyä lomaketta"
+  },
   "general": {
     "done": "Valmis",
     "loading": "Ladataan...",
@@ -57,7 +63,8 @@
   },
   "microsoftsignin": {
     "signInText": "Microsoft-kirjautuminen",
-    "greeting": "Hei"
+    "greeting": "Hei",
+    "loading": "Valmistellaan Microsoft-kirjautumista..."
   },
   "projectlist":{
     "chooseAll": "--Valitse kaikki--",
@@ -163,11 +170,5 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
-  },
-  "filledriskform": {
-    "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
-    "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
-    "edit": "Muokkaa lomaketta",
-    "preview": "Esikatsele lomake"
   }
 }

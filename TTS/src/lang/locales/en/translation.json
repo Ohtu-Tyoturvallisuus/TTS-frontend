@@ -39,6 +39,12 @@
     "next": "Next",
     "confirm": "Confirm"
   },
+  "filledriskform": {
+    "titlewithrisks": "Noted risks according to the form:",
+    "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
+    "edit": "Edit form",
+    "preview": "Preview the form"
+  },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",
     "selectTranslationLanguages": "Select languages for translation",
@@ -57,7 +63,8 @@
   },
   "microsoftsignin": {
     "signInText": "Microsoft sign-in",
-    "greeting": "Hello"
+    "greeting": "Hello",
+    "loading": "Preparing Microsoft sign-in..."
   },
   "projectlist":{
     "chooseAll": "--Choose all--",
@@ -163,11 +170,5 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
-  },
-  "filledriskform": {
-    "titlewithrisks": "Noted risks according to the form:",
-    "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
-    "edit": "Edit form",
-    "preview": "Preview the form"
   }
 }

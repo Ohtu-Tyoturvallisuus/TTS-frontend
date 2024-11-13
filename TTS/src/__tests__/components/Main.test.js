@@ -33,15 +33,6 @@ jest.mock('expo-linking', () => ({
   createURL: jest.fn((path) => `mock://localhost/${path}`),
 }));
 
-jest.mock('expo-constants', () => ({
-  expoConfig: {
-    extra: {
-      local_ip: 'localhost',
-      local_setup: 'false'
-    }
-  }
-}));
-
 jest.mock('@expo/vector-icons', () => {
   return {
     Ionicons: () => null,
