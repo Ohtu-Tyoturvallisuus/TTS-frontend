@@ -165,3 +165,15 @@ export const getUserProfile = async ({ setUsername, setEmail, accessToken }) => 
     console.error('Network error:', error);
   }
 };
+
+export const getUserSurveys = async () => {
+  console.log('GETTING USER SURVEYS')
+  const token = await AsyncStorage.getItem('access_token');
+  const url = API_BASE_URL + 'filled-surveys/'
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+  return response.data;
+};
