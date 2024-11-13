@@ -24,7 +24,6 @@ jobs:
       - name: Create .env file
         run: |
           echo "EXPO_PUBLIC_EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > ./TTS/.env
-          echo "EXPO_PUBLIC_ENVIRONMENT=uat" >> ./TTS/.env
 
       - name: Create eas.json with secrets
         run: |
@@ -87,9 +86,6 @@ jobs:
             }
           }' > ./TTS/eas.json
 
-      - name: Print eas.json for debugging
-        run: cat ./TTS/eas.json
-
       - name: Install dependencies
         run: npm ci
         working-directory: ./TTS
@@ -99,7 +95,6 @@ jobs:
         working-directory: ./TTS
         env:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
-          EXPO_PUBLIC_ENVIRONMENT: "uat"
 
       - name: Remove .env file
         run: rm ./TTS/.env

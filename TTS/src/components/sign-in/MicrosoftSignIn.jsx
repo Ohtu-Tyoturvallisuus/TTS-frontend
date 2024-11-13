@@ -1,20 +1,28 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { useAuthRequest, makeRedirectUri } from 'expo-auth-session';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { retrieveIdParams, getUserProfile } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 import { signIn } from '@services/apiService';
+import Config from '@utils/Config';
 
 const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
   const [TENANT_ID, setTenantId] = useState('');
+  const [loading, setLoading] = useState(true);
   const { username, setUsername, setEmail } = useContext(UserContext);
   const { t } = useTranslation();
 
   useEffect(() => {
-    retrieveIdParams({ setClientId, setTenantId });
+    const fetchParams = async () => {
+      setLoading(true);
+      await retrieveIdParams({ setClientId, setTenantId });
+      setLoading(false);
+    };
+  
+    fetchParams();
   }, []);
 
   const discovery = {
@@ -23,8 +31,13 @@ const MicrosoftSignIn = () => {
     revocationEndpoint: `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/logout`,
   };
 
-  const ENVIRONMENT = process.env.EXPO_PUBLIC_ENVIRONMENT;
-  const redirectPath = ENVIRONMENT === 'production' ? 'prod/redirect' : ENVIRONMENT === 'uat' ? 'uat/redirect' : 'redirect';
+  const apiUrl = Config.apiUrl;
+  // redirect uri for production is 'prod/redirect', for uat is 'uat/redirect', otherwise 'redirect'
+  const redirectPath = apiUrl.includes('prod')
+    ? 'prod/redirect'
+    : apiUrl.includes('uat')
+      ? 'uat/redirect'
+      : 'redirect';
 
   const redirectUri = makeRedirectUri({
     scheme: 'hazardhunt',
@@ -95,8 +108,13 @@ const MicrosoftSignIn = () => {
   return (
     <View className="justify-center items-center px-5">
       {username ? (
-         <View className="py-2">
+        <View className="py-2">
           <Text>{t('microsoftsignin.greeting')}, {username}!</Text>
+        </View>
+      ) : loading ? (
+        <View className="py-4">
+          <ActivityIndicator size="large" color="#ef7d00" />
+          <Text>{t('microsoftsignin.loading')}</Text>
         </View>
       ) : (
         <TouchableOpacity 
