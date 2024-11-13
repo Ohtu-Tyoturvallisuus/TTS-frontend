@@ -86,9 +86,6 @@ jobs:
             }
           }' > ./TTS/eas.json
 
-      - name: Print eas.json for debugging
-        run: cat ./TTS/eas.json
-
       - name: Install dependencies
         run: npm ci
         working-directory: ./TTS
