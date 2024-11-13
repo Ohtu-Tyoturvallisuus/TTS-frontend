@@ -102,20 +102,13 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
 
   return (
     <View style={styles.container}>
-  <RecordingLanguageView recordingLanguageFlagCode={recordingLanguageFlagCode} t={t} />
   {isLoading ? (
     <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color="#ef7d00" />
       <Text style={styles.loadingText}>{t('speechtotext.processingAudio')}</Text>
     </View>
   ) : (
-    <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} t={t} />
-  )}
-
-  {recording && (
-    <Text style={styles.maxLengthText}>
-      {t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}
-    </Text>
+    <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} timeout={timeout} t={t} />
   )}
 
   {transcription !== '' && translate && (

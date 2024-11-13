@@ -123,8 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     display: 'flex',
     height: '100%',
-    paddingTop: 50,
-    padding: 16,
+    paddingHorizontal: 16,
   },
   projectContainer: {
     marginBottom: 16,

@@ -51,10 +51,11 @@ const Main = () => {
   )
 
   return (
-    <View className="bg-white flex-1 justify-center">
+    <View className="bg-white flex-1 justify-center pt-6">
       {showImage && <Image
         source={require('../../assets/telinekataja.png')}
-        style={{ width: '100%', height: 150, resizeMode: 'contain' }} />
+        style={{ width: '100%', height: 100, resizeMode: 'contain' }}
+      />
       }
         <View className="flex-1">
           <Tab.Navigator 

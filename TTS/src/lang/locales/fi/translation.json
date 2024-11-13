@@ -84,7 +84,7 @@
   "riskform": {
     "successMessage": "Riskimuistiinpanot lähetetty onnistuneesti",
     "close": "Sulje",
-    "title": "Työturvallisuuslomake",
+    "title": "Vaarojen tunnistuslomake",
     "errorFetchingData": "Virhe haettaessa lomakkeen tietoja",
     "errorSubmitting": "Lomakkeen lähettäminen epäonnistui",
     "projectName": "Projektin nimi",
