@@ -24,7 +24,7 @@ jobs:
       - name: Create .env file
         run: |
           echo "EXPO_PUBLIC_EAS_PROJECT_ID=${{ secrets.EAS_PROJECT_ID }}" > ./TTS/.env
-          echo "EXPO_PUBLIC_ENVIRONMENT=${{ secrets.ENVIRONMENT_MAIN }}" >> ./TTS/.env
+          echo "EXPO_PUBLIC_ENVIRONMENT=main" >> ./TTS/.env
 
       - name: Create eas.json with secrets
         run: |
@@ -60,12 +60,6 @@ jobs:
                   "changesNotSentForReview": true
                 }
               }
-            },
-            "uat": {
-              "extends": "production"
-            },
-            "main": {
-              "extends": "production"
             }
           }' > ./TTS/eas.json
 
@@ -78,7 +72,7 @@ jobs:
         working-directory: ./TTS
         env:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
-          EXPO_PUBLIC_ENVIRONMENT: ${{ secrets.ENVIRONMENT_MAIN }}
+          EXPO_PUBLIC_ENVIRONMENT: "main"
 
       - name: Remove .env file
         run: rm ./TTS/.env
