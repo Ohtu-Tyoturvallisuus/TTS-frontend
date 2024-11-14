@@ -25,34 +25,44 @@ describe('useFormFields', () => {
       expect(result.current.initialFormData).toHaveProperty(key);
       expect(result.current.initialFormData[key]).toEqual({
         description: '',
-        status: '',
+        translations: {},
         risk_type: `${key}.risk_type`,
         images: [],
       });
     });
   });
 
-  it('should update form fields when language changes to Finnish', async () => {
+  it('should update form fields when language changes to Finnish', () => {
+    const changeLanguageMock = jest.fn();
     useTranslation.mockReturnValue({
       t: (key) => key,
-      i18n: { language: 'en-GB' },
+      i18n: {
+        language: 'en-GB',
+        changeLanguage: changeLanguageMock,
+      },
     });
 
     const { result, rerender } = renderHook(() => useFormFields());
 
     act(() => {
-      useTranslation.mockReturnValueOnce({
-        t: (key) => key,
-        i18n: { language: 'fi-FI' },
-      });
-      rerender();
+      changeLanguageMock('fi-FI');
     });
+
+    useTranslation.mockReturnValue({
+      t: (key) => key,
+      i18n: {
+        language: 'fi-FI',
+        changeLanguage: changeLanguageMock,
+      },
+    });
+
+    rerender();
 
     Object.keys(fiFormFields).forEach((key) => {
       expect(result.current.initialFormData).toHaveProperty(key);
       expect(result.current.initialFormData[key]).toEqual({
         description: '',
-        status: '',
+        translations: {},
         risk_type: `${key}.risk_type`,
         images: [],
       });
@@ -60,9 +70,8 @@ describe('useFormFields', () => {
   });
 
   it('should contain the correct initial form data structure', () => {
-    const mockTranslationFunction = jest.fn().mockImplementation((key) => key);
     useTranslation.mockReturnValue({
-      t: mockTranslationFunction,
+      t: (key) => key,
       i18n: { language: 'en-GB' },
     });
 
@@ -71,8 +80,8 @@ describe('useFormFields', () => {
     Object.keys(enFormFields).forEach((key) => {
       expect(result.current.initialFormData[key]).toEqual({
         description: '',
-        status: '',
-        risk_type: mockTranslationFunction(`${key}.risk_type`, { ns: 'formFields' }),
+        translations: {},
+        risk_type: `${key}.risk_type`,
         images: [],
       });
     });

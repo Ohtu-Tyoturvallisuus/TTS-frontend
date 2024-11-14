@@ -16,8 +16,6 @@ const RiskEditModal = ({
 }) => {
   const { updateFormField, getFormData } = useFormContext();
   const [description, setDescription] = useState(getFormData(title, 'description'));
-  const [useSpeech, setUseSpeech] = useState(false);
-  const [buttonHidden, setButtonHidden] = useState(false);
   const { t } = useTranslation();
 
   const handleSubmit = () => {
@@ -51,23 +49,10 @@ const RiskEditModal = ({
           textAlignVertical="top"
         />
 
-        {!buttonHidden && (
-          <TouchableOpacity
-            style={[styles.button, styles.speechButton]}
-            onPress={() => {
-              setUseSpeech(!useSpeech);
-              setButtonHidden(true);
-            }}
-          >
-            <Text style={styles.buttonText}>{t('riskmodal.withSpeech')}</Text>
-          </TouchableOpacity>
-        )}
-        {useSpeech && (
-          <SpeechToTextView
-            setDescription={setDescription}
-            translate={false}
-          />
-        )}
+        <SpeechToTextView
+          setDescription={setDescription}
+          translate={false}
+        />
 
       <TakePictureView title={title}/>
         
@@ -88,7 +73,7 @@ const RiskEditModal = ({
           </TouchableOpacity>
 
           <TouchableOpacity
-          testID='submit-button'
+            testID='submit-button'
             style={[
               styles.button,
               description !== ''
@@ -153,10 +138,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  speechButton: {
-    backgroundColor: '#ef7d00',
-    width: 'auto',
   },
   submitButton: {
     backgroundColor: 'green',

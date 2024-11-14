@@ -21,10 +21,10 @@ const FilledRiskForm = ({
   return (
     <>
       <TouchableOpacity
-        className="bg-[#ef7d00] rounded-md justify-center items-center py-4 px-6 w-full my-2"
+        className="bg-[#ef7d00] rounded-md justify-center items-center py-3 px-6 w-full my-2"
         onPress={() => setModalVisible(true)}
       >
-        <Text className="text-white font-bold">{t('filledriskform.preview')}</Text>
+        <Text className="text-white font-bold text-lg">{t('filledriskform.preview')}</Text>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='slide'>
         <View className="flex items-center justify-center">
@@ -65,7 +65,10 @@ const FilledRiskForm = ({
               relevantRiskNotes.map(([key, value]) => (
                 <View key={key} className="py-2">
                   <Text className="text-base font-bold">
-                    {t(`${key}.title`, { ns: 'formFields' })}:
+                    {key.startsWith('riskform.otherEnvironment')
+                      ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
+                      : t(`${key}.title`, { ns: 'formFields' })
+                    }:
                   </Text>
                   <Text>
                     {value.description}

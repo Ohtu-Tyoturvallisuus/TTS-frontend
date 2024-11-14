@@ -9,11 +9,13 @@ import CloseButton from '@components/buttons/CloseButton';
 import { submitForm } from '@services/formSubmission';
 import SuccessAlert from '@components/SuccessAlert';
 import { useFormContext } from '@contexts/FormContext';
+import { useTranslationLanguages } from '@contexts/TranslationContext';
 import useFetchSurveyData from '@hooks/useFetchSurveyData';
 import Loading from '@components/Loading';
 import ConfirmationModal from '@components/ConfirmationModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import FilledRiskForm from './FilledRiskForm';
+import SelectTranslateLanguage from '@components/speech-to-text/SelectTranslateLanguage';
 
 const RiskForm = () => {
   const { 
@@ -40,9 +42,11 @@ const RiskForm = () => {
   const [ showExitModal, setShowExitModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const allowNavigationRef = useRef(false);
+  const { setToLangs } = useTranslationLanguages();
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
+  // Merges previous survey's data to the form if surveyData is available
   useEffect(() => {    
     if (surveyData) {
       const currentNotes = surveyData.risk_notes.reduce((acc, note) => {
@@ -134,6 +138,8 @@ const RiskForm = () => {
             {/* Projektin tiedot */}
             {project ? (
               <View className="mb-3">
+              <SelectTranslateLanguage setTranslationLanguages={setToLangs} />
+
                 <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
                 <Text>{project.project_name}</Text>
             

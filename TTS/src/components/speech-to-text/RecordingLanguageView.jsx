@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import CountryFlag from 'react-native-country-flag';
+import CountryFlag from '@components/CountryFlag';
 
 const RecordingLanguageView = ({ recordingLanguageFlagCode, t }) => (
   <View style={styles.recordingContainer}>

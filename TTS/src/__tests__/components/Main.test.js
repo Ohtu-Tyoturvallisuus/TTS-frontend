@@ -39,6 +39,8 @@ jest.mock('@expo/vector-icons', () => {
   };
 });
 
+jest.mock('react-native-vector-icons/FontAwesome', () => 'Icon');
+
 jest.mock('@components/project-list/ProjectList', () => {
   const { Text } = require('react-native');
   const MockedProjectList = () => <Text>Mocked Projects List</Text>;
