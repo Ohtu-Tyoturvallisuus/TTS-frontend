@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
 import Image from '@components/take-picture/Image';
@@ -56,7 +56,7 @@ const RiskPreviewModal = ({
       {loading ? (
         <Loading loading={loading} error={error} title={t('general.loading')} />
       ) : (
-        <ScrollView>
+        <>
           <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
           <Text style={styles.description}>{description}</Text>
 
@@ -96,7 +96,7 @@ const RiskPreviewModal = ({
               <Text>{t('riskmodal.checked')}</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+        </>
       )}
     </CustomModal>
   );
