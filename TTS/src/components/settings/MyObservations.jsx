@@ -46,7 +46,9 @@ const MyObservations = () => {
             className="bg-white flex-grow p-5 w-full" 
             contentContainerStyle={{ paddingBottom: 30 }}
           >
-            <Text className="text-xl font-bold mb-4">{t('myobservations.title')}</Text>
+            <Text className="text-xl font-bold mb-4" style={{ marginTop: 40 }}>
+              {t('myobservations.title')}
+            </Text>
             {userSurveys.map((survey) => {
               const formattedDate = formatDate(survey.created_at);
               return (
