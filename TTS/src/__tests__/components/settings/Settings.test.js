@@ -117,4 +117,15 @@ describe('Settings Component', () => {
     fireEvent.press(getByText('Close'));
     expect(getByText('Change language')).toBeTruthy();
   });
+
+  it('handles onRequestClose for the modal', () => {
+    const { getByText, queryByText, getByTestId } = renderWithContext('John Doe', 'john.doe@example.com');
+  
+    fireEvent.press(getByText('Change language'));
+    expect(getByText('Select your language')).toBeTruthy();
+  
+    fireEvent(getByTestId('change-language-modal'), 'requestClose');
+  
+    expect(queryByText('Select your language')).toBeNull();
+  });
 });
