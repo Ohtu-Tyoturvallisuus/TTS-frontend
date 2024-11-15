@@ -6,7 +6,7 @@ import { getUserSurveys } from '@services/apiService';
 import { useTranslation } from 'react-i18next';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
 
-const formatDate = (dateString) => {
+export const formatDate = (dateString) => {
   const date = new Date(dateString);
 
   const month = String(date.getMonth() + 1).padStart(2, '0');
