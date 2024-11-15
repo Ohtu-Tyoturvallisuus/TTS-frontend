@@ -44,8 +44,14 @@ export const submitForm = async (project, taskInfo, formData, setShowSuccessAler
       const trimmedStatus = (status != null ? status.trim() : '');
 
       let blobNames = [];
+      let imageDetails = [];
       if (images && images.length > 0) {
         blobNames = await uploadImages(images, key);
+
+        imageDetails = blobNames.map((blobName, index) => ({
+          blobName,
+          isLandscape: images[index]?.isLandscape || false,
+        }))
       }
 
       return {
@@ -53,7 +59,7 @@ export const submitForm = async (project, taskInfo, formData, setShowSuccessAler
         description: trimmedDescription,
         status: trimmedStatus,
         risk_type: risk_type,
-        images: blobNames,
+        images: imageDetails,
       };
     }));
 

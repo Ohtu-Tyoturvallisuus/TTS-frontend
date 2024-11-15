@@ -32,7 +32,8 @@
     "preview": "Esikatsele täytettyä lomaketta",
     "emptyform": "Ei huomioitavia riskejä tässä arvioinnissa",
     "project": "Projekti",
-    "filledat": "Täyttöaika"
+    "filledat": "Täyttöaika",
+    "loadingimages": "Ladataan kuvia..."
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",

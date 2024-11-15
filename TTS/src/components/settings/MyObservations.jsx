@@ -26,21 +26,25 @@ const MyObservations = () => {
   const [userSurveys, setUserSurveys] = useState([]);
   const { t } = useTranslation();
 
+  const fetchUserSurveys = async () => {
+    const response = await getUserSurveys();
+    setUserSurveys(response.filled_surveys);
+  }
+
   useEffect(() => {
-    const fetchUserSurveys = async () => {
-      const response = await getUserSurveys();
-      setUserSurveys(response.filled_surveys);
-    }
     fetchUserSurveys();
   }, []);
 
   return (
     <>
       <SettingsButton 
-        onPress={() => setModalVisible(true)}
+        onPress={() => {
+          fetchUserSurveys()
+          setModalVisible(true)
+        }}
         text={t('myobservations.title')}
       />
-      <Modal visible={modalVisible} animationType='fade'>
+      <Modal visible={modalVisible} animationType='fade' onRequestClose={() => setModalVisible(false)}>
         <View className="flex items-center justify-center">
           <ScrollView
             className="bg-white flex-grow p-5 w-full" 

@@ -32,7 +32,8 @@
     "preview": "Preview the form",
     "emptyform": "No relevant risks in this form",
     "project": "Project",
-    "filledat": "Filled at"
+    "filledat": "Filled at",
+    "loadingimages": "Loading images..."
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",

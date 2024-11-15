@@ -30,7 +30,10 @@ describe('submitForm', () => {
       description: 'Using protective gear',
       status: 'checked',
       risk_type: 'scaffolding',
-      images: ['image1.png', 'image2.png'],
+      images: [
+        {'blobName': 'image1.png', 'isLandscape': true},
+        {'blobName': 'image2.png', 'isLandscape': false}
+      ],
     },
   };
 
@@ -60,7 +63,10 @@ describe('submitForm', () => {
         description: 'Using protective gear',
         status: 'checked',
         risk_type: 'scaffolding',
-        images: ['blob1', 'blob2'],
+        images: [
+          expect.objectContaining({ blobName: 'blob1', isLandscape: expect.any(Boolean) }),
+          expect.objectContaining({ blobName: 'blob2', isLandscape: expect.any(Boolean) }),
+        ],
       }),
     ]));
 

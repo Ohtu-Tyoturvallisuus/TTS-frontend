@@ -86,12 +86,10 @@ const RiskForm = () => {
       scaffold_type: scaffoldType,
     };
     console.log('Submitting:', taskInfo);
-    console.log('FORMDATA:', formData);
     try {
       setSubmitted(true)
       const response = submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
       response._j && setSubmitted(false);
-      console.log('RESPONSE:', response);
     } catch (error) {
       console.log('Could not submit form', error);
       setSubmitted(false);

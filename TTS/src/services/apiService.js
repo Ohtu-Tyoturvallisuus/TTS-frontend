@@ -120,6 +120,25 @@ export const postImages = async (imageData) => {
   return response.data;
 };
 
+export const retrieveImage = async (image) => {
+  const url = `${API_BASE_URL}retrieve-image/?blob_name=images/${image}`;
+  try {
+    const response = await axios.get(url, {
+      responseType: 'blob',
+    });
+    const blob = response.data;
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error('Error retrieving image:', error);
+    return null;
+  }
+};
+
 export const retrieveIdParams = async ({ setClientId, setTenantId }) => {
   try {
     const response = await fetch(RETRIEVE_PARAMS_URL, {
