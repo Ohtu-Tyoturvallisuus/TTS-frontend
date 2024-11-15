@@ -64,6 +64,7 @@ const Settings = () => {
         />
       )}
       <Modal
+        testID='change-language-modal'
         animationType="fade"
         transparent={true}
         visible={changeLanguageVisible}
