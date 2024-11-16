@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const RecordingControls = ({ recording, startRecording, stopRecording, t }) => (
+const RecordingControls = ({ recording, startRecording, stopRecording, timeout, t }) => (
   <View style={styles.buttonsContainer}>
     <TouchableOpacity
       style={[styles.recordButton, recording ? styles.stopButton : styles.startButton]}
@@ -11,6 +11,7 @@ const RecordingControls = ({ recording, startRecording, stopRecording, t }) => (
         {recording ? t('speechtotext.stop') : t('speechtotext.start')}
       </Text>
     </TouchableOpacity>
+    <Text>({t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}.)</Text>
   </View>
 );
 
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonsContainer: {
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   recordButton: {
     alignItems: 'center',

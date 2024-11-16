@@ -12,6 +12,7 @@ import {
   getUserProfile,
   getUserSurveys,
   uploadAudio,
+  translateText,
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -307,6 +308,54 @@ describe('API Module', () => {
       consoleErrorMock.mockRestore();
     });
   });
+
+  describe('translateText', () => {
+    const mockText = 'Hello';
+    const mockFrom = 'en';
+    const mockTo = ['fi'];
+    const mockToken = 'mock-token';
+    const mockResponseData = { translations: [{ text: 'Hei' }] };
+
+    beforeEach(() => {
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should successfully translate text and return the response data', async () => {
+      axios.post.mockResolvedValueOnce({ data: mockResponseData });
+
+      const result = await translateText(mockText, mockFrom, mockTo);
+
+      expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/translate/'), {
+        text: mockText,
+        from: mockFrom,
+        to: mockTo,
+      }, {
+        headers: {
+          Authorization: `Bearer ${mockToken}`,
+        },
+      });
+
+      expect(result).toEqual(mockResponseData);
+    });
+
+    it('should handle errors gracefully', async () => {
+      const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const mockError = new Error('Translation error');
+
+      axios.post.mockRejectedValueOnce(mockError);
+
+      await expect(translateText(mockText, mockFrom, mockTo)).rejects.toThrow(mockError);
+
+      expect(consoleErrorMock).toHaveBeenCalledWith('Error translating text:', mockError);
+
+      consoleErrorMock.mockRestore();
+    });
+  });
+
   describe('getUserSurveys', () => {
     it('should fetch user surveys with the correct token and return the response data', async () => {
       const mockToken = 'mockToken';
@@ -362,14 +411,11 @@ describe('API Module - retrieveImage', () => {
   it('should retrieve image and convert it to base64 on success', async () => {
     const mockImage = 'image.jpg';
     const mockImageData = new Blob(['dummy data'], { type: 'image/jpeg' });
-  
-    // Mock axios response
+
     axios.get.mockResolvedValue({ data: mockImageData });
   
-    // Mock FileReader and its behavior
     global.FileReader = jest.fn(() => ({
       readAsDataURL: jest.fn(function () {
-        // Immediately trigger the onloadend callback
         this.result = 'data:image/jpeg;base64,dummydata';
         this.onloadend(); 
       }),
@@ -379,19 +425,16 @@ describe('API Module - retrieveImage', () => {
   
     const result = await retrieveImage(mockImage);
   
-    // Assertions
     expect(axios.get).toHaveBeenCalledWith(`${API_BASE_URL}retrieve-image/?blob_name=images/${mockImage}`, {'responseType': 'blob'});
     expect(result).toBe('data:image/jpeg;base64,dummydata');
   });
   
 
   it('should handle errors if axios request fails', async () => {
-    // Simulate a failed axios request
     axios.get.mockRejectedValueOnce(new Error('Failed to retrieve image'));
   
     const result = await retrieveImage('image.jpg');
-  
-    // Use the exact URL that axios.get is called with
+
     expect(axios.get).toHaveBeenCalledWith(
       'https://tts-app.azurewebsites.net/api/retrieve-image/?blob_name=images/image.jpg',
       expect.objectContaining({

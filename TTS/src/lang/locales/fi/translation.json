@@ -35,9 +35,23 @@
     "filledat": "Täyttöaika",
     "loadingimages": "Ladataan kuvia..."
   },
+  "general": {
+    "done": "Valmis",
+    "loading": "Ladataan...",
+    "error": "Virhe",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "cancel": "Peruuta",
+    "save": "Tallenna",
+    "submit": "Lähetä",
+    "close": "Sulje",
+    "back": "Takaisin",
+    "next": "Seuraava",
+    "confirm": "Vahvista"
+  },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",
-    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
+    "selectTranslationLanguages": "Valitse kielet käännöksiä varten",
     "selectLanguage": "Valitse kieli",
     "selectLanguages": "Valitse kielet",
     "selectedLanguage": "Valittu kieli",
@@ -81,7 +95,7 @@
   "riskform": {
     "successMessage": "Riskimuistiinpanot lähetetty onnistuneesti",
     "close": "Sulje",
-    "title": "Työturvallisuuslomake",
+    "title": "Vaarojen tunnistuslomake",
     "errorFetchingData": "Virhe haettaessa lomakkeen tietoja",
     "errorSubmitting": "Lomakkeen lähettäminen epäonnistui",
     "projectName": "Projektin nimi",
@@ -125,7 +139,8 @@
     "placeholder": "Etsi hakusanalla..."
   },
   "selecttranslate": {
-    "selectTranslationLanguages": "Valitse kielet käännöstä varten",
+    "selectTranslationLanguages": "Valitse kielet käännöksiä varten",
+    "selectedTranslationLanguages": "Valitut kielet",
     "selectedLanguages": "Valitut kielet",
     "searchLanguages": "Hae kieliä...",
     "selectLanguages": "Valitse kielet"
@@ -153,7 +168,7 @@
     "seconds_one": "yksi sekunti",
     "seconds_other": "{{count}} sekuntia",
     "stop": "Lopeta",
-    "start": "Aloita puheentunnistus"
+    "start": "Syötä puheella"
   },
   "takepicture": {
     "noPictures": "Ei kuvia",

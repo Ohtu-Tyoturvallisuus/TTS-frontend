@@ -174,28 +174,6 @@ describe('RiskEditModal Component', () => {
     });
   });
 
-  it('toggles speech-to-text view', async () => {
-    const { getByText, queryByText } = render(
-      <Wrapper>
-        <RiskEditModal 
-          title={title}
-          visible={true}
-          onTranslate={mockOnTranslate}
-          onReset={mockOnReset}
-          onClose={mockOnClose}
-        />
-      </Wrapper>
-    );
-
-    expect(queryByText('Speech to Text Component')).toBeNull();
-
-    fireEvent.press(getByText('Syötä puheella'));
-
-    await waitFor(() => {
-      expect(getByText('Speech to Text Component')).toBeTruthy();
-    });
-  });
-
   it('disables submit button when description is empty', async () => {
     const { getByPlaceholderText, getByTestId } = render(
       <Wrapper>

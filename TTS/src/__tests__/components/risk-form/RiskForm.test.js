@@ -31,6 +31,17 @@ jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
   error: null,
 })));
 
+jest.mock('expo-constants', () => ({
+  expoConfig: {
+    extra: {
+      local_ip: '192.168.1.1',
+      local_setup: 'true',
+    },
+  },
+}));
+
+jest.mock('react-native-vector-icons/FontAwesome', () => 'Icon');
+
 const flattenFormFields = (formFields) => {
   const translations = {};
   for (const [key, value] of Object.entries(formFields)) {
@@ -80,7 +91,7 @@ const mockTranslations = {
   'confirmation.confirm': 'Vahvista',
   'confirmation.cancel': 'Peruuta',
   'confirmation.changesWillBeLost': 'HUOM! Kaikki muutokset menetetään',
-  'filledriskform.preview': 'Esikatsele täytettyä lomaketta',
+  'filledriskform.preview': 'Esikatsele lomake',
 };
 
 jest.mock('react-i18next', () => {
@@ -123,6 +134,12 @@ jest.mock('@services/formSubmission', () => ({
   submitForm: jest.fn(),
 }));
 
+jest.mock('@contexts/TranslationContext', () => ({
+  useTranslationLanguages: jest.fn(() => ({
+    setToLangs: jest.fn(),
+  })),
+}));
+
 describe('RiskForm Component', () => {
   const mockOnFocusChange = jest.fn();
   const mockProject = { 
@@ -153,6 +170,10 @@ describe('RiskForm Component', () => {
     jest.clearAllMocks();
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders correctly with project details', () => {
     const { getByText } = setup();
 
@@ -160,24 +181,23 @@ describe('RiskForm Component', () => {
     expect(getByText('Test Project')).toBeTruthy();
     expect(getByText('Projektin ID:')).toBeTruthy();
     expect(getByText('1234')).toBeTruthy();
-  });  
+  });
 
   it('shows success alert after successful submission', async () => {
     submitForm.mockImplementationOnce((mockProject, taskInfo, formData, setShowSuccessAlert) => {
       setShowSuccessAlert(true);
     });
-  
+
     const { getByText } = setup();
-  
-    fireEvent.press(getByText('Esikatsele täytettyä lomaketta'));
-  
+
+    fireEvent.press(getByText('Esikatsele lomake'));
+
     fireEvent.press(getByText('Lähetä'));
-  
+
     await waitFor(() => {
       expect(getByText('Riskimuistiinpanot lähetetty onnistuneesti')).toBeTruthy();
     });
   });
-  
 
   it('shows exit modal confirmation when close button is pressed', () => {
     const { getByText } = setup();

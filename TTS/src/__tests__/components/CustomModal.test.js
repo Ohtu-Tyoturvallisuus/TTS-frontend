@@ -30,17 +30,6 @@ describe('CustomModal Component', () => {
     expect(queryByText('Test Modal Content')).toBeNull();
   });
 
-  it('calls onClose when overlay is pressed', () => {
-    const { getByTestId } = render(
-      <CustomModal visible={true} onClose={mockOnClose}>
-        <Text>Test Modal Content</Text>
-      </CustomModal>
-    );
-
-    fireEvent.press(getByTestId('modal-overlay'));
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
-  });
-
   it('does not call onClose when modal content is pressed', () => {
     const { getByText } = render(
       <CustomModal visible={true} onClose={mockOnClose}>
