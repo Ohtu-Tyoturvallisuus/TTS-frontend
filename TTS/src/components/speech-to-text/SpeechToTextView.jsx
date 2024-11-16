@@ -4,12 +4,11 @@ import { Audio } from 'expo-av';
 import { useTranslation } from 'react-i18next';
 import { uploadAudio } from '@services/apiService';
 
-import RecordingLanguageView from './RecordingLanguageView';
 import TranscriptionView from './TranscriptionView';
 import TranslationsView from './TranslationsView';
 import RecordingControls from './RecordingControls';
 import SelectTranslateLanguage from './SelectTranslateLanguage';
-import countriesData from '@lang/locales/languages.json';
+import { getLanguageToFlagMap } from '@utils/languageUtils';
 
 const SpeechToTextView = ({ setDescription = null, translate = true }) => {
   const { t, i18n } = useTranslation();
@@ -20,10 +19,7 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
   const [translations, setTranslations] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const languageToFlagMap = countriesData.countries.reduce((map, country) => {
-    map[country.value] = country.flagCode;
-    return map;
-  }, {});
+  const languageToFlagMap = getLanguageToFlagMap();
   const recordingLanguageFlagCode = recordingLanguage.slice(-2);
   const timeout = 60000;
   let recordingTimeout;
@@ -105,20 +101,13 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
 
   return (
     <View style={styles.container}>
-  <RecordingLanguageView recordingLanguageFlagCode={recordingLanguageFlagCode} t={t} />
   {isLoading ? (
     <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color="#ef7d00" />
       <Text style={styles.loadingText}>{t('speechtotext.processingAudio')}</Text>
     </View>
   ) : (
-    <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} t={t} />
-  )}
-
-  {recording && (
-    <Text style={styles.maxLengthText}>
-      {t('speechtotext.maxLength')}: {t('speechtotext.seconds', { count: timeout / 1000 })}
-    </Text>
+    <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} timeout={timeout} t={t} />
   )}
 
   {transcription !== '' && translate && (
@@ -128,7 +117,7 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
     <SelectTranslateLanguage setTranslationLanguages={setTranslationLanguages} />
   )}
   {recordingLanguage !== '' && (
-    <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} t={t} timeout={timeout} />
+    <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} timeout={timeout} />
   )}
   </View>
   );

@@ -20,7 +20,7 @@ const createInitialFormData = (formFields, t) => {
   Object.keys(formFields).forEach((key) => {
     initialData[key] = {
       description: '',
-      status: '',
+      translations: {},
       risk_type: t(`${key}.risk_type`, { ns: 'formFields' }),
       images: [],
     };

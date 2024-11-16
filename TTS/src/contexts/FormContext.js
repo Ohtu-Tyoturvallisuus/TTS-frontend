@@ -25,6 +25,21 @@ export const FormProvider = ({ children }) => {
     }));
   };
 
+  const updateTranslations = (title, translations) => {
+    if (typeof translations !== 'object' || translations === null || Array.isArray(translations)) {
+      console.error('Translations must be a dictionary');
+      return;
+    }
+    console.log(`Updating ${title}.translations to ${JSON.stringify(translations, null, 2)}`);
+    setFormData((prevData) => ({
+      ...prevData,
+      [title]: {
+        ...prevData[title],
+        translations,
+      },
+    }));
+  }
+
   const getFormData = (title, field) => {
     return formData[title]?.[field] || '';
   };
@@ -38,6 +53,7 @@ export const FormProvider = ({ children }) => {
       value={{ 
         formData, 
         updateFormField, 
+        updateTranslations,
         getFormData,
         replaceFormData,
         task, 

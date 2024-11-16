@@ -25,6 +25,20 @@
     "chooseAll": "--Choose all--",
     "search": "Search..."
   },
+  "general": {
+    "done": "Done",
+    "loading": "Loading...",
+    "error": "Error",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm"
+  },
   "filledriskform": {
     "titlewithrisks": "Noted risks according to the form:",
     "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
@@ -122,6 +136,7 @@
   },
   "selecttranslate": {
     "selectTranslationLanguages": "Select languages for translation",
+    "selectedTranslationLanguages": "Selected languages for translation",
     "selectedLanguages": "Selected languages",
     "searchLanguages": "Search for languages...",
     "selectLanguages": "Select languages"

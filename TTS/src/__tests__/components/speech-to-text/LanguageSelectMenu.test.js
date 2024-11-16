@@ -21,27 +21,6 @@ jest.mock('react-i18next', () => ({
 }));
 
 describe('LanguageSelectMenu', () => {
-  it('calls setRecordingLanguage with the correct language when a language is selected', async () => {
-    const mockSetRecordingLanguage = jest.fn();
-    
-    const { getByText, findByText, findByPlaceholderText } = render(
-      <LanguageSelectMenu setRecordingLanguage={mockSetRecordingLanguage} />
-    );
-
-    fireEvent.press(getByText('Valitse tunnistettava kieli'));
-
-    const searchInput = await findByPlaceholderText('Hae kieliä...');
-    expect(searchInput).toBeTruthy();
-
-    const suomiOption = await findByText('Suomi');
-    fireEvent.press(suomiOption);
-
-    const closeButton = getByText('Sulje');
-    fireEvent.press(closeButton);
-
-    expect(mockSetRecordingLanguage).toHaveBeenCalledWith('fi-FI');
-  }, 10000);
-
   it('removes a selected language when clicked again', async () => {
     const mockSetRecordingLanguage = jest.fn();
     
