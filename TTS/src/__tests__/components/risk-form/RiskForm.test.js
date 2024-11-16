@@ -42,6 +42,12 @@ jest.mock('expo-constants', () => ({
 
 jest.mock('react-native-vector-icons/FontAwesome', () => 'Icon');
 
+jest.mock('@expo/vector-icons', () => {
+  return {
+    Ionicons: 'Ionicons',
+  };
+});
+
 const flattenFormFields = (formFields) => {
   const translations = {};
   for (const [key, value] of Object.entries(formFields)) {

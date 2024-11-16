@@ -29,7 +29,11 @@
     "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
     "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
     "edit": "Muokkaa lomaketta",
-    "preview": "Esikatsele täytettyä lomaketta"
+    "preview": "Esikatsele täytettyä lomaketta",
+    "emptyform": "Ei huomioitavia riskejä tässä arvioinnissa",
+    "project": "Projekti",
+    "filledat": "Täyttöaika",
+    "loadingimages": "Ladataan kuvia..."
   },
   "general": {
     "done": "Valmis",
@@ -170,5 +174,8 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
+  },
+  "myobservations": {
+    "title": "Omat havaintoni"
   }
 }

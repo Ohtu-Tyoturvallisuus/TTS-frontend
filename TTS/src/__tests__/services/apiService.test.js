@@ -6,9 +6,11 @@ import {
   postNewSurvey,
   postRiskNotes,
   postImages,
+  retrieveImage,
   fetchSurveyData,
   retrieveIdParams,
   getUserProfile,
+  getUserSurveys,
   uploadAudio,
   translateText,
 } from '@services/apiService';
@@ -16,14 +18,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 jest.mock('axios');
 
-// Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),
 }));
 
-// Mock fetch globally
+global.FileReader = jest.fn().mockImplementation(() => ({
+  onloadend: jest.fn(),
+  onerror: jest.fn(),
+  readAsDataURL: jest.fn(),
+}));
+
 global.fetch = jest.fn();
+
+const API_BASE_URL = 'https://tts-app.azurewebsites.net/api/'
 
 describe('API Module - retrieveIdParams and getUserProfile', () => {
   afterEach(() => {
@@ -346,5 +354,93 @@ describe('API Module', () => {
 
       consoleErrorMock.mockRestore();
     });
+  });
+
+  describe('getUserSurveys', () => {
+    it('should fetch user surveys with the correct token and return the response data', async () => {
+      const mockToken = 'mockToken';
+      const mockResponseData = {
+        filled_surveys: [
+          {
+            id: '1',
+            created_at: '2024-11-15T09:45:00',
+            risk_notes: 'Sample notes',
+            project_name: 'Project A',
+            project_id: '123',
+            description: 'Test description',
+            scaffold_type: 'Type A',
+            task: 'Sample task',
+          },
+        ],
+      };
+  
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+  
+      axios.get.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const surveys = await getUserSurveys();
+  
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith('access_token');
+      
+      expect(axios.get).toHaveBeenCalledWith(
+        expect.stringContaining('filled-surveys/'),
+        expect.objectContaining({
+          headers: { Authorization: `Bearer ${mockToken}` }
+        })
+      );
+  
+      expect(surveys).toEqual(mockResponseData);
+    });
+  
+    it('should handle errors correctly if the API call fails', async () => {
+      const mockToken = 'mockToken';
+      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+  
+      axios.get.mockRejectedValueOnce(new Error('Network Error'));
+  
+      await expect(getUserSurveys()).rejects.toThrow('Network Error');
+    });
+  });
+});
+
+describe('API Module - retrieveImage', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should retrieve image and convert it to base64 on success', async () => {
+    const mockImage = 'image.jpg';
+    const mockImageData = new Blob(['dummy data'], { type: 'image/jpeg' });
+
+    axios.get.mockResolvedValue({ data: mockImageData });
+  
+    global.FileReader = jest.fn(() => ({
+      readAsDataURL: jest.fn(function () {
+        this.result = 'data:image/jpeg;base64,dummydata';
+        this.onloadend(); 
+      }),
+      onloadend: jest.fn(),
+      onerror: jest.fn(),
+    }));
+  
+    const result = await retrieveImage(mockImage);
+  
+    expect(axios.get).toHaveBeenCalledWith(`${API_BASE_URL}retrieve-image/?blob_name=images/${mockImage}`, {'responseType': 'blob'});
+    expect(result).toBe('data:image/jpeg;base64,dummydata');
+  });
+  
+
+  it('should handle errors if axios request fails', async () => {
+    axios.get.mockRejectedValueOnce(new Error('Failed to retrieve image'));
+  
+    const result = await retrieveImage('image.jpg');
+
+    expect(axios.get).toHaveBeenCalledWith(
+      'https://tts-app.azurewebsites.net/api/retrieve-image/?blob_name=images/image.jpg',
+      expect.objectContaining({
+        responseType: 'blob',
+      })
+    );
+    expect(result).toBeNull();
   });
 });

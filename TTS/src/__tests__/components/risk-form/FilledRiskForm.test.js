@@ -95,4 +95,162 @@ describe('FilledRiskForm component', () => {
 
     expect(getByText('filledriskform.norisks')).toBeTruthy();
   });
+
+  it('renders the "no risks" message when no relevant risk notes are present', () => {
+    const { getByText } = setup({
+      formData: {},
+    });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+  
+    expect(getByText('filledriskform.norisks')).toBeTruthy();
+  });
+
+  it('does not render checked hazard descriptions when status is not "checked"', () => {
+    const { getByText, queryByText } = setup({
+      formData: {
+        hazard1: { status: 'notRelevant', description: 'Hazard description 1', images: [] },
+        hazard2: { status: 'notRelevant', description: 'Hazard description 2', images: [] },
+      },
+    });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+  
+    expect(queryByText('Hazard description 1')).toBeNull();
+    expect(queryByText('Hazard description 2')).toBeNull();
+  });  
+
+  it('renders translated text for riskform keys', () => {
+    const { getByText } = setup();
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+  
+    expect(getByText('riskform.projectName:')).toBeTruthy();
+    expect(getByText('riskform.submit')).toBeTruthy();
+  });  
+
+  it('renders the submit view when submitted is true', () => {
+    const { getByText } = setup({
+      submitted: true,
+    });
+  
+    fireEvent.press(getByText('filledriskform.project:'));
+
+    expect(getByText('closebutton.close')).toBeTruthy();
+  });
+  
+  it('closes modal when edit button is pressed', () => {
+    const { getByText, queryByText } = setup();
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+    expect(getByText('Project A')).toBeTruthy();
+  
+    fireEvent.press(getByText('filledriskform.edit'));
+    expect(queryByText('Project A')).toBeNull();
+  });
+  
+  it('does not render RiskImage components when there are no images in checked risks', () => {
+    const { getByText, queryByTestId } = setup({
+      formData: {
+        hazard1: { status: 'checked', description: 'Hazard description 1', images: [] },
+      },
+    });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+  
+    expect(queryByTestId('risk-image-0')).toBeNull();
+  });
+
+  it('filters relevant risk notes with status "checked"', () => {
+    const formData = {
+      hazard1: { status: 'checked', description: 'Hazard 1 description', images: [] },
+      hazard2: { status: 'notRelevant', description: 'Hazard 2 description', images: [] },
+    };
+    const { getByText, queryByText } = setup({ formData });
+
+    fireEvent.press(getByText('filledriskform.preview'));
+    expect(getByText('Hazard 1 description')).toBeTruthy();
+    expect(queryByText('Hazard 2 description')).toBeNull();
+  });
+  
+  it('renders preview button when form is not submitted', () => {
+    const { getByText } = setup({ submitted: false });
+  
+    expect(getByText('filledriskform.preview')).toBeTruthy();
+  });  
+
+  it('renders project name when form is submitted', () => {
+    const { getByText } = setup({
+      submitted: true,
+      survey: { project_name: 'Test Project' },
+    });
+  
+    expect(getByText('filledriskform.project: Test Project')).toBeTruthy();
+  });
+  
+  it('renders formatted date when form is submitted', () => {
+    const { getByText } = setup({
+      submitted: true,
+      formattedDate: { date: '2024-11-15', time: '10:30' },
+    });
+  
+    expect(getByText('2024-11-15')).toBeTruthy();
+  });
+  
+  it('opens modal when preview button is pressed', () => {
+    const { getByText, getByTestId } = setup({
+      submitted: false,
+    });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+    expect(getByTestId('modal')).toBeTruthy();
+  });
+
+  it('renders relevant hazard descriptions when present', () => {
+    const formData = {
+      hazard1: { status: 'checked', description: 'Hazard 1 description', images: [] },
+    };
+    const { getByText } = setup({ formData });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+    expect(getByText('Hazard 1 description')).toBeTruthy();
+  });
+  
+  it('renders empty form message when no relevant hazard descriptions', () => {
+    const formData = {};
+    const { getByText } = setup({ formData });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+    expect(getByText('filledriskform.norisks')).toBeTruthy();
+  });
+  
+  it('renders hazard images when available', () => {
+    const formData = {
+      hazard1: { status: 'checked', description: 'Hazard with image', images: [{ blobName: 'image1.jpg' }] },
+    };
+    const { getByText, getByTestId } = setup({ formData });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+    expect(getByText('Hazard with image')).toBeTruthy();
+    expect(getByTestId('risk-image-0')).toBeTruthy();
+  });
+  
+  it('closes modal when close button is pressed', () => {
+    const { queryByTestId, getByText } = setup({ submitted: true });
+  
+    fireEvent.press(getByText('filledriskform.project:'));
+    fireEvent.press(getByText('closebutton.close'));
+    expect(queryByTestId('modal')).toBeNull();
+  });
+  
+  it('closes modal and calls handleSubmit when submit is pressed', () => {
+    const handleSubmit = jest.fn();
+    const { getByText, queryByTestId } = setup({ submitted: false, handleSubmit });
+
+    fireEvent.press(getByText('filledriskform.preview'));
+  
+    fireEvent.press(getByText('riskform.submit'));
+    expect(queryByTestId('modal')).toBeNull();
+    expect(handleSubmit).toHaveBeenCalled();
+  });
 });

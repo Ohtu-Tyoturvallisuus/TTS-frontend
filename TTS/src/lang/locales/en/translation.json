@@ -43,7 +43,11 @@
     "titlewithrisks": "Noted risks according to the form:",
     "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
     "edit": "Edit form",
-    "preview": "Preview the form"
+    "preview": "Preview the form",
+    "emptyform": "No relevant risks in this form",
+    "project": "Project",
+    "filledat": "Filled at",
+    "loadingimages": "Loading images..."
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",
@@ -170,5 +174,8 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
+  },
+  "myobservations": {
+    "title": "My observations"
   }
 }

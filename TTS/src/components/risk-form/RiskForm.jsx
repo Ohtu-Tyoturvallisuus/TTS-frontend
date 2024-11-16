@@ -90,12 +90,10 @@ const RiskForm = () => {
       scaffold_type: scaffoldType,
     };
     console.log('Submitting:', taskInfo);
-    console.log('FORMDATA:', formData);
     try {
       setSubmitted(true)
       const response = submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
       response._j && setSubmitted(false);
-      console.log('RESPONSE:', response);
     } catch (error) {
       console.log('Could not submit form', error);
       setSubmitted(false);
@@ -200,8 +198,7 @@ const RiskForm = () => {
                 )
               )
             }
-  
-          
+
             <TouchableOpacity 
               className="p-2 border border-green-500 rounded my-2 items-center" 
               onPress={() => addNewRiskNote('riskform.otherScaffolding', 'scaffolding')}
