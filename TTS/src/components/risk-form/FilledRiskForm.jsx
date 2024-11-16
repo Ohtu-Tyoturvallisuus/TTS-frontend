@@ -57,7 +57,7 @@ const FilledRiskForm = ({
         </TouchableOpacity>
       )}
       <>
-        <Modal visible={modalVisible} animationType='slide' onRequestClose={() => setModalVisible(false)}>
+        <Modal visible={modalVisible} animationType='slide' onRequestClose={() => setModalVisible(false)} testID='modal'>
           <View className="flex items-center justify-center">
             <ScrollView 
               className="bg-white flex-grow p-5 w-full" 

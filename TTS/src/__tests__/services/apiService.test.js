@@ -6,6 +6,7 @@ import {
   postNewSurvey,
   postRiskNotes,
   postImages,
+  retrieveImage,
   fetchSurveyData,
   retrieveIdParams,
   getUserProfile,
@@ -16,14 +17,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 jest.mock('axios');
 
-// Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),
 }));
 
-// Mock fetch globally
+global.FileReader = jest.fn().mockImplementation(() => ({
+  onloadend: jest.fn(),
+  onerror: jest.fn(),
+  readAsDataURL: jest.fn(),
+}));
+
 global.fetch = jest.fn();
+
+const API_BASE_URL = 'https://tts-app.azurewebsites.net/api/'
 
 describe('API Module - retrieveIdParams and getUserProfile', () => {
   afterEach(() => {
@@ -344,5 +351,53 @@ describe('API Module', () => {
   
       await expect(getUserSurveys()).rejects.toThrow('Network Error');
     });
+  });
+});
+
+describe('API Module - retrieveImage', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should retrieve image and convert it to base64 on success', async () => {
+    const mockImage = 'image.jpg';
+    const mockImageData = new Blob(['dummy data'], { type: 'image/jpeg' });
+  
+    // Mock axios response
+    axios.get.mockResolvedValue({ data: mockImageData });
+  
+    // Mock FileReader and its behavior
+    global.FileReader = jest.fn(() => ({
+      readAsDataURL: jest.fn(function () {
+        // Immediately trigger the onloadend callback
+        this.result = 'data:image/jpeg;base64,dummydata';
+        this.onloadend(); 
+      }),
+      onloadend: jest.fn(),
+      onerror: jest.fn(),
+    }));
+  
+    const result = await retrieveImage(mockImage);
+  
+    // Assertions
+    expect(axios.get).toHaveBeenCalledWith(`${API_BASE_URL}retrieve-image/?blob_name=images/${mockImage}`, {'responseType': 'blob'});
+    expect(result).toBe('data:image/jpeg;base64,dummydata');
+  });
+  
+
+  it('should handle errors if axios request fails', async () => {
+    // Simulate a failed axios request
+    axios.get.mockRejectedValueOnce(new Error('Failed to retrieve image'));
+  
+    const result = await retrieveImage('image.jpg');
+  
+    // Use the exact URL that axios.get is called with
+    expect(axios.get).toHaveBeenCalledWith(
+      'https://tts-app.azurewebsites.net/api/retrieve-image/?blob_name=images/image.jpg',
+      expect.objectContaining({
+        responseType: 'blob',
+      })
+    );
+    expect(result).toBeNull();
   });
 });
