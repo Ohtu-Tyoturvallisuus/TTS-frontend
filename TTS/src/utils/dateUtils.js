@@ -38,7 +38,8 @@ export const formatDate = (dateString) => {
     return { date: 'Invalid Date', time: 'Invalid Time' };
   }
 
-  const userLocale = Localization.getLocales() || 'fi-Fi';
+  const userLocale = Localization.getLocales()?.[0]?.languageTag || 'fi-FI';
+  console.log('userLocale:', userLocale);
 
   const formattedDate = date.toLocaleDateString(userLocale, {
     year: 'numeric',

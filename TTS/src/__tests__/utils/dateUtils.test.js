@@ -2,7 +2,7 @@ import { formatRelativeDate, formatDate } from '@utils/dateUtils';
 import * as Localization from 'expo-localization';
 
 jest.mock('expo-localization', () => ({
-  getLocales: jest.fn(() => ['fi-FI']),
+  getLocales: jest.fn(),
 }));
 
 describe('dateUtils', () => {
@@ -71,40 +71,40 @@ describe('dateUtils', () => {
       const dateString = '2024-11-15T09:45:00Z';
       const result = formatDate(dateString);
   
-    const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
-    const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  
-    expect(result).toEqual({
-      date: expectedDate,
-      time: expectedTime,
-    });
+      const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    
+      expect(result).toEqual({
+        date: expectedDate,
+        time: expectedTime,
+      });
     });
 
     it('should correctly format single-digit months and days using the user locale', () => {
       const dateString = '2024-06-05T08:05:00Z';
       const result = formatDate(dateString);
   
-    const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
-    const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  
-    expect(result).toEqual({
-      date: expectedDate,
-      time: expectedTime,
-    });
+      const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    
+      expect(result).toEqual({
+        date: expectedDate,
+        time: expectedTime,
+      });
     });
 
     it('should handle invalid dates gracefully', () => {
@@ -115,17 +115,34 @@ describe('dateUtils', () => {
       expect(result.time).toBe('Invalid Time');
     });
 
-    it('should use the user’s locale from expo-localization', () => {
-      Localization.getLocales.mockReturnValue(['sv-SE']);
+    it('should use the user locale from expo-localization', () => {
+      Localization.getLocales.mockReturnValueOnce([{ languageTag: 'sv-SE' }]);
+      const dateString = '2024-06-05T08:05:00Z';
+    
+      const result = formatDate(dateString);
+    
+      expect(result).toEqual({
+        date: '2024-06-05',
+        time: '11:05',
+      });
+      expect(Localization.getLocales).toHaveBeenCalled();
+    });
+    
+    it('should default to fi-FI locale if Localization.getLocales returns undefined', () => {
+      Localization.getLocales.mockReturnValueOnce(undefined);
       const dateString = '2024-06-05T08:05:00Z';
       const result = formatDate(dateString);
-
-      const expectedDate = new Date(dateString).toLocaleDateString('sv-SE');
-      const expectedTime = new Date(dateString).toLocaleTimeString('sv-SE', {
+    
+      const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
         hour: '2-digit',
         minute: '2-digit',
       });
-
+    
       expect(result).toEqual({
         date: expectedDate,
         time: expectedTime,
@@ -133,26 +150,4 @@ describe('dateUtils', () => {
       expect(Localization.getLocales).toHaveBeenCalled();
     });
   });
-  
-  it('should default to fi-FI locale if Localization.getLocales returns undefined', () => {
-    Localization.getLocales.mockReturnValueOnce(undefined);
-    const dateString = '2024-06-05T08:05:00Z';
-    const result = formatDate(dateString);
-  
-    const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
-    const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  
-    expect(result).toEqual({
-      date: expectedDate,
-      time: expectedTime,
-    });
-    expect(Localization.getLocales).toHaveBeenCalled();
-  });  
 });
