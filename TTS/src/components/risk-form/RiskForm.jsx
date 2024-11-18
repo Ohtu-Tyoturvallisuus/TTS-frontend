@@ -16,6 +16,7 @@ import ConfirmationModal from '@components/ConfirmationModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import FilledRiskForm from './FilledRiskForm';
 import SelectTranslateLanguage from '@components/speech-to-text/SelectTranslateLanguage';
+import { UserContext } from '@contexts/UserContext';
 
 const RiskForm = () => {
   const { 
@@ -35,6 +36,8 @@ const RiskForm = () => {
     taskDesc, 
     setTaskDesc, 
   } = useFormContext();
+
+  const { newUserSurveys, setNewUserSurveys } = useContext(UserContext);
 
   const navigation = useNavigation();
   const { t } = useTranslation(['translation', 'formFields']);
@@ -106,6 +109,7 @@ const RiskForm = () => {
     setShowSuccessAlert(false);
     setShowExitModal(false);
     navigation.navigate('ProjectList');
+    setNewUserSurveys(!newUserSurveys);
   };
 
   const addNewRiskNote = (title, type) => {

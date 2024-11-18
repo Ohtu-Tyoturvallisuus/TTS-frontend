@@ -27,7 +27,6 @@ const MyObservations = () => {
     <>
       <SettingsButton 
         onPress={() => {
-          fetchUserSurveys()
           setModalVisible(true)
         }}
         text={t('myobservations.title')}

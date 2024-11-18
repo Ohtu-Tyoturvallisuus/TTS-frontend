@@ -12,7 +12,7 @@ const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
   const [TENANT_ID, setTenantId] = useState('');
   const [loading, setLoading] = useState(true);
-  const { username, setUsername, setEmail } = useContext(UserContext);
+  const { username, setUsername, setEmail, setAccessToken } = useContext(UserContext);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -87,6 +87,7 @@ const MicrosoftSignIn = () => {
             const id = userProfile[1]
             const data = await signIn(name, id);
             console.log(data)
+            setAccessToken(data.access_token);
             await AsyncStorage.setItem('access_token', data.access_token);
           } else {
             console.error('Error fetching token:', tokenData);
