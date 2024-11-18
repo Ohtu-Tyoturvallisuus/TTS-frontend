@@ -1,12 +1,23 @@
 import { renderHook, waitFor } from '@testing-library/react-native';
 import useFetchProjects from '@hooks/useFetchProjects';
 import { fetchProjectList } from '@services/apiService';
+import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@services/apiService', () => ({
   fetchProjectList: jest.fn(),
 }));
 
 describe('useFetchProjects', () => {
+  const mockUserContext = {
+    accessToken: 'mockToken',
+  };
+
+  const wrapper = ({ children }) => (
+    <UserContext.Provider value={mockUserContext}>
+      {children}
+    </UserContext.Provider>
+  );
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -19,7 +30,7 @@ describe('useFetchProjects', () => {
 
     fetchProjectList.mockResolvedValueOnce(mockProjects);
 
-    const { result } = renderHook(() => useFetchProjects());
+    const { result } = renderHook(() => useFetchProjects(), { wrapper });
 
     expect(result.current.loading).toBe(true);
     expect(result.current.projects).toEqual([]);
@@ -40,7 +51,7 @@ describe('useFetchProjects', () => {
 
     fetchProjectList.mockRejectedValueOnce(new Error(errorMessage));
 
-    const { result } = renderHook(() => useFetchProjects());
+    const { result } = renderHook(() => useFetchProjects(), { wrapper });
 
     expect(result.current.loading).toBe(true);
     expect(result.current.projects).toEqual([]);

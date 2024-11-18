@@ -1,18 +1,30 @@
 import { renderHook, waitFor } from '@testing-library/react-native';
 import useUserSurveys from '@hooks/useUserSurveys';
 import { getUserSurveys } from '@services/apiService';
+import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@services/apiService', () => ({
   getUserSurveys: jest.fn(),
 }));
 
 describe('useUserSurveys', () => {
+  const mockUserContext = {
+    accessToken: 'mockToken',
+    newUserSurveys: false,
+  };
+
+  const wrapper = ({ children }) => (
+    <UserContext.Provider value={mockUserContext}>
+      {children}
+    </UserContext.Provider>
+  );
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('should initialize with default state', () => {
-    const { result } = renderHook(() => useUserSurveys());
+    const { result } = renderHook(() => useUserSurveys(), { wrapper });
 
     expect(result.current.userSurveys).toEqual([]);
     expect(result.current.loading).toBe(true);
@@ -29,11 +41,9 @@ describe('useUserSurveys', () => {
 
     getUserSurveys.mockResolvedValueOnce(mockSurveys);
 
-    const { result } = renderHook(() => useUserSurveys());
+    const { result } = renderHook(() => useUserSurveys(), { wrapper });
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.userSurveys).toEqual([]);
-    expect(result.current.error).toBeNull();
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -46,11 +56,9 @@ describe('useUserSurveys', () => {
     const errorMessage = 'Error fetching surveys';
     getUserSurveys.mockRejectedValueOnce(new Error(errorMessage));
 
-    const { result } = renderHook(() => useUserSurveys());
+    const { result } = renderHook(() => useUserSurveys(), { wrapper });
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.userSurveys).toEqual([]);
-    expect(result.current.error).toBeNull();
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -68,7 +76,7 @@ describe('useUserSurveys', () => {
 
     getUserSurveys.mockResolvedValueOnce(mockSurveys);
 
-    const { result } = renderHook(() => useUserSurveys());
+    const { result } = renderHook(() => useUserSurveys(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);

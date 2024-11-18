@@ -77,7 +77,6 @@ describe('MyObservations', () => {
   it('should render loading state initially', () => {
     useUserSurveys.mockReturnValue({
       userSurveys: [],
-      fetchUserSurveys: jest.fn(),
       loading: true,
       error: null,
     });
@@ -90,7 +89,6 @@ describe('MyObservations', () => {
   it('should render error state if there is an error', () => {
     useUserSurveys.mockReturnValue({
       userSurveys: [],
-      fetchUserSurveys: jest.fn(),
       loading: false,
       error: 'Failed to load surveys',
     });
@@ -107,7 +105,6 @@ describe('MyObservations', () => {
   
     useUserSurveys.mockReturnValue({
       userSurveys: mockSurveys,
-      fetchUserSurveys: jest.fn(),
       loading: false,
       error: null,
     });
@@ -119,25 +116,6 @@ describe('MyObservations', () => {
     await waitFor(() => {
       expect(formatDate).toHaveBeenCalledWith(mockSurveys[0].created_at);
       expect(getByText('01.11.2024')).toBeTruthy();
-    });
-  });
-
-  it('should call fetchUserSurveys when SettingsButton is pressed', async () => {
-    const fetchUserSurveysMock = jest.fn();
-
-    useUserSurveys.mockReturnValue({
-      userSurveys: [],
-      fetchUserSurveys: fetchUserSurveysMock,
-      loading: false,
-      error: null,
-    });
-
-    const { getByTestId } = render(<MyObservations />);
-
-    fireEvent.press(getByTestId('settings-button'));
-
-    await waitFor(() => {
-      expect(fetchUserSurveysMock).toHaveBeenCalled();
     });
   });
 

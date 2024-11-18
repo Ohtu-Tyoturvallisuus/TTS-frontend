@@ -396,13 +396,9 @@ describe('API Module', () => {
         ],
       };
   
-      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
-  
       axios.get.mockResolvedValueOnce({ data: mockResponseData });
   
-      const surveys = await getUserSurveys();
-  
-      expect(AsyncStorage.getItem).toHaveBeenCalledWith('access_token');
+      const surveys = await getUserSurveys(mockToken);
       
       expect(axios.get).toHaveBeenCalledWith(
         expect.stringContaining('filled-surveys/'),
@@ -416,11 +412,10 @@ describe('API Module', () => {
   
     it('should handle errors correctly if the API call fails', async () => {
       const mockToken = 'mockToken';
-      AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
   
       axios.get.mockRejectedValueOnce(new Error('Network Error'));
   
-      await expect(getUserSurveys()).rejects.toThrow('Network Error');
+      await expect(getUserSurveys(mockToken)).rejects.toThrow('Network Error');
     });
   });
 });

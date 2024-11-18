@@ -124,7 +124,7 @@ describe('Main Component', () => {
     renderWithContext();
 
     await waitFor(() => {
-      expect(consoleError).toHaveBeenCalledWith('Error retrieving username', expect.any(Error));
+      expect(consoleError).toHaveBeenCalledWith('Error retrieving user information', expect.any(Error));
     });
 
     consoleError.mockRestore();
