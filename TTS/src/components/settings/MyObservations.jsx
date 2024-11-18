@@ -10,7 +10,7 @@ import { formatDate } from '@utils/dateUtils';
 
 const MyObservations = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { userSurveys, fetchUserSurveys, loading, error } = useUserSurveys();
+  const { userSurveys, loading, error } = useUserSurveys();
   const { t } = useTranslation();
 
   if (loading || error) {
