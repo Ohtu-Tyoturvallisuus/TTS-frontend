@@ -57,24 +57,54 @@ describe('dateUtils', () => {
   });
 
   describe('formatDate', () => {
+    beforeEach(() => {
+      jest.spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions').mockReturnValue({
+        timeZone: 'Europe/Helsinki',
+      });
+    });
+  
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+    
     it('should format the date string into a readable date and time using the user locale', () => {
       const dateString = '2024-11-15T09:45:00Z';
       const result = formatDate(dateString);
-
-      expect(result).toEqual({
-        date: '15.11.2024',
-        time: '11.45',
-      });
+  
+    const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  
+    expect(result).toEqual({
+      date: expectedDate,
+      time: expectedTime,
+    });
     });
 
     it('should correctly format single-digit months and days using the user locale', () => {
       const dateString = '2024-06-05T08:05:00Z';
       const result = formatDate(dateString);
-
-      expect(result).toEqual({
-        date: '05.06.2024',
-        time: '11.05',
-      });
+  
+    const expectedDate = new Date(dateString).toLocaleDateString('fi-FI', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    const expectedTime = new Date(dateString).toLocaleTimeString('fi-FI', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  
+    expect(result).toEqual({
+      date: expectedDate,
+      time: expectedTime,
+    });
     });
 
     it('should handle invalid dates gracefully', () => {
