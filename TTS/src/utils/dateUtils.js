@@ -1,3 +1,5 @@
+import * as Localization from 'expo-localization';
+
 /**
  * Formats a date string into a relative or absolute time description.
  * @param {string} dateString - The ISO date string to format.
@@ -19,9 +21,8 @@ export const formatRelativeDate = (dateString, t) => {
   } else if (daysDifference <= 14) {
     return t('projectsurveylistcontainer.daysAgo', { count: daysDifference });
   } else {
-    return `${surveyDate.toLocaleDateString()}, ${
-      surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }`;
+    const { date, time } = formatDate(surveyDate.toISOString());
+    return `${date}, ${time}`;
   }
 };
 
@@ -33,14 +34,25 @@ export const formatRelativeDate = (dateString, t) => {
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
 
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const year = date.getFullYear();
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+  if (isNaN(date.getTime())) {
+    return { date: 'Invalid Date', time: 'Invalid Time' };
+  }
+
+  const userLocale = Localization.getLocales() || 'fi-Fi';
+
+  const formattedDate = date.toLocaleDateString(userLocale, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  const formattedTime = date.toLocaleTimeString(userLocale, {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   return {
-    date: `${day}.${month}.${year}`,
-    time: `${hours}:${minutes}`,
+    date: formattedDate,
+    time: formattedTime,
   };
 };

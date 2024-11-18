@@ -25,6 +25,7 @@ const Image = ({ images, currentIndex, onRemove = null, isLandscape }) => {
       )}
       {isEnlarged && (
         <Modal
+          testID='image-modal'
           transparent={true}
           animationType="none"
           visible={isEnlarged}
