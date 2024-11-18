@@ -23,7 +23,7 @@ describe('useFetchProjects', () => {
 
     expect(result.current.loading).toBe(true);
     expect(result.current.projects).toEqual([]);
-    expect(result.current.error).toBe(null);
+    expect(result.current.error).toBeNull();
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -31,7 +31,7 @@ describe('useFetchProjects', () => {
         { project_id: '1', project_name: 'Project One', formattedName: '[1] Project One' },
         { project_id: '2', project_name: 'Project Two', formattedName: '[2] Project Two' },
       ]);
-      expect(result.current.error).toBe(null);
+      expect(result.current.error).toBeNull();
     });
   });
 

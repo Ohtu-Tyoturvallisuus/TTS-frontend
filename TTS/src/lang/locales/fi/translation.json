@@ -70,6 +70,10 @@
     "greeting": "Hei",
     "loading": "Valmistellaan Microsoft-kirjautumista..."
   },
+  "myobservations": {
+    "title": "Omat havaintoni",
+    "loading": "Ladataan havaintoja..."
+  },
   "projectlist":{
     "chooseAll": "--Valitse kaikki--",
     "chooseArea": "Valitse alue",
@@ -174,8 +178,5 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
-  },
-  "myobservations": {
-    "title": "Omat havaintoni"
   }
 }

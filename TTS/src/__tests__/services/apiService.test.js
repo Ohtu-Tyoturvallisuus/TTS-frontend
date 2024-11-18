@@ -342,6 +342,28 @@ describe('API Module', () => {
       expect(result).toEqual(mockResponseData);
     });
 
+    it('should use default parameters for "from" and "to" if not provided', async () => {
+      axios.post.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const result = await translateText(mockText);
+  
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.stringContaining('/translate/'),
+        {
+          text: mockText,
+          from: 'fi', // default value
+          to: ['en'], // default value
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${mockToken}`,
+          },
+        }
+      );
+  
+      expect(result).toEqual(mockResponseData);
+    });
+
     it('should handle errors gracefully', async () => {
       const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
       const mockError = new Error('Translation error');

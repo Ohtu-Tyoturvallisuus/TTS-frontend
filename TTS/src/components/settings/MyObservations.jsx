@@ -1,39 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Text, Modal, View, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import SettingsButton from '@components/buttons/SettingsButton';
 import CloseButton from '@components/buttons/CloseButton';
-import { getUserSurveys } from '@services/apiService';
-import { useTranslation } from 'react-i18next';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
-
-export const formatDate = (dateString) => {
-  const date = new Date(dateString);
-
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const year = date.getFullYear();
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  return {
-    date: `${day}.${month}.${year}`,
-    time: `${hours}:${minutes}`,
-  };
-};
+import Loading from '@components/Loading';
+import useUserSurveys from '@hooks/useUserSurveys';
+import { formatDate } from '@utils/dateUtils';
 
 const MyObservations = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [userSurveys, setUserSurveys] = useState([]);
+  const { userSurveys, fetchUserSurveys, loading, error } = useUserSurveys();
   const { t } = useTranslation();
 
-  const fetchUserSurveys = async () => {
-    const response = await getUserSurveys();
-    setUserSurveys(response.filled_surveys);
+  if (loading || error) {
+    return (
+      <Loading 
+        loading={loading} 
+        error={error} 
+        title={t('myobservations.loading')}
+      />
+    );
   }
-
-  useEffect(() => {
-    fetchUserSurveys();
-  }, []);
 
   return (
     <>
@@ -44,7 +32,12 @@ const MyObservations = () => {
         }}
         text={t('myobservations.title')}
       />
-      <Modal visible={modalVisible} animationType='fade' onRequestClose={() => setModalVisible(false)}>
+      <Modal
+        testID='myobservations-modal'
+        visible={modalVisible}
+        animationType='fade'
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View className="flex items-center justify-center">
           <ScrollView
             className="bg-white flex-grow p-5 w-full" 
