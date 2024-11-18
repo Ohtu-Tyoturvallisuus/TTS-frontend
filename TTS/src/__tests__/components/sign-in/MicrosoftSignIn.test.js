@@ -39,10 +39,11 @@ jest.mock('react-i18next', () => ({
 describe('MicrosoftSignIn Component', () => {
   const mockSetUsername = jest.fn();
   const mockSetEmail = jest.fn();
+  const mockSetAccessToken = jest.fn();
 
   const renderWithContext = (username = null, email = null) => {
     return render(
-      <UserContext.Provider value={{ username, setUsername: mockSetUsername, email, setEmail: mockSetEmail }}>
+      <UserContext.Provider value={{ username, setUsername: mockSetUsername, email, setEmail: mockSetEmail, setAccessToken: mockSetAccessToken }}>
         <MicrosoftSignIn />
       </UserContext.Provider>
     );

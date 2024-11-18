@@ -30,7 +30,10 @@ describe('submitForm', () => {
       description: 'Using protective gear',
       status: 'checked',
       risk_type: 'scaffolding',
-      images: ['image1.png', 'image2.png'],
+      images: [
+        {'blobName': 'image1.png', 'isLandscape': true},
+        {'blobName': 'image2.png', 'isLandscape': false}
+      ],
     },
   };
 
@@ -60,7 +63,10 @@ describe('submitForm', () => {
         description: 'Using protective gear',
         status: 'checked',
         risk_type: 'scaffolding',
-        images: ['blob1', 'blob2'],
+        images: [
+          expect.objectContaining({ blobName: 'blob1', isLandscape: expect.any(Boolean) }),
+          expect.objectContaining({ blobName: 'blob2', isLandscape: expect.any(Boolean) }),
+        ],
       }),
     ]));
 
@@ -78,6 +84,51 @@ describe('submitForm', () => {
       .rejects.toThrow('Some fields are empty');
     
     expect(mockSetShowSuccessAlert).not.toHaveBeenCalled();
+  });
+
+  it('should throw an error if a task field is null', async () => {
+    const incompleteTaskInfo = {
+      task: null,
+      description: 'Valid description',
+      scaffold_type: 'Scaffold Type',
+    };
+
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+      .rejects.toThrow('Some fields are empty');
+  });
+
+  it('should replace null values for RiskNote status and description', async () => {
+    const newFormData = {
+      personal_protection: {
+        description: null,
+        status: null,
+        risk_type: 'scaffolding',
+        images: [],
+      },
+    };
+    postNewSurvey.mockResolvedValueOnce({ id: 123 });
+    postRiskNotes.mockResolvedValueOnce();
+
+    await submitForm(project, taskInfo, newFormData, mockSetShowSuccessAlert, mockTranslate);
+
+    expect(postNewSurvey).toHaveBeenCalledWith(
+      project.id,
+      taskInfo.description,
+      taskInfo.task,
+      taskInfo.scaffold_type,
+    );
+
+    expect(postRiskNotes).toHaveBeenCalledWith(123, expect.arrayContaining([
+      expect.objectContaining({
+        note: 'personal_protection',
+        description: '',
+        status: '',
+        risk_type: 'scaffolding',
+        images: [],
+      }),
+    ]));
+
+    expect(mockSetShowSuccessAlert).toHaveBeenCalledWith(true);
   });
 
   it('should alert on submission error', async () => {

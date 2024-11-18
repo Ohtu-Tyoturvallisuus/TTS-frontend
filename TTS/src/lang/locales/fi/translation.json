@@ -1,6 +1,6 @@
 {
   "appbar": {
-    "projects": "Työmaat",
+    "projects": "Projektit",
     "settings": "Asetukset",
     "signOut": "Kirjaudu ulos",
     "signIn": "Kirjaudu sisään"
@@ -29,7 +29,11 @@
     "titlewithrisks": "Huomioitavat riskit täytetyssä lomakkeessa:",
     "norisks": "Ei huomioitavia riskejä. Oletko varma, että haluat jatkaa?",
     "edit": "Muokkaa lomaketta",
-    "preview": "Esikatsele täytettyä lomaketta"
+    "preview": "Esikatsele täytettyä lomaketta",
+    "emptyform": "Ei huomioitavia riskejä tässä arvioinnissa",
+    "project": "Projekti",
+    "filledat": "Täyttöaika",
+    "loadingimages": "Ladataan kuvia..."
   },
   "general": {
     "done": "Valmis",
@@ -65,6 +69,10 @@
     "signInText": "Microsoft-kirjautuminen",
     "greeting": "Hei",
     "loading": "Valmistellaan Microsoft-kirjautumista..."
+  },
+  "myobservations": {
+    "title": "Omat havaintoni",
+    "loading": "Ladataan havaintoja..."
   },
   "projectlist":{
     "chooseAll": "--Valitse kaikki--",

@@ -14,7 +14,9 @@
   "parser": "@babel/eslint-parser",
   "env": {
     "react-native/react-native": true,
-    "jest/globals": true
+    "jest/globals": true,
+    "node": true,
+    "es2020": true
   },
   "rules": {
     "react/prop-types": "off",

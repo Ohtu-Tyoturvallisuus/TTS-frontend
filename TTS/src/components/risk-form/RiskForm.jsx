@@ -16,6 +16,7 @@ import ConfirmationModal from '@components/ConfirmationModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import FilledRiskForm from './FilledRiskForm';
 import SelectTranslateLanguage from '@components/speech-to-text/SelectTranslateLanguage';
+import { UserContext } from '@contexts/UserContext';
 
 const RiskForm = () => {
   const { 
@@ -35,6 +36,8 @@ const RiskForm = () => {
     taskDesc, 
     setTaskDesc, 
   } = useFormContext();
+
+  const { newUserSurveys, setNewUserSurveys } = useContext(UserContext);
 
   const navigation = useNavigation();
   const { t } = useTranslation(['translation', 'formFields']);
@@ -90,12 +93,10 @@ const RiskForm = () => {
       scaffold_type: scaffoldType,
     };
     console.log('Submitting:', taskInfo);
-    console.log('FORMDATA:', formData);
     try {
       setSubmitted(true)
       const response = submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
       response._j && setSubmitted(false);
-      console.log('RESPONSE:', response);
     } catch (error) {
       console.log('Could not submit form', error);
       setSubmitted(false);
@@ -108,6 +109,7 @@ const RiskForm = () => {
     setShowSuccessAlert(false);
     setShowExitModal(false);
     navigation.navigate('ProjectList');
+    setNewUserSurveys(!newUserSurveys);
   };
 
   const addNewRiskNote = (title, type) => {
@@ -200,8 +202,7 @@ const RiskForm = () => {
                 )
               )
             }
-  
-          
+
             <TouchableOpacity 
               className="p-2 border border-green-500 rounded my-2 items-center" 
               onPress={() => addNewRiskNote('riskform.otherScaffolding', 'scaffolding')}

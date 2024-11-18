@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { fetchProjectList } from '@services/apiService';
+import { UserContext } from '@contexts/UserContext';
 
 const useFetchProjects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { accessToken } = useContext(UserContext);
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -26,8 +28,8 @@ const useFetchProjects = () => {
       }
     };
 
-    loadProjects();
-  }, []);
+    accessToken && loadProjects();
+  }, [accessToken]);
 
   return { projects, loading, error };
 };

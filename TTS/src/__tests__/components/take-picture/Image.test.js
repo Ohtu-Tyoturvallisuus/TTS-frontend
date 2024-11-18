@@ -55,6 +55,19 @@ describe('Image Component', () => {
     expect(queryByText('X')).toBeNull();
   });
 
+  it('closes the modal when onRequestClose is triggered', () => {
+    const { getByTestId, queryByText } = render(<Image images={mockImages} currentIndex={0} />);
+
+    fireEvent.press(getByTestId('risk-image-0'));
+
+    expect(queryByText('Mock ImageViewer')).toBeTruthy();
+
+    fireEvent(getByTestId('image-modal'), 'requestClose');
+
+    expect(queryByText('Mock ImageViewer')).toBeNull();
+  });
+  
+
   it('applies the correct styles for landscape images', () => {
     const { getByTestId } = render(<Image images={mockImages} currentIndex={0} isLandscape={true} />);
     const image = getByTestId('risk-image-0');

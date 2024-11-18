@@ -43,7 +43,11 @@
     "titlewithrisks": "Noted risks according to the form:",
     "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
     "edit": "Edit form",
-    "preview": "Preview the form"
+    "preview": "Preview the form",
+    "emptyform": "No relevant risks in this form",
+    "project": "Project",
+    "filledat": "Filled at",
+    "loadingimages": "Loading images..."
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",
@@ -65,6 +69,10 @@
     "signInText": "Microsoft sign-in",
     "greeting": "Hello",
     "loading": "Preparing Microsoft sign-in..."
+  },
+  "myobservations": {
+    "title": "My observations",
+    "loading": "Loading observations..."
   },
   "projectlist":{
     "chooseAll": "--Choose all--",
