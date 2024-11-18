@@ -16,23 +16,27 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Main = () => {
-  const { username, setUsername } = useContext(UserContext)
+  const { username, setUsername, setAccessToken } = useContext(UserContext)
   const { t } = useTranslation();
   const [showImage, setShowImage] = useState(true);
 
   useEffect(() => {
-    const fetchUsername = async () => {
+    const fetchUserInfo = async () => {
       try {
         const storedUsername = await AsyncStorage.getItem('username');
         if (storedUsername) {
           setUsername(storedUsername);
         }
+        const storedAccessToken = await AsyncStorage.getItem('access_token');
+        if (storedAccessToken) {
+          setAccessToken(storedAccessToken);
+        }
       } catch (error) {
-        console.error('Error retrieving username', error);
+        console.error('Error retrieving user information', error);
       }
     };
   
-    fetchUsername();
+    fetchUserInfo();
   }, [setUsername]);
 
   const MainStack = () => (

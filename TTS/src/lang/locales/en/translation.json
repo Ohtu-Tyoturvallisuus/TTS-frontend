@@ -70,6 +70,10 @@
     "greeting": "Hello",
     "loading": "Preparing Microsoft sign-in..."
   },
+  "myobservations": {
+    "title": "My observations",
+    "loading": "Loading observations..."
+  },
   "projectlist":{
     "chooseAll": "--Choose all--",
     "chooseArea": "Choose area",
@@ -174,8 +178,5 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
-  },
-  "myobservations": {
-    "title": "My observations"
   }
 }

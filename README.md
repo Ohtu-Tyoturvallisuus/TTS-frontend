@@ -23,6 +23,9 @@
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml/badge.svg"/>
   </a>
+  <a href="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend" > 
+    <img src="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend/branch/uat/graph/badge.svg?token=R9CQLULY9J"/> 
+  </a>
 </p>
 
 This project is part of the autumn 2024 Software Engineering project course [TKT20007](https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/) at the University of Helsinki.

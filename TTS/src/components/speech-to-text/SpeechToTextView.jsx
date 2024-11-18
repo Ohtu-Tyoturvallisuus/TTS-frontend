@@ -72,11 +72,11 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
         setIsLoading(true);
         await uploadToBackend(uri);
       } catch (error) {
-        console.log('Recording stopped manually before timer ran out');
+        console.error('Failed to stop recording', error)
       }
 
     } catch (error) {
-      console.error('Failed to stop recording', error);
+      console.error('Failed to clean up recording resources', error);
     }
   };
 
