@@ -39,7 +39,6 @@ export const formatDate = (dateString) => {
   }
 
   const userLocale = Localization.getLocales()?.[0]?.languageTag || 'fi-FI';
-  console.log('userLocale:', userLocale);
 
   const formattedDate = date.toLocaleDateString(userLocale, {
     year: 'numeric',

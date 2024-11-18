@@ -181,7 +181,7 @@ describe('ProjectSurveyListContainer Component', () => {
 
     // Format the expected date output as `DD.MM.YYYY, klo HH.MM`
     const surveyDate = new Date(mockSurveys[0].created_at);
-    const expectedDate = `${surveyDate.toLocaleDateString()}, ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const expectedDate = `${surveyDate.toLocaleDateString('fi-FI')}, ${surveyDate.toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' })}`;
 
     expect(getByText(expectedDate)).toBeTruthy();
   });
