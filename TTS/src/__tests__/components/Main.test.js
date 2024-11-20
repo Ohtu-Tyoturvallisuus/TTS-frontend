@@ -5,6 +5,7 @@ import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import Main from '@components/Main';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
+import { NavigationProvider } from '@contexts/NavigationContext';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
@@ -73,7 +74,9 @@ describe('Main Component', () => {
       <UserContext.Provider value={{ username, setUsername: mockSetUsername }}>
         <ProjectSurveyContext.Provider value={{ setSelectedProject: mockSetSelectedProject }}>
           <NavigationContainer>
-            <Main />
+            <NavigationProvider>
+              <Main />
+            </NavigationProvider>
           </NavigationContainer>
         </ProjectSurveyContext.Provider>
       </UserContext.Provider>
