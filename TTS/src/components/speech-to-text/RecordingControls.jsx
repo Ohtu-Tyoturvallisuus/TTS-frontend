@@ -27,6 +27,8 @@ const styles = StyleSheet.create({
   recordButton: {
     alignItems: 'center',
     borderRadius: 5,
+    justifyContent: 'center',
+    minHeight: 48,
     padding: 10,
   },
   startButton: {

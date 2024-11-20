@@ -1,70 +1,87 @@
 {
   "personal_protection": {
-    "title": "Personal protective equipment", 
+    "title": "Personal protective equipment",
+    "description": "Ensure you have the required personal protective equipment and take into account job-specific and client-specific requirements. Equipment should be regularly inspected, and damaged items must be replaced immediately.",
     "risk_type": "scaffolding"
   },
   "personal_fall_protection": {
-    "title": "Personal fall protection (harness/lanyard/life line/rails/guardrails)", 
+    "title": "Personal fall protection",
+    "description": "Work at height always involves the risk of falling. Determine which fall protection equipment is best suited for the task. In addition to safety harnesses and ropes, options include sliding arresters, retractable arresters, and life lines.",
     "risk_type": "scaffolding"
   },
   "material_storage": {
-    "title": "Material storage and packaging (consider access ways)", 
+    "title": "Material storage and packaging",
+    "description": "Keep scaffolding materials well-organized both in storage and on the job site. Ensure that pathways are clear. Properly packed scaffolding materials improve the safety of transport and enhance the efficiency of the logistics chain throughout.", 
     "risk_type": "scaffolding"
   },
   "lifting_accessories": {
-    "title": "Lifting accessories (functional/inspected)", 
+    "title": "Lifting accessories",
+    "description": "Ensure you know how to use lifting aids. Lifting aids should be regularly inspected, and any damaged ones should be replaced immediately. Also ensure that the annual inspection is valid.", 
     "risk_type": "scaffolding"
   },
   "danger_area": {
-    "title": "Danger area and demarcation (risk of falling objects)", 
+    "title": "Danger area and demarcation",
+    "description": "Work at height always involves the risk of falling objects. Demarcate the hazard area with warning tape. For lifting small scaffold parts, use a lifting bag and, if necessary, tool restraints.",
     "risk_type": "scaffolding"
   },
   "ground_stability": {
-    "title": "Ground stability (soil/platform/roof)", 
+    "title": "Ground stability",
+    "description": "Before starting work, verify with the client's representative that the surface can support the weight of the scaffolding material. The surface could be ground, an operational platform, or a roof. Manage the load distribution as needed. If necessary, protect the surface so that the storage of scaffolding materials does not damage it.",
     "risk_type": "scaffolding"
   },
   "anchoring": {
-    "title": "Anchoring (scaffolding installation/removal)", 
+    "title": "Anchoring",
+    "description": "Anchor the scaffold according to the installation instructions or scaffold plan, and perform the necessary anchor tests. Ensure the anchoring is secure before dismantling the scaffold.",
     "risk_type": "scaffolding"
   },
   "weather_conditions": {
-    "title": "Weather conditions (wind/cold/heat)", 
+    "title": "Weather conditions",
+    "description": "Consider weather conditions (wind/cold/heat). Strong winds can pose risks during lifts and when covering scaffolds. In hot weather, it's important to stay hydrated, and in cold weather, work below the wind and take breaks as necessary.",
     "risk_type": "scaffolding"
   },
   "environment_cleanliness": {
-    "title": "Environment (cleanliness/waste sorting)", 
+    "title": "Environment",
+    "description": "Maintain cleanliness in the work area at all stages and leave the work site in good order at the end of the day. Dispose of waste properly in designated bins.",
     "risk_type": "scaffolding"
   },
   "slipping_tripping": {
-    "title": "Slipping/tripping (cleanliness/winter maintenance/lighting)", 
+    "title": "Slipping/tripping",
+    "description": "Slips and falls can be prevented by maintaining cleanliness, removing snow and ice, and ensuring good lighting. Make sure that poor condition of your safety shoes does not increase the risk of slipping.",
     "risk_type": "environment"
   },
   "surrounding_structures": {
-    "title": "Surrounding structures and equipment (valves/electrical cables or lines/glass)", 
+    "title": "Surrounding structures and equipment",
+    "description": "Surrounding equipment (e.g. valves/electrical cables/pipes), window glass, and roofing materials should be considered to prevent their damage.",
     "risk_type": "environment"
   },
   "vehicle_traffic": {
-    "title": "Vehicle traffic/pedestrian", 
+    "title": "Vehicle traffic/pedestrians",
+    "description": "Discuss with the client's representative how pedestrians and vehicles will be considered during work.",
     "risk_type": "environment"
   },
   "hazards": {
-    "title": "Hazards (scaffolding cleanliness during dismantling/dusts/chemicals/asbestos)", 
+    "title": "Hazards",
+    "description": "Confirm with the client's representative what contaminants are present in the work environment (dust/chemicals/asbestos). Use additional protective equipment if necessary. Before starting to dismantle the scaffold, ensure it is clean. Be in contact with the client's representative if the scaffold cannot be dismantled due to inadequate cleanliness.",
     "risk_type": "environment"
   },
   "work_permit": {
-    "title": "Work permit (reporting to control room/personal protective equipment/meters)", 
+    "title": "Work permit",
+    "description": "Before starting work, ensure that you have the required work permit. Make sure you have the protective gear required by the work permit.",
     "risk_type": "environment"
   },
   "tank_work_permit": {
-    "title": "Tank work permit", 
+    "title": "Tank work permit",
+    "description": "Working in tanks or enclosed spaces requires a specific permit. Before starting work, ensure that you have the necessary permit. Make sure you have the protective equipment required by the permit and that the criteria specified in the permit for starting work have been met.",
     "risk_type": "environment"
   },
   "energy_isolation": {
-    "title": "Energy isolation (lockout)", 
+    "title": "Energy isolation",
+    "description": "Confirm with the client's representative that the required safety separations are taken care of and use your own lock for lockout/tagout.",
     "risk_type": "environment"
   },
   "emergency_procedure": {
-    "title": "Emergency procedure (emergency exit route)", 
+    "title": "Emergency procedure",
+    "description": "In case of an emergency, ensure you know how to make an emergency call if needed. You should know the emergency exit route and where the nearest assembly point is. In case of chemical exposure, know where the nearest emergency shower is.",
     "risk_type": "environment"
   }
 }

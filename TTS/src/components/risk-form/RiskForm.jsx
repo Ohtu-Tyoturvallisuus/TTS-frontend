@@ -204,7 +204,7 @@ const RiskForm = () => {
             }
 
             <TouchableOpacity 
-              className="p-2 border border-green-500 rounded my-2 items-center" 
+              className="p-2 border border-green-500 rounded my-2 min-h-12 items-center" 
               onPress={() => addNewRiskNote('riskform.otherScaffolding', 'scaffolding')}
             >
               <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherScaffolding')}</Text>
@@ -232,7 +232,7 @@ const RiskForm = () => {
               )
             }
             <TouchableOpacity 
-              className="p-2 border border-green-500 rounded my-2 items-center" 
+              className="p-2 border border-green-500 rounded my-2 min-h-12 items-center" 
               onPress={() => addNewRiskNote('riskform.otherEnvironment', 'environment')}
             >
               <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherEnvironment')}</Text>

@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     justifyContent: 'center',
+    minHeight: 48,
     padding: 10,
     position: 'absolute',
     right: 30,
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 5,
+    minHeight: 48,
     paddingVertical: 10,
   },
   buttonGroup: {

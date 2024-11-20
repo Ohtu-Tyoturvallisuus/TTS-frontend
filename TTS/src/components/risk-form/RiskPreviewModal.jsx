@@ -84,16 +84,16 @@ const RiskPreviewModal = ({
           </View>
           <View className="flex-row justify-between mt-4">
             <TouchableOpacity
-              style={styles.editButton}
+              style={[styles.button, styles.editButton]}
               onPress={onEditPress}
             >
-              <Text>{t('riskmodal.edit')}</Text>
+              <Text style={styles.buttonText}>{t('riskmodal.edit')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.checkedButton}
+              style={[styles.button, styles.checkedButton]}
               onPress={onSubmit}
             >
-              <Text>{t('riskmodal.checked')}</Text>
+              <Text style={styles.buttonText}>{t('riskmodal.checked')}</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -104,27 +104,29 @@ const RiskPreviewModal = ({
 
 const styles = StyleSheet.create({
 
-  checkedButton: {
+  button: {
     alignItems: 'center',
     borderColor: '#ccc',
     borderRadius: 10,
     borderWidth: 1,
-    height: 40,
     justifyContent: 'center',
-    width: 100,
+    minHeight: 48,
+    width: "35%",
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  checkedButton: {
+    backgroundColor: 'green',
   },
   description: {
     fontSize: 16,
     marginBottom: 20,
   },
   editButton: {
-    alignItems: 'center',
-    borderColor: '#ccc',
-    borderRadius: 10,
-    borderWidth: 1,
-    height: 40,
-    justifyContent: 'center',
-    width: 100,
+    backgroundColor: '#ef7d00',
   },
   imageContainer: {
     alignItems: 'center',

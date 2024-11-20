@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
 import CustomModal from '@components/CustomModal';
+import InfoModal from './InfoModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import TakePictureView from '@components/take-picture/TakePictureView';
 
@@ -27,8 +28,7 @@ const RiskEditModal = ({
   const handleReset = () => {
     setDescription('');
     onReset();
-  }
-
+  };
 
   return (
     <CustomModal
@@ -38,7 +38,10 @@ const RiskEditModal = ({
       onRequestClose={onClose}
     >
       <ScrollView>
-        <Text style={styles.title}>{renderTitle ? renderTitle(title) : title}</Text>
+        <View className="flex-row flex-wrap items-center mb-4">
+          <Text className="text-xl font-bold flex-shrink">{renderTitle ? renderTitle(title) : title}</Text>
+          <InfoModal title={title} />
+        </View>
         
         <TextInput
           style={styles.input}
@@ -142,12 +145,7 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: 'green',
     flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
+  }
 });
 
 export default RiskEditModal;
