@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormContext } from '@contexts/FormContext';
 import RiskEditModal from './RiskEditModal';
 import RiskPreviewModal from './RiskPreviewModal';
+import InfoModal from './InfoModal';
 
 const RiskNote = ({ title, renderTitle }) => {
   const { updateFormField, getFormData, updateTranslations } = useFormContext();
@@ -42,7 +43,10 @@ const RiskNote = ({ title, renderTitle }) => {
 
   return (
     <View testID={`risknote-${title}`}>
-      <Text style={styles.riskNote}>{renderTitle ? renderTitle(title) : title}</Text>
+      <View className="flex-row flex-wrap items-center justify-center mb-4">
+        <Text style={styles.riskNote}>{renderTitle ? renderTitle(title) : title}</Text>
+        <InfoModal title={title} />
+      </View>
       {status === 'checked' ? (
         <View style={styles.choiceDisplay}>
           <View style={styles.statusContainer}>
@@ -149,7 +153,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   riskNote: {
-    alignSelf: 'center',
     fontSize: 16,
     fontWeight: 'bold',
     marginVertical: 8
