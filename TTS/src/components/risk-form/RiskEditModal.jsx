@@ -40,7 +40,7 @@ const RiskEditModal = ({
       <ScrollView>
         <View className="flex-row flex-wrap items-center mb-4">
           <Text className="text-xl font-bold flex-shrink">{renderTitle ? renderTitle(title) : title}</Text>
-          <InfoModal title={title} />
+          <InfoModal title={title} renderTitle={renderTitle} />
         </View>
         
         <TextInput
