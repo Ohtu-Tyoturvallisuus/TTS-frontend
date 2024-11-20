@@ -17,6 +17,7 @@ import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import FilledRiskForm from './FilledRiskForm';
 import SelectTranslateLanguage from '@components/speech-to-text/SelectTranslateLanguage';
 import { UserContext } from '@contexts/UserContext';
+import { NavigationContext } from '@contexts/NavigationContext';
 
 const RiskForm = () => {
   const { 
@@ -37,6 +38,7 @@ const RiskForm = () => {
     setTaskDesc, 
   } = useFormContext();
 
+  const { setCurrentLocation } = useContext(NavigationContext);
   const { newUserSurveys, setNewUserSurveys } = useContext(UserContext);
 
   const navigation = useNavigation();
@@ -110,6 +112,7 @@ const RiskForm = () => {
     setShowExitModal(false);
     navigation.navigate('ProjectList');
     setNewUserSurveys(!newUserSurveys);
+    setCurrentLocation('ProjectList');
   };
 
   const addNewRiskNote = (title, type) => {
