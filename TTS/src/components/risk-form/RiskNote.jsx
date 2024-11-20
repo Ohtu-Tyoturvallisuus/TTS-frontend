@@ -45,7 +45,7 @@ const RiskNote = ({ title, renderTitle }) => {
     <View testID={`risknote-${title}`}>
       <View className="flex-row flex-wrap items-center justify-center mb-4">
         <Text style={styles.riskNote}>{renderTitle ? renderTitle(title) : title}</Text>
-        <InfoModal title={title} />
+        <InfoModal title={title} renderTitle={renderTitle} />
       </View>
       {status === 'checked' ? (
         <View style={styles.choiceDisplay}>

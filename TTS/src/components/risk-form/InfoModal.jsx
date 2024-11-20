@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import CustomModal from '@components/CustomModal';
 import CloseButton from '@components/buttons/CloseButton';
 
-const InfoModal = ({ title }) => {
+const InfoModal = ({ title, renderTitle }) => {
   const [visible, setVisible] = useState(false);
   const { t } = useTranslation(['translation', 'formFields']);
 
@@ -31,9 +31,15 @@ const InfoModal = ({ title }) => {
       >
         <View>
           { title.startsWith('riskform.otherScaffolding') || title.startsWith('riskform.otherEnvironment') ? (
-            <Text className="text-xl my-5 ml-2">{t('descriptionmodal.otherHazards')}</Text>
+            <View>
+              <Text className="text-2xl font-semibold my-5 ml-2">{renderTitle ? renderTitle(title) : title}</Text>
+              <Text className="text-xl my-5 ml-2">{t('descriptionmodal.otherHazards')}</Text>
+            </View>
           ) : (
-            <Text className="text-xl my-5 ml-2">{t(`${title}.description`, { ns: 'formFields' })}</Text>
+            <View>
+              <Text className="text-2xl font-semibold my-5 ml-2">{renderTitle ? renderTitle(title) : title}</Text>
+              <Text className="text-xl my-5 ml-2">{t(`${title}.description`, { ns: 'formFields' })}</Text>
+            </View>
           )}
         </View>
         <CloseButton onPress={handleModalVisibility} />
