@@ -150,9 +150,13 @@
     "selectLanguages": "Select languages"
   },
   "settings":{
+    "cancel": "Cancel",
     "changeLanguage": "Change language",
+    "confirm": "Confirm",
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "signOutGuestAlertTitle": "Sign Out from Guest Account",
+    "signOutGuestAlertMessage": "Are you sure you want to sign out? All guest data will be deleted."
   },
   "signin": {
     "confirmLogin": "Confirm login",
