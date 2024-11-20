@@ -37,6 +37,9 @@ jest.mock('@components/buttons/CloseButton', () => {
 
 describe('InfoModal Component', () => {
   const title = 'riskform.test';
+  const renderTitle = (title) => {
+    return `Custom: ${title}`; // Mocking the renderTitle function
+  };
 
   it('renders the InfoModal component correctly', () => {
     const { getByTestId } = render(<InfoModal title={title} />);
@@ -45,7 +48,7 @@ describe('InfoModal Component', () => {
   });
 
   it('opens the modal when the TouchableOpacity is pressed', async () => {
-    const { getByTestId, getByText } = render(<InfoModal title={title} />);
+    const { getByTestId, getByText } = render(<InfoModal title={title} renderTitle={renderTitle} />);
 
     const iconButton = getByTestId('info-icon-button');
     fireEvent.press(iconButton);
@@ -68,9 +71,22 @@ describe('InfoModal Component', () => {
     });
   });
 
+  it('displays correct text for other titles with renderTitle', async () => {
+    const { getByTestId, getByText } = render(
+      <InfoModal title="riskform.otherEnvironment" renderTitle={renderTitle} />
+    );
+
+    const iconButton = getByTestId('info-icon-button');
+    fireEvent.press(iconButton);
+
+    await waitFor(() => {
+      expect(getByText('Custom: riskform.otherEnvironment')).toBeTruthy();
+    });
+  });
+
   it('closes the modal when the CloseButton is pressed', async () => {
     const { getByTestId, queryByText, getByText } = render(
-      <InfoModal title={title} />
+      <InfoModal title={title} renderTitle={renderTitle} />
     );
 
     const iconButton = getByTestId('info-icon-button');
