@@ -7,17 +7,20 @@ import { UserProvider } from '@contexts/UserContext';
 import Main from './src/components/Main'
 import { ProjectSurveyProvider } from '@contexts/ProjectSurveyContext';
 import './src/lang/i18n';
+import { NavigationProvider } from '@contexts/NavigationContext';
 
 export default function App() {
   return (
     <>
       <SafeAreaProvider>
         <NavigationContainer>
-          <UserProvider>
-            <ProjectSurveyProvider>
-              <Main />
-            </ProjectSurveyProvider>
-          </UserProvider>
+          <NavigationProvider>
+            <UserProvider>
+              <ProjectSurveyProvider>
+                <Main />
+              </ProjectSurveyProvider>
+            </UserProvider>
+          </NavigationProvider>
         </NavigationContainer>
       </SafeAreaProvider>
       <StatusBar style='auto' />

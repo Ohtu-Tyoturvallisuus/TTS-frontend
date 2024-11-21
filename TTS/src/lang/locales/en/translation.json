@@ -21,6 +21,9 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "descriptionmodal": {
+    "otherHazards": "Also observe the workplace for other hazards and record them here."
+  },
   "dropdownoptions": {
     "chooseAll": "--Choose all--",
     "search": "Search..."
@@ -118,8 +121,8 @@
     "scaffoldRisks": "Scaffold work risks",
     "environmentRisks": "Work environment risks",
     "submit": "Submit",
-    "otherEnvironment": "Other workplace risk",
-    "otherScaffolding": "Other scaffolding risk",
+    "otherScaffolding": "Other hazards related to scaffolding work",
+    "otherEnvironment": "Other hazards related to the environment",
     "emptyFieldsError": "Fill all the necessary fields before submitting",
     "submitting": "Submitting form..."
   },

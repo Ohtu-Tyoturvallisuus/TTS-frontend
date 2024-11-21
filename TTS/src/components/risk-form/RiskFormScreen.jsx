@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { FormProvider } from '@contexts/FormContext';
 import RiskForm from '@components/risk-form/RiskForm';
 import { TranslationProvider } from '@contexts/TranslationContext';
-import { useIsFocused } from '@react-navigation/native';
+import { NavigationContext } from '@contexts/NavigationContext';
 
-const RiskFormScreen = ({ onFocusChange }) => {
-  const isFocused = useIsFocused();
+const RiskFormScreen = () => {
+  const { setCurrentLocation } = useContext(NavigationContext);
 
   useEffect(() => {
-    onFocusChange(!isFocused);
-  }, [isFocused, onFocusChange]);
+    setCurrentLocation('RiskForm')
+  }, []);
 
   return (
     <FormProvider>

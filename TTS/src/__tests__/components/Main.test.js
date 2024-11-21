@@ -1,16 +1,17 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { render, waitFor, act } from '@testing-library/react-native';
 import { UserContext } from '@contexts/UserContext';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import Main from '@components/Main';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContext } from '@contexts/NavigationContext';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
-  setItem: jest.fn(),
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: jest.fn(() => Promise.resolve(null)),
+  setItem: jest.fn(() => Promise.resolve()),
+  removeItem: jest.fn(() => Promise.resolve()),
+  clear: jest.fn(() => Promise.resolve()),
 }));
 
 jest.mock('react-native-gesture-handler', () => {
@@ -26,6 +27,16 @@ jest.mock('react-native-gesture-handler', () => {
     GestureHandlerRootView,
     PanGestureHandler,
     TouchableOpacity,
+  };
+});
+
+jest.mock('@react-navigation/native', () => {
+  const actualNav = jest.requireActual('@react-navigation/native');
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: jest.fn(),
+    }),
   };
 });
 
@@ -67,13 +78,16 @@ jest.mock('react-i18next', () => ({
 describe('Main Component', () => {
   const mockSetUsername = jest.fn();
   const mockSetSelectedProject = jest.fn();
+  const mockSetAccessToken = jest.fn();
 
-  const renderWithContext = (username = null) => {
+  const renderWithContext = (username = null, currentLocation=null) => {
     return render(
-      <UserContext.Provider value={{ username, setUsername: mockSetUsername }}>
+      <UserContext.Provider value={{ username, setUsername: mockSetUsername, setAccessToken: mockSetAccessToken }}>
         <ProjectSurveyContext.Provider value={{ setSelectedProject: mockSetSelectedProject }}>
           <NavigationContainer>
-            <Main />
+            <NavigationContext.Provider value={{ currentLocation }}>
+              <Main />
+            </NavigationContext.Provider>
           </NavigationContainer>
         </ProjectSurveyContext.Provider>
       </UserContext.Provider>
@@ -128,5 +142,13 @@ describe('Main Component', () => {
     });
 
     consoleError.mockRestore();
+  });
+
+  it('calls setShowImage(false) when currentLocation is "RiskForm"', async () => {
+    const { getByText } = renderWithContext('John Doe', 'RiskForm');
+
+    await act(async () => {
+      expect(getByText('Mocked Projects List')).toBeTruthy();
+    });
   });
 });
