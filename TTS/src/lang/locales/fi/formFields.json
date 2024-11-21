@@ -1,70 +1,87 @@
 {
   "personal_protection": {
-    "title": "Henkilökohtaiset suojaimet", 
+    "title": "Henkilökohtaiset suojaimet",
+    "description": "Varmista, että sinulla on vaadittavat henkilökohtaiset suojaimet ja huomioi työ- sekä asiakaskohtaiset vaatimukset. Suojaimet tulee säännöllisesti tarkastaa ja vaurioituneet vaihtaa ehjiin.",
     "risk_type": "scaffolding"
   },
   "personal_fall_protection": {
-    "title": "Henkilökohtainen putoamissuojaus (valjaat/tarrain/life line/kaiteet/suojatelineet)", 
+    "title": "Henkilökohtainen putoamissuojaus",
+    "description": "Korkealla työskentelyyn liittyy aina putoamisen vaara. Tarkastele, mikä putoamissuojain soveltuu parhaiten suoritettavaan työhön. Turvavaljaiden ja -köysien lisäksi vaihtoehtoja ovat liukutarrain, kelautuvatarrain sekä life line.",
     "risk_type": "scaffolding"
   },
   "material_storage": {
-    "title": "Materiaalin varastointi ja pakkaus (kulkutiet huomiointi)", 
+    "title": "Materiaalin varastointi ja pakkaus",
+    "description": "Pidä telinemateriaali hyvässä järjestyksessä niin varastoissa kuin työkohteessa. Varmista, että kulkutiet ovat vapaana. Ohjeistuksen mukaisesti pakattu telinemateriaali parantaa kuljetusten turvallisuutta sekä tehostaa toimintaa logistiikkaketjun kaikissa vaiheissa.",
     "risk_type": "scaffolding"
   },
   "lifting_accessories": {
-    "title": "Nostoapuvälineet (toimintakunnossa/tarkastettu)", 
+    "title": "Nostoapuvälineet",
+    "description":"Varmista, että osaat käyttää nostoapuvälinettä. Nostoapuvälineet tulee tarkastaa säännöllisesti ja vaurioituneet vaihtaa ehjiin. Varmista myös, että vuositarkastus on voimassa.", 
     "risk_type": "scaffolding"
   },
   "danger_area": {
-    "title": "Vaara-alue ja sen rajaaminen (putoavien esineiden vaara)", 
+    "title": "Vaara-alue ja sen rajaaminen",
+    "description": "Korkealla työskentelyyn liittyy aina putoavan esineen vaara. Rajaa vaara-alue varoitusnauhalla. Käytä pienien telineosien nostoon nostosäkkiä ja tarvittaessa työkaluvarmistimia.", 
     "risk_type": "scaffolding"
   },
   "ground_stability": {
-    "title": "Alustan kestävyys (maa/hoitotaso/katto)", 
+    "title": "Alustan kestävyys",
+    "description": "Ennen töiden aloittamista tulee varmistaa asiakkaan edustajalta, että alusta kestää telinemateriaalin painon. Alusta voi olla maa, hoitotaso tai katto. Huolehdi tarvittavasta kuormanjaosta. Tarvittaessa suojaa alustan pinta niin, että telinemateriaalin varastointi ei vaurioita sitä.", 
     "risk_type": "scaffolding"
   },
   "anchoring": {
-    "title": "Ankkurointi (telineen asennus/purku)", 
+    "title": "Ankkurointi",
+    "description": "Tee telineen ankkurointi joko asennusohjeen tai telinesuunnitelman mukaisesti ja suorita tarvittavat ankkurikoestukset. Varmista ankkuroinnin tila, ennen kuin telinettä aletaan purkaa.", 
     "risk_type": "scaffolding"
   },
   "weather_conditions": {
-    "title": "Sääolosuhteet (tuuli/kylmyys/kuumuus)", 
+    "title": "Sääolosuhteet",
+    "description": "Huomioi sääolosuhteet (tuuli/kylmyys/kuumuus). Voimakas tuuli aiheuttaa vaaraa mm. nostojen aikana ja telineiden peittämisessä. Kuumalla ilmalla on tärkeää nauttia riittävästi nestettä ja kylmällä ilmalla työskennellä tuulen alapuolella sekä tauottaa työtä tarvittaessa.", 
     "risk_type": "scaffolding"
   },
   "environment_cleanliness": {
-    "title": "Ympäristö (siisteys/jätteiden lajittelu)", 
+    "title": "Ympäristö",
+    "description": "Huolehdi työskentelyalueen siisteydestä kaikissa työvaiheissa ja jätä työkohde hyvään järjestykseen päivän päätteeksi. Lajittele jätteet asianmukaisesti jäteastioihin.",
     "risk_type": "scaffolding"
   },
   "slipping_tripping": {
-    "title": "Liukastuminen/kompastuminen (siisteys/talvikunnossapito/valaistus)", 
+    "title": "Liukastuminen/kompastuminen",
+    "description": "Liukastumistapaturmia voi välttää huolehtimalla siisteydestä, lumen ja jään poistosta sekä hyvästä valaistuksesta. Varmista, että turvakenkiesi huono kunto ei lisää liukastumisen vaaraa.",
     "risk_type": "environment"
   },
   "surrounding_structures": {
-    "title": "Ympäröivät rakenteen ja laitteistot (venttiilit/sähkökaapelit tai -linjat/lasit)", 
+    "title": "Ympäröivät rakenteet ja laitteistot",
+    "description": "Työkohteen ympärillä olevat laitteistot (mm. venttiilit/sähkökaapelit/putkilijat), ikkunalasit ja kattomateriaalit tulee huomioida ja näin välttää niiden vaurioitumista.",
     "risk_type": "environment"
   },
   "vehicle_traffic": {
-    "title": "Ajoneuvoliikenne/jalankulkija", 
+    "title": "Ajoneuvoliikenne/jalankulkijat",
+    "description": "Tarkastele asiakkaan edustajan kanssa, miten jalankulkijat sekä ajoneuvot huomioidaan töiden aikana.",
     "risk_type": "environment"
   },
   "hazards": {
-    "title": "Altisteet (telineiden puhtaus purettaessa/pölyt/kemikaalit/asbesti)", 
+    "title": "Altisteet",
+    "description": "Varmista asiakkaan edustajalta, mitä altisteita työympäristössä on (pölyt/kemikaalit/asbesti). Tarvittaessa käytä lisäsuojaimia. Ennen telineen purun aloittamista tulee telineen puhtaus varmistaa. Ole tarvittaessa yhteydessä asiakkaan edustajaan, mikäli telinettä ei puutteellisen siisteyden vuoksi voida alkaa purkamaan.",
     "risk_type": "environment"
   },
   "work_permit": {
-    "title": "Työlupa (valvomoon ilmoittautuminen/henkilökohtaiset suojavälineet/mittarit)", 
+    "title": "Työlupa",
+    "description": "Ennen töiden aloittamista tulee varmistaa, että sinulla on vaadittava työlupa. Varmista, että sinulla on työluvan edellyttämä suojavarustus.",
     "risk_type": "environment"
   },
   "tank_work_permit": {
-    "title": "Säiliötyölupa", 
+    "title": "Säiliötyölupa/suljetun tilan työskentely",
+    "description": "Säiliötyö/suljetun tilan työskentely edellyttää erillistä lupaa. Ennen töiden aloittamista tulee varmistaa, että sinulla on vaadittava lupa. Varmista, että sinulla on luvan edellyttämä suojavarustus ja että luvassa kerrotut työn aloittamiskriteerit on täytetty.",
     "risk_type": "environment"
   },
   "energy_isolation": {
-    "title": "Energiasta erottaminen (turvalukitukset)", 
+    "title": "Energiasta erottaminen",
+    "description": "Varmista asiakkaan edustajalta, että vaadittavasta turvaerotuksesta on huolehdittu ja käytä omaa lukkoa turvalukituksessa.",
     "risk_type": "environment"
   },
   "emergency_procedure": {
-    "title": "Toiminta hätätilanteessa (hätäpoistumistie)", 
+    "title": "Toiminta hätätilanteessa",
+    "description": "Hätätilanteen varalta varmista, että osaat tehdä tarvittaessa hätäpuhelun. Sinun tulee tietää hätäpoistumistie ja missä on lähin kokoontumispaikka. Kemikaalialtistuksen varalta tulee tietää lähin hätäsuihku.",
     "risk_type": "environment"
   }
 }

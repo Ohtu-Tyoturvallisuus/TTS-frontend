@@ -21,6 +21,9 @@
     "cancel": "Peruuta",
     "confirm": "Vahvista"
   },
+  "descriptionmodal": {
+    "otherHazards": "Havainnoi työkohdetta myös muiden vaarojen varalta ja kirjaa ne tähän."
+  },
   "dropdownoptions": {
     "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
@@ -118,8 +121,8 @@
     "scaffoldRisks": "Telinetöihin liittyvät vaarat",
     "environmentRisks": "Työympäristön vaarat",
     "submit": "Lähetä",
-    "otherEnvironment": "Muu työympäristövaara",
-    "otherScaffolding": "Muu telinetyövaara",
+    "otherScaffolding": "Muu telinetyöhön liittyvä vaara",
+    "otherEnvironment": "Muu työympäristöön liittyvä vaara",
     "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
     "submitting": "Lähetetään lomaketta..."
   },

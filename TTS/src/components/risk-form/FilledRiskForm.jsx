@@ -107,16 +107,21 @@ const FilledRiskForm = ({
                       const [retrievedImages, setRetrievedImages] = useState([]);
                     
                       useEffect(() => {
-                        const fetchImages = async () => {
-                          const images = await Promise.all(
-                            value.images?.map(async (image) => {
-                              const uri = await retrieveImage(image.blobName);
-                              return { uri };
-                            }) || []
-                          );
-                          setRetrievedImages(images);
-                        };
-                        modalVisible && fetchImages();
+                        if (modalVisible) {
+                          const fetchImages = async () => {
+                            const images = await Promise.all(
+                              value.images?.map(async (image) => {
+                                if (image.blobName) {
+                                  const uri = await retrieveImage(image.blobName);
+                                  return { uri };
+                                }
+                                return null;
+                              }) || []
+                            );
+                            setRetrievedImages(images.filter(Boolean)); // Filter out null values
+                          };
+                          fetchImages();
+                        }
                       }, [value.images, modalVisible]);
                     
                       return (

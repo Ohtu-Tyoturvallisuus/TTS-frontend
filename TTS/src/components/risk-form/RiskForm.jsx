@@ -17,6 +17,7 @@ import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import FilledRiskForm from './FilledRiskForm';
 import SelectTranslateLanguage from '@components/speech-to-text/SelectTranslateLanguage';
 import { UserContext } from '@contexts/UserContext';
+import { NavigationContext } from '@contexts/NavigationContext';
 
 const RiskForm = () => {
   const { 
@@ -37,6 +38,7 @@ const RiskForm = () => {
     setTaskDesc, 
   } = useFormContext();
 
+  const { setCurrentLocation } = useContext(NavigationContext);
   const { newUserSurveys, setNewUserSurveys } = useContext(UserContext);
 
   const navigation = useNavigation();
@@ -110,6 +112,7 @@ const RiskForm = () => {
     setShowExitModal(false);
     navigation.navigate('ProjectList');
     setNewUserSurveys(!newUserSurveys);
+    setCurrentLocation('ProjectList');
   };
 
   const addNewRiskNote = (title, type) => {
@@ -204,7 +207,7 @@ const RiskForm = () => {
             }
 
             <TouchableOpacity 
-              className="p-2 border border-green-500 rounded my-2 items-center" 
+              className="p-2 border border-green-500 rounded my-2 min-h-12 items-center" 
               onPress={() => addNewRiskNote('riskform.otherScaffolding', 'scaffolding')}
             >
               <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherScaffolding')}</Text>
@@ -232,7 +235,7 @@ const RiskForm = () => {
               )
             }
             <TouchableOpacity 
-              className="p-2 border border-green-500 rounded my-2 items-center" 
+              className="p-2 border border-green-500 rounded my-2 min-h-12 items-center" 
               onPress={() => addNewRiskNote('riskform.otherEnvironment', 'environment')}
             >
               <Text className="text-green-500 text-lg font-bold">+ {t('riskform.otherEnvironment')}</Text>

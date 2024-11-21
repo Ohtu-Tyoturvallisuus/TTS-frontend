@@ -7,6 +7,7 @@ import { FormProvider } from '@contexts/FormContext';
 import RiskForm from '@components/risk-form/RiskForm';
 import { submitForm } from '@services/formSubmission';
 import fiFormFields from '@lang/locales/fi/formFields.json';
+import { NavigationProvider } from '@contexts/NavigationContext';
 
 jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
   surveyData: {
@@ -169,13 +170,15 @@ describe('RiskForm Component', () => {
   
     return render(
       <NavigationContainer>
-        <UserContext.Provider value={mockUserContext}>
-          <ProjectSurveyContext.Provider value={contextValue}>
-            <FormProvider>
-              <RiskForm onFocusChange={mockOnFocusChange} />
-            </FormProvider>
-          </ProjectSurveyContext.Provider>
-        </UserContext.Provider>
+        <NavigationProvider>
+          <UserContext.Provider value={mockUserContext}>
+            <ProjectSurveyContext.Provider value={contextValue}>
+              <FormProvider>
+                <RiskForm onFocusChange={mockOnFocusChange} />
+              </FormProvider>
+            </ProjectSurveyContext.Provider>
+          </UserContext.Provider>
+        </NavigationProvider>
       </NavigationContainer>
     );
   };

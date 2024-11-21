@@ -4,6 +4,7 @@ import { Modal, StyleSheet, ScrollView, View } from 'react-native';
 const CustomModal = ({ visible, onClose, children }) => {
   return (
     <Modal
+      testID="custom-modal"
       visible={visible}
       transparent={true}
       animationType="fade"
