@@ -11,8 +11,16 @@ export const signIn = async (username, id = null, guest = null) => {
 };
 
 // Returns projects from the API
-export const fetchProjectList = async () => {
-  const response = await axios.get(API_BASE_URL + 'projects/');
+export const fetchProjectList = async (area_filter = "", data_area_id = "", search = "") => {
+  const filters = {};
+  if (area_filter) filters.area_filter = area_filter;
+  if (data_area_id) filters.data_area_id = data_area_id;
+  if (search) filters.search = search;
+
+  const queryParams = new URLSearchParams(filters).toString();
+  const url = `${API_BASE_URL}projects/?${queryParams}`;
+  console.log('fetchProjectList:', url);
+  const response = await axios.get(url);
   return response.data;
 };
 
@@ -127,7 +135,7 @@ export const translateText = async (text, from='fi', to=['en']) => {
   console.log('translateText:', url);
 
   try {
-    const response = await axios.post(url,         
+    const response = await axios.post(url,
     {
       text: text,
       from: from,
