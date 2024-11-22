@@ -39,8 +39,15 @@ const ProjectsList = () => {
     ["AS Telinekataja (Event)", "EVENT"],
     ["AS Telinekataja (Scaf)", "SCAF"]
   ];
+  const shouldFetchProjects = Boolean(areaFilter.length || searchFilter.trim());
 
-  const { projects, loading, error } = useFetchProjects(areaFilter, "", searchFilter);
+  const { projects, loading, error } = useFetchProjects(
+    area=areaFilter,
+    dataAreaId="", // Not currently in use
+    search=searchFilter,
+    // Projects are fetched only if some filters are applied
+    shouldFetch=shouldFetchProjects
+  );
 
   useEffect(() => {
     setFilteredProjects(projects);
@@ -101,11 +108,11 @@ const ProjectsList = () => {
             />
             <SearchBar value={displayedSearch} onChange={handleSearchChange}/>
             {loading && (
-              <View style={styles.loadingContainer}>
+              <View className='pt-1'>
                 <ActivityIndicator size='large' color="#ef7d00" />
               </View>
             )}
-            {!loading && !error && (
+            {!loading && !error && shouldFetchProjects && (
               <Text style={styles.projectCount}>
                 {t('projectlist.projectsFound', { count: filteredProjects.length })}
               </Text>
@@ -150,7 +157,7 @@ const styles = StyleSheet.create({
     color: '#666',
     fontSize: 14,
     textAlign: 'center',
-
+    paddingVertical: 8,
   },
 });
 
