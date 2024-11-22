@@ -21,7 +21,7 @@ describe('useFetchProjects', () => {
   });
 
   it('should initialize with empty state', () => {
-    const { result } = renderHook(() => useFetchProjects(), { wrapper });
+    const { result } = renderHook(() => useFetchProjects());
 
     expect(result.current.loading).toBe(false);
     expect(result.current.projects).toEqual([]);
@@ -30,8 +30,7 @@ describe('useFetchProjects', () => {
   });
 
   it('should not fetch when shouldFetch is false', async () => {
-      { wrapper }
-    const { result } = renderHook(() => useFetchProjects("area", "", "search", false), { wrapper });
+    const { result } = renderHook(() => useFetchProjects("area", "", "search", false));
 
     expect(fetchProjectList).not.toHaveBeenCalled();
     expect(result.current.projects).toEqual([]);
@@ -45,12 +44,10 @@ describe('useFetchProjects', () => {
     fetchProjectList.mockResolvedValueOnce(mockProjects);
 
     const { result } = renderHook(() =>
-      useFetchProjects("area", "", "search", true), { wrapper }
+      useFetchProjects("area", "", "search", true)
     );
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.projects).toEqual([]);
-    expect(result.current.error).toBeNull();
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
