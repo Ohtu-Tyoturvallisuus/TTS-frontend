@@ -1,21 +1,10 @@
 import { renderHook, waitFor } from '@testing-library/react-native';
 import useFetchProjects from '@hooks/useFetchProjects';
 import { fetchProjectList } from '@services/apiService';
-import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@services/apiService');
 
 describe('useFetchProjects', () => {
-  const mockUserContext = {
-    accessToken: 'mockToken',
-  };
-
-  const wrapper = ({ children }) => (
-    <UserContext.Provider value={mockUserContext}>
-      {children}
-    </UserContext.Provider>
-  );
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
