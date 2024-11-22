@@ -81,7 +81,10 @@
     "chooseAll": "--Valitse kaikki--",
     "chooseArea": "Valitse alue",
     "loading": "Ladataan projekteja",
-    "projects": "Projektit"
+    "errorFetchingProjects": "Virhe projektien lataamisessa",
+    "noProjects": "Hakemaasi projektia ei löytynyt",
+    "projects": "Projektit",
+    "projectsFound": "Projekteja löytyi {{count}} kpl"
   },
   "projectmodal": {
     "title": "Täytä uusi riskilomake"
