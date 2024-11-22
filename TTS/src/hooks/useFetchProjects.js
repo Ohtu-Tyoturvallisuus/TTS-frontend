@@ -2,19 +2,29 @@ import { useState, useEffect, useContext } from 'react';
 import { fetchProjectList } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 
-const useFetchProjects = (areaFilter = "", dataAreaId = "", search = "") => {
+const useFetchProjects = (
+  area = "",
+  dataAreaId = "",
+  search = "",
+  shouldFetch = false
+) => {
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { accessToken } = useContext(UserContext);
 
   useEffect(() => {
+    if (!shouldFetch) {
+      setProjects([]);
+      return;
+    }
+
     const loadProjects = async () => {
       setLoading(true);
       setError(null);
       try {
         console.log('Fetching projects from apiService...');
-        const data = await fetchProjectList(areaFilter, dataAreaId, search);
+        const data = await fetchProjectList(area, dataAreaId, search);
         const updatedProjects = data.map(project => ({
           ...project,
           formattedName: `[${project.project_id}] ${project.project_name}`
@@ -29,7 +39,7 @@ const useFetchProjects = (areaFilter = "", dataAreaId = "", search = "") => {
     };
 
     loadProjects();
-  }, [areaFilter, dataAreaId, search]);
+  }, [area, dataAreaId, search, shouldFetch]);
 
   return { projects, loading, error };
 };
