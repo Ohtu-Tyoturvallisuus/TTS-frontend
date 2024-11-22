@@ -50,7 +50,10 @@
     "emptyform": "No relevant risks in this form",
     "project": "Project",
     "filledat": "Filled at",
-    "loadingimages": "Loading images..."
+    "loadingimages": "Loading images...",
+    "confirm": "Hazard identification complete",
+    "close": "Close without confirming",
+    "closeInfo": "You are about to close the hazard identification form without confirming. Are you sure you want to continue?"
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",
@@ -75,7 +78,8 @@
   },
   "myobservations": {
     "title": "My observations",
-    "loading": "Loading observations..."
+    "loading": "Loading observations...",
+    "noObservations": "No personal observations"
   },
   "projectlist":{
     "chooseAll": "--Choose all--",
@@ -181,5 +185,12 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
+  },
+  "joinsurvey": {
+    "insertCode": "Insert form code",
+    "error": "Code is missing",
+    "error_length": "Code must be 6 characters long",
+    "insertPlaceholder": "Code",
+    "join": "Join hazard identification"
   }
 }

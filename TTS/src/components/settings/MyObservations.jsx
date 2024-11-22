@@ -13,16 +13,6 @@ const MyObservations = () => {
   const { userSurveys, loading, error } = useUserSurveys();
   const { t } = useTranslation();
 
-  if (loading || error) {
-    return (
-      <Loading 
-        loading={loading} 
-        error={error} 
-        title={t('myobservations.loading')}
-      />
-    );
-  }
-
   return (
     <>
       <SettingsButton 
@@ -63,6 +53,11 @@ const MyObservations = () => {
                 </View>
               );
             })}
+            <Loading 
+              loading={loading} 
+              error={error} 
+              title={t('myobservations.loading')}
+            />
             <CloseButton onPress={() => setModalVisible(false)} />
           </ScrollView>
         </View>

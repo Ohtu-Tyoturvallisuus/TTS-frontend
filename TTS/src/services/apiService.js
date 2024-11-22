@@ -221,3 +221,11 @@ export const getUserSurveys = async (accessToken) => {
   });
   return response.data;
 };
+
+export const getSurveyByAccessCode = async (access_code) => {
+  const url = API_BASE_URL + 'surveys/code/' + access_code;
+  console.log('Getting survey by access code:', access_code);
+  const response = await axios.get(url);
+  console.log('RESPONSE:', response.data)
+  return response.data;
+}

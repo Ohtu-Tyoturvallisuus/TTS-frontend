@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { View, ScrollView, Text, Image, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RiskImage from '@components/take-picture/Image';
 import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
 import { retrieveImage } from '@services/apiService';
+import { UserContext } from '@contexts/UserContext';
 
 const FilledRiskForm = ({
   formData = {},
@@ -16,17 +17,26 @@ const FilledRiskForm = ({
   taskDesc = null,
   submitted = false,
   formattedDate = '',
-  survey = {}
+  survey = {},
+  joined = false
 }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(joined);
   const { t } = useTranslation(['translation', 'formFields']);
+  const { setJoinedSurvey } = useContext(UserContext);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   const relevantRiskNotes = Object.entries(formData)
     .filter(([, value]) => value.status === 'checked');
 
+  const handleClose = () => {
+    console.log('closing filled risk form modal')
+    setJoinedSurvey(false)
+    setModalVisible(false)
+  }
+
   return (
     <>
-      {submitted ? (
+      {joined ? (<></>) : submitted ? (
         <TouchableOpacity
           style={styles.button}
           onPress={() => setModalVisible(true)}
@@ -57,7 +67,7 @@ const FilledRiskForm = ({
         </TouchableOpacity>
       )}
       <>
-        <Modal visible={modalVisible} animationType='slide' onRequestClose={() => setModalVisible(false)} testID='modal'>
+        <Modal visible={modalVisible} animationType='slide' onRequestClose={() => handleClose()} testID='modal'>
           <View className="flex items-center justify-center">
             <ScrollView 
               className="bg-white flex-grow p-5 w-full" 
@@ -96,12 +106,13 @@ const FilledRiskForm = ({
                 submitted ? (
                   relevantRiskNotes.length > 0 ? (
                     relevantRiskNotes.map(([key, value]) => {
+                      const variableToUse = joined ? value.note : key
                       const renderTitle = () => {
-                        return key.startsWith('riskform.otherScaffolding')
-                          ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
-                          : key.startsWith('riskform.otherEnvironment')
-                            ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
-                            : t(`${key}.title`, { ns: 'formFields' });
+                        return variableToUse.startsWith('riskform.otherScaffolding')
+                          ? `${t(`${variableToUse.split(' ')[0]}`)} ${variableToUse.split(' ')[1]}`
+                          : variableToUse.startsWith('riskform.otherEnvironment')
+                            ? `${t(`${variableToUse.split(' ')[0]}`)} ${variableToUse.split(' ')[1]}`
+                            : t(`${variableToUse}.title`, { ns: 'formFields' });
                       };
                     
                       const [retrievedImages, setRetrievedImages] = useState([]);
@@ -218,10 +229,61 @@ const FilledRiskForm = ({
                   )
                 )
               }
-  
-            
-              {submitted ? (
-                <CloseButton onPress={() => setModalVisible(false)} />
+
+              {submitted ?
+                joined ? (
+                  <View className='pt-5'>
+                    <TouchableOpacity
+                      style={styles.confirmButton}
+                      onPress={() => {
+                        console.log('Hazard identification completed')
+                        handleClose()
+                      }}
+                    >
+                      <Text style={styles.buttonText}>{t('filledriskform.confirm')}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.confirmButton, {backgroundColor: '#D32F2F'}]}
+                      onPress={() => {
+                        console.log('Opening confirmation modal')
+                        setShowExitModal(true);
+                      }}
+                    >
+                      <Text style={styles.buttonText}>{t('filledriskform.close')}</Text>
+                    </TouchableOpacity>
+                    <Modal
+                      visible={showExitModal}
+                      animationType='fade'
+                      transparent
+                      onRequestClose={() => setShowExitModal(false)}
+                    >
+                      <View style={styles.modalContainer}>
+                        <View style={styles.container}>
+                          <Text style={styles.header}>{t('filledriskform.closeInfo')}</Text>
+                          <View style={styles.buttonContainer}>
+                            <TouchableOpacity
+                              onPress={() => setShowExitModal(false)}
+                              style={[styles.confirmButton, {backgroundColor: 'white'}]}
+                            >
+                              <Text>{t('confirmation.cancel')}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              onPress={() => {
+                                console.log('Form closed without confirmation')
+                                setShowExitModal(false)
+                                handleClose()
+                              }}
+                              style={[styles.confirmButton, {backgroundColor: 'red'}]}
+                            >
+                              <Text style={styles.confirmButtonText}>{t('confirmation.confirm')}</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </View>
+                    </Modal>
+                  </View>
+                ) : (
+                <CloseButton onPress={() => handleClose()} />
               ) : (
                 <>
                   <TouchableOpacity
@@ -262,6 +324,52 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 2,
     justifyContent: 'center',
+  },
+  confirmButton: {
+    backgroundColor: '#388E3C',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginVertical: 5
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  container: {
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    width: '90%',
+  },
+  header: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    paddingBottom: 10
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  confirmButtonText: {
+    color: '#fff',
   },
 })
 
