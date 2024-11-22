@@ -16,19 +16,19 @@ jest.mock('react-i18next', () => ({
 describe('SearchBar Component', () => {
   it('renders correctly', () => {
     const { getByPlaceholderText } = render(<SearchBar setFilter={() => {}} />);
-    
+
     const input = getByPlaceholderText('Etsi hakusanalla...');
     expect(input).toBeTruthy();
   });
 
   it('calls setFilter with the correct input value', () => {
-    const mockSetFilter = jest.fn();  
-    const { getByPlaceholderText } = render(<SearchBar setFilter={mockSetFilter} />);
-    
+    const mockOnChange = jest.fn();
+    const { getByPlaceholderText } = render(<SearchBar onChange={mockOnChange} />);
+
     const input = getByPlaceholderText('Etsi hakusanalla...');
-    
+
     fireEvent.changeText(input, 'test search');
-    
-    expect(mockSetFilter).toHaveBeenCalledWith('test search');
+
+    expect(mockOnChange).toHaveBeenCalledWith('test search');
   });
 });
