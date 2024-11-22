@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useMemo } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { debounce } from 'lodash';
@@ -42,11 +42,10 @@ const ProjectsList = () => {
   const shouldFetchProjects = Boolean(areaFilter.length || searchFilter.trim());
 
   const { projects, loading, error } = useFetchProjects(
-    area=areaFilter,
-    dataAreaId="", // Not currently in use
-    search=searchFilter,
-    // Projects are fetched only if some filters are applied
-    shouldFetch=shouldFetchProjects
+    areaFilter,
+    "", // DataAreaId not in use
+    searchFilter,
+    shouldFetchProjects // Fetches only if filtering criteria is given
   );
 
   useEffect(() => {
@@ -147,17 +146,17 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingHorizontal: 10,
   },
+  projectCount: {
+    color: '#666',
+    fontSize: 14,
+    paddingVertical: 8,
+    textAlign: 'center',
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
-  },
-  projectCount: {
-    color: '#666',
-    fontSize: 14,
-    textAlign: 'center',
-    paddingVertical: 8,
   },
 });
 
