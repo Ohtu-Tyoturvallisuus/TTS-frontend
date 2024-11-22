@@ -39,25 +39,25 @@ const ProjectButton = ({ project, onPress, searchText = '' }) => {
 };
 
 const styles = StyleSheet.create({
-  projectContainer: {
-    marginVertical: 4,
-    marginHorizontal: 8,
-  },
   button: {
     alignItems: 'center',
     backgroundColor: '#FF8C00',
     borderRadius: 5,
     padding: 10,
   },
+  highlight: {
+    backgroundColor: '#FFEB3B',
+    color: '#000000',
+  },
+  projectContainer: {
+    marginHorizontal: 8,
+    marginVertical: 4,
+  },
   projectText: {
     color: '#FFFFFF',
     fontSize: 20,
     textAlign: 'left',
     width: '100%',
-  },
-  highlight: {
-    backgroundColor: '#FFEB3B',
-    color: '#000000',
   },
 });
 

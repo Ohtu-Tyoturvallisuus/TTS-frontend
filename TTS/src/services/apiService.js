@@ -17,6 +17,7 @@ export const fetchProjectList = async (area_filter = "", data_area_id = "", sear
   if (data_area_id) filters.data_area_id = data_area_id;
   if (search) filters.search = search;
 
+  // eslint-disable-next-line no-undef
   const queryParams = new URLSearchParams(filters).toString();
   const url = `${API_BASE_URL}projects/?${queryParams}`;
   console.log('fetchProjectList:', url);
