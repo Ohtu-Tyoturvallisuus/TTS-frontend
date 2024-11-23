@@ -153,9 +153,13 @@
     "selectLanguages": "Valitse kielet"
   },
   "settings": {
+    "cancel": "Peruuta",
     "changeLanguage": "Vaihda kieltä",
+    "confirm": "varmista",
     "signIn": "Kirjaudu sisään",
-    "signOut": "Kirjaudu ulos"
+    "signOut": "Kirjaudu ulos",
+    "signOutGuestAlertTitle": "Kirjaudu ulos vierastililtä",
+    "signOutGuestAlertMessage": "Oletko varma, että haluat kirjautua ulos? Kaikki vierastiedot poistetaan."
   },
   "signin": {
     "confirmLogin": "Vahvista kirjautuminen",
