@@ -6,7 +6,19 @@ const validateTaskInfo = (fields) => {
   let hasEmptyField = false;
 
   Object.keys(fields).forEach(key => {
-    validatedFields[key] = (fields[key] != null ? fields[key].trim() : '') || '';
+    const value = fields[key];
+
+    if (typeof value === 'string') {
+      validatedFields[key] = value.trim() || '';
+    } else if (Array.isArray(value)) {
+      validatedFields[key] = value.map(item => (typeof item === 'string' ? item.trim() : '')).filter(Boolean);
+      if (validatedFields[key].length === 0) {
+        validatedFields[key] = '';
+      }
+    } else {
+      validatedFields[key] = '';
+    }
+
     if (validatedFields[key] === '') {
       hasEmptyField = true;
     }

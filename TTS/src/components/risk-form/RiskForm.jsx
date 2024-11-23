@@ -1,23 +1,27 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { View, TextInput, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
-import RiskNote from './RiskNote';
-import ButtonGroup from '@components/buttons/ButtonGroup';
-import CloseButton from '@components/buttons/CloseButton';
+
 import { submitForm } from '@services/formSubmission';
-import SuccessAlert from '@components/SuccessAlert';
+import useFetchSurveyData from '@hooks/useFetchSurveyData';
+import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import { useFormContext } from '@contexts/FormContext';
 import { useTranslationLanguages } from '@contexts/TranslationContext';
-import useFetchSurveyData from '@hooks/useFetchSurveyData';
+import { UserContext } from '@contexts/UserContext';
+import { NavigationContext } from '@contexts/NavigationContext';
+import { useScaffoldItems } from '@utils/scaffoldUtils';
+import RiskNote from './RiskNote';
+import MultiChoiceButtonGroup from '@components/buttons/MultiChoiceButtonGroup';
+import CloseButton from '@components/buttons/CloseButton';
+import SuccessAlert from '@components/SuccessAlert';
 import Loading from '@components/Loading';
 import ConfirmationModal from '@components/ConfirmationModal';
 import SpeechToTextView from '@components/speech-to-text/SpeechToTextView';
 import FilledRiskForm from './FilledRiskForm';
 import SelectTranslateLanguage from '@components/speech-to-text/SelectTranslateLanguage';
-import { UserContext } from '@contexts/UserContext';
-import { NavigationContext } from '@contexts/NavigationContext';
 
 const RiskForm = () => {
   const { 
@@ -121,6 +125,8 @@ const RiskForm = () => {
     updateFormField(newKey, 'risk_type', type);
   };
 
+  const scaffoldItems = useScaffoldItems();
+
   if (loading || error) {
     return <Loading loading={loading} error={error} title={t('riskform.loadingFormData')} />;
   }
@@ -151,20 +157,42 @@ const RiskForm = () => {
                 <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
                 <Text>{project.project_id}</Text>
                 <Text className="text-lg font-bold py-2">{t('riskform.task')}:</Text>
-                <ButtonGroup 
+                <MultiChoiceButtonGroup 
                   options={['installation', 'modification', 'dismantling']} 
-                  selectedValue={task}
+                  selectedValues={task}
                   onChange={(value) => setTask(value)}
                   renderOption={(option) => t(`riskform.${option}`)}
                 />
   
                 <Text className="text-lg font-bold py-2">{t('riskform.scaffoldType')}:</Text>
-                <ButtonGroup 
-                  options={['workScaffold', 'nonWeatherproof', 'weatherproof']} 
-                  selectedValue={scaffoldType}
-                  onChange={(value) => setScaffoldType(value)}
-                  renderOption={(option) => t(`riskform.${option}`)}
-                />
+                <View>
+                  <SectionedMultiSelect
+                    items={scaffoldItems}
+                    IconRenderer={Icon}
+                    uniqueKey="id"
+                    onSelectedItemsChange={setScaffoldType}
+                    selectedItems={scaffoldType}
+                    selectText={t('riskform.chooseScaffoldType')}
+                    selectedText={t('riskform.selected')}
+                    confirmText={t('general.confirm')}
+                    hideSearch
+                    colors={{
+                      success: '#ef7d00'
+                    }}
+                    styles={{
+                      button: {
+                        backgroundColor: '#ef7d00',
+                        borderRadius: 8,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        paddingVertical: 12,
+                        paddingHorizontal: 24,
+                        width: '100%',
+                        marginVertical: 8,
+                      },
+                    }}
+                  />
+                </View>
   
                 <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
                 <TextInput

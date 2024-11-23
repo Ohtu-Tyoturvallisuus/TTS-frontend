@@ -119,9 +119,6 @@
     "modification": "Muokkaus",
     "dismantling": "Purku",
     "scaffoldType": "Telinetyyppi",
-    "workScaffold": "Työteline",
-    "nonWeatherproof": "Sääsuojaton työteline",
-    "weatherproof": "Sääsuojattu työteline",
     "taskDescription": "Mitä olemme tekemässä? (telineen käyttötarkoitus)",
     "noProject": "Projekti ei näy...",
     "loadingFormData": "Ladataan lomaketietoja...",
@@ -131,7 +128,9 @@
     "otherScaffolding": "Muu telinetyöhön liittyvä vaara",
     "otherEnvironment": "Muu työympäristöön liittyvä vaara",
     "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
-    "submitting": "Lähetetään lomaketta..."
+    "submitting": "Lähetetään lomaketta...",
+    "chooseScaffoldType": "Valitse telinetyyppi",
+    "selected": "valittu"
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",
@@ -148,6 +147,17 @@
     "toBeNoted": "Huomioitavaa",
     "undo": "Kumoa",
     "preview": "Esikatsele"
+  },
+  "scaffoldTypes":{
+    "facadeScaffold": "Julkisivuteline",
+    "weatherScaffold": "Sääsuojaus",    
+    "accessessScaffold": "Kulkutie",
+    "birdcageScaffold": "Tasoteline",
+    "tankScaffold": "Säiliöteline",
+    "liftingScaffold": "Taljausteline",
+    "suspendedScaffold": "Riipputeline",
+    "shoringScaffold": "Tukiteline",
+    "workScaffold": "Työteline"
   },
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."

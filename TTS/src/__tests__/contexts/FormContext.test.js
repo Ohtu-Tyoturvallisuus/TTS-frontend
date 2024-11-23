@@ -72,8 +72,8 @@ describe('FormProvider Component', () => {
       </FormProvider>
     );
 
-    expect(getByTestId('task').props.children).toBe('');
-    expect(getByTestId('scaffoldType').props.children).toBe('');
+    expect(getByTestId('task').props.children).toStrictEqual([]);
+    expect(getByTestId('scaffoldType').props.children).toStrictEqual([]);
     expect(getByTestId('taskDesc').props.children).toBe('');
     expect(getByTestId('personal_protection_desc').props.children).toBe('');
   });

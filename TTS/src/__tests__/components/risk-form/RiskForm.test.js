@@ -11,8 +11,8 @@ import { NavigationProvider } from '@contexts/NavigationContext';
 
 jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
   surveyData: {
-    task: 'Asennus',
-    scaffold_type: 'Työteline',
+    task: ['Asennus'],
+    scaffold_type: ['Työteline'],
     description: 'Test Description',
     risk_notes: [
       {
@@ -33,14 +33,32 @@ jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
   error: null,
 })));
 
-jest.mock('expo-constants', () => ({
-  expoConfig: {
-    extra: {
-      local_ip: '192.168.1.1',
-      local_setup: 'true',
-    },
-  },
-}));
+jest.mock('react-native-sectioned-multi-select', () => {
+  const React = require('react');
+  const { View, Text, TouchableOpacity } = require('react-native');
+
+  const MockedComponent = ({ items, selectedItems, onSelectedItemsChange, selectText }) => (
+    <View>
+      <Text>{selectText}</Text>
+      {items.map((item) => (
+        <TouchableOpacity
+          key={item.id}
+          onPress={() => {
+            const newSelection = selectedItems.includes(item.id)
+              ? selectedItems.filter((id) => id !== item.id)
+              : [...selectedItems, item.id];
+            onSelectedItemsChange(newSelection);
+          }}
+        >
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  MockedComponent.displayName = 'MockedComponent';
+  return MockedComponent;
+});
 
 jest.mock('react-native-vector-icons/FontAwesome', () => 'Icon');
 
@@ -137,6 +155,8 @@ jest.mock('@hooks/useFormFields', () => ({
     },
   })),
 }));
+
+
 
 jest.mock('@services/formSubmission', () => ({
   submitForm: jest.fn(),
