@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import RiskImage from '@components/take-picture/Image';
 import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
-import { retrieveImage } from '@services/apiService';
+import { retrieveImage, joinSurvey } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 
 const FilledRiskForm = ({
@@ -18,18 +18,24 @@ const FilledRiskForm = ({
   submitted = false,
   formattedDate = '',
   survey = {},
-  joined = false
+  joined = false,
+  accessCode = null
 }) => {
   const [modalVisible, setModalVisible] = useState(joined);
   const { t } = useTranslation(['translation', 'formFields']);
-  const { setJoinedSurvey } = useContext(UserContext);
+  const { accessToken, newUserSurveys, setNewUserSurveys, setJoinedSurvey } = useContext(UserContext);
   const [showExitModal, setShowExitModal] = useState(false);
 
   const relevantRiskNotes = Object.entries(formData)
     .filter(([, value]) => value.status === 'checked');
 
-  const handleClose = () => {
-    console.log('closing filled risk form modal')
+  const handleClose = async (join = false) => {
+    if (join) {
+      const response = await joinSurvey({ access_code: accessCode, accessToken })
+      console.log('joinSurvey response:', response)
+      setNewUserSurveys(!newUserSurveys)
+    }
+    console.log('Closing filled risk form modal')
     setJoinedSurvey(false)
     setModalVisible(false)
   }
@@ -237,7 +243,7 @@ const FilledRiskForm = ({
                       style={styles.confirmButton}
                       onPress={() => {
                         console.log('Hazard identification completed')
-                        handleClose()
+                        handleClose(true)
                       }}
                     >
                       <Text style={styles.buttonText}>{t('filledriskform.confirm')}</Text>
@@ -245,7 +251,6 @@ const FilledRiskForm = ({
                     <TouchableOpacity
                       style={[styles.confirmButton, {backgroundColor: '#D32F2F'}]}
                       onPress={() => {
-                        console.log('Opening confirmation modal')
                         setShowExitModal(true);
                       }}
                     >
@@ -318,26 +323,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5
   },
-  imageContainer: {
-    alignItems: 'center',
+  buttonContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 2,
-    justifyContent: 'center',
-  },
-  confirmButton: {
-    backgroundColor: '#388E3C',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginVertical: 5
+    justifyContent: 'space-between',
+    width: '100%',
   },
   buttonText: {
     color: '#FFFFFF',
@@ -345,11 +334,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  modalContainer: {
+  confirmButton: {
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flex: 1,
+    backgroundColor: '#388E3C',
+    borderRadius: 8,
+    elevation: 5,
     justifyContent: 'center',
+    marginVertical: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84
+  },
+  confirmButtonText: {
+    color: '#fff',
   },
   container: {
     alignSelf: 'center',
@@ -363,13 +363,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingBottom: 10
   },
-  buttonContainer: {
+  imageContainer: {
+    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexWrap: 'wrap',
+    gap: 2,
+    justifyContent: 'center',
   },
-  confirmButtonText: {
-    color: '#fff',
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
   },
 })
 

@@ -35,6 +35,11 @@ const MyObservations = () => {
             <Text className="text-xl font-bold mb-4" style={{ marginTop: 40 }}>
               {t('myobservations.title')}
             </Text>
+            {!loading && userSurveys.length === 0 && 
+              <View style={{borderWidth: 1, borderRadius: 5, padding: 10}}>
+                <Text className='text-lg font-bold'>{t('myobservations.noObservations')}</Text>
+              </View>
+            }
             {userSurveys.map((survey) => {
               const formattedDate = formatDate(survey.created_at);
               return (

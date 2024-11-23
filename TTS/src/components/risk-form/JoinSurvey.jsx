@@ -13,6 +13,7 @@ const JoinSurvey = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [survey, setSurvey] = useState(null);
   const { joinedSurvey, setJoinedSurvey } = useContext(UserContext);
+  const [accessCode, setAccessCode] = useState('');
 
   const validationSchema = yup.object().shape({
     access_code: yup.string()
@@ -27,6 +28,7 @@ const JoinSurvey = () => {
   const onSubmit = async (values, { resetForm }) => {
     setModalVisible(false)
     const data = await getSurveyByAccessCode(values.access_code)
+    setAccessCode(values.access_code)
     setSurvey(data)
     setModalVisible(false)
     setJoinedSurvey(true)
@@ -92,6 +94,7 @@ const JoinSurvey = () => {
           scaffoldType={survey.scaffold_type}
           task={survey.task}
           joined={true}
+          accessCode={accessCode}
         />
       }
     </>
@@ -100,24 +103,18 @@ const JoinSurvey = () => {
 
 const styles = StyleSheet.create({
   button: {
-    width: '75%',
-    borderWidth: 1,
+    alignItems: 'center',
+    backgroundColor: '#ef7d00',
     borderRadius: 5,
+    borderWidth: 1,
     marginVertical: 10,
     padding: 15,
-    backgroundColor: '#ef7d00',
-    alignItems: 'center'
+    width: '75%'
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16
-  },
-  modalContainer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    flex: 1,
-    justifyContent: 'center',
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   container: {
     alignSelf: 'center',
@@ -125,6 +122,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     width: '90%',
+  },
+  errorInput: {
+    borderColor: 'red',
   },
   header: {
     fontSize: 18,
@@ -138,8 +138,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '100%',
   },
-  errorInput: {
-    borderColor: 'red',
+  modalContainer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 
