@@ -20,9 +20,9 @@ describe('submitForm', () => {
 
   const project = { id: 1 };
   const taskInfo = {
-    task: 'Installation',
+    task: ['Installation'],
     description: 'New installation task',
-    scaffold_type: 'Work Scaffold',
+    scaffold_type: ['Work Scaffold'],
   };
   
   const formData = {
@@ -97,6 +97,28 @@ describe('submitForm', () => {
       .rejects.toThrow('Some fields are empty');
   });
 
+  it('should throw an error if a task field is empty list', async () => {
+    const incompleteTaskInfo = {
+      task: [],
+      description: 'Valid description',
+      scaffold_type: 'Scaffold Type',
+    };
+
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+      .rejects.toThrow('Some fields are empty');
+  });
+
+  it('should throw an error if a scaffold_type field is not string', async () => {
+    const incompleteTaskInfo = {
+      task: ['Installation'],
+      description: 'Valid description',
+      scaffold_type: [6],
+    };
+
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+      .rejects.toThrow('Some fields are empty');
+  });
+
   it('should replace null values for RiskNote status and description', async () => {
     const newFormData = {
       personal_protection: {
@@ -153,9 +175,9 @@ describe('submitForm', () => {
 
   it('should handle case where images are not provided or empty', async () => {
     const newTaskInfo = {
-      task: 'Installation',
+      task: ['Installation'],
       description: 'New installation task',
-      scaffold_type: 'Work Scaffold',
+      scaffold_type: ['Work Scaffold'],
     };
   
     const newFormData = {

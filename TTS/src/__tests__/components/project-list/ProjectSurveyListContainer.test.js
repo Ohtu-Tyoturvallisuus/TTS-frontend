@@ -37,9 +37,9 @@ jest.mock('react-i18next', () => ({
         'projectsurveylistcontainer.daysAgo_other': '{{count}} päivää sitten',
         'projectsurveylistcontainer.useTemplate': 'Käytä pohjana',
         'projectsurveylistcontainer.noSurveys': 'Ei kartoituksia saatavilla.',
-        'riskform.Type 1': 'Tyyppi 1',
+        'scaffoldTypes.Type 1': 'Tyyppi 1',
         'riskform.Task 1': 'Tehtävä 1',
-        'riskform.Type 2': 'Tyyppi 2',
+        'scaffoldTypes.Type 2': 'Tyyppi 2',
         'riskform.Task 2': 'Tehtävä 2',
       };
 
