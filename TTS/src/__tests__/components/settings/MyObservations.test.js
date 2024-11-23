@@ -81,7 +81,8 @@ describe('MyObservations', () => {
       error: null,
     });
 
-    const { getByText } = render(<MyObservations />);
+    const { getByText, getByTestId } = render(<MyObservations />);
+    fireEvent.press(getByTestId('settings-button'));
 
     expect(getByText('Ladataan havaintoja...')).toBeTruthy();
   });
@@ -93,7 +94,8 @@ describe('MyObservations', () => {
       error: 'Failed to load surveys',
     });
 
-    const { getByText } = render(<MyObservations />);
+    const { getByText, getByTestId } = render(<MyObservations />);
+    fireEvent.press(getByTestId('settings-button'));
 
     expect(getByText('Error: Failed to load surveys')).toBeTruthy();
   });

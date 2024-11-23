@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
 import { retrieveImage } from '@services/apiService'
+import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@components/take-picture/Image', () => {
   const { View } = require('react-native');
@@ -12,6 +13,17 @@ jest.mock('@components/take-picture/Image', () => {
 jest.mock('@services/apiService', () => ({
   retrieveImage: jest.fn(),
 }));
+
+const mockUserContextValue = {
+  username: 'mockuser',
+  email: 'mockuser@example.com',
+  accessToken: 'fake-access-token',
+  newUserSurveys: true,
+  setNewUserSurveys: jest.fn(),
+  setJoinedSurvey: jest.fn(),
+  joinedSurvey: false,
+};
+
 
 describe('FilledRiskForm component', () => {
   const setup = (overrides = {}) => {
@@ -29,7 +41,11 @@ describe('FilledRiskForm component', () => {
       handleSubmit: mockHandleSubmit,
       ...overrides,
     };
-    return { ...render(<FilledRiskForm {...props} />), mockHandleSubmit };
+    return { ...render(
+      <UserContext.Provider value={mockUserContextValue}>
+        <FilledRiskForm {...props} />
+      </UserContext.Provider>
+    ), mockHandleSubmit };
   };
 
   it('opens modal when "Show preview" button is pressed', () => {
@@ -91,7 +107,11 @@ describe('FilledRiskForm component', () => {
 
   it('renders without crashing when all props are null', () => {
     const props = {};
-    const { getByText } = render(<FilledRiskForm {...props} />);
+    const { getByText } = render(
+      <UserContext.Provider value={mockUserContextValue}>
+        <FilledRiskForm {...props} />
+      </UserContext.Provider>
+  );
 
     fireEvent.press(getByText('filledriskform.preview'));
 
