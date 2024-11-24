@@ -23,6 +23,7 @@ jest.mock('react-i18next', () => ({
         'takepicture.selectFromGallery': 'Valitse galleriasta',
         'takepicture.takePicture': 'Ota kuva',
         'takepicture.noPictures': 'Ei kuvia',
+        'riskform.title': 'Vaarojen tunnistuslomake'
       };
       return translations[key] || key;
     },
@@ -242,6 +243,33 @@ describe('RiskNote Component', () => {
     // Wait for the modal to close
     await waitFor(() => {
       expect(getByText('Käännä (esikatselu)')).toBeTruthy();
+    });
+  });
+
+  it('handles onRequestClose for preview modal', async () => {
+    const { getByText, getByTestId, getByPlaceholderText, queryByText } = render(
+      <Wrapper>
+        <RiskNote
+          title={title}
+          renderTitle={renderTitle}
+        />
+      </Wrapper>
+    );
+  
+    fireEvent.press(getByText('Huomioitavaa'));
+    const descriptionInput = getByPlaceholderText('Syötä lisätietoja');
+    fireEvent.changeText(descriptionInput, 'Lisätietoja');
+    fireEvent.press(getByText('Käännä (esikatselu)'));
+
+    await waitFor(() => {
+      expect(queryByText('Muokkaa')).toBeTruthy();
+      expect(queryByText('Kunnossa')).toBeTruthy();
+    });
+  
+    fireEvent(getByTestId('custom-modal'), 'requestClose');
+    await waitFor(() => {
+      expect(queryByText('Muokkaa')).toBeNull();
+      expect(queryByText('Kunnossa')).toBeNull();
     });
   });
 });

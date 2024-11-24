@@ -221,12 +221,11 @@ export const getUserProfile = async ({ setUsername, setEmail, accessToken }) => 
   }
 };
 
-export const getUserSurveys = async () => {
-  const token = await AsyncStorage.getItem('access_token');
+export const getUserSurveys = async (accessToken) => {
   const url = API_BASE_URL + 'filled-surveys/'
   const response = await axios.get(url, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${accessToken}`
     },
   });
   return response.data;

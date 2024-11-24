@@ -11,37 +11,50 @@ import ProjectList from '@components/project-list/ProjectList';
 import CombinedSignIn from '@components/sign-in/CombinedSignIn';
 import RiskFormScreen from '@components/risk-form/RiskFormScreen';
 import Settings from '@components/settings/Settings';
+import { NavigationContext } from '@contexts/NavigationContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Main = () => {
-  const { username, setUsername } = useContext(UserContext)
+  const { currentLocation } = useContext(NavigationContext);
+  const { username, setUsername, setAccessToken } = useContext(UserContext)
   const { t } = useTranslation();
   const [showImage, setShowImage] = useState(true);
 
   useEffect(() => {
-    const fetchUsername = async () => {
+    const fetchUserInfo = async () => {
       try {
         const storedUsername = await AsyncStorage.getItem('username');
         if (storedUsername) {
           setUsername(storedUsername);
         }
+        const storedAccessToken = await AsyncStorage.getItem('access_token');
+        if (storedAccessToken) {
+          setAccessToken(storedAccessToken);
+        }
       } catch (error) {
-        console.error('Error retrieving username', error);
+        console.error('Error retrieving user information', error);
       }
     };
   
-    fetchUsername();
+    fetchUserInfo();
   }, [setUsername]);
+
+  useEffect(() => {
+    console.log('Location set to:', currentLocation)
+    currentLocation === 'RiskForm'
+      ? setShowImage(false)
+      : setShowImage(true)
+  }, [currentLocation])
 
   const MainStack = () => (
     <Stack.Navigator>
       {username ? (
         <> 
           <Stack.Screen name='ProjectList' component={ProjectList} options={{ headerShown: false }} />
-          <Stack.Screen name="RiskForm" options={{ headerShown: false }}>
-            {(props) => <RiskFormScreen {...props} onFocusChange={setShowImage} />}
+          <Stack.Screen name="RiskForm" options={{ headerShown: false }} >
+            {(props) => <RiskFormScreen {...props} />}
           </Stack.Screen>
         </>
         ) : (

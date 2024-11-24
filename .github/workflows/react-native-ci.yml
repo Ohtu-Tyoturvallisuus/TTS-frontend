@@ -41,6 +41,9 @@ jobs:
         run: npm ci
         working-directory: ./TTS
 
+      - name: Configure timezone
+        run: echo "TZ=Europe/Helsinki" >> $GITHUB_ENV
+
       - name: Run ESLint
         run: npm run lint
         working-directory: ./TTS

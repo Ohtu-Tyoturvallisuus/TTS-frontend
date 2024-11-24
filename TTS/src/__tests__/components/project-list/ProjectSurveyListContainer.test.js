@@ -166,9 +166,9 @@ describe('ProjectSurveyListContainer Component', () => {
         url: 'https://example.com/survey1',
       },
     ];
-
+  
     const mockNavigateToRiskForm = jest.fn();
-
+  
     const { getByText } = render(
       <ProjectSurveyContext.Provider value={mockProjectContext}>
         <ProjectSurveyListContainer
@@ -179,9 +179,18 @@ describe('ProjectSurveyListContainer Component', () => {
       </ProjectSurveyContext.Provider>
     );
 
-    // Format the expected date output as `DD.MM.YYYY, klo HH.MM`
     const surveyDate = new Date(mockSurveys[0].created_at);
-    const expectedDate = `${surveyDate.toLocaleDateString()}, klo ${surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const userLocale = 'fi-FI';
+    const formattedDate = surveyDate.toLocaleDateString(userLocale, {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    const formattedTime = surveyDate.toLocaleTimeString(userLocale, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    const expectedDate = `${formattedDate}, ${formattedTime}`;
 
     expect(getByText(expectedDate)).toBeTruthy();
   });

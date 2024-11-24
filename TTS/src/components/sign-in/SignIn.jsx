@@ -20,7 +20,7 @@ import { signIn } from '@services/apiService';
 
 const SignIn = () => {
   const navigation = useNavigation();
-  const { setUsername } = useContext(UserContext);
+  const { setUsername, setAccessToken, setIsGuest } = useContext(UserContext);
   const { t } = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false); 
@@ -45,7 +45,10 @@ const SignIn = () => {
       console.log(data);
       await AsyncStorage.setItem('username', username);
       await AsyncStorage.setItem('access_token', data.access_token);
+      await AsyncStorage.setItem('is_guest', 'true');
       setUsername(username);
+      setAccessToken(data.access_token);
+      setIsGuest(true);
       setModalVisible(false); // Close modal after successful sign-in
       navigation.navigate('Settings');
     } catch (error) {

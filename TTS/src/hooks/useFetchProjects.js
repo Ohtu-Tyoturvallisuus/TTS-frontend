@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { fetchProjectList } from '@services/apiService';
+import { UserContext } from '@contexts/UserContext';
 
 const useFetchProjects = (
   area = "",
@@ -10,6 +11,7 @@ const useFetchProjects = (
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { accessToken } = useContext(UserContext);
 
   useEffect(() => {
     if (!shouldFetch) {
@@ -36,8 +38,8 @@ const useFetchProjects = (
       }
     };
 
-    loadProjects();
-  }, [area, dataAreaId, search, shouldFetch]);
+    accessToken && loadProjects();
+  }, [area, dataAreaId, search, accessToken]);
 
   return { projects, loading, error };
 };

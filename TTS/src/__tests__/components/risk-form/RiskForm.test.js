@@ -2,10 +2,12 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
+import { UserContext } from '@contexts/UserContext';
 import { FormProvider } from '@contexts/FormContext';
 import RiskForm from '@components/risk-form/RiskForm';
 import { submitForm } from '@services/formSubmission';
 import fiFormFields from '@lang/locales/fi/formFields.json';
+import { NavigationProvider } from '@contexts/NavigationContext';
 
 jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
   surveyData: {
@@ -146,6 +148,11 @@ jest.mock('@contexts/TranslationContext', () => ({
   })),
 }));
 
+const mockUserContext = {
+  newUserSurveys: false,
+  setNewUserSurveys: jest.fn(),
+};
+
 describe('RiskForm Component', () => {
   const mockOnFocusChange = jest.fn();
   const mockProject = { 
@@ -163,11 +170,15 @@ describe('RiskForm Component', () => {
   
     return render(
       <NavigationContainer>
-        <ProjectSurveyContext.Provider value={contextValue}>
-          <FormProvider>
-            <RiskForm onFocusChange={mockOnFocusChange} />
-          </FormProvider>
-        </ProjectSurveyContext.Provider>
+        <NavigationProvider>
+          <UserContext.Provider value={mockUserContext}>
+            <ProjectSurveyContext.Provider value={contextValue}>
+              <FormProvider>
+                <RiskForm onFocusChange={mockOnFocusChange} />
+              </FormProvider>
+            </ProjectSurveyContext.Provider>
+          </UserContext.Provider>
+        </NavigationProvider>
       </NavigationContainer>
     );
   };

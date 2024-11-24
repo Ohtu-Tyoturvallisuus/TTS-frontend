@@ -44,10 +44,11 @@ describe('Sign in', () => {
 
   it('renders the sign-in page successfully and opens and closes modal', () => {
     const mockSetUsername = jest.fn();
+    const mockSetAccessToken = jest.fn();
 
     render(
       <NavigationContainer>
-        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+        <UserContext.Provider value={{ setUsername: mockSetUsername, setAccessToken: mockSetAccessToken }}>
           <SignIn />
         </UserContext.Provider>
       </NavigationContainer>
@@ -61,6 +62,7 @@ describe('Sign in', () => {
 
   it('calls onSubmit and saves username when the form is submitted', async () => {
     const mockSetUsername = jest.fn();
+    const mockSetAccessToken = jest.fn();
 
     axios.post.mockResolvedValue({
       data: { token: 'mockToken' }
@@ -68,7 +70,7 @@ describe('Sign in', () => {
 
     render(
       <NavigationContainer>
-        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+        <UserContext.Provider value={{ setUsername: mockSetUsername, setAccessToken: mockSetAccessToken }}>
           <SignIn />
         </UserContext.Provider>
       </NavigationContainer>
@@ -98,10 +100,11 @@ describe('Sign in', () => {
 
   it('displays an error when empty form is submitted', async () => {
     const mockSetUsername = jest.fn();
+    const mockSetAccessToken = jest.fn();
 
     render(
       <NavigationContainer>
-        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+        <UserContext.Provider value={{ setUsername: mockSetUsername, setAccessToken: mockSetAccessToken }}>
           <SignIn />
         </UserContext.Provider>
       </NavigationContainer>
@@ -119,13 +122,14 @@ describe('Sign in', () => {
 
   it('displays error when API call fails', async () => {
     const mockSetUsername = jest.fn();
+    const mockSetAccessToken = jest.fn();
     const mockError = new Error('Network Error');
 
     axios.post.mockRejectedValueOnce(mockError);
 
     render(
       <NavigationContainer>
-        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+        <UserContext.Provider value={{ setUsername: mockSetUsername, setAccessToken: mockSetAccessToken }}>
           <SignIn />
         </UserContext.Provider>
       </NavigationContainer>
@@ -154,6 +158,7 @@ describe('Sign in', () => {
 
   it('prevents multiple submissions when loading is true', async () => {
     const mockSetUsername = jest.fn();
+    const mockSetAccessToken = jest.fn();
 
     axios.post.mockResolvedValue({
       data: { token: 'mockToken' }
@@ -161,7 +166,7 @@ describe('Sign in', () => {
 
     render(
       <NavigationContainer>
-        <UserContext.Provider value={{ setUsername: mockSetUsername }}>
+        <UserContext.Provider value={{ setUsername: mockSetUsername, setAccessToken: mockSetAccessToken }}>
           <SignIn />
         </UserContext.Provider>
       </NavigationContainer>

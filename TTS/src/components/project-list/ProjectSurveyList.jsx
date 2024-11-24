@@ -5,31 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import useFetchSurveys from '@hooks/useFetchSurveys';
 import Loading from '@components/Loading';
+import { formatRelativeDate } from '@utils/dateUtils';
 
 export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL, navigateToRiskForm }) => {
   const { t } = useTranslation();
 
   const renderSurveyOption = ({ item: survey }) => {
-    const surveyDate = new Date(survey.created_at);
-    const now = new Date();
-    const timeDifference = now - surveyDate;
-    const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-    let formattedDate;
-    if (minutesDifference < 60) {
-      formattedDate = `${t('projectsurveylistcontainer.minutesAgo', { count: minutesDifference })}`;
-    } else if (hoursDifference < 24) {
-      formattedDate = `${t('projectsurveylistcontainer.hoursAgo', { count: hoursDifference })}`;
-    } else if (daysDifference <= 14) {
-      formattedDate = `${t('projectsurveylistcontainer.daysAgo', { count: daysDifference })}`;
-    } else {
-      formattedDate = `${surveyDate.toLocaleDateString()}, klo ${
-        surveyDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }`;
-    }
-
+    const formattedDate = formatRelativeDate(survey.created_at, t);
+    
     const handleSurveyPress = (survey) => {
       console.log('Valittu kartoitus:', survey);
       setSelectedSurveyURL(survey.url);

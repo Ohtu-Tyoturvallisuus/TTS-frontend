@@ -97,9 +97,9 @@ describe('SpeechToTextView Component', () => {
   };
 
   it('renders and starts/stops recording correctly', async () => {
-    const { getByText, getAllByText } = render(<SpeechToTextView />);
+    const { getByText } = render(<SpeechToTextView />);
 
-    startRecording(getByText, getAllByText);
+    startRecording(getByText);
 
     await waitFor(() => {
       expect(Audio.Recording).toHaveBeenCalled();
@@ -107,6 +107,35 @@ describe('SpeechToTextView Component', () => {
 
     await stopRecording(getByText);
     await waitFor(() => expect(getByText('Test transcription')).toBeTruthy());
+  });
+
+  it('automatically stops recording after the timeout', async () => {
+    const stopAndUnloadAsyncMock = jest.fn().mockResolvedValueOnce();
+    const getURIMock = jest.fn().mockReturnValueOnce('mock-uri');
+  
+    Audio.Recording = jest.fn().mockImplementation(() => ({
+      stopAndUnloadAsync: stopAndUnloadAsyncMock,
+      getURI: getURIMock,
+      prepareToRecordAsync: jest.fn().mockResolvedValueOnce(),
+      startAsync: jest.fn().mockResolvedValueOnce(),
+    }));
+  
+    const { getByText } = render(<SpeechToTextView />);
+  
+    startRecording(getByText);
+
+    await waitFor(() => {
+      expect(Audio.Recording).toHaveBeenCalled();
+    });
+
+    jest.advanceTimersByTime(60000);
+
+    await waitFor(() => {
+      expect(stopAndUnloadAsyncMock).toHaveBeenCalledTimes(1);
+      expect(getURIMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(getByText('Aloita puheentunnistus')).toBeTruthy();
   });
 
   it('handles transcription and translation correctly', async () => {
@@ -223,5 +252,93 @@ describe('SpeechToTextView Component', () => {
     await waitFor(() => {
       expect(console.error).toHaveBeenCalledWith("Error from server:", "Some other error occurred");
     });
+  });
+
+  it('handles error during stopAndUnloadAsync', async () => {
+    const stopAndUnloadAsyncMock = jest.fn().mockRejectedValueOnce(new Error('Failed to stop recording'));
+    const getURIMock = jest.fn();
+
+    Audio.Recording = jest.fn().mockImplementation(() => ({
+      stopAndUnloadAsync: stopAndUnloadAsyncMock,
+      getURI: getURIMock,
+      prepareToRecordAsync: jest.fn().mockResolvedValueOnce(),
+      startAsync: jest.fn().mockResolvedValueOnce(),
+    }));
+  
+    const { getByText } = render(<SpeechToTextView />);
+  
+    startRecording(getByText);
+  
+    await waitFor(() => {
+      expect(Audio.Recording).toHaveBeenCalled();
+    });
+  
+    jest.advanceTimersByTime(60000);
+  
+    await waitFor(() => {
+      expect(stopAndUnloadAsyncMock).toHaveBeenCalledTimes(1);
+      expect(console.error).toHaveBeenCalledWith('Failed to stop recording', expect.any(Error));
+    });
+  });
+
+  it('handles error during getURI', async () => {
+    const stopAndUnloadAsyncMock = jest.fn().mockResolvedValueOnce();
+    const getURIMock = jest.fn().mockImplementation(() => {
+      throw new Error('Failed to get URI');
+    });
+
+    Audio.Recording = jest.fn().mockImplementation(() => ({
+      stopAndUnloadAsync: stopAndUnloadAsyncMock,
+      getURI: getURIMock,
+      prepareToRecordAsync: jest.fn().mockResolvedValueOnce(),
+      startAsync: jest.fn().mockResolvedValueOnce(),
+    }));
+  
+    const { getByText } = render(<SpeechToTextView />);
+  
+    startRecording(getByText);
+  
+    await waitFor(() => {
+      expect(Audio.Recording).toHaveBeenCalled();
+    });
+  
+    jest.advanceTimersByTime(60000);
+  
+    await waitFor(() => {
+      expect(stopAndUnloadAsyncMock).toHaveBeenCalledTimes(1);
+      expect(console.error).toHaveBeenCalledWith('Failed to stop recording', expect.any(Error));
+    });
+  });
+
+  it('handles error during cleanup of recording resources', async () => {
+    const stopAndUnloadAsyncMock = jest.fn().mockResolvedValueOnce();
+    const getURIMock = jest.fn();
+
+    Audio.Recording = jest.fn().mockImplementation(() => ({
+      stopAndUnloadAsync: stopAndUnloadAsyncMock,
+      getURI: getURIMock,
+      prepareToRecordAsync: jest.fn().mockResolvedValueOnce(),
+      startAsync: jest.fn().mockResolvedValueOnce(),
+    }));
+
+    const clearTimeoutMock = jest.spyOn(global, 'clearTimeout').mockImplementation(() => {
+      throw new Error('Cleanup failed');
+    });
+  
+    const { getByText } = render(<SpeechToTextView />);
+  
+    startRecording(getByText);
+  
+    await waitFor(() => {
+      expect(Audio.Recording).toHaveBeenCalled();
+    });
+  
+    jest.advanceTimersByTime(60000);
+
+    await waitFor(() => {
+      expect(console.error).toHaveBeenCalledWith('Failed to clean up recording resources', expect.any(Error));
+    });
+
+    clearTimeoutMock.mockRestore();
   });
 });

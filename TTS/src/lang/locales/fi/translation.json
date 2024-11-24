@@ -1,6 +1,6 @@
 {
   "appbar": {
-    "projects": "Työmaat",
+    "projects": "Projektit",
     "settings": "Asetukset",
     "signOut": "Kirjaudu ulos",
     "signIn": "Kirjaudu sisään"
@@ -20,6 +20,9 @@
     "changesWillBeLost": "HUOM! Kaikki muutokset menetetään",
     "cancel": "Peruuta",
     "confirm": "Vahvista"
+  },
+  "descriptionmodal": {
+    "otherHazards": "Havainnoi työkohdetta myös muiden vaarojen varalta ja kirjaa ne tähän."
   },
   "dropdownoptions": {
     "chooseAll": "--Valitse kaikki--",
@@ -70,6 +73,10 @@
     "greeting": "Hei",
     "loading": "Valmistellaan Microsoft-kirjautumista..."
   },
+  "myobservations": {
+    "title": "Omat havaintoni",
+    "loading": "Ladataan havaintoja..."
+  },
   "projectlist":{
     "chooseAll": "--Valitse kaikki--",
     "chooseArea": "Valitse alue",
@@ -117,8 +124,8 @@
     "scaffoldRisks": "Telinetöihin liittyvät vaarat",
     "environmentRisks": "Työympäristön vaarat",
     "submit": "Lähetä",
-    "otherEnvironment": "Muu työympäristövaara",
-    "otherScaffolding": "Muu telinetyövaara",
+    "otherScaffolding": "Muu telinetyöhön liittyvä vaara",
+    "otherEnvironment": "Muu työympäristöön liittyvä vaara",
     "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
     "submitting": "Lähetetään lomaketta..."
   },
@@ -149,9 +156,13 @@
     "selectLanguages": "Valitse kielet"
   },
   "settings": {
+    "cancel": "Peruuta",
     "changeLanguage": "Vaihda kieltä",
+    "confirm": "varmista",
     "signIn": "Kirjaudu sisään",
-    "signOut": "Kirjaudu ulos"
+    "signOut": "Kirjaudu ulos",
+    "signOutGuestAlertTitle": "Kirjaudu ulos vierastililtä",
+    "signOutGuestAlertMessage": "Oletko varma, että haluat kirjautua ulos? Kaikki vierastiedot poistetaan."
   },
   "signin": {
     "confirmLogin": "Vahvista kirjautuminen",
@@ -177,8 +188,5 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
-  },
-  "myobservations": {
-    "title": "Omat havaintoni"
   }
 }

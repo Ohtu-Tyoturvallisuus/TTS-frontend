@@ -1,12 +1,17 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
+import { retrieveImage } from '@services/apiService'
 
 jest.mock('@components/take-picture/Image', () => {
   const { View } = require('react-native');
   const mockImage = ({ testID }) => <View testID={testID} />;
   return mockImage;
 });
+
+jest.mock('@services/apiService', () => ({
+  retrieveImage: jest.fn(),
+}));
 
 describe('FilledRiskForm component', () => {
   const setup = (overrides = {}) => {
@@ -252,5 +257,33 @@ describe('FilledRiskForm component', () => {
     fireEvent.press(getByText('riskform.submit'));
     expect(queryByTestId('modal')).toBeNull();
     expect(handleSubmit).toHaveBeenCalled();
+  });
+
+  it('closes modal when requesClose is called', async () => {
+    const { queryByTestId, getByText, getByTestId } = setup({ submitted: false });
+  
+    fireEvent.press(getByText('filledriskform.preview'));
+    fireEvent(getByTestId('modal'), 'requestClose');
+    await waitFor(() => {
+      expect(queryByTestId('modal')).toBeNull();
+    });
+  });
+  
+  it('does not fetch images if the modal is not visible', async () => {
+    const mockRetrieveImage = retrieveImage.mockResolvedValueOnce('http://image1.jpg');
+  
+    setup({
+      formData: {
+        hazard1: {
+          status: 'checked',
+          description: 'Hazard description',
+          images: [{ blobName: 'image1.jpg' }],
+        },
+      },
+    });
+  
+    await waitFor(() => {
+      expect(mockRetrieveImage).not.toHaveBeenCalled();
+    });
   });
 });

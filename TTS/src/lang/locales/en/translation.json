@@ -21,6 +21,9 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "descriptionmodal": {
+    "otherHazards": "Also observe the workplace for other hazards and record them here."
+  },
   "dropdownoptions": {
     "chooseAll": "--Choose all--",
     "search": "Search..."
@@ -70,6 +73,10 @@
     "greeting": "Hello",
     "loading": "Preparing Microsoft sign-in..."
   },
+  "myobservations": {
+    "title": "My observations",
+    "loading": "Loading observations..."
+  },
   "projectlist":{
     "chooseAll": "--Choose all--",
     "chooseArea": "Choose area",
@@ -117,8 +124,8 @@
     "scaffoldRisks": "Scaffold work risks",
     "environmentRisks": "Work environment risks",
     "submit": "Submit",
-    "otherEnvironment": "Other workplace risk",
-    "otherScaffolding": "Other scaffolding risk",
+    "otherScaffolding": "Other hazards related to scaffolding work",
+    "otherEnvironment": "Other hazards related to the environment",
     "emptyFieldsError": "Fill all the necessary fields before submitting",
     "submitting": "Submitting form..."
   },
@@ -149,9 +156,13 @@
     "selectLanguages": "Select languages"
   },
   "settings":{
+    "cancel": "Cancel",
     "changeLanguage": "Change language",
+    "confirm": "Confirm",
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "signOutGuestAlertTitle": "Sign Out from Guest Account",
+    "signOutGuestAlertMessage": "Are you sure you want to sign out? All guest data will be deleted."
   },
   "signin": {
     "confirmLogin": "Confirm login",
@@ -177,8 +188,5 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
-  },
-  "myobservations": {
-    "title": "My observations"
   }
 }
