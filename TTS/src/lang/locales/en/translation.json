@@ -80,8 +80,11 @@
   "projectlist":{
     "chooseAll": "--Choose all--",
     "chooseArea": "Choose area",
+    "errorFetchingProjects": "Error fetching projects",
+    "noProjects": "No project was found",
     "loading": "Loading projects",
-    "projects": "Projects"
+    "projects": "Projects",
+    "projectsFound": "Found {{count}} projects"
   },
   "projectmodal": {
     "title": "Fill in a new risk form"
@@ -171,7 +174,7 @@
     "error_first_name": "Insert first name",
     "error_last_name": "Insert last name",
     "loading" : "Signing in..."
-  },  
+  },
   "speechtotext": {
     "maxLength": "Maximum length",
     "processingAudio": "Processing your audio",
