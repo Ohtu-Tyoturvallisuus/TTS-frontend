@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
 import { retrieveImage } from '@services/apiService'

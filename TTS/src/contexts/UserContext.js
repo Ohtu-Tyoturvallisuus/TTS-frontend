@@ -21,7 +21,6 @@ export const UserProvider = ({ children }) => {
         newUserSurveys, setNewUserSurveys,
         joinedSurvey, setJoinedSurvey,
         isGuest, setIsGuest,
-        joinedSurvey, setJoinedSurvey
       }}
     >
       {children}
