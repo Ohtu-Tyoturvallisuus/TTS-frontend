@@ -3,7 +3,6 @@ import { Text, TouchableOpacity, StyleSheet, View, TextInput } from 'react-nativ
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import CloseButton from '@components/buttons/CloseButton';
 import { getSurveyByAccessCode } from '@services/apiService';
 import FilledRiskForm from './FilledRiskForm';
 import { UserContext } from '@contexts/UserContext';
