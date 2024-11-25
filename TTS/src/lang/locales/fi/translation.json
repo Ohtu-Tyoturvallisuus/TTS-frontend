@@ -69,7 +69,8 @@
   },
   "main": {
     "navigationMain": "Pääsivu",
-    "navigationSettings": "Asetukset"
+    "navigationSettings": "Asetukset",
+    "navigationJoinSurvey": "Liity"
   },
   "microsoftsignin": {
     "signInText": "Microsoft-kirjautuminen",

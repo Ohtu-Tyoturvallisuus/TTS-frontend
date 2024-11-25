@@ -69,7 +69,8 @@
   },
   "main": {
     "navigationMain": "Main",
-    "navigationSettings": "Settings"
+    "navigationSettings": "Settings",
+    "navigationJoinSurvey": "Join Survey"
   },
   "microsoftsignin": {
     "signInText": "Microsoft sign-in",
