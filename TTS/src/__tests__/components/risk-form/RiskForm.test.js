@@ -9,29 +9,20 @@ import { submitForm } from '@services/formSubmission';
 import fiFormFields from '@lang/locales/fi/formFields.json';
 import { NavigationProvider } from '@contexts/NavigationContext';
 
-jest.mock('@hooks/useFetchSurveyData', () => jest.fn(() => ({
-  surveyData: {
-    task: ['Asennus'],
-    scaffold_type: ['Työteline'],
-    description: 'Test Description',
-    risk_notes: [
-      {
-        note: 'personal_protection',
-        description: '',
-        status: 'notRelevant',
-        risk_type: 'scaffolding',
-      },
-      {
-        note: 'personal_fall_protection',
-        description: 'Valjaat käytössä',
-        status: 'checked',
-        risk_type: 'scaffolding',
-      },
-    ],
-  },
-  loading: false,
-  error: null,
-})));
+jest.mock('@hooks/useFetchSurveyData', () => jest.fn());
+
+const mockUseFetchSurveyData = require('@hooks/useFetchSurveyData');
+
+jest.mock('@components/Loading', () => jest.fn(({ loading, error, title }) => {
+  const { View, Text } = require('react-native');
+  return (
+    <View>
+      {loading && <Text>Loading...</Text>}
+      {error && <Text>Error: {error}</Text>}
+      <Text>{title}</Text>
+    </View>
+  );
+}));
 
 jest.mock('react-native-sectioned-multi-select', () => {
   const React = require('react');
@@ -219,6 +210,29 @@ describe('RiskForm Component', () => {
   });
 
   it('renders correctly with project details', () => {
+    mockUseFetchSurveyData.mockReturnValue({
+      surveyData: {
+        task: ['Asennus'],
+        scaffold_type: ['Työteline'],
+        description: 'Test Description',
+        risk_notes: [
+          {
+            note: 'personal_protection',
+            description: '',
+            status: 'notRelevant',
+            risk_type: 'scaffolding',
+          },
+          {
+            note: 'personal_fall_protection',
+            description: 'Valjaat käytössä',
+            status: 'checked',
+            risk_type: 'scaffolding',
+          },
+        ],
+      },
+      loading: false,
+      error: null,
+    });
     const { getByText } = setup();
 
     expect(getByText('Projektin nimi:')).toBeTruthy();
@@ -228,6 +242,29 @@ describe('RiskForm Component', () => {
   });
 
   it('shows success alert after successful submission', async () => {
+    mockUseFetchSurveyData.mockReturnValue({
+      surveyData: {
+        task: ['Asennus'],
+        scaffold_type: ['Työteline'],
+        description: 'Test Description',
+        risk_notes: [
+          {
+            note: 'personal_protection',
+            description: '',
+            status: 'notRelevant',
+            risk_type: 'scaffolding',
+          },
+          {
+            note: 'personal_fall_protection',
+            description: 'Valjaat käytössä',
+            status: 'checked',
+            risk_type: 'scaffolding',
+          },
+        ],
+      },
+      loading: false,
+      error: null,
+    });
     submitForm.mockImplementationOnce((mockProject, taskInfo, formData, setShowSuccessAlert) => {
       setShowSuccessAlert(true);
     });
@@ -244,10 +281,61 @@ describe('RiskForm Component', () => {
   });
 
   it('shows exit modal confirmation when close button is pressed', () => {
+    mockUseFetchSurveyData.mockReturnValue({
+      surveyData: {
+        task: ['Asennus'],
+        scaffold_type: ['Työteline'],
+        description: 'Test Description',
+        risk_notes: [
+          {
+            note: 'personal_protection',
+            description: '',
+            status: 'notRelevant',
+            risk_type: 'scaffolding',
+          },
+          {
+            note: 'personal_fall_protection',
+            description: 'Valjaat käytössä',
+            status: 'checked',
+            risk_type: 'scaffolding',
+          },
+        ],
+      },
+      loading: false,
+      error: null,
+    });
     const { getByText } = setup();
 
     fireEvent.press(getByText('Sulje'));
 
     expect(getByText('Haluatko varmasti poistua?')).toBeTruthy();
-  });  
+  });
+
+  it('renders loading state correctly', () => {
+    mockUseFetchSurveyData.mockReturnValue({
+      surveyData: null,
+      loading: true,
+      error: null,
+    });
+
+    const { getByText } = setup();
+
+    expect(getByText('Loading...')).toBeTruthy();
+    expect(getByText('Ladataan lomaketietoja...')).toBeTruthy(); // Title from translations
+  });
+
+  it('renders error state correctly', async () => {
+    mockUseFetchSurveyData.mockReturnValue({
+      surveyData: null,
+      loading: false,
+      error: 'Something went wrong',
+    });
+
+    const { getByText } = setup();
+
+    await waitFor(() => {
+      expect(getByText('Error: Something went wrong')).toBeTruthy();
+      expect(getByText('Ladataan lomaketietoja...')).toBeTruthy(); // Title from translations
+    });
+  });
 });
