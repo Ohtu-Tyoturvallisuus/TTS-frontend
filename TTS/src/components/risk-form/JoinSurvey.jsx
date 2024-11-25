@@ -9,7 +9,6 @@ import FilledRiskForm from './FilledRiskForm';
 import { UserContext } from '@contexts/UserContext';
 
 const JoinSurvey = ({visible=true}) => {
-  console.log(visible)
   const { t } = useTranslation();
   const [setModalVisible] = useState(visible);
   const [survey, setSurvey] = useState(null);
@@ -68,7 +67,6 @@ const JoinSurvey = ({visible=true}) => {
             >
               <Text className="text-white font-bold">{t('joinsurvey.join')}</Text>
             </TouchableOpacity>
-            <CloseButton onPress={() => setModalVisible(false)} />
         </View>
       </View>
       {joinedSurvey &&
