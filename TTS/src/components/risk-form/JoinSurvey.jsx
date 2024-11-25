@@ -58,7 +58,7 @@ const JoinSurvey = () => {
         style={styles.button}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={styles.buttonText}>{t('joinsurvey.join')}</Text>
+        <Text style={styles.buttonText} testID='outsideModalButtonText'>{t('joinsurvey.join')}</Text>
       </TouchableOpacity>
       <Modal
         visible={modalVisible}
@@ -94,7 +94,12 @@ const JoinSurvey = () => {
                 className={`bg-orange rounded-lg justify-center items-center py-4 px-6 my-2 ${loading && 'opacity-50'}`}
                 disabled={loading}
               >
-                <Text className={`text-white font-bold ${loading && 'text-black'}`}>{loading ? t('joinsurvey.loading') : t('joinsurvey.join')}</Text>
+                <Text
+                  className={`text-white font-bold ${loading && 'text-black'}`}
+                  testID='insideModalButtonText'
+                >
+                  {loading ? t('joinsurvey.loading') : t('joinsurvey.join')}
+                </Text>
               </TouchableOpacity>
               <CloseButton onPress={() => setModalVisible(false)} />
           </View>
