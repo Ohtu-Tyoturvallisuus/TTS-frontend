@@ -121,7 +121,7 @@ const ProjectsList = () => {
                 <Text style={{ color: 'red' }}>{t('projectlist.errorFetchingProjects')}</Text>
               </View>
             )}
-          </>
+          </View>
         }
       />
       <ProjectModal
