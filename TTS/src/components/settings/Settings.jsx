@@ -9,7 +9,6 @@ import ChangeLanguage from './ChangeLanguage';
 import CloseButton from '@components/buttons/CloseButton';
 import SettingsButton from '@components/buttons/SettingsButton';
 import MyObservations from './MyObservations';
-import JoinSurvey from '@components/risk-form/JoinSurvey';
 
 const Settings = () => {
   const [changeLanguageVisible, setChangeLanguageVisible] = useState(false);
@@ -48,7 +47,6 @@ const Settings = () => {
     <View style={styles.container}>
       <Text style={styles.text}>{username}</Text>
       <Text style={styles.text}>{email}</Text>
-      {username && <JoinSurvey />}
       {username && <MyObservations />}
       <SettingsButton
         onPress={() => setChangeLanguageVisible(true)}
