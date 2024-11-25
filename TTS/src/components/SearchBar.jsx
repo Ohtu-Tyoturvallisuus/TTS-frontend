@@ -2,16 +2,17 @@ import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-const SearchBar = ({ setFilter }) => {
+const SearchBar = ({ value, onChange }) => {
   const { t } = useTranslation();
 
   return (
-    <View className="flex items-center justify-center py-3">
+    <View className="flex items-center justify-center pt-3">
       <TextInput
         style={styles.searchInput}
         placeholder={t('searchbar.placeholder')}
         placeholderTextColor="#A9A9A9"
-        onChangeText={setFilter}
+        value={value}
+        onChangeText={onChange}
       />
     </View>
   );

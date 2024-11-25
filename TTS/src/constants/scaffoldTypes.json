@@ -1,0 +1,14 @@
+{
+    "scaffoldTypes": [
+      "facadeScaffold",
+      "weatherScaffold",
+      "accessessScaffold",
+      "birdcageScaffold",
+      "tankScaffold",
+      "liftingScaffold",
+      "suspendedScaffold",
+      "shoringScaffold",
+      "workScaffold"
+    ]
+  }
+  

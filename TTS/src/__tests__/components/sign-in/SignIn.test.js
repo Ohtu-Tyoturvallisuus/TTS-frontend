@@ -1,5 +1,4 @@
-import { screen, render, fireEvent, waitFor } from "@testing-library/react-native";
-import { act } from 'react-test-renderer';
+import { screen, render, fireEvent, waitFor, act } from "@testing-library/react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
