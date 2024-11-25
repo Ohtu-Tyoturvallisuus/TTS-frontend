@@ -157,7 +157,9 @@
     "liftingScaffold": "Scaffolding for lifting operations",
     "suspendedScaffold": "Suspended scaffolding",
     "shoringScaffold": "Shoring scaffolding",
-    "workScaffold": "Working scaffolding"
+    "workScaffold": "Working scaffolding",
+    "weatherproof": "Weather protection",
+    "nonWeatherproof": "Non-weatherproof working scaffolding"
   },
   "searchbar": {
     "placeholder": "Search by keyword..."

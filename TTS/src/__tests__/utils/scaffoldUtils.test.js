@@ -1,100 +1,56 @@
 import { renderHook } from '@testing-library/react-native';
-import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { useScaffoldItems } from '@utils/scaffoldUtils';
-
-jest.mock('i18next', () => ({
-  getResourceBundle: jest.fn(),
-}));
+import scaffoldings from '@constants/scaffoldTypes.json';
 
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
 }));
 
 describe('useScaffoldItems', () => {
+  const mockTranslation = {
+    'scaffoldTypes.facadeScaffold': 'Facade Scaffold',
+    'scaffoldTypes.weatherScaffold': 'Weather Scaffold',
+    'scaffoldTypes.accessessScaffold': 'Access Scaffold',
+    'scaffoldTypes.birdcageScaffold': 'Birdcage Scaffold',
+    'scaffoldTypes.tankScaffold': 'Tank Scaffold',
+    'scaffoldTypes.liftingScaffold': 'Lifting Scaffold',
+    'scaffoldTypes.suspendedScaffold': 'Suspended Scaffold',
+    'scaffoldTypes.shoringScaffold': 'Shoring Scaffold',
+    'scaffoldTypes.workScaffold': 'Work Scaffold',
+    'scaffoldTypes.weatherproof': 'Weatherproof',
+    'scaffoldTypes.nonWeatherproof': 'Non-Weatherproof',
+  };
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    useTranslation.mockReturnValue({
+      t: (key) => mockTranslation[key] || key,
+    });
   });
 
-  it('returns the correct scaffold items based on translation keys', () => {
-    i18next.getResourceBundle.mockReturnValue({
-      scaffoldTypes: {
-        facadeScaffold: 'Facade scaffolding',
-        weatherScaffold: 'Weather protection',
-      },
-    });
-
-    useTranslation.mockReturnValue({
-      t: jest.fn((key) => {
-        const translations = {
-          'scaffoldTypes.facadeScaffold': 'Facade scaffolding',
-          'scaffoldTypes.weatherScaffold': 'Weather protection',
-        };
-        return translations[key] || key;
-      }),
-    });
-
+  it('should return scaffold items with translated names and IDs', () => {
     const { result } = renderHook(() => useScaffoldItems());
 
-    expect(result.current).toEqual([
-      { id: 'facadeScaffold', name: 'Facade scaffolding' },
-      { id: 'weatherScaffold', name: 'Weather protection' },
-    ]);
+    const expected = scaffoldings.scaffoldTypes.map((key) => ({
+      id: key,
+      name: mockTranslation[`scaffoldTypes.${key}`],
+    }));
 
-    expect(i18next.getResourceBundle).toHaveBeenCalledWith('en', 'translation');
-    expect(useTranslation().t).toHaveBeenCalledWith('scaffoldTypes.facadeScaffold');
-    expect(useTranslation().t).toHaveBeenCalledWith('scaffoldTypes.weatherScaffold');
+    expect(result.current).toEqual(expected);
   });
 
-  it('returns an empty array if no scaffoldTypes exist in the resource bundle', () => {
-    i18next.getResourceBundle.mockReturnValue({});
-  
+  it('should handle missing translations gracefully', () => {
     useTranslation.mockReturnValue({
-      t: jest.fn((key) => key),
-    });
-  
-    const { result } = renderHook(() => useScaffoldItems());
-  
-    expect(result.current).toEqual([]);
-    expect(i18next.getResourceBundle).toHaveBeenCalledWith('en', 'translation');
-  });
-
-  it('returns an empty array when scaffoldBundle is null', () => {
-    i18next.getResourceBundle.mockReturnValue(null);
-
-    useTranslation.mockReturnValue({
-      t: jest.fn((key) => key),
+      t: () => undefined, // Simulate missing translations
     });
 
     const { result } = renderHook(() => useScaffoldItems());
 
-    expect(result.current).toEqual([]);
+    const expected = scaffoldings.scaffoldTypes.map((key) => ({
+      id: key,
+      name: undefined, // Expect undefined for missing translations
+    }));
 
-    expect(i18next.getResourceBundle).toHaveBeenCalledWith('en', 'translation');
-  });  
-
-  it('handles missing translation keys gracefully', () => {
-    i18next.getResourceBundle.mockReturnValue({
-      scaffoldTypes: {
-        facadeScaffold: 'Facade scaffolding',
-        missingTranslation: undefined,
-      },
-    });
-
-    useTranslation.mockReturnValue({
-      t: jest.fn((key) => {
-        const translations = {
-          'scaffoldTypes.facadeScaffold': 'Facade scaffolding',
-        };
-        return translations[key] || `Missing: ${key}`;
-      }),
-    });
-
-    const { result } = renderHook(() => useScaffoldItems());
-
-    expect(result.current).toEqual([
-      { id: 'facadeScaffold', name: 'Facade scaffolding' },
-      { id: 'missingTranslation', name: 'Missing: scaffoldTypes.missingTranslation' },
-    ]);
+    expect(result.current).toEqual(expected);
   });
 });

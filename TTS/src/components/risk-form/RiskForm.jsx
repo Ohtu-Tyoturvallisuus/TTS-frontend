@@ -199,6 +199,13 @@ const RiskForm = () => {
                         width: '100%',
                         marginVertical: 8,
                       },
+                      item: {
+                        padding: 10,
+                        margin: 10
+                      },
+                      selectedItemText: {
+                        color: '#ef7d00',
+                      },
                     }}
                   />
                 </View>
