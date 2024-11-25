@@ -12,6 +12,7 @@ import CombinedSignIn from '@components/sign-in/CombinedSignIn';
 import RiskFormScreen from '@components/risk-form/RiskFormScreen';
 import Settings from '@components/settings/Settings';
 import { NavigationContext } from '@contexts/NavigationContext';
+import JoinSurvey from '@components/risk-form/JoinSurvey';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -78,6 +79,9 @@ const Main = () => {
                 if (route.name === 'Main') {
                   iconName = focused ? 'home' : 'home-outline';
                 }
+                if (route.name === 'JoinSurvey') {
+                  iconName = focused ? 'clipboard' : 'clipboard-outline';
+                }
                 if (route.name === 'Settings') {
                   iconName = focused ? 'settings' : 'settings-outline';
                 }
@@ -99,6 +103,14 @@ const Main = () => {
               component={MainStack} 
               options={{ title: t('main.navigationMain') }} 
             />
+            {username && (
+            <Tab.Screen
+              name="JoinSurvey"
+              component={JoinSurvey}
+              options={{ title: t('main.navigationJoinSurvey') }}
+              initialParams={{ visible: true }}
+            />
+            )}
             <Tab.Screen 
               name="Settings" 
               component={Settings} 
