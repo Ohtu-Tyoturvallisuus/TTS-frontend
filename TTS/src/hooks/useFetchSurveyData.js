@@ -8,17 +8,21 @@ const useFetchSurveyData = (url) => {
 
   useEffect(() => {
     if (!url) return;
-    setLoading(true);
-    console.log('Fetching survey data from:', url);
-    fetchSurveyData(url)
-      .then(data => {
+
+    const fetchData = async () => {
+      setLoading(true);
+      console.log('Fetching survey data from:', url);
+      try {
+        const data = await fetchSurveyData(url);
         setSurveyData(data);
-        setLoading(false);
-      })
-      .catch(error => {
+      } catch (error) {
         setError(error.message);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, [url]);
 
   return { surveyData, error, loading };
