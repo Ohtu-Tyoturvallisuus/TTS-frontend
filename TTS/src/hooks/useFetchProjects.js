@@ -38,7 +38,7 @@ const useFetchProjects = (
       }
     };
 
-    loadProjects();
+    accessToken && loadProjects();
   }, [area, dataAreaId, search, shouldFetch]);
 
   return { projects, loading, error };
