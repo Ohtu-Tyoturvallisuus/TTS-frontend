@@ -11,7 +11,6 @@ export const UserProvider = ({ children }) => {
   const [newUserSurveys, setNewUserSurveys] = useState(false);
   const [joinedSurvey, setJoinedSurvey] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
-  const [joinedSurvey, setJoinedSurvey] = useState(false);
 
   return (
     <UserContext.Provider
