@@ -143,7 +143,7 @@
   },
   "scaffoldTypes":{
     "facadeScaffold": "Facade scaffolding",
-    "weatherScaffold": "Weather protection",    
+    "weatherScaffold": "Weather protection",
     "accessessScaffold": "Scaffolding accessess",
     "birdcageScaffold": "Birdcage scaffolding",
     "tankScaffold": "Circular tank scaffolding",
@@ -181,7 +181,7 @@
     "error_first_name": "Insert first name",
     "error_last_name": "Insert last name",
     "loading" : "Signing in..."
-  },  
+  },
   "speechtotext": {
     "maxLength": "Maximum length",
     "processingAudio": "Processing your audio",
@@ -195,5 +195,12 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
+  },
+  "taskinfo": {
+    "translate": "Translate text"
+  },
+  "translationsview": {
+    "hide": "Hide translations",
+    "show": "Show translations"
   }
 }

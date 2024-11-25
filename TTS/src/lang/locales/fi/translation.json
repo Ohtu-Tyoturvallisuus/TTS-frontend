@@ -50,7 +50,8 @@
     "close": "Sulje",
     "back": "Takaisin",
     "next": "Seuraava",
-    "confirm": "Vahvista"
+    "confirm": "Vahvista",
+    "translate": "Käännä"
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",
@@ -143,7 +144,7 @@
   },
   "scaffoldTypes":{
     "facadeScaffold": "Julkisivuteline",
-    "weatherScaffold": "Sääsuojaus",    
+    "weatherScaffold": "Sääsuojaus",
     "accessessScaffold": "Kulkutie",
     "birdcageScaffold": "Tasoteline",
     "tankScaffold": "Säiliöteline",
@@ -195,5 +196,12 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
+  },
+  "taskinfo": {
+    "translate": "Käännä teksti"
+  },
+  "translationsview": {
+    "hide": "Piilota käännökset",
+    "show": "Näytä käännökset"
   }
 }
