@@ -123,7 +123,6 @@ describe('SelectTranslateLanguage Component', () => {
   });
 
   it('falls back to the default country when fromLang is not in the countries list', async () => {
-    // Temporarily mock `useTranslationLanguages` for this test
     const useTranslationLanguagesMock = require('@contexts/TranslationContext').useTranslationLanguages;
     useTranslationLanguagesMock.mockImplementation(() => ({
       fromLang: 'de', // German, not in the countries list
@@ -131,14 +130,17 @@ describe('SelectTranslateLanguage Component', () => {
     }));
 
     const mockSetTranslationLanguages = jest.fn();
-    const { queryByText } = render(
+    const { getByText, findByPlaceholderText, queryByText } = render(
       <SelectTranslateLanguage setTranslationLanguages={mockSetTranslationLanguages} />
     );
 
-    // Verify that German is not in the list
-    expect(queryByText('Deutsch')).toBeNull();
+    fireEvent.press(getByText('Select translation languages'));
+    const searchInput = await findByPlaceholderText('Search languages...');
+    fireEvent.changeText(searchInput, 'Suomi');
 
-    // Reset the mock for `useTranslationLanguages`
+    // Ensure deafult country ('Suomi') is not selectable
+    expect(queryByText('Suomi')).toBeNull();
+
     useTranslationLanguagesMock.mockImplementation(originalUseTranslationLanguages);
   });
 });
