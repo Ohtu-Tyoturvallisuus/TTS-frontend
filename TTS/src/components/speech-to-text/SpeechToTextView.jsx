@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Audio } from 'expo-av';
 import { useTranslation } from 'react-i18next';
 import { uploadAudio } from '@services/apiService';
@@ -82,7 +82,7 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
 
   const uploadToBackend = async (fileUri) => {
     const result = await uploadAudio(fileUri, recordingLanguage, translationLanguages);
-    
+
     setIsLoading(false);
 
     if (result) {
@@ -101,42 +101,32 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
 
   return (
     <View style={styles.container}>
-  {isLoading ? (
-    <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color="#ef7d00" />
-      <Text style={styles.loadingText}>{t('speechtotext.processingAudio')}</Text>
-    </View>
-  ) : (
-    <RecordingControls recording={recording} startRecording={startRecording} stopRecording={stopRecording} timeout={timeout} t={t} />
-  )}
+      <RecordingControls
+        recording={recording}
+        startRecording={startRecording}
+        stopRecording={stopRecording}
+        isLoading={isLoading}
+        t={t}
+      />
 
-  {transcription !== '' && translate && (
-    <TranscriptionView recordingLanguageFlagCode={recordingLanguageFlagCode} transcription={transcription} />
-  )}
-  {translate && (
-    <SelectTranslateLanguage setTranslationLanguages={setTranslationLanguages} />
-  )}
-  {recordingLanguage !== '' && (
-    <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} timeout={timeout} />
-  )}
-  </View>
-  );
-};
+      {transcription !== '' && translate && (
+        <TranscriptionView recordingLanguageFlagCode={recordingLanguageFlagCode} transcription={transcription} />
+      )}
+      {translate && (
+        <SelectTranslateLanguage setTranslationLanguages={setTranslationLanguages} />
+      )}
+      {recordingLanguage !== '' && translate && (
+        <TranslationsView translations={translations} languageToFlagMap={languageToFlagMap} timeout={timeout} />
+      )}
+    </View>
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  loadingText: {
-    color: '#333',
-    fontSize: 16,
-    marginTop: 10,
+    paddingTop: 10,
   },
 });
 

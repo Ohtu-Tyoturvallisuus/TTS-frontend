@@ -146,7 +146,7 @@
   },
   "scaffoldTypes":{
     "facadeScaffold": "Facade scaffolding",
-    "weatherScaffold": "Weather protection",    
+    "weatherScaffold": "Weather protection",
     "accessessScaffold": "Scaffolding accessess",
     "birdcageScaffold": "Birdcage scaffolding",
     "tankScaffold": "Circular tank scaffolding",
@@ -200,5 +200,12 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
+  },
+  "taskinfo": {
+    "translate": "Translate text"
+  },
+  "translationsview": {
+    "hide": "Hide translations",
+    "show": "Show translations"
   }
 }
