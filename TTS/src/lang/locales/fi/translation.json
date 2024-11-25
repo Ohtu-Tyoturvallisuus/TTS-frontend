@@ -210,6 +210,8 @@
     "error": "Koodi puuttuu",
     "error_length": "Koodin täytyy olla 6 merkkiä pitkä",
     "insertPlaceholder": "Koodi",
-    "join": "Liity vaarojentunnistukseen"
+    "join": "Liity vaarojentunnistukseen",
+    "fetchError": "Haku epäonnistui",
+    "loading": "Liitytään..."
   }
 }

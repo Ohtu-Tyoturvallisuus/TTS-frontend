@@ -14,6 +14,8 @@ const JoinSurvey = () => {
   const [survey, setSurvey] = useState(null);
   const { joinedSurvey, setJoinedSurvey } = useContext(UserContext);
   const [accessCode, setAccessCode] = useState('');
+  const [caughtError, setCaughtError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = yup.object().shape({
     access_code: yup.string()
@@ -26,13 +28,20 @@ const JoinSurvey = () => {
   };
 
   const onSubmit = async (values, { resetForm }) => {
-    setModalVisible(false)
-    const data = await getSurveyByAccessCode(values.access_code)
-    setAccessCode(values.access_code)
-    setSurvey(data)
-    setModalVisible(false)
-    setJoinedSurvey(true)
-    resetForm()
+    setLoading(true);
+    try {
+      const data = await getSurveyByAccessCode(values.access_code)
+      setAccessCode(values.access_code)
+      setSurvey(data)
+      setModalVisible(false)
+      setJoinedSurvey(true)
+      setLoading(false)
+      resetForm()
+    } catch (error) {
+      console.log(error)
+      setCaughtError(t('joinsurvey.fetchError'))
+      setLoading(false)
+    }
   };
 
   const formik = useFormik({
@@ -63,21 +72,29 @@ const JoinSurvey = () => {
             <TextInput
                 placeholder={t('joinsurvey.insertPlaceholder')}
                 placeholderTextColor="#A9A9A9"
-                onChangeText={formik.handleChange('access_code')}
+                onChangeText={(value) => {
+                  formik.handleChange('access_code')(value)
+                  setCaughtError('')
+                }}
                 value={formik.values.access_code}
                 style={[
                   styles.input,
                   hasError('access_code') && styles.errorInput,
+                  caughtError.length > 0 && styles.errorInput,
                 ]}
               />
               {hasError('access_code') && (
                 <Text className="text-[#FF0000]">{formik.errors.access_code}</Text>
               )}
+              {caughtError && (
+                <Text className="text-[#FF0000]">{caughtError}</Text>
+              )}
               <TouchableOpacity
                 onPress={formik.handleSubmit}
-                className={`bg-orange rounded-lg justify-center items-center py-4 px-6 my-2`}
+                className={`bg-orange rounded-lg justify-center items-center py-4 px-6 my-2 ${loading && 'opacity-50'}`}
+                disabled={loading}
               >
-                <Text className="text-white font-bold">{t('joinsurvey.join')}</Text>
+                <Text className={`text-white font-bold ${loading && 'text-black'}`}>{loading ? t('joinsurvey.loading') : t('joinsurvey.join')}</Text>
               </TouchableOpacity>
               <CloseButton onPress={() => setModalVisible(false)} />
           </View>

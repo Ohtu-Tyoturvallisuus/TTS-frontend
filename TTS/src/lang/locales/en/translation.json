@@ -210,6 +210,8 @@
     "error": "Code is missing",
     "error_length": "Code must be 6 characters long",
     "insertPlaceholder": "Code",
-    "join": "Join hazard identification"
+    "join": "Join hazard identification",
+    "fetchError": "Fetching was unsuccessful",
+    "loading": "Joining..."
   }
 }
