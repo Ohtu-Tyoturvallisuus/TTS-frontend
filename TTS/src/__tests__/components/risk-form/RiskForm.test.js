@@ -156,7 +156,14 @@ jest.mock('@hooks/useFormFields', () => ({
   })),
 }));
 
+const mockScaffoldItems = [
+  { id: 'workScaffold', name: 'Working Scaffold' },
+  { id: 'accessessScaffold', name: 'Access Scaffold' },
+];
 
+jest.mock('@utils/scaffoldUtils', () => ({
+  useScaffoldItems: jest.fn(() => mockScaffoldItems),
+}));
 
 jest.mock('@services/formSubmission', () => ({
   submitForm: jest.fn(),
