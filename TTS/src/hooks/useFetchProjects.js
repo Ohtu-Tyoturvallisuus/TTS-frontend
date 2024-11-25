@@ -39,7 +39,7 @@ const useFetchProjects = (
     };
 
     accessToken && loadProjects();
-  }, [area, dataAreaId, search, shouldFetch]);
+  }, [area, dataAreaId, search, accessToken]);
 
   return { projects, loading, error };
 };

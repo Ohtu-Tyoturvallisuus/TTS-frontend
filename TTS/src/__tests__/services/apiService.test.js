@@ -365,9 +365,9 @@ test('fetchProjectList handles empty filters correctly', async () => {
 
     it('should use default parameters for "from" and "to" if not provided', async () => {
       axios.post.mockResolvedValueOnce({ data: mockResponseData });
-  
+
       const result = await translateText(mockText);
-  
+
       expect(axios.post).toHaveBeenCalledWith(
         expect.stringContaining('/translate/'),
         {
@@ -381,7 +381,7 @@ test('fetchProjectList handles empty filters correctly', async () => {
           },
         }
       );
-  
+
       expect(result).toEqual(mockResponseData);
     });
 

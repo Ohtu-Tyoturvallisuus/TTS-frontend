@@ -98,7 +98,7 @@ const ProjectsList = () => {
         )}
         keyExtractor={project => project.id.toString()}
         ListHeaderComponent={
-          <>
+          <View className="px-2">
             <Text style={styles.title}>{t('projectlist.projects')}</Text>
             <DropdownOptions
               onSelect={handleAreaFilterChange}
