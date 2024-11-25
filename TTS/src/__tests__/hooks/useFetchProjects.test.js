@@ -1,16 +1,27 @@
 import { renderHook, waitFor } from '@testing-library/react-native';
 import useFetchProjects from '@hooks/useFetchProjects';
 import { fetchProjectList } from '@services/apiService';
+import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@services/apiService');
 
 describe('useFetchProjects', () => {
+  const mockUserContext = {
+    accessToken: 'mockToken',
+  };
+
+  const wrapper = ({ children }) => (
+    <UserContext.Provider value={mockUserContext}>
+      {children}
+    </UserContext.Provider>
+  );
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('should initialize with empty state', () => {
-    const { result } = renderHook(() => useFetchProjects());
+    const { result } = renderHook(() => useFetchProjects(), { wrapper });
 
     expect(result.current.loading).toBe(false);
     expect(result.current.projects).toEqual([]);
@@ -19,7 +30,8 @@ describe('useFetchProjects', () => {
   });
 
   it('should not fetch when shouldFetch is false', async () => {
-    const { result } = renderHook(() => useFetchProjects("area", "", "search", false));
+      { wrapper }
+    const { result } = renderHook(() => useFetchProjects("area", "", "search", false), { wrapper });
 
     expect(fetchProjectList).not.toHaveBeenCalled();
     expect(result.current.projects).toEqual([]);
@@ -33,10 +45,12 @@ describe('useFetchProjects', () => {
     fetchProjectList.mockResolvedValueOnce(mockProjects);
 
     const { result } = renderHook(() =>
-      useFetchProjects("area", "", "search", true)
+      useFetchProjects("area", "", "search", true), { wrapper }
     );
 
     expect(result.current.loading).toBe(true);
+    expect(result.current.projects).toEqual([]);
+    expect(result.current.error).toBeNull();
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -55,7 +69,7 @@ describe('useFetchProjects', () => {
     fetchProjectList.mockRejectedValueOnce(new Error(errorMessage));
 
     const { result } = renderHook(() =>
-      useFetchProjects("area", "", "search", true)
+      useFetchProjects("area", "", "search", true), { wrapper }
     );
 
     expect(result.current.loading).toBe(true);
@@ -77,7 +91,7 @@ describe('useFetchProjects', () => {
 
     const { result, rerender } = renderHook(
       ({ area, search, shouldFetch }) => useFetchProjects(area, "", search, shouldFetch),
-      { initialProps: { area: "area1", search: "", shouldFetch: true } }
+      { wrapper, initialProps: { area: "area1", search: "", shouldFetch: true } },
     );
 
     await waitFor(() => {
