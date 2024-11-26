@@ -136,5 +136,62 @@ describe('TaskInfo Component', () => {
     );
 
     const translateButton = getByTestId('translate-button');
-    expect(translateButton.props.accessibilityState.disabled).toBe(true);  });
+    expect(translateButton.props.accessibilityState.disabled).toBe(true);
   });
+
+  it('renders error message when translation fails', async () => {
+    const mockErrorMessage = 'Translation failed';
+
+    useFormContext.mockImplementation(() => ({
+      getFormData: mockGetFormData,
+      task: [],
+      setTask: mockSetTask,
+      scaffoldType: [],
+      setScaffoldType: mockSetScaffoldType,
+      taskDesc: 'Test description',
+      setTaskDesc: mockSetTaskDesc,
+      updateTranslations: mockUpdateTranslations
+    }));
+  
+    useTranslationLanguages.mockImplementation(() => ({
+      fromLang: 'fi',
+      toLangs: ['en', 'sv']
+    }));
+
+    performTranslations.mockImplementationOnce(() =>
+      Promise.reject(new Error(mockErrorMessage))
+    );
+  
+    const { getByTestId, getByText } = render(
+      <TaskInfo project={mockProject} setToLangs={mockSetToLangs} />
+    );
+  
+    const translateButton = getByTestId('translate-button');
+
+    expect(translateButton.props.accessibilityState.disabled).toBe(false);
+  
+    fireEvent.press(translateButton);
+  
+    await waitFor(() => {
+      expect(performTranslations).toHaveBeenCalledWith(
+        'Test description',
+        'fi',
+        ['en', 'sv']
+      );
+      expect(getByText(mockErrorMessage)).toBeTruthy();
+    });
+  });
+
+  it('calls setTask with selected value when MultiChoiceButtonGroup changes', () => {
+    const mockSelectedTask = ['installation'];
+  
+    const { getByText } = render(
+      <TaskInfo project={mockProject} setToLangs={mockSetToLangs} />
+    );
+
+    const optionButton = getByText('riskform.installation');
+    fireEvent.press(optionButton);
+
+    expect(mockSetTask).toHaveBeenCalledWith(mockSelectedTask);
+  });
+});
