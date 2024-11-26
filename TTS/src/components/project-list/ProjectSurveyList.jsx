@@ -22,7 +22,9 @@ export const ProjectSurveyListContainer = ({ surveys = [], setSelectedSurveyURL,
     return (
       <View style={styles.surveyContainer}>
         <View style={styles.surveyInfo}>
-          <Text style={styles.surveyTitle}>{`${t(`riskform.${survey.scaffold_type}`)}: ${t(`riskform.${survey.task}`)}`}</Text>
+          <Text style={styles.surveyTitle}>
+            {`${survey.scaffold_type.map(type => t(`scaffoldTypes.${type}`)).join(', ')}: ${survey.task.map(task => t(`riskform.${task}`)).join(', ')}`}
+          </Text>
           <Text style={styles.surveyDate}>{formattedDate}</Text>
         </View>
         <View>

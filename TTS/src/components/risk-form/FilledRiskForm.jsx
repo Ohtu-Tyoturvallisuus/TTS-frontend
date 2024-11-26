@@ -14,7 +14,7 @@ const FilledRiskForm = ({
   projectId = '',
   task = null,
   scaffoldType = null,
-  taskDesc = null,
+  taskDesc = '',
   submitted = false,
   formattedDate = '',
   survey = {},
@@ -89,18 +89,24 @@ const FilledRiskForm = ({
     
               <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
               <Text>{projectId}</Text>
-              {task && (
+              {task && task.length > 0 && (
                 <>
                   <Text className="text-lg font-bold py-2">{t('riskform.task')}:</Text>
-                  <Text>{t(`riskform.${task}`)}</Text>
+                  {task.map((item, index) => (
+                    <Text key={index}>{t(`riskform.${item}`)}</Text>
+                  ))}
                 </>
               )}
-              {scaffoldType && (
+
+              {scaffoldType && scaffoldType.length > 0 && (
                 <>
                   <Text className="text-lg font-bold py-2">{t('riskform.scaffoldType')}:</Text>
-                  <Text>{t(`riskform.${scaffoldType}`)}</Text>
+                  {scaffoldType.map((item, index) => (
+                    <Text key={index}>{t(`scaffoldTypes.${item}`)}</Text>
+                  ))}
                 </>
               )}
+
               {taskDesc && (
                 <>
                   <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>

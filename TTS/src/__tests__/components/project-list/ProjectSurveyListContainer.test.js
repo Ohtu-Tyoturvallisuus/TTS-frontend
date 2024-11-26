@@ -10,15 +10,15 @@ jest.mock('@hooks/useFetchSurveys', () => ({
       {
         id: 1,
         created_at: new Date().toISOString(),
-        scaffold_type: 'Type 1',
-        task: 'Task 1',
+        scaffold_type: ['Type 1', 'Type 2'],
+        task: ['Task 1'],
         url: 'https://example.com/survey1',
       },
       {
         id: 2,
         created_at: new Date().toISOString(),
-        scaffold_type: 'Type 2',
-        task: 'Task 2',
+        scaffold_type: ['Type 3'],
+        task: ['Task 2', 'Task 3'],
         url: 'https://example.com/survey2',
       },
     ],
@@ -37,10 +37,12 @@ jest.mock('react-i18next', () => ({
         'projectsurveylistcontainer.daysAgo_other': '{{count}} päivää sitten',
         'projectsurveylistcontainer.useTemplate': 'Käytä pohjana',
         'projectsurveylistcontainer.noSurveys': 'Ei kartoituksia saatavilla.',
-        'riskform.Type 1': 'Tyyppi 1',
+        'scaffoldTypes.Type 1': 'Tyyppi 1',
         'riskform.Task 1': 'Tehtävä 1',
-        'riskform.Type 2': 'Tyyppi 2',
+        'scaffoldTypes.Type 2': 'Tyyppi 2',
         'riskform.Task 2': 'Tehtävä 2',
+        'scaffoldTypes.Type 3': 'Tyyppi 3',
+        'riskform.Task 3': 'Tehtävä 3',
       };
 
       let translation = translations[key] || key;
@@ -75,15 +77,15 @@ describe('ProjectSurveyListContainer Component', () => {
       {
         id: 1,
         created_at: new Date().toISOString(),
-        scaffold_type: 'Type 1',
-        task: 'Task 1',
+        scaffold_type: ['Type 1', 'Type 2'],
+        task: ['Task 1'],
         url: 'https://example.com/survey1',
       },
       {
         id: 2,
         created_at: new Date().toISOString(),
-        scaffold_type: 'Type 2',
-        task: 'Task 2',
+        scaffold_type: ['Type 3'],
+        task: ['Task 2', 'Task 3'],
         url: 'https://example.com/survey2',
       },
     ];
@@ -100,8 +102,8 @@ describe('ProjectSurveyListContainer Component', () => {
       </ProjectSurveyContext.Provider>
     );
 
-    expect(getByText('Tyyppi 1: Tehtävä 1')).toBeTruthy();
-    expect(getByText('Tyyppi 2: Tehtävä 2')).toBeTruthy();
+    expect(getByText('Tyyppi 1, Tyyppi 2: Tehtävä 1')).toBeTruthy();
+    expect(getByText('Tyyppi 3: Tehtävä 2, Tehtävä 3')).toBeTruthy();
   });
 
   it('displays "X tuntia sitten" when the survey was created less than 24 hours ago', () => {
@@ -109,8 +111,8 @@ describe('ProjectSurveyListContainer Component', () => {
       {
         id: 1,
         created_at: new Date(new Date().getTime() - 5 * 60 * 60 * 1000).toISOString(), // 5 hours ago
-        scaffold_type: 'Type 1',
-        task: 'Task 1',
+        scaffold_type: ['Type 1'],
+        task: ['Task 1'],
         url: 'https://example.com/survey1',
       },
     ];
@@ -135,8 +137,8 @@ describe('ProjectSurveyListContainer Component', () => {
       {
         id: 1,
         created_at: new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
-        scaffold_type: 'Type 1',
-        task: 'Task 1',
+        scaffold_type: ['Type 1'],
+        task: ['Task 1'],
         url: 'https://example.com/survey1',
       },
     ];
@@ -161,8 +163,8 @@ describe('ProjectSurveyListContainer Component', () => {
       {
         id: 1,
         created_at: new Date(new Date().getTime() - 20 * 24 * 60 * 60 * 1000).toISOString(), // 20 days ago
-        scaffold_type: 'Type 1',
-        task: 'Task 1',
+        scaffold_type: ['Type 1'],
+        task: ['Task 1'],
         url: 'https://example.com/survey1',
       },
     ];
@@ -221,8 +223,8 @@ describe('ProjectSurveyListContainer Component', () => {
       {
         id: 1,
         created_at: new Date().toISOString(),
-        scaffold_type: 'Type 1',
-        task: 'Task 1',
+        scaffold_type: ['Type 1'],
+        task: ['Task 1'],
         url: 'https://example.com/survey1',
       },
     ];

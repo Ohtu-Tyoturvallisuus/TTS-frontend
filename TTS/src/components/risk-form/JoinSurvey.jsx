@@ -13,6 +13,8 @@ const JoinSurvey = ({visible=true}) => {
   const [survey, setSurvey] = useState(null);
   const { joinedSurvey, setJoinedSurvey } = useContext(UserContext);
   const [accessCode, setAccessCode] = useState('');
+  const [caughtError, setCaughtError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const validationSchema = yup.object().shape({
     access_code: yup.string()
@@ -25,13 +27,20 @@ const JoinSurvey = ({visible=true}) => {
   };
 
   const onSubmit = async (values, { resetForm }) => {
-    setModalVisible(false)
-    const data = await getSurveyByAccessCode(values.access_code)
-    setAccessCode(values.access_code)
-    setSurvey(data)
-    setModalVisible(false)
-    setJoinedSurvey(true)
-    resetForm()
+    setLoading(true);
+    try {
+      const data = await getSurveyByAccessCode(values.access_code)
+      setAccessCode(values.access_code)
+      setSurvey(data)
+      setModalVisible(false)
+      setJoinedSurvey(true)
+      setLoading(false)
+      resetForm()
+    } catch (error) {
+      console.log(error)
+      setCaughtError(t('joinsurvey.fetchError'))
+      setLoading(false)
+    }
   };
 
   const formik = useFormik({

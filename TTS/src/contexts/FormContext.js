@@ -10,8 +10,8 @@ export const FormProvider = ({ children }) => {
   const { initialFormData } = useFormFields();
 
   const [formData, setFormData] = useState(initialFormData);
-  const [task, setTask] = useState('');
-  const [scaffoldType, setScaffoldType] = useState('');
+  const [task, setTask] = useState([]);
+  const [scaffoldType, setScaffoldType] = useState([]);
   const [taskDesc, setTaskDesc] = useState('');
 
   const updateFormField = (title, field, value) => {

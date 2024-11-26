@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [newUserSurveys, setNewUserSurveys] = useState(false);
   const [joinedSurvey, setJoinedSurvey] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
 
   return (
     <UserContext.Provider
@@ -18,7 +19,8 @@ export const UserProvider = ({ children }) => {
         email, setEmail,
         accessToken, setAccessToken,
         newUserSurveys, setNewUserSurveys,
-        joinedSurvey, setJoinedSurvey
+        joinedSurvey, setJoinedSurvey,
+        isGuest, setIsGuest,
       }}
     >
       {children}

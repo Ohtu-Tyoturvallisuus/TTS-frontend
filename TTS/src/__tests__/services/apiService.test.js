@@ -13,6 +13,8 @@ import {
   getUserSurveys,
   uploadAudio,
   translateText,
+  getSurveyByAccessCode,
+  joinSurvey
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -165,6 +167,27 @@ describe('API Module', () => {
     expect(response).toEqual('mock data');
   });
 
+  // Add these tests in the 'fetchProjectList' section:
+test('fetchProjectList with filters calls API with correct query params', async () => {
+  axios.get.mockResolvedValueOnce({ data: 'filtered data' });
+
+  const response = await fetchProjectList("AL31", "dataArea1", "searchTerm");
+
+  expect(axios.get).toHaveBeenCalledWith(
+    expect.stringContaining('projects/?area_filter=AL31&data_area_id=dataArea1&search=searchTerm')
+  );
+  expect(response).toEqual('filtered data');
+});
+
+test('fetchProjectList handles empty filters correctly', async () => {
+  axios.get.mockResolvedValueOnce({ data: 'unfiltered data' });
+
+  const response = await fetchProjectList();
+
+  expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('projects/?'));
+  expect(response).toEqual('unfiltered data');
+});
+
   test('postNewSurvey calls the correct API and returns data', async () => {
     const projectId = 1;
     const desc = 'Survey description';
@@ -233,23 +256,23 @@ describe('API Module', () => {
     const mockTranslationLanguages = ['fr', 'de'];
 
     const consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
-  
+
     afterEach(() => {
       jest.clearAllMocks();
     });
-  
+
     it('should successfully upload audio and return the response data', async () => {
       const mockToken = 'mock-token';
       const mockResponseData = { transcription: 'Transcribed text', translations: {} };
-  
+
       AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
       global.fetch.mockResolvedValueOnce({
         ok: true,
         json: jest.fn().mockResolvedValueOnce(mockResponseData),
       });
-  
+
       const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
-  
+
       expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/transcribe/'), {
         method: 'POST',
         body: expect.any(FormData),
@@ -258,48 +281,48 @@ describe('API Module', () => {
           Authorization: `Bearer ${mockToken}`,
         },
       });
-  
+
       expect(result).toEqual(mockResponseData);
     });
-  
+
     it('should handle invalid or expired token error', async () => {
       const mockToken = 'mock-token';
-  
+
       AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
       global.fetch.mockResolvedValueOnce({
         ok: false,
         json: jest.fn().mockResolvedValueOnce({ error: 'Invalid or expired token' }),
       });
-  
+
       const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
-  
+
       expect(consoleErrorMock).toHaveBeenCalledWith("Invalid or expired token. Please log in again.");
       expect(result).toBeNull();
     });
-  
+
     it('should handle server errors', async () => {
       const mockToken = 'mock-token';
-  
+
       AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
       global.fetch.mockResolvedValueOnce({
         ok: false,
         json: jest.fn().mockResolvedValueOnce({ error: 'Some server error' }),
       });
-  
+
       const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
-  
+
       expect(consoleErrorMock).toHaveBeenCalledWith("Error from server:", 'Some server error');
       expect(result).toBeNull();
     });
-  
+
     it('should handle network errors gracefully', async () => {
       const mockToken = 'mock-token';
-  
+
       AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
       global.fetch.mockRejectedValueOnce(new Error('Network error'));
-  
+
       const result = await uploadAudio(mockFileUri, mockRecordingLanguage, mockTranslationLanguages);
-  
+
       expect(consoleErrorMock).toHaveBeenCalledWith("Failed to upload file:", expect.any(Error));
       expect(result).toBeNull();
     });
@@ -344,9 +367,9 @@ describe('API Module', () => {
 
     it('should use default parameters for "from" and "to" if not provided', async () => {
       axios.post.mockResolvedValueOnce({ data: mockResponseData });
-  
+
       const result = await translateText(mockText);
-  
+
       expect(axios.post).toHaveBeenCalledWith(
         expect.stringContaining('/translate/'),
         {
@@ -360,7 +383,7 @@ describe('API Module', () => {
           },
         }
       );
-  
+
       expect(result).toEqual(mockResponseData);
     });
 
@@ -395,27 +418,88 @@ describe('API Module', () => {
           },
         ],
       };
-  
+
       axios.get.mockResolvedValueOnce({ data: mockResponseData });
-  
+
       const surveys = await getUserSurveys(mockToken);
-      
+
       expect(axios.get).toHaveBeenCalledWith(
         expect.stringContaining('filled-surveys/'),
         expect.objectContaining({
           headers: { Authorization: `Bearer ${mockToken}` }
         })
       );
-  
+
       expect(surveys).toEqual(mockResponseData);
+    });
+
+    it('should handle errors correctly if the API call fails', async () => {
+      const mockToken = 'mockToken';
+
+      axios.get.mockRejectedValueOnce(new Error('Network Error'));
+
+      await expect(getUserSurveys(mockToken)).rejects.toThrow('Network Error');
+    });
+  });
+
+  describe('getSurveyByAccessCode', () => {
+    it('should fetch a survey by access code and return the response data', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockResponseData = {
+        id: '1',
+        name: 'Survey A',
+        description: 'A test survey',
+        created_at: '2024-11-15T10:00:00',
+      };
+  
+      axios.get.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const survey = await getSurveyByAccessCode(mockAccessCode);
+  
+      expect(axios.get).toHaveBeenCalledWith(
+        expect.stringContaining(`surveys/code/${mockAccessCode}`)
+      );
+  
+      expect(survey).toEqual(mockResponseData);
     });
   
     it('should handle errors correctly if the API call fails', async () => {
-      const mockToken = 'mockToken';
+      const mockAccessCode = 'testAccessCode';
   
       axios.get.mockRejectedValueOnce(new Error('Network Error'));
   
-      await expect(getUserSurveys(mockToken)).rejects.toThrow('Network Error');
+      await expect(getSurveyByAccessCode(mockAccessCode)).rejects.toThrow('Network Error');
+    });
+  });
+  
+  describe('joinSurvey', () => {
+    it('should join a survey using access code and return the response data', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockToken = 'mockToken';
+      const mockResponseData = { success: true, message: 'Successfully joined the survey.' };
+  
+      axios.post.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const response = await joinSurvey({ access_code: mockAccessCode, accessToken: mockToken });
+  
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.stringContaining(`surveys/join/${mockAccessCode}/`),
+        {},
+        expect.objectContaining({
+          headers: { Authorization: `Bearer ${mockToken}` },
+        })
+      );
+  
+      expect(response).toEqual(mockResponseData);
+    });
+  
+    it('should handle errors correctly if the API call fails', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockToken = 'mockToken';
+  
+      axios.post.mockRejectedValueOnce(new Error('Network Error'));
+  
+      await expect(joinSurvey({ access_code: mockAccessCode, accessToken: mockToken })).rejects.toThrow('Network Error');
     });
   });
 });
@@ -430,26 +514,26 @@ describe('API Module - retrieveImage', () => {
     const mockImageData = new Blob(['dummy data'], { type: 'image/jpeg' });
 
     axios.get.mockResolvedValue({ data: mockImageData });
-  
+
     global.FileReader = jest.fn(() => ({
       readAsDataURL: jest.fn(function () {
         this.result = 'data:image/jpeg;base64,dummydata';
-        this.onloadend(); 
+        this.onloadend();
       }),
       onloadend: jest.fn(),
       onerror: jest.fn(),
     }));
-  
+
     const result = await retrieveImage(mockImage);
-  
+
     expect(axios.get).toHaveBeenCalledWith(`${API_BASE_URL}retrieve-image/?blob_name=images/${mockImage}`, {'responseType': 'blob'});
     expect(result).toBe('data:image/jpeg;base64,dummydata');
   });
-  
+
 
   it('should handle errors if axios request fails', async () => {
     axios.get.mockRejectedValueOnce(new Error('Failed to retrieve image'));
-  
+
     const result = await retrieveImage('image.jpg');
 
     expect(axios.get).toHaveBeenCalledWith(

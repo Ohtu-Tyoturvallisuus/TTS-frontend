@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
 import { retrieveImage } from '@services/apiService'
@@ -35,8 +35,8 @@ describe('FilledRiskForm component', () => {
       },
       projectName: 'Project A',
       projectId: '12345',
-      task: 'task1',
-      scaffoldType: 'type1',
+      task: ['task1'],
+      scaffoldType: ['type1'],
       taskDesc: 'This is a sample task description',
       handleSubmit: mockHandleSubmit,
       ...overrides,
