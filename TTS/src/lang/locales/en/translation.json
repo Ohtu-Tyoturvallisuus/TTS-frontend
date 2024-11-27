@@ -156,7 +156,8 @@
     "nonWeatherproof": "Non-weatherproof working scaffolding"
   },
   "searchbar": {
-    "placeholder": "Search by keyword..."
+    "placeholder": "Search by keyword...",
+    "allAreas": "All areas"
   },
   "selecttranslate": {
     "selectTranslationLanguages": "Select languages for translation",

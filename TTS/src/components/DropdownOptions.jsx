@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useTranslation } from 'react-i18next';
 
 const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const { t } = useTranslation();
+
+  const handleClear = () => {
+    setSelectedItem(null);
+    onSelect(null);
+  };
 
   return (
     <SelectDropdown
@@ -15,16 +20,26 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
         onSelect(item);
       }}
       defaultButtonText={placeholderText}
-      buttonTextAfterSelection={(item) => item}
+      buttonTextAfterSelection={() => selectedItem || placeholderText}
       renderButton={(selectedItem) => {
         return (
           <View style={styles.dropdownButtonStyle}>
             <Text className="text-gray-800 flex-1 text-lg font-medium text-center">
               {selectedItem || placeholderText}
             </Text>
-            <View className="absolute right-5">
-              <Text>▼</Text>
-            </View>
+            {selectedItem ? (
+              <TouchableOpacity
+                onPress={handleClear}
+                style={styles.clearButton}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Text style={styles.clearButtonText}>×</Text>
+              </TouchableOpacity>
+            ) : (
+              <View className="absolute right-5">
+                <Text>▼</Text>
+              </View>
+            )}
           </View>
         );
       }}
@@ -79,6 +94,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 12,
     width: '100%',
+  },
+  clearButton: {
+    position: 'absolute',
+    right: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  clearButtonText: {
+    fontSize: 36,
+    color: '#666',
+    fontWeight: 'bold',
   },
 });
 

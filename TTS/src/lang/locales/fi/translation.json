@@ -157,7 +157,8 @@
     "nonWeatherproof": "Sääsuojaton työteline"
   },
   "searchbar": {
-    "placeholder": "Etsi hakusanalla..."
+    "placeholder": "Etsi hakusanalla...",
+    "allAreas": "kaikki alueet"
   },
   "selecttranslate": {
     "selectTranslationLanguages": "Valitse kielet käännöksiä varten",
