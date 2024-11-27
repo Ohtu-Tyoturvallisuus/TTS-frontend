@@ -54,6 +54,7 @@ const MyObservations = () => {
                     taskDesc={survey.description}
                     scaffoldType={survey.scaffold_type}
                     task={survey.task}
+                    accessCode={survey.access_code}
                   />
                 </View>
               );

@@ -39,7 +39,12 @@
     "loadingimages": "Ladataan kuvia...",
     "confirm": "Vaarojentunnistus valmis",
     "close": "Sulje kuittaamatta",
-    "closeInfo": "Olet sulkemassa vaarojentunnistuslomaketta ilman kuittausta. Oletko varma, että haluat jatkaa?"
+    "closeInfo": "Olet sulkemassa vaarojentunnistuslomaketta ilman kuittausta. Oletko varma, että haluat jatkaa?",
+    "accessCode": "Lomakkeen koodi",
+    "confirming": "Lähetetään vahvistusta...",
+    "alert": "Vahvistuksen lähettäminen epäonnistui",
+    "successTitle": "Vaarojentunnistus vahvistettu onnistuneesti!",
+    "successInfo": "Löydät lomakkeen 'Omat havaintoni' -sivulta"
   },
   "general": {
     "done": "Valmis",

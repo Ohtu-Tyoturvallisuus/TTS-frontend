@@ -1,11 +1,22 @@
 import { useEffect, useState, useContext } from 'react';
-import { View, ScrollView, Text, Image, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  Image,
+  Modal,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Alert
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RiskImage from '@components/take-picture/Image';
 import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
 import { retrieveImage, joinSurvey } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
+import Loading from '@components/Loading'
 
 const FilledRiskForm = ({
   formData = {},
@@ -25,19 +36,37 @@ const FilledRiskForm = ({
   const { t } = useTranslation(['translation', 'formFields']);
   const { accessToken, newUserSurveys, setNewUserSurveys, setJoinedSurvey } = useContext(UserContext);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [joinError, setJoinError] = useState(false);
 
   const relevantRiskNotes = Object.entries(formData)
     .filter(([, value]) => value.status === 'checked');
 
   const handleClose = async (join = false) => {
     if (join) {
-      const response = await joinSurvey({ access_code: accessCode, accessToken })
-      console.log('joinSurvey response:', response)
-      setNewUserSurveys(!newUserSurveys)
+      setLoading(true)
+      try {
+        const response = await joinSurvey({ access_code: accessCode, accessToken })
+        console.log('joinSurvey response:', response)
+        setNewUserSurveys(!newUserSurveys)
+        setLoading(false)
+      } catch (error) {
+        console.error(error)
+        setJoinError(true)
+      }
     }
-    console.log('Closing filled risk form modal')
-    setJoinedSurvey(false)
-    setModalVisible(false)
+    if (joinError) {
+      console.log('Showing error alert')
+      Alert.alert(t('filledriskform.alert'))
+    } else {
+      console.log('Closing filled risk form modal')
+      setJoinedSurvey(false)
+      setModalVisible(false)
+      Alert.alert(
+        t('filledriskform.successTitle'),
+        t('filledriskform.successInfo')
+      )
+    }
   }
 
   return (
@@ -83,12 +112,19 @@ const FilledRiskForm = ({
                 source={require('../../../assets/telinekataja.png')}
                 style={{ width: '100%', height: 150, resizeMode: 'contain' }}
               />
+
+              {accessCode && (
+                <View style={styles.accessCodeContainer}>
+                  <Text className="text-lg font-bold py-2">{t('filledriskform.accessCode')}: {accessCode}</Text>
+                </View>
+              )}
   
               <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
               <Text>{projectName}</Text>
     
               <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
               <Text>{projectId}</Text>
+
               {task && task.length > 0 && (
                 <>
                   <Text className="text-lg font-bold py-2">{t('riskform.task')}:</Text>
@@ -318,6 +354,17 @@ const FilledRiskForm = ({
             </ScrollView>
           </View>
         </Modal>
+        <Modal visible={loading} animationType='fade'>
+          <View style={styles.modalContainer}>
+            <View style={styles.container}>
+              <ActivityIndicator
+                size='large'
+                color='#ef7d00'
+              />
+              <Text className='self-center pt-2'>{t('filledriskform.confirming')}</Text>
+            </View>
+          </View>
+        </Modal>
       </>
     </>
   )
@@ -382,6 +429,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     flex: 1,
     justifyContent: 'center',
+  },
+  accessCodeContainer: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#6f7072',
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2
   },
 })
 
