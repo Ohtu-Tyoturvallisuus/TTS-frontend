@@ -32,6 +32,7 @@ const ProjectsList = () => {
   );
 
   useEffect(() => {
+    if (loading || error || !projects) return;
     setFilteredProjects(projects);
   }, [projects]);
 
@@ -91,7 +92,7 @@ const ProjectsList = () => {
             <SearchBar value={displayedSearch} onChange={handleSearchChange}/>
             {loading && (
               <View className='pt-1'>
-                <ActivityIndicator size='large' color="#ef7d00" />
+                <ActivityIndicator testID='loading-indicator' size='large' color="#ef7d00" />
               </View>
             )}
             {!loading && !error && shouldFetchProjects && (
