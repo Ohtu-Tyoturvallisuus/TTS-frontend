@@ -175,7 +175,7 @@
   "settings": {
     "cancel": "Peruuta",
     "changeLanguage": "Vaihda kieltä",
-    "confirm": "varmista",
+    "confirm": "Vahvista",
     "signIn": "Kirjaudu sisään",
     "signOut": "Kirjaudu ulos",
     "signOutGuestAlertTitle": "Kirjaudu ulos vierastililtä",
