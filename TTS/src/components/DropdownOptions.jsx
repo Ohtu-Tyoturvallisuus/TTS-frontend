@@ -12,9 +12,7 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
       data={options}
       onSelect={(item) => {
         setSelectedItem(item);
-        item[0] === t('dropdownoptions.chooseAll')
-          ? onSelect(null)
-          : onSelect(item);
+        onSelect(item);
       }}
       defaultButtonText={placeholderText}
       buttonTextAfterSelection={(item) => item}
