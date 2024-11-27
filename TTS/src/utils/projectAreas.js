@@ -1,7 +1,4 @@
-import { useTranslation } from 'react-i18next';
-
 const getProjectAreas = () => {
-    const { t } = useTranslation();
 
     return [
       ["AS Telinekataja (Event)", "EVENT"],

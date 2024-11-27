@@ -36,7 +36,6 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => {
       const translations = {
-        'dropdownoptions.chooseAll': '--Choose all--',
         'dropdownoptions.search': 'Search...',
       };
       return translations[key] || key;
@@ -46,7 +45,6 @@ jest.mock('react-i18next', () => ({
 
 describe('DropdownOptions Component', () => {
   const options = [
-    ['--Choose all--', ''],
     ['Option 1', 'Description 1'],
     ['Option 2', 'Description 2']
   ];
@@ -67,26 +65,8 @@ describe('DropdownOptions Component', () => {
     expect(getByText(placeholderText)).toBeTruthy();
     fireEvent.press(getByText(placeholderText));
 
-    expect(getByText('--Choose all--, ')).toBeTruthy();
     expect(getByText('Option 1, Description 1')).toBeTruthy();
     expect(getByText('Option 2, Description 2')).toBeTruthy();
-  });
-
-  it('calls onSelect with null when "Choose All" is selected', () => {
-    const mockOnSelect = jest.fn();
-    const { getByText } = render(
-      <DropdownOptions 
-        options={options}
-        onSelect={mockOnSelect}
-        placeholderText={placeholderText}
-      />
-    );
-
-    expect(getByText(placeholderText)).toBeTruthy();
-    fireEvent.press(getByText(placeholderText));
-    fireEvent.press(getByText('--Choose all--, '));
-
-    expect(mockOnSelect).toHaveBeenCalledWith(null);
   });
 
   it('calls onSelect when an option is selected and renders the button with selected item text', () => {

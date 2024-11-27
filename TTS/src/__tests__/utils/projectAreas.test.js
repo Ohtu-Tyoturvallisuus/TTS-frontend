@@ -1,35 +1,52 @@
-import { useTranslation } from 'react-i18next';
 import getProjectAreas from '@utils/projectAreas';
 
-jest.mock('react-i18next', () => ({
-  useTranslation: jest.fn(),
-}));
-
 describe('getProjectAreas', () => {
-  beforeEach(() => {
-    useTranslation.mockReturnValue({
-      t: (key) => {
-        const translations = {
-          'projectlist.chooseAll': 'Choose All',
-        };
-        return translations[key] || key;
-      },
+  it('should return a non-empty array', () => {
+    const projectAreas = getProjectAreas();
+    expect(Array.isArray(projectAreas)).toBe(true);
+    expect(projectAreas.length).toBeGreaterThan(0);
+  });
+
+  it('should contain expected project areas with correct keys', () => {
+    const projectAreas = getProjectAreas();
+
+    const expectedAreas = [
+      ["AS Telinekataja (Event)", "EVENT"],
+      ["AS Telinekataja (Scaf)", "SCAF"],
+      ["Etelä-Suomi", "AL31"],
+      ["Hallinto", "AL90"],
+      ["Itä-Suomi", "AL53"],
+      ["Kaakkois-Suomi", "AL52"],
+      ["Kataja Event", "3100"],
+      ["Kattilaryhmä", "AL21"],
+      ["Keski-Suomi", "AL51"],
+      ["Kilpilahti", "AL32"],
+      ["Länsi-Suomi", "AL34"],
+      ["Lounais-Suomi", "AL35"],
+      ["Pohjanmaa", "AL50"],
+      ["Pohjois-Suomi", "AL54"],
+      ["Sisä-Suomi", "AL41"],
+      ["Tuotemyynti", "AL91"]
+    ];
+
+    expectedAreas.forEach((area) => {
+      expect(projectAreas).toContainEqual(area);
     });
   });
 
-  it('should return project areas with the correct translations', () => {
+  it('should have all entries as arrays of length 2', () => {
     const projectAreas = getProjectAreas();
-    expect(projectAreas).toContainEqual(['Choose All', '']);
-    expect(projectAreas).toContainEqual(['Kataja Event', '3100']);
+
+    projectAreas.forEach((area) => {
+      expect(Array.isArray(area)).toBe(true);
+      expect(area.length).toBe(2);
+    });
   });
 
-  it('should handle missing translations gracefully', () => {
-    useTranslation.mockReturnValue({
-      t: () => undefined, // Simulate missing translation
-    });
-
+  it('should not contain duplicate entries', () => {
     const projectAreas = getProjectAreas();
-    expect(projectAreas[0][0]).toBeUndefined(); // Check the first translation key
-    expect(projectAreas).toContainEqual(['Kataja Event', '3100']);
+
+    const uniqueAreas = new Set(projectAreas.map(JSON.stringify));
+    expect(uniqueAreas.size).toBe(projectAreas.length);
   });
 });
