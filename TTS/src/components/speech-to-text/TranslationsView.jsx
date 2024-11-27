@@ -1,14 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CountryFlag from '@components/CountryFlag';
 import { getLanguageToFlagMap } from '@utils/languageUtils';
+import { useTranslation } from 'react-i18next';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const TranslationsView = ({ translations }) => {
+const TranslationsView = ({ translations, hide = false }) => {
+  const [showTranslations, setShowTranslations] = useState(!hide);
   const languageToFlagMap = getLanguageToFlagMap();
+  const { t } = useTranslation(['translation', 'formFields']);
+
+  const toggleTranslations = () => {
+    setShowTranslations(!showTranslations);
+  };
 
   return (
     <View style={{ alignItems: 'center' }}>
-      {Object.entries(translations).map(([lang, text]) => {
+      {Object.keys(translations).length > 0 && (
+        <TouchableOpacity onPress={toggleTranslations} style={styles.toggleButton}>
+          <Text style={styles.toggleButtonText}>
+            {showTranslations ? t('translationsview.hide') : t('translationsview.show')}
+          </Text>
+          <Icon
+            name={showTranslations ? 'keyboard-arrow-down' : 'keyboard-arrow-up'}
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+      )}
+      {showTranslations && Object.entries(translations).map(([lang, text]) => {
         const flagCode = languageToFlagMap[lang] || lang.toUpperCase();
         return (
           <View style={styles.textContainer} key={lang}>
@@ -38,6 +58,20 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     position: 'relative',
     width: '90%',
+  },
+  toggleButton: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderColor: '#c5c6c8',
+    borderRadius: 5,
+    borderWidth: 1,
+    flexDirection: 'row',
+    marginVertical: 10,
+    padding: 10,
+  },
+  toggleButtonText: {
+    color: '#000',
+    marginRight: 5,
   },
   translatedText: {
     paddingHorizontal: 10,
