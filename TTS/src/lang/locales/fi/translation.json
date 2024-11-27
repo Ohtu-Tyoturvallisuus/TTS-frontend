@@ -81,7 +81,10 @@
     "chooseAll": "--Valitse kaikki--",
     "chooseArea": "Valitse alue",
     "loading": "Ladataan projekteja",
-    "projects": "Projektit"
+    "errorFetchingProjects": "Virhe projektien lataamisessa",
+    "noProjects": "Hakemaasi projektia ei löytynyt",
+    "projects": "Projektit",
+    "projectsFound": "Projekteja löytyi {{count}} kpl"
   },
   "projectmodal": {
     "title": "Täytä uusi riskilomake"
@@ -112,9 +115,6 @@
     "modification": "Muokkaus",
     "dismantling": "Purku",
     "scaffoldType": "Telinetyyppi",
-    "workScaffold": "Työteline",
-    "nonWeatherproof": "Sääsuojaton työteline",
-    "weatherproof": "Sääsuojattu työteline",
     "taskDescription": "Mitä olemme tekemässä? (telineen käyttötarkoitus)",
     "noProject": "Projekti ei näy...",
     "loadingFormData": "Ladataan lomaketietoja...",
@@ -124,7 +124,9 @@
     "otherScaffolding": "Muu telinetyöhön liittyvä vaara",
     "otherEnvironment": "Muu työympäristöön liittyvä vaara",
     "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
-    "submitting": "Lähetetään lomaketta..."
+    "submitting": "Lähetetään lomaketta...",
+    "chooseScaffoldType": "Valitse telinetyyppi",
+    "selected": "valittu"
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",
@@ -142,6 +144,19 @@
     "undo": "Kumoa",
     "preview": "Esikatsele"
   },
+  "scaffoldTypes":{
+    "facadeScaffold": "Julkisivuteline",
+    "weatherScaffold": "Sääsuojaus",    
+    "accessessScaffold": "Kulkutie",
+    "birdcageScaffold": "Tasoteline",
+    "tankScaffold": "Säiliöteline",
+    "liftingScaffold": "Taljausteline",
+    "suspendedScaffold": "Riipputeline",
+    "shoringScaffold": "Tukiteline",
+    "workScaffold": "Työteline",
+    "weatherproof": "Sääsuojaus",
+    "nonWeatherproof": "Sääsuojaton työteline"
+  },
   "searchbar": {
     "placeholder": "Etsi hakusanalla..."
   },
@@ -153,9 +168,13 @@
     "selectLanguages": "Valitse kielet"
   },
   "settings": {
+    "cancel": "Peruuta",
     "changeLanguage": "Vaihda kieltä",
+    "confirm": "varmista",
     "signIn": "Kirjaudu sisään",
-    "signOut": "Kirjaudu ulos"
+    "signOut": "Kirjaudu ulos",
+    "signOutGuestAlertTitle": "Kirjaudu ulos vierastililtä",
+    "signOutGuestAlertMessage": "Oletko varma, että haluat kirjautua ulos? Kaikki vierastiedot poistetaan."
   },
   "signin": {
     "confirmLogin": "Vahvista kirjautuminen",

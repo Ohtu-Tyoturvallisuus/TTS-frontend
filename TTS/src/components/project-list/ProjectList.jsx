@@ -1,100 +1,110 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import { debounce } from 'lodash';
 
 import useFetchProjects from '@hooks/useFetchProjects';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
+import ProjectButton from '@components/buttons/ProjectButton';
 import ProjectModal from '@components/project-list/ProjectModal';
 import SearchBar from '@components/SearchBar';
 import DropdownOptions from '@components/DropdownOptions';
-import Loading from '@components/Loading';
+import getProjectAreas from '@utils/projectAreas';
 
 const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
+  const [displayedSearch, setDisplayedSearch] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);
   const { t } = useTranslation();
-  const { projects, loading, error } = useFetchProjects();
-  const navigation = useNavigation();
-  
   const [areaFilter, setAreaFilter] = useState([]);
-  const projectAreas = [
-    [t('projectlist.chooseAll'), ""],
-    ["Hallinto", "AL90"],
-    ["Etelä-Suomi", "AL31"],
-    ["Sisä-Suomi", "AL41"],
-    ["Länsi-Suomi", "AL34"],
-    ["Keski-Suomi", "AL51"],
-    ["Kaakkois-Suomi", "AL52"],
-    ["Itä-Suomi", "AL53"],
-    ["Pohjois-Suomi", "AL54"],
-    ["Kataja Event", "3100"],
-    ["SCAF Common", "SCAF"],
-    ["EVENT Common", "EVENT"]
-  ];
+  const navigation = useNavigation();
+  const projectAreas = getProjectAreas();
+  const shouldFetchProjects = Boolean(areaFilter.length || searchFilter.trim());
 
-  // filteredProjects is updated whenever areaFilter or searchFilter changes
-  useEffect(() => {
-    let filtered = projects;
-    if (areaFilter) {
-      filtered = filtered.filter(project => {
-        const [areaCode] = project.dimension_display_value.split('|');
-        const includesArea = areaCode.includes(areaFilter[1]);
-        return includesArea;
-      });
-    }
-    if (searchFilter) {
-      filtered = filtered.filter(project =>
-        project.formattedName.toLowerCase().includes(searchFilter.toLowerCase())
-      );
-    }
-    setFilteredProjects(filtered);
-  }, [areaFilter, searchFilter, projects]);
-
-  if (loading || error) {
-    return (
-      <Loading 
-        loading={loading} 
-        error={error} 
-        title={t('projectlist.loading')}
-      />
-    );
-  }
-
-  const ProjectButton = ({ item: project }) => (
-    <View style={styles.projectContainer}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          setSelectedProject(project);
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.projectText}>
-          {project.formattedName} ({project.dimension_display_value.split('|')[0]})
-        </Text>
-      </TouchableOpacity>
-    </View>
+  const { projects, loading, error } = useFetchProjects(
+    areaFilter,
+    "", // DataAreaId not in use
+    searchFilter,
+    shouldFetchProjects // Fetches only if filtering criteria is given
   );
+
+  useEffect(() => {
+    setFilteredProjects(projects);
+  }, [projects]);
+
+  const debouncedSetSearchFilter = useMemo(
+    () => debounce((value) => {
+      setSearchFilter(value);
+    }, 750),
+    []
+  );
+
+  const handleSearchChange = (value) => {
+    setDisplayedSearch(value);
+    debouncedSetSearchFilter(value);
+  };
+
+  const handleAreaFilterChange = (value) => {
+    if (value === null) {
+      console.log('Area filter changed: All');
+      setAreaFilter([]);
+      return;
+    }
+    console.log('Area filter changed:', value[1]);
+    setAreaFilter(value[1]);
+  };
+
+  const handleProjectPress = (project) => {
+    setSelectedProject(project);
+    setModalVisible(true);
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedSetSearchFilter.cancel();
+    };
+  }, [debouncedSetSearchFilter]);
 
   return (
     <View style={styles.container}>
       <FlatList
         data={filteredProjects}
-        renderItem={ProjectButton}
+        renderItem={({ item }) => (
+          <ProjectButton
+            project={item}
+            onPress={handleProjectPress}
+            searchText={displayedSearch}
+          />
+        )}
         keyExtractor={project => project.id.toString()}
         ListHeaderComponent={
-          <>
+          <View className="px-2">
             <Text style={styles.title}>{t('projectlist.projects')}</Text>
-            <DropdownOptions 
-              onSelect={setAreaFilter} 
+            <DropdownOptions
+              onSelect={handleAreaFilterChange}
               options={projectAreas}
               placeholderText={t('projectlist.chooseArea')}
-              />
-            <SearchBar setFilter={setSearchFilter} />
-          </>
+            />
+            <SearchBar value={displayedSearch} onChange={handleSearchChange}/>
+            {loading && (
+              <View className='pt-1'>
+                <ActivityIndicator size='large' color="#ef7d00" />
+              </View>
+            )}
+            {!loading && !error && shouldFetchProjects && (
+              <Text style={styles.projectCount}>
+                {t('projectlist.projectsFound', { count: filteredProjects.length })}
+              </Text>
+            )}
+            {error && (
+              <View >
+                <Text style={{ color: 'red' }}>{t('projectlist.errorFetchingProjects')}</Text>
+              </View>
+            )}
+          </View>
         }
       />
       <ProjectModal
@@ -113,27 +123,17 @@ const ProjectsList = () => {
 };
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#FF8C00',
-    borderRadius: 5,
-    padding: 10,
-  },
   container: {
     backgroundColor: 'white',
     display: 'flex',
     height: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
   },
-  projectContainer: {
-    marginBottom: 16,
-  },
-  projectText: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'left', 
-    width: '100%',
+  projectCount: {
+    color: '#666',
+    fontSize: 14,
+    paddingVertical: 8,
+    textAlign: 'center',
   },
   title: {
     fontSize: 24,

@@ -10,31 +10,24 @@
     "test": "jest",
     "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern --fix",
     "eas": "npx eas-cli",
-
     "build:ios:main": "dotenv -- npx eas-cli build --platform ios --profile main",
     "build:android:main": "dotenv -- npx eas-cli build --platform android --profile main",
     "build:all:main": "dotenv -- npx eas-cli build --platform all --profile main",
-
     "build:ios:uat": "dotenv -- npx eas-cli build --platform ios --profile uat",
     "build:android:uat": "dotenv -- npx eas-cli build --platform android --profile uat",
     "build:all:uat": "dotenv -- npx eas-cli build --platform all --profile uat",
-
     "build:ios:production": "dotenv -- npx eas-cli build --platform ios --profile production",
     "build:android:production": "dotenv -- npx eas-cli build --platform android --profile production",
     "build:all:production": "dotenv -- npx eas-cli build --platform all --profile production",
-
     "submit:ios:main": "npx eas-cli submit --platform ios --latest --profile main",
     "submit:android:main": "npx eas-cli submit --platform android --latest --profile main",
     "submit:all:main": "npx eas-cli submit --platform all --latest --profile main",
-    
     "submit:ios:uat": "npx eas-cli submit --platform ios --latest --profile uat",
     "submit:android:uat": "npx eas-cli submit --platform android --latest --profile uat",
     "submit:all:uat": "npx eas-cli submit --platform all --latest --profile uat",
-    
     "submit:ios:production": "npx eas-cli submit --platform ios --latest --profile production",
     "submit:android:production": "npx eas-cli submit --platform android --latest --profile production",
     "submit:all:production": "npx eas-cli submit --platform all --latest --profile production",
-
     "update:all:main": "dotenv -- npx eas-cli update --branch main",
     "update:all:uat": "dotenv -- npx eas-cli update --branch uat",
     "update:all:production": "dotenv -- npx eas-cli update --branch production"
@@ -50,7 +43,14 @@
       "clover"
     ],
     "transform": {
-      "^.+\\.jsx?$": ["babel-jest", { "caller": { "preserveEnvVars": true } }]
+      "^.+\\.jsx?$": [
+        "babel-jest",
+        {
+          "caller": {
+            "preserveEnvVars": true
+          }
+        }
+      ]
     },
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-router-native)"
@@ -83,15 +83,16 @@
     "intl-pluralrules": "^2.0.1",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
-    "react-i18next": "^15.0.3",
     "react-dom": "18.2.0",
+    "react-i18next": "^15.0.3",
     "react-native": "0.74.5",
     "react-native-country-flag": "^2.0.2",
-    "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-reanimated": "~3.10.1",
     "react-native-safe-area-context": "4.10.5",
     "react-native-screens": "3.31.1",
+    "react-native-sectioned-multi-select": "^0.10.0",
     "react-native-select-dropdown": "^4.0.1",
     "react-router-native": "^6.26.2",
     "yup": "^1.4.0"

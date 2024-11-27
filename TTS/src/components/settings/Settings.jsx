@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Modal, StyleSheet, View, Text  } from 'react-native';
+import { Modal, StyleSheet, View, Text, Alert  } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -14,25 +14,49 @@ const Settings = () => {
   const [changeLanguageVisible, setChangeLanguageVisible] = useState(false);
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { username, setUsername, email, setEmail } = useContext(UserContext);
+  const { username, setUsername, email, setEmail, isGuest, setIsGuest } = useContext(UserContext);
 
   const handleSignOut = async () => {
     try {
-      await Promise.all([
-        AsyncStorage.removeItem('username'),
-        AsyncStorage.removeItem('email'),
-        AsyncStorage.removeItem('access_token'),
-      ]);
-
-      setUsername(null);
-      setEmail(null)
-      console.log('User signed out, email and access_token removed');
-
-      navigation.navigate('Main');
+      if (isGuest) {
+        console.log('Signing out as a guest...');
+        setUsername(null);
+        setIsGuest(false);
+        navigation.navigate('Main');
+      } else {
+        await Promise.all([
+          AsyncStorage.removeItem('username'),
+          AsyncStorage.removeItem('email'),
+          AsyncStorage.removeItem('access_token'),
+        ]);
+  
+        setUsername(null);
+        setEmail(null);
+        setIsGuest(false);
+        console.log('User signed out, email, access_token removed and isGuest reset');
+        navigation.navigate('Main');
+      }
+      
     } catch (error) {
       console.error('Error signing out:', error);
     }
   };
+
+  const confirmSignOut = () => {
+    if (isGuest) {
+      Alert.alert(
+        t('settings.signOutGuestAlertTitle'),
+        t('settings.signOutGuestAlertMessage'),
+        [
+          { text: t('settings.cancel'), style: 'cancel' },
+          { text: t('settings.confirm'), onPress: handleSignOut },
+        ],
+        { cancelable: true }
+      );
+    } else {
+      handleSignOut();
+    }
+  };  
   
   const getEmail = async () => {
     const mail = await AsyncStorage.getItem('email')
@@ -54,7 +78,7 @@ const Settings = () => {
       />     
       {username ? (
         <SettingsButton
-          onPress={handleSignOut}
+          onPress={confirmSignOut}
           text={t('settings.signOut')}
         />
       ) : (

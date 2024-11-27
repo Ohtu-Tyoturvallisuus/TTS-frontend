@@ -80,8 +80,11 @@
   "projectlist":{
     "chooseAll": "--Choose all--",
     "chooseArea": "Choose area",
+    "errorFetchingProjects": "Error fetching projects",
+    "noProjects": "No project was found",
     "loading": "Loading projects",
-    "projects": "Projects"
+    "projects": "Projects",
+    "projectsFound": "Found {{count}} projects"
   },
   "projectmodal": {
     "title": "Fill in a new risk form"
@@ -112,9 +115,6 @@
     "modification": "Modification",
     "dismantling": "Dismantling",
     "scaffoldType": "Scaffold type",
-    "workScaffold": "Work scaffold",
-    "nonWeatherproof": "Non-weatherproof work scaffold",
-    "weatherproof": "Weatherproof work scaffold",
     "taskDescription": "What are we doing? (purpose of scaffolding)",
     "noProject": "Not seeing a project...",
     "loadingFormData": "Loading form data...",
@@ -124,7 +124,9 @@
     "otherScaffolding": "Other hazards related to scaffolding work",
     "otherEnvironment": "Other hazards related to the environment",
     "emptyFieldsError": "Fill all the necessary fields before submitting",
-    "submitting": "Submitting form..."
+    "submitting": "Submitting form...",
+    "chooseScaffoldType": "Choose scaffolding type",
+    "selected": "selected"
   },
   "riskmodal": {
     "extraInfo": "Enter additional information",
@@ -142,6 +144,19 @@
     "undo": "Undo",
     "preview": "Preview"
   },
+  "scaffoldTypes":{
+    "facadeScaffold": "Facade scaffolding",
+    "weatherScaffold": "Weather protection",    
+    "accessessScaffold": "Scaffolding accessess",
+    "birdcageScaffold": "Birdcage scaffolding",
+    "tankScaffold": "Circular tank scaffolding",
+    "liftingScaffold": "Scaffolding for lifting operations",
+    "suspendedScaffold": "Suspended scaffolding",
+    "shoringScaffold": "Shoring scaffolding",
+    "workScaffold": "Working scaffolding",
+    "weatherproof": "Weather protection",
+    "nonWeatherproof": "Non-weatherproof working scaffolding"
+  },
   "searchbar": {
     "placeholder": "Search by keyword..."
   },
@@ -153,9 +168,13 @@
     "selectLanguages": "Select languages"
   },
   "settings":{
+    "cancel": "Cancel",
     "changeLanguage": "Change language",
+    "confirm": "Confirm",
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "signOutGuestAlertTitle": "Sign Out from Guest Account",
+    "signOutGuestAlertMessage": "Are you sure you want to sign out? All guest data will be deleted."
   },
   "signin": {
     "confirmLogin": "Confirm login",
@@ -167,7 +186,7 @@
     "error_first_name": "Insert first name",
     "error_last_name": "Insert last name",
     "loading" : "Signing in..."
-  },  
+  },
   "speechtotext": {
     "maxLength": "Maximum length",
     "processingAudio": "Processing your audio",
