@@ -151,7 +151,7 @@
   },
   "scaffoldTypes":{
     "facadeScaffold": "Facade scaffolding",
-    "weatherScaffold": "Weather protection",    
+    "weatherScaffold": "Weather protection",
     "accessessScaffold": "Scaffolding accessess",
     "birdcageScaffold": "Birdcage scaffolding",
     "tankScaffold": "Circular tank scaffolding",
@@ -214,5 +214,12 @@
     "join": "Join hazard identification",
     "fetchError": "Fetching was unsuccessful",
     "loading": "Joining..."
+  },
+  "taskinfo": {
+    "translate": "Translate text"
+  },
+  "translationsview": {
+    "hide": "Hide translations",
+    "show": "Show translations"
   }
 }

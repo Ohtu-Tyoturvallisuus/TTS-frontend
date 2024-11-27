@@ -53,7 +53,8 @@
     "close": "Sulje",
     "back": "Takaisin",
     "next": "Seuraava",
-    "confirm": "Vahvista"
+    "confirm": "Vahvista",
+    "translate": "Käännä"
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Valitse tunnistettava kieli",
@@ -151,7 +152,7 @@
   },
   "scaffoldTypes":{
     "facadeScaffold": "Julkisivuteline",
-    "weatherScaffold": "Sääsuojaus",    
+    "weatherScaffold": "Sääsuojaus",
     "accessessScaffold": "Kulkutie",
     "birdcageScaffold": "Tasoteline",
     "tankScaffold": "Säiliöteline",
@@ -214,5 +215,12 @@
     "join": "Liity vaarojentunnistukseen",
     "fetchError": "Haku epäonnistui",
     "loading": "Liitytään..."
+  },
+  "taskinfo": {
+    "translate": "Käännä teksti"
+  },
+  "translationsview": {
+    "hide": "Piilota käännökset",
+    "show": "Näytä käännökset"
   }
 }

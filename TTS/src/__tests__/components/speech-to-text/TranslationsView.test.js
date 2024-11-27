@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import TranslationsView from '@components/speech-to-text/TranslationsView';
 
 jest.mock('react-native-country-flag', () => {
@@ -7,6 +7,12 @@ jest.mock('react-native-country-flag', () => {
   const MockedCountryFlag = () => <Text>MockedCountryFlag</Text>;
   return MockedCountryFlag;
 });
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => key
+  })
+}));
 
 describe('TranslationsView Component', () => {
   const translations = {
@@ -36,7 +42,7 @@ describe('TranslationsView Component', () => {
 
   it('renders translations with correct flags', () => {
     const { getByText, getAllByText } = render(
-      <TranslationsView 
+      <TranslationsView
         translations={translations}
         languageToFlagMap={languageToFlagMap}
         t={mockT}
@@ -52,7 +58,7 @@ describe('TranslationsView Component', () => {
 
   it('renders flags for languages not in the flag map', () => {
     const { getByText } = render(
-      <TranslationsView 
+      <TranslationsView
         translations={{ es: 'Hola' }}
         languageToFlagMap={languageToFlagMap}
         t={mockT}
@@ -62,5 +68,42 @@ describe('TranslationsView Component', () => {
 
     expect(getByText('Hola')).toBeTruthy();
     expect(getByText('MockedCountryFlag')).toBeTruthy();
+  });
+
+  it('toggles translations visibility when button is pressed', () => {
+    const { getByText, queryByText } = render(
+      <TranslationsView
+        translations={{ en: 'Hello' }}
+        hide={false}
+      />
+    );
+
+    // Initially visible
+    expect(getByText('Hello')).toBeTruthy();
+
+    // Click toggle button
+    const toggleButton = getByText('translationsview.hide');
+    fireEvent.press(toggleButton);
+
+    // Should be hidden
+    expect(queryByText('Hello')).toBeNull();
+
+    // Click toggle button again
+    fireEvent.press(toggleButton);
+
+    // Should be visible again
+    expect(getByText('Hello')).toBeTruthy();
+  });
+
+  it('respects initial hide prop', () => {
+    const { queryByText } = render(
+      <TranslationsView
+        translations={{ en: 'Hello' }}
+        hide={true}
+      />
+    );
+
+    // Should be initially hidden
+    expect(queryByText('Hello')).toBeNull();
   });
 });
