@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
-import { retrieveImage } from '@services/apiService'
+import { retrieveImage, joinSurvey } from '@services/apiService'
 import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@components/take-picture/Image', () => {
@@ -12,6 +12,7 @@ jest.mock('@components/take-picture/Image', () => {
 
 jest.mock('@services/apiService', () => ({
   retrieveImage: jest.fn(),
+  joinSurvey: jest.fn(),
 }));
 
 const mockUserContextValue = {
@@ -28,6 +29,7 @@ const mockUserContextValue = {
 describe('FilledRiskForm component', () => {
   const setup = (overrides = {}) => {
     const mockHandleSubmit = jest.fn();
+    const mockHandleClose = jest.fn();
     const props = {
       formData: {
         hazard1: { status: 'checked', description: 'Hazard description 1', images: [{ uri: 'image1.jpg', isLandscape: false }] },
@@ -45,7 +47,7 @@ describe('FilledRiskForm component', () => {
       <UserContext.Provider value={mockUserContextValue}>
         <FilledRiskForm {...props} />
       </UserContext.Provider>
-    ), mockHandleSubmit };
+    ), mockHandleSubmit, mockHandleClose };
   };
 
   it('opens modal when "Show preview" button is pressed', () => {
@@ -84,17 +86,6 @@ describe('FilledRiskForm component', () => {
 
     fireEvent.press(getByText('riskform.submit'));
     expect(mockHandleSubmit).toHaveBeenCalled();
-  });
-
-  it('closes modal when "edit" button is pressed', () => {
-    const { getByText, queryByText } = setup();
-
-    fireEvent.press(getByText('filledriskform.preview'));
-
-    expect(getByText('Project A')).toBeTruthy();
-
-    fireEvent.press(getByText('filledriskform.edit'));
-    expect(queryByText('Project A')).toBeNull();
   });
 
   it('renders RiskImage components for each image in checked risk notes', () => {
@@ -163,13 +154,14 @@ describe('FilledRiskForm component', () => {
 
     expect(getByText('closebutton.close')).toBeTruthy();
   });
-  
-  it('closes modal when edit button is pressed', () => {
+
+  it('closes modal when "edit" button is pressed', () => {
     const { getByText, queryByText } = setup();
-  
+
     fireEvent.press(getByText('filledriskform.preview'));
+
     expect(getByText('Project A')).toBeTruthy();
-  
+
     fireEvent.press(getByText('filledriskform.edit'));
     expect(queryByText('Project A')).toBeNull();
   });
@@ -260,12 +252,29 @@ describe('FilledRiskForm component', () => {
     expect(getByTestId('risk-image-0')).toBeTruthy();
   });
   
-  it('closes modal when close button is pressed', () => {
-    const { queryByTestId, getByText } = setup({ submitted: true });
+  it('closes modal when close button is pressed', async () => {
+    const mockJoinSurvey = joinSurvey.mockResolvedValueOnce({ detail: 'Survey joined' });
+    const mockFormData = {
+      hazard1: { status: 'checked', description: 'Hazard description', images: [] },
+    };
   
-    fireEvent.press(getByText('filledriskform.project:'));
-    fireEvent.press(getByText('closebutton.close'));
-    expect(queryByTestId('modal')).toBeNull();
+    const { queryByTestId, getByText } = setup({
+      formData: mockFormData,
+      submitted: true,
+      joined: true,
+      accessCode: 'valid-code',
+    });
+  
+    fireEvent.press(getByText('riskform.projectName:'));
+    fireEvent.press(getByText('filledriskform.close'));
+  
+    await waitFor(() => {
+      expect(mockJoinSurvey).toHaveBeenCalledWith({
+        access_code: 'valid-code',
+        accessToken: 'fake-access-token',
+      });
+      expect(queryByTestId('modal')).toBeNull();
+    });
   });
   
   it('closes modal and calls handleSubmit when submit is pressed', () => {
@@ -279,7 +288,7 @@ describe('FilledRiskForm component', () => {
     expect(handleSubmit).toHaveBeenCalled();
   });
 
-  it('closes modal when requesClose is called', async () => {
+  it('closes modal when requestClose is called', async () => {
     const { queryByTestId, getByText, getByTestId } = setup({ submitted: false });
   
     fireEvent.press(getByText('filledriskform.preview'));

@@ -118,8 +118,9 @@ const FilledRiskForm = ({
                 submitted ? (
                   relevantRiskNotes.length > 0 ? (
                     relevantRiskNotes.map(([key, value]) => {
-                      const variableToUse = joined ? value.note : key
+                      const variableToUse = joined ? value.note || '' : key || '';
                       const renderTitle = () => {
+                        if (!variableToUse) return '';
                         return variableToUse.startsWith('riskform.otherScaffolding')
                           ? `${t(`${variableToUse.split(' ')[0]}`)} ${variableToUse.split(' ')[1]}`
                           : variableToUse.startsWith('riskform.otherEnvironment')
