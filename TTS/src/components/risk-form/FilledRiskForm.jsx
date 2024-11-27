@@ -16,7 +16,6 @@ import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
 import { retrieveImage, joinSurvey } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
-import Loading from '@components/Loading'
 
 const FilledRiskForm = ({
   formData = {},
@@ -62,10 +61,12 @@ const FilledRiskForm = ({
       console.log('Closing filled risk form modal')
       setJoinedSurvey(false)
       setModalVisible(false)
-      Alert.alert(
-        t('filledriskform.successTitle'),
-        t('filledriskform.successInfo')
-      )
+      if (joined) {
+        Alert.alert(
+          t('filledriskform.successTitle'),
+          t('filledriskform.successInfo')
+        )
+      }
     }
   }
 
@@ -371,6 +372,20 @@ const FilledRiskForm = ({
 };
 
 const styles = StyleSheet.create({
+  accessCodeContainer: {
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderColor: '#6f7072',
+    borderRadius: 5,
+    borderWidth: 1,
+    elevation: 2,
+    justifyContent: 'center',
+    padding: 10,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4
+  },
   button: {
     borderColor: '#ef7d00',
     borderRadius: 5,
@@ -429,20 +444,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     flex: 1,
     justifyContent: 'center',
-  },
-  accessCodeContainer: {
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: '#6f7072',
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2
   },
 })
 

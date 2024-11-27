@@ -134,7 +134,9 @@
     "emptyFieldsError": "Fill all the necessary fields before submitting",
     "submitting": "Submitting form...",
     "chooseScaffoldType": "Choose scaffolding type",
-    "selected": "selected"
+    "selected": "selected",
+    "formCode": "Form code",
+    "findFormInfo": "You can find the form and its code on the 'My observations' page"
   },
   "riskmodal": {
     "extraInfo": "Enter additional information",

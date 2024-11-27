@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
@@ -45,6 +45,7 @@ const RiskForm = () => {
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [ showExitModal, setShowExitModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
   const allowNavigationRef = useRef(false);
   const { setToLangs } = useTranslationLanguages();
 
@@ -96,7 +97,7 @@ const RiskForm = () => {
     return unsubscribe;
   }, [navigation]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const taskInfo = {
       task: task,
       description: taskDesc,
@@ -105,7 +106,8 @@ const RiskForm = () => {
     console.log('Submitting:', taskInfo);
     try {
       setSubmitted(true)
-      const response = submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
+      const response = await submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
+      setAccessCode(response.access_code);
       response._j && setSubmitted(false);
     } catch (error) {
       console.log('Could not submit form', error);
@@ -121,6 +123,13 @@ const RiskForm = () => {
     navigation.navigate('ProjectList');
     setNewUserSurveys(!newUserSurveys);
     setCurrentLocation('ProjectList');
+    if (submitted) {
+      Alert.alert(
+        `${t('riskform.formCode')}: ${accessCode}`,
+        t('riskform.findFormInfo')
+      )
+    }
+    setSubmitted(false);
   };
 
   const addNewRiskNote = (title, type) => {

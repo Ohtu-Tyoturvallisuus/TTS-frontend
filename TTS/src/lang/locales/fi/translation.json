@@ -135,7 +135,9 @@
     "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
     "submitting": "Lähetetään lomaketta...",
     "chooseScaffoldType": "Valitse telinetyyppi",
-    "selected": "valittu"
+    "selected": "valittu",
+    "formCode": "Lomakkeen koodi",
+    "findFormInfo": "Löydät lomakkeen ja sen koodin 'Omat havaintoni' -sivulta"
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",
