@@ -25,7 +25,6 @@
     "otherHazards": "Havainnoi työkohdetta myös muiden vaarojen varalta ja kirjaa ne tähän."
   },
   "dropdownoptions": {
-    "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
   },
   "filledriskform": {
@@ -89,7 +88,6 @@
     "noObservations": "Ei tehtyjä havaintoja"
   },
   "projectlist":{
-    "chooseAll": "--Valitse kaikki--",
     "chooseArea": "Valitse alue",
     "loading": "Ladataan projekteja",
     "errorFetchingProjects": "Virhe projektien lataamisessa",

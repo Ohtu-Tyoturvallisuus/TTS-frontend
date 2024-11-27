@@ -25,7 +25,6 @@
     "otherHazards": "Also observe the workplace for other hazards and record them here."
   },
   "dropdownoptions": {
-    "chooseAll": "--Choose all--",
     "search": "Search..."
   },
   "general": {
@@ -88,7 +87,6 @@
     "noObservations": "No personal observations"
   },
   "projectlist":{
-    "chooseAll": "--Choose all--",
     "chooseArea": "Choose area",
     "errorFetchingProjects": "Error fetching projects",
     "noProjects": "No project was found",
