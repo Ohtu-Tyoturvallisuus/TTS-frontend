@@ -25,7 +25,6 @@ const mockUserContextValue = {
   joinedSurvey: false,
 };
 
-
 describe('FilledRiskForm component', () => {
   const setup = (overrides = {}) => {
     const mockHandleSubmit = jest.fn();
@@ -252,7 +251,15 @@ describe('FilledRiskForm component', () => {
     expect(getByTestId('risk-image-0')).toBeTruthy();
   });
   
-  it('closes modal when close button is pressed', async () => {
+  it('closes modal when close button is pressed', () => {
+    const { queryByTestId, getByText } = setup({ submitted: true });
+  
+    fireEvent.press(getByText('filledriskform.project:'));
+    fireEvent.press(getByText('closebutton.close'));
+    expect(queryByTestId('modal')).toBeNull();
+  });
+
+  it('closes modal when confirm button is pressed', async () => {
     const mockJoinSurvey = joinSurvey.mockResolvedValueOnce({ detail: 'Survey joined' });
     const mockFormData = {
       hazard1: { status: 'checked', description: 'Hazard description', images: [] },
@@ -266,7 +273,7 @@ describe('FilledRiskForm component', () => {
     });
   
     fireEvent.press(getByText('riskform.projectName:'));
-    fireEvent.press(getByText('filledriskform.close'));
+    fireEvent.press(getByText('filledriskform.confirm'));
   
     await waitFor(() => {
       expect(mockJoinSurvey).toHaveBeenCalledWith({
