@@ -19,7 +19,7 @@ const ProjectsList = () => {
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);
   const { t } = useTranslation();
-  const [areaFilter, setAreaFilter] = useState([]);
+  const [areaFilter, setAreaFilter] = useState("");
   const navigation = useNavigation();
   const projectAreas = getProjectAreas();
   const shouldFetchProjects = Boolean(areaFilter.length || searchFilter.trim());
@@ -32,7 +32,6 @@ const ProjectsList = () => {
   );
 
   useEffect(() => {
-    if (loading || error || !projects) return;
     setFilteredProjects(projects);
   }, [projects]);
 
