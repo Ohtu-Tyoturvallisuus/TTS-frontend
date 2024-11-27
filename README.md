@@ -8,8 +8,8 @@
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml/badge.svg"/>
   </a>
-  <a href="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend">
-    <img src="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend/graph/badge.svg?token=R9CQLULY9J"/>
+  <a href="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend" > 
+    <img src="https://codecov.io/github/Ohtu-Tyoturvallisuus/TTS-frontend/branch/main/graph/badge.svg?token=R9CQLULY9J"/> 
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/LICENSE" alt="License">
     <img src="https://img.shields.io/github/license/Ohtu-Tyoturvallisuus/TTS-frontend"/>
