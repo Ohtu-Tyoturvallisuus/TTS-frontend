@@ -114,7 +114,6 @@ const Main = () => {
                 name="JoinSurvey"
                 component={JoinSurvey}
                 options={{ title: t('main.navigationJoinSurvey') }}
-                initialParams={{ visible: true }}
               />
             )}
             <Tab.Screen 

@@ -1,135 +1,105 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { useFormik } from 'formik';
 import JoinSurvey from '@components/risk-form/JoinSurvey';
-import { getSurveyByAccessCode } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
+import { getSurveyByAccessCode } from '@services/apiService';
 
 jest.mock('@services/apiService', () => ({
   getSurveyByAccessCode: jest.fn(),
 }));
 
-jest.mock('formik', () => {
-  const actualFormik = jest.requireActual('formik');
-  return {
-    ...actualFormik,
-    useFormik: jest.fn(),
-  };
-});
-
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: jest.fn((key) => key),
+    t: (key) => key,
   }),
 }));
 
 describe('JoinSurvey Component', () => {
-  let setJoinedSurveyMock;
-  const mockFormik = jest.requireActual('formik').useFormik;
+  const mockSetJoinedSurvey = jest.fn();
 
-  beforeEach(() => {
-    setJoinedSurveyMock = jest.fn();
-    useFormik.mockImplementation(mockFormik);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  const renderComponent = () =>
-    render(
-      <UserContext.Provider
-        value={{ joinedSurvey: false, setJoinedSurvey: setJoinedSurveyMock }}
-      >
+  const renderComponent = (joinedSurvey = false) => {
+    return render(
+      <UserContext.Provider value={{ joinedSurvey, setJoinedSurvey: mockSetJoinedSurvey }}>
         <JoinSurvey />
       </UserContext.Provider>
     );
+  };
 
-  it('renders the join button correctly', () => {
-    const { getByText } = renderComponent();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders the component correctly', () => {
+    const { getByText, getByPlaceholderText } = renderComponent();
+
+    expect(getByText('joinsurvey.insertCode')).toBeTruthy();
+    expect(getByPlaceholderText('joinsurvey.insertPlaceholder')).toBeTruthy();
     expect(getByText('joinsurvey.join')).toBeTruthy();
   });
 
-  it('opens the modal when the join button is pressed', () => {
-    const { getByText, queryByText } = renderComponent();
-    fireEvent.press(getByText('joinsurvey.join'));
-    expect(queryByText('joinsurvey.insertCode')).toBeTruthy();
+  it('validates the form and shows an error if the access code is empty', async () => {
+    const { getByText } = renderComponent();
+
+    const joinButton = getByText('joinsurvey.join');
+    fireEvent.press(joinButton);
+
+    await waitFor(() => {
+      expect(getByText('joinsurvey.error')).toBeTruthy();
+    });
   });
 
-  it('displays validation error for invalid access code', async () => {
-    const { getByText, getByPlaceholderText, getByTestId } = renderComponent();
-    fireEvent.press(getByTestId('outsideModalButtonText'));
+  it('validates the form and shows an error for invalid access code length', async () => {
+    const { getByText, getByPlaceholderText } = renderComponent();
 
     const input = getByPlaceholderText('joinsurvey.insertPlaceholder');
     fireEvent.changeText(input, '123');
-    fireEvent.press(getByTestId('insideModalButtonText'));
+
+    const joinButton = getByText('joinsurvey.join');
+    fireEvent.press(joinButton);
 
     await waitFor(() => {
       expect(getByText('joinsurvey.error_length')).toBeTruthy();
     });
   });
 
-  it('calls the API and updates the context on successful join', async () => {
-    const surveyMock = {
-      risk_notes: [],
-      project_name: 'Test Project',
+  it('handles successful API call and updates the context', async () => {
+    getSurveyByAccessCode.mockResolvedValueOnce({
+      risk_notes: 'Sample risk notes',
+      project_name: 'Project A',
       project_id: 1,
-      description: 'Test description',
+      description: 'Sample description',
       scaffold_type: 'Type A',
       task: 'Task A',
-    };
+    });
 
-    getSurveyByAccessCode.mockResolvedValue(surveyMock);
-
-    const { getByPlaceholderText, getByTestId } = renderComponent();
-    fireEvent.press(getByTestId('outsideModalButtonText'));
+    const { getByText, getByPlaceholderText } = renderComponent();
 
     const input = getByPlaceholderText('joinsurvey.insertPlaceholder');
     fireEvent.changeText(input, '123456');
-    fireEvent.press(getByTestId('insideModalButtonText'));
+
+    const joinButton = getByText('joinsurvey.join');
+    fireEvent.press(joinButton);
 
     await waitFor(() => {
-      expect(setJoinedSurveyMock).toHaveBeenCalledWith(true);
+      expect(mockSetJoinedSurvey).toHaveBeenCalledWith(true);
       expect(getSurveyByAccessCode).toHaveBeenCalledWith('123456');
     });
   });
 
-  it('displays an error message when the API call fails', async () => {
-    getSurveyByAccessCode.mockRejectedValue(new Error('API Error'));
+  it('handles API failure and displays an error message', async () => {
+    getSurveyByAccessCode.mockRejectedValueOnce(new Error('API Error'));
 
-    const { getByText, getByPlaceholderText, getByTestId } = renderComponent();
-    fireEvent.press(getByTestId('outsideModalButtonText'));
+    const { getByText, getByPlaceholderText } = renderComponent();
 
     const input = getByPlaceholderText('joinsurvey.insertPlaceholder');
     fireEvent.changeText(input, '123456');
-    fireEvent.press(getByTestId('insideModalButtonText'));
+
+    const joinButton = getByText('joinsurvey.join');
+    fireEvent.press(joinButton);
 
     await waitFor(() => {
       expect(getByText('joinsurvey.fetchError')).toBeTruthy();
+      expect(mockSetJoinedSurvey).not.toHaveBeenCalled();
     });
-  });
-
-  it('closes the modal on CloseButton press', () => {
-    const { getByText, queryByText } = renderComponent();
-    fireEvent.press(getByText('joinsurvey.join'));
-
-    const closeButton = getByText('closebutton.close');
-    fireEvent.press(closeButton);
-
-    expect(queryByText('joinsurvey.insertCode')).toBeFalsy();
-  });
-
-  it('handles modal close using onRequestClose', () => {
-    const { getByText, queryByText, getByTestId } = renderComponent();
-
-    const joinButton = getByTestId('outsideModalButtonText');
-    fireEvent.press(joinButton);
-
-    expect(getByText('joinsurvey.insertCode')).toBeTruthy();
-
-    const modalCloseRequest = queryByText('joinsurvey.insertCode').parent.parent;
-    fireEvent(modalCloseRequest, 'onRequestClose');
-
-    expect(queryByText('joinsurvey.insertCode')).toBeNull();
   });
 });

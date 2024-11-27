@@ -18,25 +18,19 @@ const Settings = () => {
 
   const handleSignOut = async () => {
     try {
-      if (isGuest) {
-        console.log('Signing out as a guest...');
-        setUsername(null);
-        setIsGuest(false);
-        navigation.navigate('Main');
-      } else {
-        await Promise.all([
-          AsyncStorage.removeItem('username'),
-          AsyncStorage.removeItem('email'),
-          AsyncStorage.removeItem('access_token'),
-        ]);
-  
-        setUsername(null);
-        setEmail(null);
-        setIsGuest(false);
-        console.log('User signed out, email, access_token removed and isGuest reset');
-        navigation.navigate('Main');
-      }
-      
+      await Promise.all([
+        AsyncStorage.removeItem('username'),
+        AsyncStorage.removeItem('email'),
+        AsyncStorage.removeItem('access_token'),
+        AsyncStorage.removeItem('is_guest')
+      ]);
+
+      setUsername(null);
+      setEmail(null);
+      setIsGuest(false);
+      console.log('User signed out, email, access_token removed and isGuest reset');
+      navigation.navigate('Main');
+
     } catch (error) {
       console.error('Error signing out:', error);
     }
