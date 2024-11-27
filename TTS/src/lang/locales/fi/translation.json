@@ -25,7 +25,6 @@
     "otherHazards": "Havainnoi työkohdetta myös muiden vaarojen varalta ja kirjaa ne tähän."
   },
   "dropdownoptions": {
-    "chooseAll": "--Valitse kaikki--",
     "search": "Etsi..."
   },
   "filledriskform": {
@@ -79,7 +78,6 @@
     "loading": "Ladataan havaintoja..."
   },
   "projectlist":{
-    "chooseAll": "--Valitse kaikki--",
     "chooseArea": "Valitse alue",
     "loading": "Ladataan projekteja",
     "errorFetchingProjects": "Virhe projektien lataamisessa",
@@ -159,7 +157,8 @@
     "nonWeatherproof": "Sääsuojaton työteline"
   },
   "searchbar": {
-    "placeholder": "Etsi hakusanalla..."
+    "placeholder": "Etsi hakusanalla...",
+    "allAreas": "kaikki alueet"
   },
   "selecttranslate": {
     "selectTranslationLanguages": "Valitse kielet käännöksiä varten",
@@ -171,7 +170,7 @@
   "settings": {
     "cancel": "Peruuta",
     "changeLanguage": "Vaihda kieltä",
-    "confirm": "varmista",
+    "confirm": "Vahvista",
     "signIn": "Kirjaudu sisään",
     "signOut": "Kirjaudu ulos",
     "signOutGuestAlertTitle": "Kirjaudu ulos vierastililtä",

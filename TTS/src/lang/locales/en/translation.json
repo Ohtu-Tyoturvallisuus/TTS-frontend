@@ -25,7 +25,6 @@
     "otherHazards": "Also observe the workplace for other hazards and record them here."
   },
   "dropdownoptions": {
-    "chooseAll": "--Choose all--",
     "search": "Search..."
   },
   "general": {
@@ -78,7 +77,6 @@
     "loading": "Loading observations..."
   },
   "projectlist":{
-    "chooseAll": "--Choose all--",
     "chooseArea": "Choose area",
     "errorFetchingProjects": "Error fetching projects",
     "noProjects": "No project was found",
@@ -158,7 +156,8 @@
     "nonWeatherproof": "Non-weatherproof working scaffolding"
   },
   "searchbar": {
-    "placeholder": "Search by keyword..."
+    "placeholder": "Search by keyword...",
+    "allAreas": "All areas"
   },
   "selecttranslate": {
     "selectTranslationLanguages": "Select languages for translation",
