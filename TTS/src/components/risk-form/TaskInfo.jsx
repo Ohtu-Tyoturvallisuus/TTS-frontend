@@ -97,6 +97,25 @@ const TaskInfo = ({ project, setToLangs }) => {
               width: '100%',
               marginVertical: 8,
             },
+            container: {
+              borderRadius: 12,
+            },
+            item: {
+              margin: 10,
+              padding: 10,
+            },
+            selectedItemText: {
+              color: '#ef7d00',
+            },
+            selectToggle: {
+              borderRadius: 12,
+              borderColor: 'black',
+              borderWidth: 1,
+              padding: 12,
+            },
+            chipContainer: {
+              borderRadius: 12,
+            },
           }}
         />
       </View>

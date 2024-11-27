@@ -19,7 +19,8 @@ const ProjectsList = () => {
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);
   const { t } = useTranslation();
-  const [areaFilter, setAreaFilter] = useState([]);
+  const [areaFilter, setAreaFilter] = useState("");
+  const [dropdownKey, setDropdownKey] = useState(0);
   const navigation = useNavigation();
   const projectAreas = getProjectAreas();
   const shouldFetchProjects = Boolean(areaFilter.length || searchFilter.trim());
@@ -32,7 +33,6 @@ const ProjectsList = () => {
   );
 
   useEffect(() => {
-    if (loading || error || !projects) return;
     setFilteredProjects(projects);
   }, [projects]);
 
@@ -52,6 +52,7 @@ const ProjectsList = () => {
     if (value === null) {
       console.log('Area filter changed: All');
       setAreaFilter([]);
+      setDropdownKey(prevKey => prevKey + 1);
       return;
     }
     console.log('Area filter changed:', value[1]);
@@ -85,11 +86,12 @@ const ProjectsList = () => {
           <View className="px-2">
             <Text style={styles.title}>{t('projectlist.projects')}</Text>
             <DropdownOptions
+              key={dropdownKey}
               onSelect={handleAreaFilterChange}
               options={projectAreas}
               placeholderText={t('projectlist.chooseArea')}
             />
-            <SearchBar value={displayedSearch} onChange={handleSearchChange}/>
+            <SearchBar value={displayedSearch} onChange={handleSearchChange} area={areaFilter}/>
             {loading && (
               <View className='pt-1'>
                 <ActivityIndicator testID='loading-indicator' size='large' color="#ef7d00" />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useTranslation } from 'react-i18next';
 
@@ -7,26 +7,39 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const { t } = useTranslation();
 
+  const handleClear = () => {
+    setSelectedItem(null);
+    onSelect(null);
+  };
+
   return (
     <SelectDropdown
       data={options}
       onSelect={(item) => {
         setSelectedItem(item);
-        item[0] === t('dropdownoptions.chooseAll')
-          ? onSelect(null)
-          : onSelect(item);
+        onSelect(item);
       }}
       defaultButtonText={placeholderText}
-      buttonTextAfterSelection={(item) => item}
+      buttonTextAfterSelection={() => selectedItem || placeholderText}
       renderButton={(selectedItem) => {
         return (
           <View style={styles.dropdownButtonStyle}>
             <Text className="text-gray-800 flex-1 text-lg font-medium text-center">
               {selectedItem || placeholderText}
             </Text>
-            <View className="absolute right-5">
-              <Text>▼</Text>
-            </View>
+            {selectedItem ? (
+              <TouchableOpacity
+                onPress={handleClear}
+                style={styles.clearButton}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Text style={styles.clearButtonText}>×</Text>
+              </TouchableOpacity>
+            ) : (
+              <View className="absolute right-5">
+                <Text>▼</Text>
+              </View>
+            )}
           </View>
         );
       }}
@@ -37,7 +50,7 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
         return (
           <View
             style={{
-              ...styles.dropdown1ItemStyle,
+              ...styles.dropdownItemStyle,
               ...(selectedItem === item && { backgroundColor: '#ADD8E6' }),
             }}
           >
@@ -60,15 +73,16 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
 };
 
 const styles = StyleSheet.create({
-  dropdown1ItemStyle: {
+  clearButton: {
     alignItems: 'center',
-    borderBottomColor: '#D1D1D1',
-    borderBottomWidth: 1,
-    flexDirection: 'row',
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    width: '100%',
+    position: 'absolute',
+    right: 20,
+  },
+  clearButtonText: {
+    color: '#666',
+    fontSize: 36,
+    fontWeight: 'bold',
   },
   dropdownButtonStyle: {
     alignItems: 'center',
@@ -82,6 +96,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     width: '100%',
   },
+  dropdownItemStyle: {
+    alignItems: 'center',
+    borderBottomColor: '#D1D1D1',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    width: '100%',
+  }
 });
 
 export default DropdownOptions;
