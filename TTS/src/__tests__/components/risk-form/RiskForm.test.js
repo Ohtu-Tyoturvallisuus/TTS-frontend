@@ -163,6 +163,8 @@ jest.mock('@services/formSubmission', () => ({
 jest.mock('@contexts/TranslationContext', () => ({
   useTranslationLanguages: jest.fn(() => ({
     setToLangs: jest.fn(),
+    toLangs: [],
+    fromLang: 'fi'
   })),
 }));
 
@@ -173,10 +175,10 @@ const mockUserContext = {
 
 describe('RiskForm Component', () => {
   const mockOnFocusChange = jest.fn();
-  const mockProject = { 
-    id: 1, 
-    project_name: 'Test Project', 
-    project_id: '1234' 
+  const mockProject = {
+    id: 1,
+    project_name: 'Test Project',
+    project_id: '1234'
   };
 
   const setup = () => {
@@ -185,7 +187,7 @@ describe('RiskForm Component', () => {
       selectedSurveyURL: 'http://example.com/survey',
       resetProjectAndSurvey: jest.fn(),
     };
-  
+
     return render(
       <NavigationContainer>
         <NavigationProvider>

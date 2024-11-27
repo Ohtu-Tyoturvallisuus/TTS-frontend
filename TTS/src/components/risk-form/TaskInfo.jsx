@@ -116,11 +116,11 @@ const TaskInfo = ({ project, setToLangs }) => {
           translate={false}
         />
         <TouchableOpacity
-          testID='submit-button'
+          testID='translate-button'
           style={[
             styles.button,
             taskDesc !== '' && toLangs.length > 0
-              ? styles.submitButton
+              ? styles.translateButton
               : styles.disabledButton
           ]}
           onPress={handleTranslatePress}
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   disabledButton: {
     backgroundColor: 'lightgray',
   },
-  submitButton: {
+  translateButton: {
     backgroundColor: 'green',
   },
 });
