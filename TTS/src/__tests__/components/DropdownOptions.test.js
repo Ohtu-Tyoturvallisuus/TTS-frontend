@@ -3,7 +3,8 @@ import { render, fireEvent } from '@testing-library/react-native';
 import DropdownOptions from '@components/DropdownOptions';
 
 jest.mock('react-native-select-dropdown', () => {
-  const { View, Text, TouchableOpacity } = require('react-native');  
+  const { View, Text, TouchableOpacity } = require('react-native');
+  const { useState } = require('react');
   const MockSelectDropdown = ({
     data,
     onSelect,
@@ -11,22 +12,47 @@ jest.mock('react-native-select-dropdown', () => {
     renderButton,
     renderItem,
     buttonTextAfterSelection,
-    renderSearchInputLeftIcon
-  }) => (
-    <View>
-      {renderButton ? renderButton(null) : (
-        <TouchableOpacity onPress={() => onSelect(data[0])}>
-          <Text>{defaultButtonText}</Text>
-        </TouchableOpacity>
-      )}
-      {renderSearchInputLeftIcon ? renderSearchInputLeftIcon() : <Text>🔍</Text>}
-      {data.map((item, index) => (
-        <TouchableOpacity key={index} onPress={() => onSelect(item)}>
-          {renderItem ? renderItem(item) : <Text>{buttonTextAfterSelection ? buttonTextAfterSelection(item) : item}</Text>}
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
+    renderSearchInputLeftIcon,
+  }) => {
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const handleSelect = (item) => {
+      setSelectedItem(item);
+      onSelect(item);
+    };
+
+    const handleClear = () => {
+      setSelectedItem(null);
+      onSelect(null);
+    };
+
+    return (
+      <View>
+        {renderButton ? (
+          renderButton(selectedItem)
+        ) : (
+          <View>
+            <Text>
+              {selectedItem
+                ? buttonTextAfterSelection(selectedItem)
+                : defaultButtonText}
+            </Text>
+            {selectedItem && (
+              <TouchableOpacity onPress={handleClear} accessible>
+                <Text>×</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+        {renderSearchInputLeftIcon ? renderSearchInputLeftIcon() : <Text>🔍</Text>}
+        {data.map((item, index) => (
+          <TouchableOpacity key={index} onPress={() => handleSelect(item)}>
+            {renderItem ? renderItem(item) : <Text>{item}</Text>}
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
 
   MockSelectDropdown.displayName = 'MockSelectDropdown';
   return MockSelectDropdown;
@@ -140,5 +166,21 @@ describe('DropdownOptions Component', () => {
     fireEvent.press(getByText(placeholderText));
 
     expect(() => getByText('Invalid Option')).toThrow();
+  });
+
+  it('does not render the clear button when no item is selected', () => {
+    const mockOnSelect = jest.fn();
+    const { getByText, queryByText } = render(
+      <DropdownOptions 
+        options={options}
+        onSelect={mockOnSelect}
+        placeholderText={placeholderText}
+        buttonTextAfterSelection={mockButtonTextAfterSelection}
+      />
+    );
+
+    expect(getByText(placeholderText)).toBeTruthy();
+
+    expect(queryByText('×')).toBeNull();
   });
 });

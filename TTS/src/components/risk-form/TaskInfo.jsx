@@ -100,6 +100,13 @@ const TaskInfo = ({ project, setToLangs }) => {
             container: {
               borderRadius: 12,
             },
+            item: {
+              margin: 10,
+              padding: 10,
+            },
+            selectedItemText: {
+              color: '#ef7d00',
+            },
             selectToggle: {
               borderRadius: 12,
               borderColor: 'black',
