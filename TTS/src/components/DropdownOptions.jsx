@@ -50,7 +50,7 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
         return (
           <View
             style={{
-              ...styles.dropdown1ItemStyle,
+              ...styles.dropdownItemStyle,
               ...(selectedItem === item && { backgroundColor: '#ADD8E6' }),
             }}
           >
@@ -73,15 +73,16 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
 };
 
 const styles = StyleSheet.create({
-  dropdown1ItemStyle: {
+  clearButton: {
     alignItems: 'center',
-    borderBottomColor: '#D1D1D1',
-    borderBottomWidth: 1,
-    flexDirection: 'row',
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    width: '100%',
+    position: 'absolute',
+    right: 20,
+  },
+  clearButtonText: {
+    color: '#666',
+    fontSize: 36,
+    fontWeight: 'bold',
   },
   dropdownButtonStyle: {
     alignItems: 'center',
@@ -95,17 +96,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     width: '100%',
   },
-  clearButton: {
-    position: 'absolute',
-    right: 20,
+  dropdownItemStyle: {
     alignItems: 'center',
+    borderBottomColor: '#D1D1D1',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
-  },
-  clearButtonText: {
-    fontSize: 36,
-    color: '#666',
-    fontWeight: 'bold',
-  },
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    width: '100%',
+  }
 });
 
 export default DropdownOptions;
