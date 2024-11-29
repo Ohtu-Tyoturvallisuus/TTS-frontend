@@ -95,7 +95,7 @@ const Main = () => {
               tabBarInactiveTintColor: "gray",
               tabBarStyle: [
                 {
-                  "display": "flex"
+                  "display": currentLocation === 'RiskForm' ? 'none' : 'flex'
                 },
                 null
               ],

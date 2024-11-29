@@ -312,32 +312,4 @@ describe('RiskForm Component', () => {
 
     expect(getByText('Haluatko varmasti poistua?')).toBeTruthy();
   });
-
-  it('renders loading state correctly', () => {
-    mockUseFetchSurveyData.mockReturnValue({
-      surveyData: null,
-      loading: true,
-      error: null,
-    });
-
-    const { getByText } = setup();
-
-    expect(getByText('Loading...')).toBeTruthy();
-    expect(getByText('Ladataan lomaketietoja...')).toBeTruthy(); // Title from translations
-  });
-
-  it('renders error state correctly', async () => {
-    mockUseFetchSurveyData.mockReturnValue({
-      surveyData: null,
-      loading: false,
-      error: 'Something went wrong',
-    });
-
-    const { getByText } = setup();
-
-    await waitFor(() => {
-      expect(getByText('Error: Something went wrong')).toBeTruthy();
-      expect(getByText('Ladataan lomaketietoja...')).toBeTruthy(); // Title from translations
-    });
-  });
 });

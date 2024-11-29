@@ -52,37 +52,28 @@ const RiskForm = () => {
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
   // Merges previous survey's data to the form if surveyData is available
-  useEffect(() => {
-    if (loading || error || !surveyData) return; // Wait until data is loaded
+  useEffect(() => {    
+    if (surveyData) {
+      const currentNotes = surveyData.risk_notes.reduce((acc, note) => {
+        acc[note.note] = {
+          description: note.description,
+          status: note.status,
+          risk_type: note.risk_type,
+          images: [],
+        };
+        return acc;
+      }, {});
 
-    const currentNotes = surveyData.risk_notes.reduce((acc, note) => {
-      acc[note.note] = {
-        description: note.description,
-        status: note.status,
-        risk_type: note.risk_type,
-        images: [],
-      };
-      return acc;
-    }, {});
-
-    // Avoid updating the form data if it's already merged
-    if (JSON.stringify(formData) !== JSON.stringify(currentNotes)) {
-      console.log("Merging prev survey's data");
-      replaceFormData(currentNotes);
-    }
-
-    if (JSON.stringify(task) !== JSON.stringify(surveyData.task)) {
+      if (JSON.stringify(formData) !== JSON.stringify(currentNotes)) {
+        console.log("Merging prev survey's data");
+        replaceFormData(currentNotes);
+      }
+  
       setTask(surveyData.task);
-    }
-
-    if (JSON.stringify(scaffoldType) !== JSON.stringify(surveyData.scaffold_type)) {
       setScaffoldType(surveyData.scaffold_type);
-    }
-
-    if (taskDesc !== surveyData.description) {
       setTaskDesc(surveyData.description);
     }
-  }, [surveyData, loading, error, formData, task, scaffoldType, taskDesc, replaceFormData, setTask, setScaffoldType, setTaskDesc]);
+  }, [surveyData]);
 
   // Displays confirmation modal when user tries to leave the form
   useEffect(() => {
