@@ -79,7 +79,7 @@ const filteredCountries = countries.filter(country =>
             <TextInput
               style={styles.searchInput}
               placeholder={t('selecttranslate.searchLanguages')}
-              placeholderTextColor={'#C0C0C0'}
+              placeholderTextColor={'#A9A9A9'}
               value={searchText}
               onChangeText={setSearchText}
             />
