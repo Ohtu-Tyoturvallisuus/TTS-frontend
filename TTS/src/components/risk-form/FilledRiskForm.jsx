@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
 import { retrieveImage, joinSurvey } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
+import FilledRiskNote from './FilledRiskNote';
 
 const FilledRiskForm = ({
   formData = {},
@@ -70,6 +71,12 @@ const FilledRiskForm = ({
     }
   }
 
+  const handleCloseWithoutConfirmation = () => {
+    console.log('Closing filled risk form modal with no confirmation')
+    setJoinedSurvey(false)
+    setModalVisible(false)
+  }
+
   return (
     <>
       {joined ? (<></>) : submitted ? (
@@ -103,7 +110,7 @@ const FilledRiskForm = ({
         </TouchableOpacity>
       )}
       <>
-        <Modal visible={modalVisible} animationType='slide' onRequestClose={() => handleClose()} testID='modal'>
+        <Modal visible={modalVisible} animationType='slide' onRequestClose={() => {submitted ? setShowExitModal(true) : handleCloseWithoutConfirmation()}} testID='modal'>
           <View className="flex items-center justify-center">
             <ScrollView 
               className="bg-white flex-grow p-5 w-full" 
@@ -165,59 +172,15 @@ const FilledRiskForm = ({
                             : t(`${variableToUse}.title`, { ns: 'formFields' });
                       };
                     
-                      const [retrievedImages, setRetrievedImages] = useState([]);
-                    
-                      useEffect(() => {
-                        if (modalVisible) {
-                          const fetchImages = async () => {
-                            const images = await Promise.all(
-                              value.images?.map(async (image) => {
-                                if (image.blobName) {
-                                  const uri = await retrieveImage(image.blobName);
-                                  return { uri };
-                                }
-                                return null;
-                              }) || []
-                            );
-                            setRetrievedImages(images.filter(Boolean)); // Filter out null values
-                          };
-                          fetchImages();
-                        }
-                      }, [value.images, modalVisible]);
-                    
                       return (
-                        <View key={key} className="py-2">
-                          <Text className="text-base font-bold">
-                            {renderTitle()}:
-                          </Text>
-                          <Text>
-                            {value.description}
-                          </Text>
-                          {value.images.length > 0 ? (
-                            <View style={styles.imageContainer}>
-                            {!retrievedImages.length ? (
-                              <View style={{ margin: 10 }}>
-                                <Text>{t('filledriskform.loadingimages')}</Text>
-                              </View>
-                            ) : (
-                              retrievedImages.map((retrievedImage, index) => (
-                                <View key={index}>
-                                  <RiskImage
-                                    key={index}
-                                    images={retrievedImages}
-                                    currentIndex={index}
-                                    isLandscape={value.images[index]?.isLandscape}
-                                    testID={`risk-image-${index}`}
-                                  />
-                                </View>
-                              ))
-                            )}
-                          </View>
-                          ) : (
-                            <View style={{ margin: 10 }}></View>
-                          )}
-                        </View>
-                      );
+                        <FilledRiskNote
+                          renderTitle={renderTitle}
+                          key={key}
+                          value={value}
+                          modalVisible={modalVisible}
+                          retrieveImage={retrieveImage}
+                        />
+                      )
                     })
                   ) : (
                     <View className="py-3">
@@ -318,9 +281,8 @@ const FilledRiskForm = ({
                             </TouchableOpacity>
                             <TouchableOpacity
                               onPress={() => {
-                                console.log('Form closed without confirmation')
                                 setShowExitModal(false)
-                                handleClose()
+                                handleCloseWithoutConfirmation()
                               }}
                               style={[styles.confirmButton, {backgroundColor: 'red'}]}
                             >
