@@ -92,13 +92,14 @@ const TaskInfo = ({ project, setToLangs }) => {
               borderRadius: 8,
               justifyContent: 'center',
               alignItems: 'center',
+              alignSelf: 'center',
               paddingVertical: 12,
               paddingHorizontal: 24,
-              width: '100%',
-              marginVertical: 8,
+              width: '90%',
+              marginVertical: 20,
             },
             container: {
-              borderRadius: 12,
+              marginVertical: 60,
             },
             item: {
               margin: 10,
