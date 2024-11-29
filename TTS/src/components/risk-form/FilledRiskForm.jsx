@@ -174,8 +174,8 @@ const FilledRiskForm = ({
                     
                       return (
                         <FilledRiskNote
-                          renderTitle={renderTitle}
                           key={key}
+                          renderTitle={renderTitle}
                           value={value}
                           modalVisible={modalVisible}
                           retrieveImage={retrieveImage}

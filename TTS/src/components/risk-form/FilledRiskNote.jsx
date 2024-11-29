@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RiskImage from '@components/take-picture/Image';
 
-const FilledRiskNote = ({ renderTitle, key, value, modalVisible, retrieveImage }) => {
+const FilledRiskNote = ({ renderTitle, value, modalVisible, retrieveImage }) => {
   const [retrievedImages, setRetrievedImages] = useState([]);
   const { t } = useTranslation(['translation', 'formFields']);
                     
@@ -26,7 +26,7 @@ const FilledRiskNote = ({ renderTitle, key, value, modalVisible, retrieveImage }
   }, [value.images, modalVisible]);
 
   return (
-    <View key={key} className="py-2">
+    <View className="py-2">
       <Text className="text-base font-bold">
         {renderTitle()}:
       </Text>
