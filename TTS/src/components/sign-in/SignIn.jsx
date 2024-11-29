@@ -68,7 +68,7 @@ const SignIn = () => {
 
   return (
     <View style={styles.outerContainer}>
-      <TouchableOpacity onPress={() => setModalVisible(true)} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
+      <TouchableOpacity onPress={() => setModalVisible(true)} className="bg-black rounded-lg justify-center items-center py-4 px-6 my-2 w-64">
         <Text className="text-white font-bold">{t('signin.guestSignInButton')}</Text>
       </TouchableOpacity>
 
