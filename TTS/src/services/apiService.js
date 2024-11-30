@@ -238,6 +238,14 @@ export const getSurveyByAccessCode = async (access_code) => {
   return response.data;
 };
 
+// Get accounts that have acknowledged risks by survey_id
+export const getAccountsBySurvey = async (surveyId) => {
+  const url = API_BASE_URL + 'survey-accounts/' + surveyId;
+  console.log('Getting accounts that have acknowledged risks by survey_id:', surveyId);
+  const response = await axios.get(url);
+  return response.data;
+}
+
 export const joinSurvey = async ({access_code, accessToken}) => {
   const url = API_BASE_URL + `surveys/join/${access_code}/`;
   console.log('Joining survey with access code:', access_code);

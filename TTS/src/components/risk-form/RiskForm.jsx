@@ -36,6 +36,7 @@ const RiskForm = () => {
     setScaffoldType,
     taskDesc,
     setTaskDesc,
+    setAccessCode
   } = useFormContext();
 
   const { setCurrentLocation } = useContext(NavigationContext);
@@ -43,10 +44,8 @@ const RiskForm = () => {
 
   const navigation = useNavigation();
   const { t } = useTranslation(['translation', 'formFields']);
-  const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [ showExitModal, setShowExitModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [accessCode, setAccessCode] = useState('');
   const allowNavigationRef = useRef(false);
   const { setToLangs } = useTranslationLanguages();
 
@@ -102,7 +101,10 @@ const RiskForm = () => {
       setAccessCode(response.access_code);
       setSelectedSurveyId(response.id);
       response._j && setSubmitted(false);
-      setShowSuccessAlert(true); // Navigates to ValidationScreen
+
+      navigation.navigate('FormValidationView');
+      setNewUserSurveys(!newUserSurveys);
+      setCurrentLocation('FormValidationView');
     } catch (error) {
       console.log('Could not submit form', error);
       setSubmitted(false);
@@ -112,7 +114,6 @@ const RiskForm = () => {
   const handleClose = () => {
     allowNavigationRef.current = true;
     resetProjectAndSurvey();
-    setShowSuccessAlert(false);
     setShowExitModal(false);
 
     // if (submitted) {
@@ -236,17 +237,6 @@ const RiskForm = () => {
             </>
           )}
         </ScrollView>
-      )}
-      {showSuccessAlert && (
-        <SuccessAlert
-          message={t('riskform.successMessage')}
-          onDismiss={() => {
-            // handleClose();
-            navigation.navigate('FormValidationView');
-            setNewUserSurveys(!newUserSurveys);
-            setCurrentLocation('FormValidationView');
-          }}
-        />
       )}
       <ConfirmationModal
         visible={showExitModal}

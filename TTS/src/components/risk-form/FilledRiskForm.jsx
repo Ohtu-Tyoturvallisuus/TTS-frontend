@@ -29,7 +29,8 @@ const FilledRiskForm = ({
   formattedDate = '',
   survey = {},
   joined = false,
-  accessCode = null
+  accessCode = null,
+  inspectOnly = false,
 }) => {
   const [modalVisible, setModalVisible] = useState(joined);
   const { t } = useTranslation(['translation', 'formFields']);
@@ -86,14 +87,14 @@ const FilledRiskForm = ({
           <Text className="text-lg font-semibold">
             {t('filledriskform.project')}: {survey.project_name}
           </Text>
-      
+
           <View className="flex flex-row items-center">
             <Text className="text-base">{t('filledriskform.filledat')}: </Text>
             <Ionicons name="calendar-outline" size={16} color="black" style={{ marginRight: 4 }} />
             <Text className="text-base text-gray-600 mr-4">
               {formattedDate.date}
             </Text>
-      
+
             <Ionicons name="time-outline" size={16} color="black" style={{ marginRight: 4 }} />
             <Text className="text-base text-gray-600">
               {formattedDate.time}
@@ -111,8 +112,8 @@ const FilledRiskForm = ({
       <>
         <Modal visible={modalVisible} animationType='slide' onRequestClose={() => {submitted ? setShowExitModal(true) : handleCloseWithoutConfirmation()}} testID='modal'>
           <View className="flex items-center justify-center">
-            <ScrollView 
-              className="bg-white flex-grow p-5 w-full" 
+            <ScrollView
+              className="bg-white flex-grow p-5 w-full"
               contentContainerStyle={{ paddingBottom: 30 }}
             >
               <Image
@@ -125,10 +126,10 @@ const FilledRiskForm = ({
                   <Text className="text-lg font-bold py-2">{t('filledriskform.accessCode')}: {accessCode}</Text>
                 </View>
               )}
-  
+
               <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
               <Text>{projectName}</Text>
-    
+
               <Text className="text-lg font-bold py-2">{t('riskform.projectId')}: </Text>
               <Text>{projectId}</Text>
 
@@ -156,7 +157,7 @@ const FilledRiskForm = ({
                   <Text>{taskDesc}</Text>
                 </>
               )}
-  
+
               {
                 submitted ? (
                   relevantRiskNotes.length > 0 ? (
@@ -170,7 +171,7 @@ const FilledRiskForm = ({
                             ? `${t(`${variableToUse.split(' ')[0]}`)} ${variableToUse.split(' ')[1]}`
                             : t(`${variableToUse}.title`, { ns: 'formFields' });
                       };
-                    
+
                       return (
                         <FilledRiskNote
                           key={key}
@@ -201,7 +202,7 @@ const FilledRiskForm = ({
                             ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
                             : t(`${key}.title`, { ns: 'formFields' });
                       };
-                    
+
                       return (
                         <FilledRiskNote
                           key={key}
@@ -277,7 +278,11 @@ const FilledRiskForm = ({
                   </View>
                 ) : (
                 <CloseButton onPress={() => handleClose()} />
-              ) : (
+              ) : inspectOnly ? (
+              <>
+                <CloseButton onPress={() => setModalVisible(false)} />
+              </>
+            ) : (
                 <>
                   <TouchableOpacity
                     className="rounded-md py-3 my-2 items-center bg-orange mt-7"

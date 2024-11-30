@@ -13,6 +13,7 @@ export const FormProvider = ({ children }) => {
   const [task, setTask] = useState([]);
   const [scaffoldType, setScaffoldType] = useState([]);
   const [taskDesc, setTaskDesc] = useState('');
+  const [accessCode, setAccessCode] = useState('');
 
   const updateFormField = (title, field, value) => {
     console.log(`Updating ${title}.${field} to ${JSON.stringify(value, null, 2)}`);
@@ -49,19 +50,21 @@ export const FormProvider = ({ children }) => {
   };
 
   return (
-    <FormContext.Provider  
-      value={{ 
-        formData, 
-        updateFormField, 
+    <FormContext.Provider
+      value={{
+        formData,
+        updateFormField,
         updateTranslations,
         getFormData,
         replaceFormData,
-        task, 
-        setTask, 
-        scaffoldType, 
-        setScaffoldType, 
-        taskDesc, 
-        setTaskDesc, 
+        task,
+        setTask,
+        scaffoldType,
+        setScaffoldType,
+        taskDesc,
+        setTaskDesc,
+        accessCode,
+        setAccessCode
       }}
     >
       {children}
