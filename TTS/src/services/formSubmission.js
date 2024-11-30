@@ -77,6 +77,7 @@ export const submitForm = async (project, taskInfo, formData, setShowSuccessAler
 
     await postRiskNotes(surveyId, riskNotes);
     setShowSuccessAlert(true);
+    return response;
   } catch (error) {
     console.error('Error during form submission:', error);
     if (error.message === 'Some fields are empty') {

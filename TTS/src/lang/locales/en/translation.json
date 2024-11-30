@@ -49,7 +49,15 @@
     "emptyform": "No relevant risks in this form",
     "project": "Project",
     "filledat": "Filled at",
-    "loadingimages": "Loading images..."
+    "loadingimages": "Loading images...",
+    "confirm": "Hazard identification complete",
+    "close": "Close without confirming",
+    "closeInfo": "You are about to close the hazard identification form without confirming. Are you sure you want to continue?",
+    "accessCode": "Form code",
+    "confirming": "Sending confirmation...",
+    "alert": "Failed to send confirmation",
+    "successTitle": "Hazard identification confirmed successfully!",
+    "successInfo": "You can find the form on the 'My observations' page"
   },
   "languageselectmenu": {
     "selectRecordingLanguage": "Select language for recognition",
@@ -65,7 +73,8 @@
   },
   "main": {
     "navigationMain": "Main",
-    "navigationSettings": "Settings"
+    "navigationSettings": "Settings",
+    "navigationJoinSurvey": "Join Survey"
   },
   "microsoftsignin": {
     "signInText": "Microsoft sign-in",
@@ -74,7 +83,8 @@
   },
   "myobservations": {
     "title": "My observations",
-    "loading": "Loading observations..."
+    "loading": "Loading observations...",
+    "noObservations": "No personal observations"
   },
   "projectlist":{
     "chooseArea": "Choose area",
@@ -124,7 +134,9 @@
     "emptyFieldsError": "Fill all the necessary fields before submitting",
     "submitting": "Submitting form...",
     "chooseScaffoldType": "Choose scaffolding type",
-    "selected": "selected"
+    "selected": "selected",
+    "formCode": "Form code",
+    "findFormInfo": "You can find the form and its code on the 'My observations' page"
   },
   "riskmodal": {
     "extraInfo": "Enter additional information",
@@ -199,6 +211,15 @@
     "noPictures": "No pictures",
     "takePicture": "Take a picture",
     "selectFromGallery": "Select from gallery"
+  },
+  "joinsurvey": {
+    "insertCode": "Insert form code",
+    "error": "Code is missing",
+    "error_length": "Code must be 6 characters long",
+    "insertPlaceholder": "Code",
+    "join": "Join hazard identification",
+    "fetchError": "Fetching was unsuccessful",
+    "loading": "Joining..."
   },
   "taskinfo": {
     "translate": "Translate text"

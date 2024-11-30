@@ -230,3 +230,21 @@ export const getUserSurveys = async (accessToken) => {
   });
   return response.data;
 };
+
+export const getSurveyByAccessCode = async (access_code) => {
+  const url = API_BASE_URL + 'surveys/code/' + access_code;
+  console.log('Getting survey by access code:', access_code);
+  const response = await axios.get(url);
+  return response.data;
+};
+
+export const joinSurvey = async ({access_code, accessToken}) => {
+  const url = API_BASE_URL + `surveys/join/${access_code}/`;
+  console.log('Joining survey with access code:', access_code);
+  const response = await axios.post(url, {}, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    },
+  });
+  return response.data;
+};

@@ -35,7 +35,15 @@
     "emptyform": "Ei huomioitavia riskejä tässä arvioinnissa",
     "project": "Projekti",
     "filledat": "Täyttöaika",
-    "loadingimages": "Ladataan kuvia..."
+    "loadingimages": "Ladataan kuvia...",
+    "confirm": "Vaarojentunnistus valmis",
+    "close": "Sulje kuittaamatta",
+    "closeInfo": "Olet sulkemassa vaarojentunnistuslomaketta ilman kuittausta. Oletko varma, että haluat jatkaa?",
+    "accessCode": "Lomakkeen koodi",
+    "confirming": "Lähetetään vahvistusta...",
+    "alert": "Vahvistuksen lähettäminen epäonnistui",
+    "successTitle": "Vaarojentunnistus vahvistettu onnistuneesti!",
+    "successInfo": "Löydät lomakkeen 'Omat havaintoni' -sivulta"
   },
   "general": {
     "done": "Valmis",
@@ -66,7 +74,8 @@
   },
   "main": {
     "navigationMain": "Pääsivu",
-    "navigationSettings": "Asetukset"
+    "navigationSettings": "Asetukset",
+    "navigationJoinSurvey": "Liity"
   },
   "microsoftsignin": {
     "signInText": "Microsoft-kirjautuminen",
@@ -75,7 +84,8 @@
   },
   "myobservations": {
     "title": "Omat havaintoni",
-    "loading": "Ladataan havaintoja..."
+    "loading": "Ladataan havaintoja...",
+    "noObservations": "Ei tehtyjä havaintoja"
   },
   "projectlist":{
     "chooseArea": "Valitse alue",
@@ -125,7 +135,9 @@
     "emptyFieldsError": "Täytä kaikki tarvittavat kentät ennen lähettämistä",
     "submitting": "Lähetetään lomaketta...",
     "chooseScaffoldType": "Valitse telinetyyppi",
-    "selected": "valittu"
+    "selected": "valittu",
+    "formCode": "Lomakkeen koodi",
+    "findFormInfo": "Löydät lomakkeen ja sen koodin 'Omat havaintoni' -sivulta"
   },
   "riskmodal": {
     "extraInfo": "Syötä lisätietoja",
@@ -200,6 +212,15 @@
     "noPictures": "Ei kuvia",
     "takePicture": "Ota kuva",
     "selectFromGallery": "Valitse galleriasta"
+  },
+  "joinsurvey": {
+    "insertCode": "Syötä lomakkeen koodi",
+    "error": "Koodi puuttuu",
+    "error_length": "Koodin täytyy olla 6 merkkiä pitkä",
+    "insertPlaceholder": "Koodi",
+    "join": "Liity vaarojentunnistukseen",
+    "fetchError": "Haku epäonnistui",
+    "loading": "Liitytään..."
   },
   "taskinfo": {
     "translate": "Käännä teksti"

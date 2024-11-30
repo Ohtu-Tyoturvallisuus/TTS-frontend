@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
@@ -45,43 +45,35 @@ const RiskForm = () => {
   const [ showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [ showExitModal, setShowExitModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
   const allowNavigationRef = useRef(false);
   const { setToLangs } = useTranslationLanguages();
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
   // Merges previous survey's data to the form if surveyData is available
-  useEffect(() => {
-    if (loading || error || !surveyData) return; // Wait until data is loaded
+  useEffect(() => {    
+    if (surveyData) {
+      const currentNotes = surveyData.risk_notes.reduce((acc, note) => {
+        acc[note.note] = {
+          description: note.description,
+          status: note.status,
+          risk_type: note.risk_type,
+          images: [],
+        };
+        return acc;
+      }, {});
 
-    const currentNotes = surveyData.risk_notes.reduce((acc, note) => {
-      acc[note.note] = {
-        description: note.description,
-        status: note.status,
-        risk_type: note.risk_type,
-        images: [],
-      };
-      return acc;
-    }, {});
-
-    // Avoid updating the form data if it's already merged
-    if (JSON.stringify(formData) !== JSON.stringify(currentNotes)) {
-      console.log("Merging prev survey's data");
-      replaceFormData(currentNotes);
-    }
-
-    if (JSON.stringify(task) !== JSON.stringify(surveyData.task)) {
+      if (JSON.stringify(formData) !== JSON.stringify(currentNotes)) {
+        console.log("Merging prev survey's data");
+        replaceFormData(currentNotes);
+      }
+  
       setTask(surveyData.task);
-    }
-
-    if (JSON.stringify(scaffoldType) !== JSON.stringify(surveyData.scaffold_type)) {
       setScaffoldType(surveyData.scaffold_type);
-    }
-
-    if (taskDesc !== surveyData.description) {
       setTaskDesc(surveyData.description);
     }
-  }, [surveyData, loading, error, formData, task, scaffoldType, taskDesc, replaceFormData, setTask, setScaffoldType, setTaskDesc]);
+  }, [surveyData]);
 
   // Displays confirmation modal when user tries to leave the form
   useEffect(() => {
@@ -96,7 +88,7 @@ const RiskForm = () => {
     return unsubscribe;
   }, [navigation]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const taskInfo = {
       task: task,
       description: taskDesc,
@@ -105,7 +97,8 @@ const RiskForm = () => {
     console.log('Submitting:', taskInfo);
     try {
       setSubmitted(true)
-      const response = submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
+      const response = await submitForm(project, taskInfo, formData, setShowSuccessAlert, t);
+      setAccessCode(response.access_code);
       response._j && setSubmitted(false);
     } catch (error) {
       console.log('Could not submit form', error);
@@ -121,6 +114,13 @@ const RiskForm = () => {
     navigation.navigate('ProjectList');
     setNewUserSurveys(!newUserSurveys);
     setCurrentLocation('ProjectList');
+    if (submitted) {
+      Alert.alert(
+        `${t('riskform.formCode')}: ${accessCode}`,
+        t('riskform.findFormInfo')
+      )
+    }
+    setSubmitted(false);
   };
 
   const addNewRiskNote = (title, type) => {

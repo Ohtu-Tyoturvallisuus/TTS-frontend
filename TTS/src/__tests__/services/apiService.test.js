@@ -13,6 +13,8 @@ import {
   getUserSurveys,
   uploadAudio,
   translateText,
+  getSurveyByAccessCode,
+  joinSurvey
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -437,6 +439,67 @@ test('fetchProjectList handles empty filters correctly', async () => {
       axios.get.mockRejectedValueOnce(new Error('Network Error'));
 
       await expect(getUserSurveys(mockToken)).rejects.toThrow('Network Error');
+    });
+  });
+
+  describe('getSurveyByAccessCode', () => {
+    it('should fetch a survey by access code and return the response data', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockResponseData = {
+        id: '1',
+        name: 'Survey A',
+        description: 'A test survey',
+        created_at: '2024-11-15T10:00:00',
+      };
+  
+      axios.get.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const survey = await getSurveyByAccessCode(mockAccessCode);
+  
+      expect(axios.get).toHaveBeenCalledWith(
+        expect.stringContaining(`surveys/code/${mockAccessCode}`)
+      );
+  
+      expect(survey).toEqual(mockResponseData);
+    });
+  
+    it('should handle errors correctly if the API call fails', async () => {
+      const mockAccessCode = 'testAccessCode';
+  
+      axios.get.mockRejectedValueOnce(new Error('Network Error'));
+  
+      await expect(getSurveyByAccessCode(mockAccessCode)).rejects.toThrow('Network Error');
+    });
+  });
+  
+  describe('joinSurvey', () => {
+    it('should join a survey using access code and return the response data', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockToken = 'mockToken';
+      const mockResponseData = { success: true, message: 'Successfully joined the survey.' };
+  
+      axios.post.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const response = await joinSurvey({ access_code: mockAccessCode, accessToken: mockToken });
+  
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.stringContaining(`surveys/join/${mockAccessCode}/`),
+        {},
+        expect.objectContaining({
+          headers: { Authorization: `Bearer ${mockToken}` },
+        })
+      );
+  
+      expect(response).toEqual(mockResponseData);
+    });
+  
+    it('should handle errors correctly if the API call fails', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockToken = 'mockToken';
+  
+      axios.post.mockRejectedValueOnce(new Error('Network Error'));
+  
+      await expect(joinSurvey({ access_code: mockAccessCode, accessToken: mockToken })).rejects.toThrow('Network Error');
     });
   });
 });

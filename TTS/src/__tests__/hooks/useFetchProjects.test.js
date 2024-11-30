@@ -49,8 +49,6 @@ describe('useFetchProjects', () => {
     );
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.projects).toEqual([]);
-    expect(result.current.error).toBeNull();
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);

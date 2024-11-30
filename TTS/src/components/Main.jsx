@@ -12,13 +12,14 @@ import CombinedSignIn from '@components/sign-in/CombinedSignIn';
 import RiskFormScreen from '@components/risk-form/RiskFormScreen';
 import Settings from '@components/settings/Settings';
 import { NavigationContext } from '@contexts/NavigationContext';
+import JoinSurvey from '@components/risk-form/JoinSurvey';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Main = () => {
   const { currentLocation } = useContext(NavigationContext);
-  const { username, setUsername, setAccessToken } = useContext(UserContext)
+  const { username, setUsername, setAccessToken, isGuest, setIsGuest } = useContext(UserContext)
   const { t } = useTranslation();
   const [showImage, setShowImage] = useState(true);
 
@@ -33,13 +34,17 @@ const Main = () => {
         if (storedAccessToken) {
           setAccessToken(storedAccessToken);
         }
+        const guestStatus = await AsyncStorage.getItem('is_guest');
+        if (guestStatus === 'true') {
+          setIsGuest(true);
+        }
       } catch (error) {
         console.error('Error retrieving user information', error);
       }
     };
   
     fetchUserInfo();
-  }, [setUsername]);
+  }, [setUsername, setIsGuest]);
 
   useEffect(() => {
     console.log('Location set to:', currentLocation)
@@ -78,6 +83,9 @@ const Main = () => {
                 if (route.name === 'Main') {
                   iconName = focused ? 'home' : 'home-outline';
                 }
+                if (route.name === 'JoinSurvey') {
+                  iconName = focused ? 'clipboard' : 'clipboard-outline';
+                }
                 if (route.name === 'Settings') {
                   iconName = focused ? 'settings' : 'settings-outline';
                 }
@@ -87,18 +95,27 @@ const Main = () => {
               tabBarInactiveTintColor: "gray",
               tabBarStyle: [
                 {
-                  "display": "flex"
+                  "display": currentLocation === 'RiskForm' ? 'none' : 'flex'
                 },
                 null
               ],
               headerShown: false,
             })}
           >
-            <Tab.Screen 
-              name="Main" 
-              component={MainStack} 
-              options={{ title: t('main.navigationMain') }} 
-            />
+            {!isGuest && (
+              <Tab.Screen 
+                name="Main" 
+                component={MainStack} 
+                options={{ title: t('main.navigationMain') }} 
+              />
+            )}
+            {username && (
+              <Tab.Screen
+                name="JoinSurvey"
+                component={JoinSurvey}
+                options={{ title: t('main.navigationJoinSurvey') }}
+              />
+            )}
             <Tab.Screen 
               name="Settings" 
               component={Settings} 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FilledRiskForm from '@components/risk-form/FilledRiskForm';
-import { retrieveImage } from '@services/apiService'
+import { retrieveImage, joinSurvey } from '@services/apiService'
+import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@components/take-picture/Image', () => {
   const { View } = require('react-native');
@@ -11,11 +12,23 @@ jest.mock('@components/take-picture/Image', () => {
 
 jest.mock('@services/apiService', () => ({
   retrieveImage: jest.fn(),
+  joinSurvey: jest.fn(),
 }));
+
+const mockUserContextValue = {
+  username: 'mockuser',
+  email: 'mockuser@example.com',
+  accessToken: 'fake-access-token',
+  newUserSurveys: true,
+  setNewUserSurveys: jest.fn(),
+  setJoinedSurvey: jest.fn(),
+  joinedSurvey: false,
+};
 
 describe('FilledRiskForm component', () => {
   const setup = (overrides = {}) => {
     const mockHandleSubmit = jest.fn();
+    const mockHandleClose = jest.fn();
     const props = {
       formData: {
         hazard1: { status: 'checked', description: 'Hazard description 1', images: [{ uri: 'image1.jpg', isLandscape: false }] },
@@ -29,7 +42,11 @@ describe('FilledRiskForm component', () => {
       handleSubmit: mockHandleSubmit,
       ...overrides,
     };
-    return { ...render(<FilledRiskForm {...props} />), mockHandleSubmit };
+    return { ...render(
+      <UserContext.Provider value={mockUserContextValue}>
+        <FilledRiskForm {...props} />
+      </UserContext.Provider>
+    ), mockHandleSubmit, mockHandleClose };
   };
 
   it('opens modal when "Show preview" button is pressed', () => {
@@ -70,17 +87,6 @@ describe('FilledRiskForm component', () => {
     expect(mockHandleSubmit).toHaveBeenCalled();
   });
 
-  it('closes modal when "edit" button is pressed', () => {
-    const { getByText, queryByText } = setup();
-
-    fireEvent.press(getByText('filledriskform.preview'));
-
-    expect(getByText('Project A')).toBeTruthy();
-
-    fireEvent.press(getByText('filledriskform.edit'));
-    expect(queryByText('Project A')).toBeNull();
-  });
-
   it('renders RiskImage components for each image in checked risk notes', () => {
     const { getByText, getByTestId } = setup();
   
@@ -91,7 +97,11 @@ describe('FilledRiskForm component', () => {
 
   it('renders without crashing when all props are null', () => {
     const props = {};
-    const { getByText } = render(<FilledRiskForm {...props} />);
+    const { getByText } = render(
+      <UserContext.Provider value={mockUserContextValue}>
+        <FilledRiskForm {...props} />
+      </UserContext.Provider>
+  );
 
     fireEvent.press(getByText('filledriskform.preview'));
 
@@ -143,13 +153,14 @@ describe('FilledRiskForm component', () => {
 
     expect(getByText('closebutton.close')).toBeTruthy();
   });
-  
-  it('closes modal when edit button is pressed', () => {
+
+  it('closes modal when "edit" button is pressed', () => {
     const { getByText, queryByText } = setup();
-  
+
     fireEvent.press(getByText('filledriskform.preview'));
+
     expect(getByText('Project A')).toBeTruthy();
-  
+
     fireEvent.press(getByText('filledriskform.edit'));
     expect(queryByText('Project A')).toBeNull();
   });
@@ -247,6 +258,31 @@ describe('FilledRiskForm component', () => {
     fireEvent.press(getByText('closebutton.close'));
     expect(queryByTestId('modal')).toBeNull();
   });
+
+  it('closes modal when confirm button is pressed', async () => {
+    const mockJoinSurvey = joinSurvey.mockResolvedValueOnce({ detail: 'Survey joined' });
+    const mockFormData = {
+      hazard1: { status: 'checked', description: 'Hazard description', images: [] },
+    };
+  
+    const { queryByTestId, getByText } = setup({
+      formData: mockFormData,
+      submitted: true,
+      joined: true,
+      accessCode: 'valid-code',
+    });
+  
+    fireEvent.press(getByText('riskform.projectName:'));
+    fireEvent.press(getByText('filledriskform.confirm'));
+  
+    await waitFor(() => {
+      expect(mockJoinSurvey).toHaveBeenCalledWith({
+        access_code: 'valid-code',
+        accessToken: 'fake-access-token',
+      });
+      expect(queryByTestId('modal')).toBeNull();
+    });
+  });
   
   it('closes modal and calls handleSubmit when submit is pressed', () => {
     const handleSubmit = jest.fn();
@@ -259,7 +295,7 @@ describe('FilledRiskForm component', () => {
     expect(handleSubmit).toHaveBeenCalled();
   });
 
-  it('closes modal when requesClose is called', async () => {
+  it('closes modal when requestClose is called', async () => {
     const { queryByTestId, getByText, getByTestId } = setup({ submitted: false });
   
     fireEvent.press(getByText('filledriskform.preview'));

@@ -13,16 +13,6 @@ const MyObservations = () => {
   const { userSurveys, loading, error } = useUserSurveys();
   const { t } = useTranslation();
 
-  if (loading || error) {
-    return (
-      <Loading 
-        loading={loading} 
-        error={error} 
-        title={t('myobservations.loading')}
-      />
-    );
-  }
-
   return (
     <>
       <SettingsButton 
@@ -45,6 +35,11 @@ const MyObservations = () => {
             <Text className="text-xl font-bold mb-4" style={{ marginTop: 40 }}>
               {t('myobservations.title')}
             </Text>
+            {!loading && userSurveys.length === 0 && 
+              <View style={{borderWidth: 1, borderRadius: 5, padding: 10}}>
+                <Text className='text-lg font-bold'>{t('myobservations.noObservations')}</Text>
+              </View>
+            }
             {userSurveys.map((survey) => {
               const formattedDate = formatDate(survey.created_at);
               return (
@@ -59,10 +54,16 @@ const MyObservations = () => {
                     taskDesc={survey.description}
                     scaffoldType={survey.scaffold_type}
                     task={survey.task}
+                    accessCode={survey.access_code}
                   />
                 </View>
               );
             })}
+            <Loading 
+              loading={loading} 
+              error={error} 
+              title={t('myobservations.loading')}
+            />
             <CloseButton onPress={() => setModalVisible(false)} />
           </ScrollView>
         </View>
