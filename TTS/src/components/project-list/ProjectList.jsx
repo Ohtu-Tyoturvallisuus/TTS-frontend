@@ -11,10 +11,12 @@ import ProjectModal from '@components/project-list/ProjectModal';
 import SearchBar from '@components/SearchBar';
 import DropdownOptions from '@components/DropdownOptions';
 import getProjectAreas from '@utils/projectAreas';
+import { NavigationContext } from '@contexts/NavigationContext';
 
 const ProjectsList = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { setSelectedProject } = useContext(ProjectSurveyContext);
+  const { setCurrentLocation } = useContext(NavigationContext);
   const [displayedSearch, setDisplayedSearch] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -118,6 +120,7 @@ const ProjectsList = () => {
         }}
         navigateToRiskForm={() => {
           setModalVisible(false);
+          setCurrentLocation('RiskForm');
           navigation.navigate('RiskForm');
         }}
       />

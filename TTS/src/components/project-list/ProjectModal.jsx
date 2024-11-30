@@ -14,7 +14,7 @@ const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
     console.log('Projektia ei ole saatavilla');
     return null;
   }
-  console.log('Avattu projekti:', project.formattedName);
+  console.log('Avattu projekti:', project);
 
   return (
     <Modal
@@ -26,7 +26,7 @@ const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>{project.formattedName}</Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.newSurveyButton}
             onPress={() => {
               setSelectedSurveyURL(null);
@@ -46,7 +46,7 @@ const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
 
 const styles = StyleSheet.create({
   buttonText: {
-    color: '#fff', 
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   newSurveyButton: {
-    alignItems: 'center', 
+    alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: '#32CD32',
     borderRadius: 5,
-    justifyContent: 'center', 
+    justifyContent: 'center',
     minHeight: 48,
     minWidth: 48,
     padding: 10,

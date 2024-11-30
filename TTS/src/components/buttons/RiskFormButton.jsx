@@ -1,17 +1,21 @@
+import React, { useContext } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NavigationContext } from '@contexts/NavigationContext';
 
 const RiskFormButton = ({ title, setVisible, buttonStyle, textStyle }) => {
+  const { setCurrentLocation } = useContext(NavigationContext);
   const navigation = useNavigation()
 
   const handlePress = () => {
+    setCurrentLocation('RiskForm');
     navigation.navigate('RiskForm');
     setVisible(false);
   }
 
   return (
     <View>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={[styles.button, buttonStyle]}
         onPress={handlePress}
       >
@@ -23,7 +27,7 @@ const RiskFormButton = ({ title, setVisible, buttonStyle, textStyle }) => {
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: 'center', 
+    alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: '#32CD32',
     borderRadius: 5,
@@ -33,8 +37,8 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '80%',
   },
-  buttonText: {    
-    color: '#fff', 
+  buttonText: {
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
