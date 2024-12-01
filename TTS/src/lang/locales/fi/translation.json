@@ -47,8 +47,8 @@
   },
   "formvalidation": {
     "listOfParticipants": "Osallistujat",
-    "participants": "Osallistujat",
-    "confirmMessage": "Kaikki paikallaolijat ovat vahvistaneet?",
+    "participants": "Osallistujia",
+    "confirmMessage": "Kaikki paikallaolijat ovat käyneet vaarat läpi?",
     "cancel": "Peruuta",
     "confirm": "Vahvista",
     "done": "Valmis",
@@ -223,7 +223,7 @@
     "selectFromGallery": "Valitse galleriasta"
   },
   "joinsurvey": {
-    "insertCode": "Syötä lomakkeen koodi",
+    "insertCode": "Syötä lomakkeen liittymiskoodi",
     "error": "Koodi puuttuu",
     "error_length": "Koodin täytyy olla 6 merkkiä pitkä",
     "insertPlaceholder": "Koodi",

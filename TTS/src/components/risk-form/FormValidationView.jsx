@@ -93,7 +93,7 @@ const FormValidationView = () => {
         <View>
           <View className="flex-row mt-4 mb-1">
             <Text className="text-lg font-bold">
-              {t('formvalidation.participants')} ({accounts.length}):
+              {t('formvalidation.listOfParticipants')} ({accounts.length}):
             </Text>
             {loading && <ActivityIndicator className='ml-1' size="small" color="grey" />}
           </View>
@@ -175,25 +175,26 @@ const FormValidationView = () => {
 }
 
 const styles = StyleSheet.create({
+  accessCode: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    letterSpacing: 2,
+    marginTop: 5,
+  },
   accessCodeContainer: {
-    flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#ffffff',
     borderColor: '#6f7072',
     borderRadius: 5,
     borderWidth: 1,
     elevation: 2,
+    flexDirection: 'column',
     justifyContent: 'center',
     padding: 10,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4
-  },
-  accessCode: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginTop: 5
   }
 });
 
