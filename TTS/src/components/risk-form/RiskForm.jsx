@@ -12,7 +12,6 @@ import { UserContext } from '@contexts/UserContext';
 import { NavigationContext } from '@contexts/NavigationContext';
 import RiskNote from './RiskNote';
 import CloseButton from '@components/buttons/CloseButton';
-import SuccessAlert from '@components/SuccessAlert';
 import Loading from '@components/Loading';
 import ConfirmationModal from '@components/ConfirmationModal';
 import FilledRiskForm from './FilledRiskForm';
@@ -30,6 +29,7 @@ const RiskForm = () => {
     formData,
     updateFormField,
     replaceFormData,
+    resetFormData,
     task,
     setTask,
     scaffoldType,
@@ -114,6 +114,7 @@ const RiskForm = () => {
   const handleClose = () => {
     allowNavigationRef.current = true;
     resetProjectAndSurvey();
+    resetFormData(),
     setShowExitModal(false);
 
     // if (submitted) {

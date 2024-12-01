@@ -10,11 +10,9 @@ const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
   const { t } = useTranslation();
 
-  if (!project) {
-    console.log('Projektia ei ole saatavilla');
-    return null;
+  if (project) {
+    console.log('ProjectModal project:', project);
   }
-  console.log('Avattu projekti:', project);
 
   return (
     <Modal
@@ -25,18 +23,24 @@ const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{project.formattedName}</Text>
-          <TouchableOpacity
-            style={styles.newSurveyButton}
-            onPress={() => {
-              setSelectedSurveyURL(null);
-              console.log('Uusi kartoitus, surveyUrl on null');
-              navigateToRiskForm()
-            }}
-          >
-            <Text style={styles.buttonText}>{t('projectmodal.title')}</Text>
-          </TouchableOpacity>
-          <ProjectSurveyList navigateToRiskForm={navigateToRiskForm}/>
+          {project ? (
+            <>
+              <Text style={styles.modalTitle}>{project.formattedName}</Text>
+              <TouchableOpacity
+                style={styles.newSurveyButton}
+                onPress={() => {
+                  setSelectedSurveyURL(null);
+                  console.log('Uusi kartoitus, surveyUrl on null');
+                  navigateToRiskForm();
+                }}
+              >
+                <Text style={styles.buttonText}>{t('projectmodal.title')}</Text>
+              </TouchableOpacity>
+              <ProjectSurveyList navigateToRiskForm={navigateToRiskForm}/>
+            </>
+          ) : (
+            <Text>{t('projectmodal.loading')}</Text>
+          )}
           <CloseButton onPress={onClose}/>
         </View>
       </View>

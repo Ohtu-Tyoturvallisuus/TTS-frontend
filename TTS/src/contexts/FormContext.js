@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import useFormFields from '@hooks/useFormFields';
 
 // Create a context for form data
@@ -49,6 +49,15 @@ export const FormProvider = ({ children }) => {
     setFormData(newFormData);
   };
 
+  const resetFormData = useCallback(() => {
+    console.log('Resetting form data context');
+    replaceFormData(initialFormData);
+    setTask([]);
+    setScaffoldType([]);
+    setTaskDesc('');
+    setAccessCode(null);
+  }, []);
+
   return (
     <FormContext.Provider
       value={{
@@ -57,6 +66,7 @@ export const FormProvider = ({ children }) => {
         updateTranslations,
         getFormData,
         replaceFormData,
+        resetFormData,
         task,
         setTask,
         scaffoldType,

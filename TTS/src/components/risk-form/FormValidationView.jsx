@@ -32,8 +32,7 @@ const FormValidationView = () => {
 
   const {
     formData,
-    updateFormField,
-    replaceFormData,
+    resetFormData,
     accessCode,
     task,
     scaffoldType,
@@ -42,6 +41,8 @@ const FormValidationView = () => {
   console.log(accessCode);
   const { fromLang, toLangs } = useTranslationLanguages();
 
+  const intervalDuration = 10000; // 10 seconds
+  // Fetch accounts by survey ID every intervalDuration ms
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
@@ -55,13 +56,8 @@ const FormValidationView = () => {
         setLoading(false);
       }
     };
-    // Initial fetch
     fetchAccounts();
-
-    // Set up polling interval
-    const interval = setInterval(fetchAccounts, 10000);
-
-    // Cleanup on unmount
+    const interval = setInterval(fetchAccounts, intervalDuration);
     return () => clearInterval(interval);
   }, [surveyId]);
 
@@ -170,6 +166,7 @@ const FormValidationView = () => {
             setNewUserSurveys(!newUserSurveys);
             setCurrentLocation('ProjectList');
             resetProjectAndSurvey();
+            resetFormData();
           }}
         />
       )}
