@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const ProjectSurveyContext = createContext();
 
@@ -7,14 +7,8 @@ export const ProjectSurveyProvider = ({ children }) => {
   const [selectedSurveyURL, setSelectedSurveyURL] = useState(null);
   const [selectedSurveyId, setSelectedSurveyId] = useState(null);
 
-  useEffect(() => {
-    if (selectedProject !== null) {
-      console.log(`Project selected in ProjectSurveyContext: ${selectedProject}`);
-    }
-  }, [selectedProject]);
-
   const resetProjectAndSurvey = () => {
-    console.log('Resetting project and survey from context');
+    console.log('Resetting project and surveyURL from context');
     setSelectedProject(null);
     setSelectedSurveyURL(null);
     setSelectedSurveyId(null);

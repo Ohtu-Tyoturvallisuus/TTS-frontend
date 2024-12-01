@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 
@@ -141,7 +141,7 @@ const RiskForm = () => {
       {submitted ? (
         <>
           <ActivityIndicator size='large' color='#EF7D00' />
-          <Text className="text-2xl font-medium mt-6 text-center">
+          <Text className="text-2xl mt-6 text-center">
             {t('riskform.submitting')}
           </Text>
         </>

@@ -44,7 +44,7 @@
   "formValidation": {
     "listOfParticipants": "Participants",
     "participants": "Participants",
-    "confirmMessage": "Have all participants confirmed?",
+    "confirmMessage": "Have all participants acknowledged the risks?",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "done": "Done",
@@ -222,7 +222,7 @@
     "selectFromGallery": "Select from gallery"
   },
   "joinsurvey": {
-    "insertCode": "Insert form code",
+    "insertCode": "Insert form access code",
     "error": "Code is missing",
     "error_length": "Code must be 6 characters long",
     "insertPlaceholder": "Code",
