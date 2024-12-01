@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
 import { useFormContext } from '@contexts/FormContext';
 import { useTranslationLanguages } from '@contexts/TranslationContext';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,8 @@ import SuccessAlert from '@components/SuccessAlert';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '@contexts/UserContext';
 import { NavigationContext } from '@contexts/NavigationContext';
+import { patchSurveyCompletion } from '@services/apiService';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const FormValidationView = () => {
   const [accounts, setAccounts] = useState([]);
@@ -68,53 +70,66 @@ const FormValidationView = () => {
   };
 
   const handleConfirm = () => {
-    setShowConfirmModal(false);
-    setShowSuccessAlert(true);
+    patchSurveyCompletion(surveyId, accounts.length)
+      .then(() => {
+        console.log('Survey marked as completed');
+        setShowConfirmModal(false);
+        setShowSuccessAlert(true);
+      })
+      .catch((error) => {
+        console.error('Error marking survey as completed:', error);
+        setShowConfirmModal(false);
+      });
   };
 
   return (
     <View className="flex-1 bg-white p-5">
-    <ScrollView>
-      <View style={styles.accessCodeContainer}>
-        <Text className="text-lg<">
-          {t('filledriskform.accessCode')}:
-        </Text>
-        <Text style={styles.accessCode}>
-          {accessCode}
-        </Text>
-      </View>
+      <ScrollView>
+        <View style={styles.accessCodeContainer}>
+          <Text className="text-lg">
+            {t('filledriskform.accessCode')}:
+          </Text>
+          <Text style={styles.accessCode}>
+            {accessCode}
+          </Text>
+        </View>
 
-      <View>
-        <Text className="text-lg font-bold mt-4">
-          {t('formvalidation.participants')} ({accounts.length})
-        </Text>
-        {accounts.map(({ account, filled_at }) => (
-          <View key={account.user_id} className="py-1 flex-row justify-between">
-            <Text>{account.username}</Text>
-            <Text>{new Date(filled_at).toLocaleString()}</Text>
+        <View>
+          <View className="flex-row mt-4 mb-1">
+            <Text className="text-lg font-bold">
+              {t('formvalidation.participants')} ({accounts.length}):
+            </Text>
+            {loading && <ActivityIndicator className='ml-1' size="small" color="grey" />}
           </View>
-        ))}
-      </View>
+          {accounts.map(({ account, filled_at }) => (
+            <View key={account.user_id} className="py-1 flex-row justify-between">
+              <Text>
+                <Icon name="check" size={16} color="green" /> {account.username}
+              </Text>
+              <Text>{new Date(filled_at).toLocaleString()}</Text>
+            </View>
+          ))}
+        </View>
 
-      <FilledRiskForm
-        formData={formData}
-        handleSubmit={() => {}}
-        projectName={project.project_name}
-        projectId={project.project_id}
-        task={task}
-        scaffoldType={scaffoldType}
-        taskDesc={taskDesc}
-        inspectOnly={true}
-      />
-      <TouchableOpacity
-        className="rounded-md py-3 my-2 items-center bg-[#008000]"
-        onPress={handleConfirmation}
-      >
-        <Text className="text-white text-lg align-middle font-bold">
-          Merkitse valmiiksi
-        </Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <FilledRiskForm
+          formData={formData}
+          handleSubmit={() => {}}
+          projectName={project.project_name}
+          projectId={project.project_id}
+          task={task}
+          scaffoldType={scaffoldType}
+          taskDesc={taskDesc}
+          inspectOnly={true}
+        />
+        <TouchableOpacity
+          className="rounded-md py-3 my-2 items-center bg-[#008000]"
+          onPress={handleConfirmation}
+        >
+          <Text className="text-white text-lg align-middle font-bold">
+            {t('formvalidation.done')}
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
 
       {/* Confirmation Modal */}
       <Modal
@@ -131,9 +146,9 @@ const FormValidationView = () => {
             <View className="flex-row justify-end space-x-4">
               <TouchableOpacity
                 onPress={() => setShowConfirmModal(false)}
-                className="bg-gray-500 px-4 py-2 rounded"
+                className="border px-4 py-2 rounded"
               >
-                <Text className="text-white">{t('formvalidation.cancel')}</Text>
+                <Text className="text-black">{t('formvalidation.cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleConfirm}
@@ -158,7 +173,7 @@ const FormValidationView = () => {
           }}
         />
       )}
-  </View>
+    </View>
   );
 }
 

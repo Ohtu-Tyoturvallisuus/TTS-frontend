@@ -46,7 +46,9 @@
     "participants": "Participants",
     "confirmMessage": "Have all participants confirmed?",
     "cancel": "Cancel",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "done": "Done",
+    "successMessage": "Last-minute hazard identification completed"
   },
   "filledriskform": {
     "titlewithrisks": "Noted risks according to the form:",

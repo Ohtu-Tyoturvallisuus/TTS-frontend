@@ -47,10 +47,12 @@
   },
   "formvalidation": {
     "listOfParticipants": "Osallistujat",
-    "participants": "Osallistujia",
+    "participants": "Osallistujat",
     "confirmMessage": "Kaikki paikallaolijat ovat vahvistaneet?",
     "cancel": "Peruuta",
-    "confirm": "Vahvista"
+    "confirm": "Vahvista",
+    "done": "Valmis",
+    "successMessage": "Viime-hetken vaarojen tunnistus suoritettu"
   },
   "general": {
     "done": "Valmis",

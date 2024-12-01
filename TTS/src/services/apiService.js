@@ -49,6 +49,22 @@ export const postNewSurvey = async (projectId, desc, task, scaffoldType) => {
   return response.data;
 };
 
+export const patchSurveyCompletion = async (surveyId, participants_count) => {
+  const token = await AsyncStorage.getItem('access_token');
+  const url = API_BASE_URL + `surveys/${surveyId}/`;
+  console.log('patchSurveyCompletion:', url);
+  const response = await axios.patch(url, {
+    is_completed: true,
+    number_of_participants: participants_count,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export const postRiskNotes = async (surveyId, riskNotes) => {
   const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + `surveys/${surveyId}/risk_notes/`;
