@@ -5,9 +5,11 @@ import { useTranslation } from 'react-i18next';
 import ProjectSurveyList from './ProjectSurveyList';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import CloseButton from '@components/buttons/CloseButton';
+import { useFormContext } from '@contexts/FormContext';
 
 const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
   const { selectedProject: project, setSelectedSurveyURL } = useContext(ProjectSurveyContext);
+  const { resetFormData } = useFormContext();
   const { t } = useTranslation();
 
   if (project) {
@@ -31,6 +33,7 @@ const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
                 onPress={() => {
                   setSelectedSurveyURL(null);
                   console.log('Uusi kartoitus, surveyUrl on null');
+                  resetFormData();
                   navigateToRiskForm();
                 }}
               >
@@ -39,7 +42,7 @@ const ProjectModal = ({ visible, onClose, navigateToRiskForm }) => {
               <ProjectSurveyList navigateToRiskForm={navigateToRiskForm}/>
             </>
           ) : (
-            <Text>{t('projectmodal.loading')}</Text>
+            <Text>{t('general.loading')}</Text>
           )}
           <CloseButton onPress={onClose}/>
         </View>
