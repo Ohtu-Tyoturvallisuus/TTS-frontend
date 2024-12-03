@@ -95,7 +95,7 @@ const FormValidationView = () => {
             <Text className="text-lg font-bold">
               {t('formvalidation.listOfParticipants')} ({accounts.length}):
             </Text>
-            {loading && <ActivityIndicator className='ml-1' size="small" color="grey" />}
+            {loading && <ActivityIndicator testID="loading-indicator" className='ml-1' size="small" color="grey" />}
           </View>
           {accounts.map(({ account, filled_at }) => (
             <View key={account.user_id} className="py-1 flex-row justify-between">
