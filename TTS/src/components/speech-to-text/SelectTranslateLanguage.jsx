@@ -74,11 +74,12 @@ const filteredCountries = countries.filter(country =>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='slide'>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <View style={styles.container}>
+          <View style={[styles.container, {marginTop: 40}]}> 
             <Text style={styles.label}>{t('selecttranslate.selectLanguages')}:</Text>
             <TextInput
               style={styles.searchInput}
               placeholder={t('selecttranslate.searchLanguages')}
+              placeholderTextColor={'#A9A9A9'}
               value={searchText}
               onChangeText={setSearchText}
             />

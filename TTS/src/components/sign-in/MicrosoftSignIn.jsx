@@ -120,7 +120,7 @@ const MicrosoftSignIn = () => {
       ) : (
         <TouchableOpacity 
           onPress={() => promptAsync()} 
-          className="bg-[#ef7d00] rounded-lg justify-center items-center py-4 px-6 w-3/4 my-2"
+          className= "bg-orange rounded-lg justify-center items-center py-4 px-6 my-2 w-64"
         >
           <Text className="text-white font-bold">{t('microsoftsignin.signInText')}</Text>
         </TouchableOpacity>

@@ -68,7 +68,7 @@ const SignIn = () => {
 
   return (
     <View style={styles.outerContainer}>
-      <TouchableOpacity onPress={() => setModalVisible(true)} className="bg-orange rounded-lg justify-center items-center py-4 px-6 my-2">
+      <TouchableOpacity onPress={() => setModalVisible(true)} className="bg-black rounded-lg justify-center items-center py-4 px-6 my-2 w-64">
         <Text className="text-white font-bold">{t('signin.guestSignInButton')}</Text>
       </TouchableOpacity>
 
@@ -79,7 +79,7 @@ const SignIn = () => {
               <Text className="pb-1">{t('signin.first_name')}</Text>
               <TextInput
                 placeholder={t('signin.first_name')}
-                placeholderTextColor="#C0C0C0"
+                placeholderTextColor="#A9A9A9"
                 onChangeText={formik.handleChange('first_name')}
                 value={formik.values.first_name}
                 style={[
@@ -96,7 +96,7 @@ const SignIn = () => {
               <Text className="pb-1">{t('signin.last_name')}</Text>
               <TextInput
                 placeholder={t('signin.last_name')}
-                placeholderTextColor="#C0C0C0"
+                placeholderTextColor="#A9A9A9"
                 onChangeText={formik.handleChange('last_name')}
                 value={formik.values.last_name}
                 style={[
