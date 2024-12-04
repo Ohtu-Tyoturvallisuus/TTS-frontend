@@ -3,7 +3,7 @@
 <p>
   <!-- Main branch badges -->
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-main.yml" alt="Continuous Integration">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-main.yml/badge.svg?branch=main"/>
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-main.yml/badge.svg"/>
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml/badge.svg"/>
@@ -18,7 +18,7 @@
   <!-- UAT branch badges -->
   <br />
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-uat.yml" alt="Continuous Integration">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-uat.yml/badge.svg?branch=uat"/>
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-uat.yml/badge.svg"/>
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml/badge.svg"/>
@@ -30,7 +30,7 @@
   <!-- Production branch badges -->
   <br />
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-production.yml" alt="Continuous Integration">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-production.yml/badge.svg?branch=production"/>
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-production.yml/badge.svg"/>
   </a>
   <!-- TODO: Kun tuotantoon julkaistaan niin tämän kommentin voi poistaa
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-prod.yml" alt="Continuous Deployment">
