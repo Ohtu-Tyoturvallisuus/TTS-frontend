@@ -12,7 +12,6 @@ jest.mock('@services/imageUpload', () => ({
 }));
 
 describe('submitForm', () => {
-  const mockSetShowSuccessAlert = jest.fn();
   const mockTranslate = jest.fn().mockImplementation(key => key);
 
   const mockAlert = jest.fn();
@@ -46,7 +45,7 @@ describe('submitForm', () => {
     uploadImages.mockResolvedValueOnce(['blob1', 'blob2']);
     postRiskNotes.mockResolvedValueOnce();
 
-    await submitForm(project, taskInfo, formData, mockSetShowSuccessAlert, mockTranslate);
+    await submitForm(project, taskInfo, formData, mockTranslate);
 
     expect(postNewSurvey).toHaveBeenCalledWith(
       project.id,
@@ -69,8 +68,6 @@ describe('submitForm', () => {
         ],
       }),
     ]));
-
-    expect(mockSetShowSuccessAlert).toHaveBeenCalledWith(true);
   });
 
   it('should throw an error if fields are empty', async () => {
@@ -80,10 +77,8 @@ describe('submitForm', () => {
       scaffold_type: 'Work Scaffold',
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
       .rejects.toThrow('Some fields are empty');
-    
-    expect(mockSetShowSuccessAlert).not.toHaveBeenCalled();
   });
 
   it('should throw an error if a task field is null', async () => {
@@ -93,7 +88,7 @@ describe('submitForm', () => {
       scaffold_type: 'Scaffold Type',
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
       .rejects.toThrow('Some fields are empty');
   });
 
@@ -104,7 +99,7 @@ describe('submitForm', () => {
       scaffold_type: 'Scaffold Type',
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
       .rejects.toThrow('Some fields are empty');
   });
 
@@ -115,7 +110,7 @@ describe('submitForm', () => {
       scaffold_type: [6],
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
       .rejects.toThrow('Some fields are empty');
   });
 
@@ -131,7 +126,7 @@ describe('submitForm', () => {
     postNewSurvey.mockResolvedValueOnce({ id: 123 });
     postRiskNotes.mockResolvedValueOnce();
 
-    await submitForm(project, taskInfo, newFormData, mockSetShowSuccessAlert, mockTranslate);
+    await submitForm(project, taskInfo, newFormData, mockTranslate);
 
     expect(postNewSurvey).toHaveBeenCalledWith(
       project.id,
@@ -149,27 +144,23 @@ describe('submitForm', () => {
         images: [],
       }),
     ]));
-
-    expect(mockSetShowSuccessAlert).toHaveBeenCalledWith(true);
   });
 
   it('should alert on submission error', async () => {
     postNewSurvey.mockRejectedValueOnce(new Error('Network Error'));
 
-    await expect(submitForm(project, taskInfo, formData, mockSetShowSuccessAlert, mockTranslate))
+    await expect(submitForm(project, taskInfo, formData, mockTranslate))
       .rejects.toThrow('Network Error');
 
-    expect(mockSetShowSuccessAlert).not.toHaveBeenCalled();
     expect(mockAlert).toHaveBeenCalledWith(mockTranslate('riskform.errorSubmitting'));
   });
 
   it('should alert for empty fields error', async () => {
     postNewSurvey.mockImplementationOnce(() => Promise.reject(new Error('Some fields are empty')));
 
-    await expect(submitForm(project, taskInfo, formData, mockSetShowSuccessAlert, mockTranslate)).
+    await expect(submitForm(project, taskInfo, formData, mockTranslate)).
       rejects.toThrow('Some fields are empty');
 
-    expect(mockSetShowSuccessAlert).not.toHaveBeenCalled();
     expect(mockAlert).toHaveBeenCalledWith(mockTranslate('riskform.emptyFieldsError'));
   });
 
@@ -191,7 +182,7 @@ describe('submitForm', () => {
   
     postNewSurvey.mockResolvedValueOnce({ id: 123 });
   
-    await submitForm(project, newTaskInfo, newFormData, mockSetShowSuccessAlert, mockTranslate);
+    await submitForm(project, newTaskInfo, newFormData, mockTranslate);
 
     expect(postRiskNotes).toHaveBeenCalledWith(123, expect.arrayContaining([
       expect.objectContaining({

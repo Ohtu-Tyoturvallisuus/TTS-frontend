@@ -9,10 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
 import CombinedSignIn from '@components/sign-in/CombinedSignIn';
-import RiskFormScreen from '@components/risk-form/RiskFormScreen';
 import Settings from '@components/settings/Settings';
 import { NavigationContext } from '@contexts/NavigationContext';
 import JoinSurvey from '@components/risk-form/JoinSurvey';
+import FormValidationView from '@components/risk-form/FormValidationView';
+import RiskForm from '@components/risk-form/RiskForm';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -42,7 +43,7 @@ const Main = () => {
         console.error('Error retrieving user information', error);
       }
     };
-  
+
     fetchUserInfo();
   }, [setUsername, setIsGuest]);
 
@@ -56,17 +57,32 @@ const Main = () => {
   const MainStack = () => (
     <Stack.Navigator>
       {username ? (
-        <> 
-          <Stack.Screen name='ProjectList' component={ProjectList} options={{ headerShown: false }} />
-          <Stack.Screen name="RiskForm" options={{ headerShown: false }} >
-            {(props) => <RiskFormScreen {...props} />}
-          </Stack.Screen>
+        <>
+          <Stack.Screen
+            name='ProjectList'
+            component={ProjectList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RiskForm"
+            component={RiskForm}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="FormValidationView"
+            component={FormValidationView}
+            options={{ headerShown: false }}
+          />
         </>
-        ) : (
-          <Stack.Screen name='CombinedSignIn' component={CombinedSignIn} options={{ headerShown: false }} />
-        )}
+      ) : (
+        <Stack.Screen
+          name='CombinedSignIn'
+          component={CombinedSignIn}
+          options={{ headerShown: false }}
+        />
+      )}
     </Stack.Navigator>
-  )
+  );
 
   return (
     <View className="bg-white flex-1 justify-center pt-6">
@@ -76,7 +92,7 @@ const Main = () => {
       />
       }
         <View className="flex-1">
-          <Tab.Navigator 
+          <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
@@ -103,10 +119,10 @@ const Main = () => {
             })}
           >
             {!isGuest && (
-              <Tab.Screen 
-                name="Main" 
-                component={MainStack} 
-                options={{ title: t('main.navigationMain') }} 
+              <Tab.Screen
+                name="Main"
+                component={MainStack}
+                options={{ title: t('main.navigationMain') }}
               />
             )}
             {username && (
@@ -116,10 +132,10 @@ const Main = () => {
                 options={{ title: t('main.navigationJoinSurvey') }}
               />
             )}
-            <Tab.Screen 
-              name="Settings" 
-              component={Settings} 
-              options={{ title: t('main.navigationSettings') }} 
+            <Tab.Screen
+              name="Settings"
+              component={Settings}
+              options={{ title: t('main.navigationSettings') }}
             />
           </Tab.Navigator>
         </View>

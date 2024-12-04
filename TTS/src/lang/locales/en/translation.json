@@ -41,6 +41,15 @@
     "next": "Next",
     "confirm": "Confirm"
   },
+  "formValidation": {
+    "listOfParticipants": "Participants",
+    "participants": "Participants",
+    "confirmMessage": "Have all participants acknowledged the risks?",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "done": "Done",
+    "successMessage": "Last-minute hazard identification completed"
+  },
   "filledriskform": {
     "titlewithrisks": "Noted risks according to the form:",
     "norisks": "All risks marked as not relevant. Are you sure you want to continue?",
@@ -53,7 +62,7 @@
     "confirm": "Hazard identification complete",
     "close": "Close without confirming",
     "closeInfo": "You are about to close the hazard identification form without confirming. Are you sure you want to continue?",
-    "accessCode": "Form code",
+    "accessCode": "Join code",
     "confirming": "Sending confirmation...",
     "alert": "Failed to send confirmation",
     "successTitle": "Hazard identification confirmed successfully!",
@@ -213,7 +222,7 @@
     "selectFromGallery": "Select from gallery"
   },
   "joinsurvey": {
-    "insertCode": "Insert form code",
+    "insertCode": "Insert form access code",
     "error": "Code is missing",
     "error_length": "Code must be 6 characters long",
     "insertPlaceholder": "Code",

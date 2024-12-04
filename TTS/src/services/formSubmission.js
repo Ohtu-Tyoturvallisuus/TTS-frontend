@@ -32,10 +32,10 @@ const validateTaskInfo = (fields) => {
 };
 
 /**
- * Submits a form by validating fields, posting a new survey instance, uploading images, 
+ * Submits a form by validating fields, posting a new survey instance, uploading images,
  * and posting risk notes. Displays a success alert upon successful submission.
  */
-export const submitForm = async (project, taskInfo, formData, setShowSuccessAlert, t) => {
+export const submitForm = async (project, taskInfo, formData, t) => {
   try {
     const validatedSurveyData = validateTaskInfo(taskInfo);
 
@@ -76,7 +76,6 @@ export const submitForm = async (project, taskInfo, formData, setShowSuccessAler
     }));
 
     await postRiskNotes(surveyId, riskNotes);
-    setShowSuccessAlert(true);
     return response;
   } catch (error) {
     console.error('Error during form submission:', error);

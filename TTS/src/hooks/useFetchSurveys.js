@@ -11,13 +11,13 @@ const useFetchSurveys = (projectId) => {
       setLoading(false);
       return;
     }
-    
+
     const loadSurveys = async () => {
       setLoading(true);
       setError(null);
       try {
         const project = await fetchProject(projectId);
-        console.log('Project:', project);
+        console.log('Project:', project.projectId);
         setSurveys(project.surveys || []);
       } catch (error) {
         setError(error.message);

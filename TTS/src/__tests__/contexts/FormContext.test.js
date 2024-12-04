@@ -60,6 +60,20 @@ const TestComponent = () => {
   );
 };
 
+const TranslationTestComponent = () => {
+  const { updateTranslations } = useFormContext();
+  const { Button } = require('react-native');
+
+  return (
+    <Button
+      title="Test Translations"
+      onPress={() =>
+        updateTranslations('personal_protection', { key: 'value' })
+      }
+    />
+  );
+};
+
 describe('FormProvider Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -134,5 +148,78 @@ describe('FormProvider Component', () => {
     expect(getByTestId('personal_protection_desc').props.children).toBe('');
   
     consoleErrorSpy.mockRestore();
+  });
+
+  it('updates translations correctly with valid input', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+  
+    const { getByText } = render(
+      <FormProvider>
+        <TranslationTestComponent />
+      </FormProvider>
+    );
+  
+    fireEvent.press(getByText('Test Translations'));
+  
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Updating personal_protection.translations')
+    );
+  
+    consoleLogSpy.mockRestore();
+  });
+});
+
+describe('FormProvider - resetFormData', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const ResetFormComponent = () => {
+    const { resetFormData } = useFormContext();
+    const { Button } = require('react-native');
+
+    return <Button title="Reset Form" onPress={resetFormData} />;
+  };
+
+  it('resets form data to initial values', () => {
+    const { getByTestId, getByText } = render(
+      <FormProvider>
+        <TestComponent />
+        <ResetFormComponent />
+      </FormProvider>
+    );
+
+    fireEvent.changeText(getByTestId('taskInput'), 'New Task');
+    fireEvent.changeText(getByTestId('scaffoldTypeInput'), 'New Scaffold Type');
+    fireEvent.changeText(getByTestId('taskDescInput'), 'New Task Description');
+    fireEvent.press(getByText('Update Description'));
+
+    expect(getByTestId('task').props.children).toBe('New Task');
+    expect(getByTestId('scaffoldType').props.children).toBe('New Scaffold Type');
+    expect(getByTestId('taskDesc').props.children).toBe('New Task Description');
+    expect(getByTestId('personal_protection_desc').props.children).toBe('Updated Description');
+
+    fireEvent.press(getByText('Reset Form'));
+
+    expect(getByTestId('task').props.children).toStrictEqual([]);
+    expect(getByTestId('scaffoldType').props.children).toStrictEqual([]);
+    expect(getByTestId('taskDesc').props.children).toBe('');
+    expect(getByTestId('personal_protection_desc').props.children).toBe('');
+  });
+
+  it('logs a message when resetFormData is called', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+
+    const { getByText } = render(
+      <FormProvider>
+        <ResetFormComponent />
+      </FormProvider>
+    );
+
+    fireEvent.press(getByText('Reset Form'));
+
+    expect(consoleLogSpy).toHaveBeenCalledWith('Resetting form data context');
+
+    consoleLogSpy.mockRestore();
   });
 });

@@ -15,7 +15,7 @@ const MyObservations = () => {
 
   return (
     <>
-      <SettingsButton 
+      <SettingsButton
         onPress={() => {
           setModalVisible(true)
         }}
@@ -29,13 +29,13 @@ const MyObservations = () => {
       >
         <View className="flex items-center justify-center">
           <ScrollView
-            className="bg-white flex-grow p-5 w-full" 
+            className="bg-white flex-grow p-5 w-full"
             contentContainerStyle={{ paddingBottom: 30 }}
           >
             <Text className="text-xl font-bold mb-4" style={{ marginTop: 40 }}>
               {t('myobservations.title')}
             </Text>
-            {!loading && userSurveys.length === 0 && 
+            {!loading && userSurveys.length === 0 &&
               <View style={{borderWidth: 1, borderRadius: 5, padding: 10}}>
                 <Text className='text-lg font-bold'>{t('myobservations.noObservations')}</Text>
               </View>
@@ -54,14 +54,13 @@ const MyObservations = () => {
                     taskDesc={survey.description}
                     scaffoldType={survey.scaffold_type}
                     task={survey.task}
-                    accessCode={survey.access_code}
                   />
                 </View>
               );
             })}
-            <Loading 
-              loading={loading} 
-              error={error} 
+            <Loading
+              loading={loading}
+              error={error}
               title={t('myobservations.loading')}
             />
             <CloseButton onPress={() => setModalVisible(false)} />
