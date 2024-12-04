@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
-import { retrieveImage, joinSurvey } from '@services/apiService';
+import { joinSurvey } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 import FilledRiskNote from './FilledRiskNote';
 
@@ -25,6 +25,7 @@ const FilledRiskForm = ({
   task = null,
   scaffoldType = null,
   taskDesc = '',
+  taskDescTranslations = {},
   submitted = false,
   formattedDate = '',
   survey = {},
@@ -161,8 +162,8 @@ const FilledRiskForm = ({
               {
                 submitted ? (
                   relevantRiskNotes.length > 0 ? (
-                    relevantRiskNotes.map(([key, value]) => {
-                      const variableToUse = joined ? value.note || '' : key || '';
+                    relevantRiskNotes.map(([key, riskNote]) => {
+                      const variableToUse = joined ? riskNote.note || '' : key || '';
                       const renderTitle = () => {
                         if (!variableToUse) return '';
                         return variableToUse.startsWith('riskform.otherScaffolding')
@@ -176,9 +177,8 @@ const FilledRiskForm = ({
                         <FilledRiskNote
                           key={key}
                           renderTitle={renderTitle}
-                          value={value}
+                          riskNote={riskNote}
                           modalVisible={modalVisible}
-                          retrieveImage={retrieveImage}
                           submitted={submitted}
                         />
                       )
@@ -194,7 +194,7 @@ const FilledRiskForm = ({
                   )
                 ) : (
                   relevantRiskNotes.length > 0 ? (
-                    relevantRiskNotes.map(([key, value]) => {
+                    relevantRiskNotes.map(([key, riskNote]) => {
                       const renderTitle = () => {
                         return key.startsWith('riskform.otherScaffolding')
                           ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
@@ -207,9 +207,8 @@ const FilledRiskForm = ({
                         <FilledRiskNote
                           key={key}
                           renderTitle={renderTitle}
-                          value={value}
+                          riskNote={riskNote}
                           modalVisible={modalVisible}
-                          retrieveImage={retrieveImage}
                           submitted={submitted}
                         />
                       );
