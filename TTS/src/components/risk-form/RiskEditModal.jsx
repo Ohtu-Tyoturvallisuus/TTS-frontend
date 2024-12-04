@@ -46,6 +46,7 @@ const RiskEditModal = ({
         <TextInput
           style={styles.input}
           placeholder={t('riskmodal.extraInfo')}
+          placeholderTextColor={'#A9A9A9'}
           value={description}
           onChangeText={setDescription}
           multiline={true}

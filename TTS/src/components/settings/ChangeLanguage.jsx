@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 20,
+    width: '100%',
   },
   language: {
     fontSize: 20,

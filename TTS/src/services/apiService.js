@@ -49,6 +49,22 @@ export const postNewSurvey = async (projectId, desc, task, scaffoldType) => {
   return response.data;
 };
 
+export const patchSurveyCompletion = async (surveyId, participants_count) => {
+  const token = await AsyncStorage.getItem('access_token');
+  const url = API_BASE_URL + `surveys/${surveyId}/`;
+  console.log('patchSurveyCompletion:', url);
+  const response = await axios.patch(url, {
+    is_completed: true,
+    number_of_participants: participants_count,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export const postRiskNotes = async (surveyId, riskNotes) => {
   const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + `surveys/${surveyId}/risk_notes/`;
@@ -224,6 +240,32 @@ export const getUserProfile = async ({ setUsername, setEmail, accessToken }) => 
 export const getUserSurveys = async (accessToken) => {
   const url = API_BASE_URL + 'filled-surveys/'
   const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    },
+  });
+  return response.data;
+};
+
+export const getSurveyByAccessCode = async (access_code) => {
+  const url = API_BASE_URL + 'surveys/code/' + access_code;
+  console.log('Getting survey by access code:', access_code);
+  const response = await axios.get(url);
+  return response.data;
+};
+
+// Get accounts that have acknowledged risks by survey_id
+export const getAccountsBySurvey = async (surveyId) => {
+  const url = API_BASE_URL + 'survey-accounts/' + surveyId;
+  console.log('Getting accounts that have acknowledged risks by survey_id:', surveyId);
+  const response = await axios.get(url);
+  return response.data;
+}
+
+export const joinSurvey = async ({access_code, accessToken}) => {
+  const url = API_BASE_URL + `surveys/join/${access_code}/`;
+  console.log('Joining survey with access code:', access_code);
+  const response = await axios.post(url, {}, {
     headers: {
       Authorization: `Bearer ${accessToken}`
     },

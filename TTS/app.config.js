@@ -4,7 +4,7 @@ export default {
   name: "HazardHunt",
   slug: "HazardHunt",
   scheme: ["hazardhunt"],
-  version: "1.0.5",
+  version: "1.0.6",
   owner: "telinekataja",
   orientation: "portrait",
   icon: "./assets/HazardHunt-icon.png",
@@ -38,7 +38,8 @@ export default {
     package: "com.HazardHunt",
     permissions: [
       "RECORD_AUDIO",
-      "CAMERA"
+      "CAMERA",
+      "READ_MEDIA_VISUAL_USER_SELECTED"
     ]
   },
   web: {

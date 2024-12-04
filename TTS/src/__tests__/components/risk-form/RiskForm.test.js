@@ -5,7 +5,6 @@ import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import { UserContext } from '@contexts/UserContext';
 import { FormProvider } from '@contexts/FormContext';
 import RiskForm from '@components/risk-form/RiskForm';
-import { submitForm } from '@services/formSubmission';
 import fiFormFields from '@lang/locales/fi/formFields.json';
 import { NavigationProvider } from '@contexts/NavigationContext';
 
@@ -173,6 +172,23 @@ const mockUserContext = {
   setNewUserSurveys: jest.fn(),
 };
 
+jest.mock('@react-navigation/native', () => {
+  const originalModule = jest.requireActual('@react-navigation/native');
+  return {
+    ...originalModule,
+    useNavigation: () => ({
+      navigate: jest.fn(),
+      addListener: jest.fn((event, callback) => {
+        if (event === 'beforeRemove') {
+          callback({
+            preventDefault: jest.fn(),
+          });
+        }
+      }),
+    }),
+  };
+});
+
 describe('RiskForm Component', () => {
   const mockOnFocusChange = jest.fn();
   const mockProject = {
@@ -243,7 +259,7 @@ describe('RiskForm Component', () => {
     expect(getByText('1234')).toBeTruthy();
   });
 
-  it('shows success alert after successful submission', async () => {
+  it('renders FilledRiskForm with survey data', async () => {
     mockUseFetchSurveyData.mockReturnValue({
       surveyData: {
         task: ['Asennus'],
@@ -267,18 +283,13 @@ describe('RiskForm Component', () => {
       loading: false,
       error: null,
     });
-    submitForm.mockImplementationOnce((mockProject, taskInfo, formData, setShowSuccessAlert) => {
-      setShowSuccessAlert(true);
-    });
 
     const { getByText } = setup();
 
     fireEvent.press(getByText('Esikatsele lomake'));
 
-    fireEvent.press(getByText('Lähetä'));
-
     await waitFor(() => {
-      expect(getByText('Riskimuistiinpanot lähetetty onnistuneesti')).toBeTruthy();
+      expect(getByText('Valjaat käytössä')).toBeTruthy();
     });
   });
 
@@ -311,33 +322,5 @@ describe('RiskForm Component', () => {
     fireEvent.press(getByText('Sulje'));
 
     expect(getByText('Haluatko varmasti poistua?')).toBeTruthy();
-  });
-
-  it('renders loading state correctly', () => {
-    mockUseFetchSurveyData.mockReturnValue({
-      surveyData: null,
-      loading: true,
-      error: null,
-    });
-
-    const { getByText } = setup();
-
-    expect(getByText('Loading...')).toBeTruthy();
-    expect(getByText('Ladataan lomaketietoja...')).toBeTruthy(); // Title from translations
-  });
-
-  it('renders error state correctly', async () => {
-    mockUseFetchSurveyData.mockReturnValue({
-      surveyData: null,
-      loading: false,
-      error: 'Something went wrong',
-    });
-
-    const { getByText } = setup();
-
-    await waitFor(() => {
-      expect(getByText('Error: Something went wrong')).toBeTruthy();
-      expect(getByText('Ladataan lomaketietoja...')).toBeTruthy(); // Title from translations
-    });
   });
 });

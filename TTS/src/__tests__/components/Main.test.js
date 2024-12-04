@@ -79,10 +79,11 @@ describe('Main Component', () => {
   const mockSetUsername = jest.fn();
   const mockSetSelectedProject = jest.fn();
   const mockSetAccessToken = jest.fn();
+  const mockSetIsGuest = jest.fn();
 
   const renderWithContext = (username = null, currentLocation=null) => {
     return render(
-      <UserContext.Provider value={{ username, setUsername: mockSetUsername, setAccessToken: mockSetAccessToken }}>
+      <UserContext.Provider value={{ username, setUsername: mockSetUsername, setAccessToken: mockSetAccessToken, setIsGuest: mockSetIsGuest }}>
         <ProjectSurveyContext.Provider value={{ setSelectedProject: mockSetSelectedProject }}>
           <NavigationContainer>
             <NavigationContext.Provider value={{ currentLocation }}>
@@ -149,6 +150,16 @@ describe('Main Component', () => {
 
     await act(async () => {
       expect(getByText('Mocked Projects List')).toBeTruthy();
+    });
+  });
+  it('sets isGuest to true when is_guest is true in AsyncStorage', async () => {
+    AsyncStorage.getItem.mockImplementation(async (key) => {
+      if (key === 'is_guest') return 'true';
+      return null;
+    });
+    renderWithContext();
+    await waitFor(() => {
+      expect(mockSetIsGuest).toHaveBeenCalledWith(true);
     });
   });
 });

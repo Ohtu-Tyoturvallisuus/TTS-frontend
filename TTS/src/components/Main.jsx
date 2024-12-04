@@ -9,16 +9,18 @@ import { useTranslation } from 'react-i18next';
 import { UserContext } from '@contexts/UserContext';
 import ProjectList from '@components/project-list/ProjectList';
 import CombinedSignIn from '@components/sign-in/CombinedSignIn';
-import RiskFormScreen from '@components/risk-form/RiskFormScreen';
 import Settings from '@components/settings/Settings';
 import { NavigationContext } from '@contexts/NavigationContext';
+import JoinSurvey from '@components/risk-form/JoinSurvey';
+import FormValidationView from '@components/risk-form/FormValidationView';
+import RiskForm from '@components/risk-form/RiskForm';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Main = () => {
   const { currentLocation } = useContext(NavigationContext);
-  const { username, setUsername, setAccessToken } = useContext(UserContext)
+  const { username, setUsername, setAccessToken, isGuest, setIsGuest } = useContext(UserContext)
   const { t } = useTranslation();
   const [showImage, setShowImage] = useState(true);
 
@@ -33,13 +35,17 @@ const Main = () => {
         if (storedAccessToken) {
           setAccessToken(storedAccessToken);
         }
+        const guestStatus = await AsyncStorage.getItem('is_guest');
+        if (guestStatus === 'true') {
+          setIsGuest(true);
+        }
       } catch (error) {
         console.error('Error retrieving user information', error);
       }
     };
-  
+
     fetchUserInfo();
-  }, [setUsername]);
+  }, [setUsername, setIsGuest]);
 
   useEffect(() => {
     console.log('Location set to:', currentLocation)
@@ -51,17 +57,32 @@ const Main = () => {
   const MainStack = () => (
     <Stack.Navigator>
       {username ? (
-        <> 
-          <Stack.Screen name='ProjectList' component={ProjectList} options={{ headerShown: false }} />
-          <Stack.Screen name="RiskForm" options={{ headerShown: false }} >
-            {(props) => <RiskFormScreen {...props} />}
-          </Stack.Screen>
+        <>
+          <Stack.Screen
+            name='ProjectList'
+            component={ProjectList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RiskForm"
+            component={RiskForm}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="FormValidationView"
+            component={FormValidationView}
+            options={{ headerShown: false }}
+          />
         </>
-        ) : (
-          <Stack.Screen name='CombinedSignIn' component={CombinedSignIn} options={{ headerShown: false }} />
-        )}
+      ) : (
+        <Stack.Screen
+          name='CombinedSignIn'
+          component={CombinedSignIn}
+          options={{ headerShown: false }}
+        />
+      )}
     </Stack.Navigator>
-  )
+  );
 
   return (
     <View className="bg-white flex-1 justify-center pt-6">
@@ -71,12 +92,15 @@ const Main = () => {
       />
       }
         <View className="flex-1">
-          <Tab.Navigator 
+          <Tab.Navigator
             screenOptions={({ route }) => ({
               tabBarIcon: ({ focused, color, size }) => {
                 let iconName;
                 if (route.name === 'Main') {
                   iconName = focused ? 'home' : 'home-outline';
+                }
+                if (route.name === 'JoinSurvey') {
+                  iconName = focused ? 'clipboard' : 'clipboard-outline';
                 }
                 if (route.name === 'Settings') {
                   iconName = focused ? 'settings' : 'settings-outline';
@@ -87,22 +111,31 @@ const Main = () => {
               tabBarInactiveTintColor: "gray",
               tabBarStyle: [
                 {
-                  "display": "flex"
+                  "display": currentLocation === 'RiskForm' ? 'none' : 'flex'
                 },
                 null
               ],
               headerShown: false,
             })}
           >
-            <Tab.Screen 
-              name="Main" 
-              component={MainStack} 
-              options={{ title: t('main.navigationMain') }} 
-            />
-            <Tab.Screen 
-              name="Settings" 
-              component={Settings} 
-              options={{ title: t('main.navigationSettings') }} 
+            {!isGuest && (
+              <Tab.Screen
+                name="Main"
+                component={MainStack}
+                options={{ title: t('main.navigationMain') }}
+              />
+            )}
+            {username && (
+              <Tab.Screen
+                name="JoinSurvey"
+                component={JoinSurvey}
+                options={{ title: t('main.navigationJoinSurvey') }}
+              />
+            )}
+            <Tab.Screen
+              name="Settings"
+              component={Settings}
+              options={{ title: t('main.navigationSettings') }}
             />
           </Tab.Navigator>
         </View>

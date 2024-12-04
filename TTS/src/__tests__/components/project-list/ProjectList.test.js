@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContext } from '@contexts/NavigationContext';
 import { ProjectSurveyContext } from '@contexts/ProjectSurveyContext';
 import ProjectsList from '@components/project-list/ProjectList';
 import useFetchProjects from '@hooks/useFetchProjects';
@@ -92,13 +93,16 @@ jest.mock('@components/project-list/ProjectModal', () => jest.fn(({ visible, onC
 
 describe('ProjectsList Component', () => {
   const mockSetSelectedProject = jest.fn();
+  const mockSetCurrentLocation = jest.fn();
 
   const setup = () => {
     return render(
       <NavigationContainer>
-        <ProjectSurveyContext.Provider value={{ setSelectedProject: mockSetSelectedProject }}>
-            <ProjectsList />
-        </ProjectSurveyContext.Provider>
+        <NavigationContext.Provider value={{ setCurrentLocation: mockSetCurrentLocation }}>
+          <ProjectSurveyContext.Provider value={{ setSelectedProject: mockSetSelectedProject }}>
+              <ProjectsList />
+          </ProjectSurveyContext.Provider>
+        </NavigationContext.Provider>
       </NavigationContainer>
     );
   };

@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
   const [email, setEmail] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [newUserSurveys, setNewUserSurveys] = useState(false);
+  const [joinedSurvey, setJoinedSurvey] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
 
   return (
@@ -18,6 +19,7 @@ export const UserProvider = ({ children }) => {
         email, setEmail,
         accessToken, setAccessToken,
         newUserSurveys, setNewUserSurveys,
+        joinedSurvey, setJoinedSurvey,
         isGuest, setIsGuest,
       }}
     >

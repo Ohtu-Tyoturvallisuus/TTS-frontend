@@ -3,6 +3,8 @@ import {
   signIn,
   fetchProjectList,
   fetchProject,
+  getAccountsBySurvey,
+  patchSurveyCompletion,
   postNewSurvey,
   postRiskNotes,
   postImages,
@@ -13,6 +15,8 @@ import {
   getUserSurveys,
   uploadAudio,
   translateText,
+  getSurveyByAccessCode,
+  joinSurvey
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -439,6 +443,67 @@ test('fetchProjectList handles empty filters correctly', async () => {
       await expect(getUserSurveys(mockToken)).rejects.toThrow('Network Error');
     });
   });
+
+  describe('getSurveyByAccessCode', () => {
+    it('should fetch a survey by access code and return the response data', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockResponseData = {
+        id: '1',
+        name: 'Survey A',
+        description: 'A test survey',
+        created_at: '2024-11-15T10:00:00',
+      };
+  
+      axios.get.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const survey = await getSurveyByAccessCode(mockAccessCode);
+  
+      expect(axios.get).toHaveBeenCalledWith(
+        expect.stringContaining(`surveys/code/${mockAccessCode}`)
+      );
+  
+      expect(survey).toEqual(mockResponseData);
+    });
+  
+    it('should handle errors correctly if the API call fails', async () => {
+      const mockAccessCode = 'testAccessCode';
+  
+      axios.get.mockRejectedValueOnce(new Error('Network Error'));
+  
+      await expect(getSurveyByAccessCode(mockAccessCode)).rejects.toThrow('Network Error');
+    });
+  });
+  
+  describe('joinSurvey', () => {
+    it('should join a survey using access code and return the response data', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockToken = 'mockToken';
+      const mockResponseData = { success: true, message: 'Successfully joined the survey.' };
+  
+      axios.post.mockResolvedValueOnce({ data: mockResponseData });
+  
+      const response = await joinSurvey({ access_code: mockAccessCode, accessToken: mockToken });
+  
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.stringContaining(`surveys/join/${mockAccessCode}/`),
+        {},
+        expect.objectContaining({
+          headers: { Authorization: `Bearer ${mockToken}` },
+        })
+      );
+  
+      expect(response).toEqual(mockResponseData);
+    });
+  
+    it('should handle errors correctly if the API call fails', async () => {
+      const mockAccessCode = 'testAccessCode';
+      const mockToken = 'mockToken';
+  
+      axios.post.mockRejectedValueOnce(new Error('Network Error'));
+  
+      await expect(joinSurvey({ access_code: mockAccessCode, accessToken: mockToken })).rejects.toThrow('Network Error');
+    });
+  });
 });
 
 describe('API Module - retrieveImage', () => {
@@ -480,5 +545,79 @@ describe('API Module - retrieveImage', () => {
       })
     );
     expect(result).toBeNull();
+  });
+});
+
+describe('API Module - patchSurveyCompletion', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should successfully patch survey completion', async () => {
+    const mockSurveyId = 123;
+    const mockParticipantsCount = 5;
+    const mockToken = 'mockToken';
+    const mockResponseData = { success: true, message: 'Survey marked as completed.' };
+
+    AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+    axios.patch.mockResolvedValueOnce({ data: mockResponseData });
+
+    const result = await patchSurveyCompletion(mockSurveyId, mockParticipantsCount);
+
+    expect(axios.patch).toHaveBeenCalledWith(
+      expect.stringContaining(`/surveys/${mockSurveyId}/`),
+      {
+        is_completed: true,
+        number_of_participants: mockParticipantsCount,
+      },
+      expect.objectContaining({
+        headers: { Authorization: `Bearer ${mockToken}` },
+      })
+    );
+
+    expect(result).toEqual(mockResponseData);
+  });
+
+  it('should handle errors correctly if the API call fails', async () => {
+    const mockSurveyId = 123;
+    const mockParticipantsCount = 5;
+    const mockToken = 'mockToken';
+
+    AsyncStorage.getItem.mockResolvedValueOnce(mockToken);
+    axios.patch.mockRejectedValueOnce(new Error('Network Error'));
+
+    await expect(patchSurveyCompletion(mockSurveyId, mockParticipantsCount)).rejects.toThrow('Network Error');
+  });
+});
+
+describe('API Module - getAccountsBySurvey', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should fetch accounts by survey ID and return the response data', async () => {
+    const mockSurveyId = 123;
+    const mockResponseData = [
+      { id: 'account1', name: 'User 1', acknowledged_at: '2024-12-01T10:00:00Z' },
+      { id: 'account2', name: 'User 2', acknowledged_at: '2024-12-02T11:00:00Z' },
+    ];
+
+    axios.get.mockResolvedValueOnce({ data: mockResponseData });
+
+    const result = await getAccountsBySurvey(mockSurveyId);
+
+    expect(axios.get).toHaveBeenCalledWith(
+      expect.stringContaining(`/survey-accounts/${mockSurveyId}`)
+    );
+
+    expect(result).toEqual(mockResponseData);
+  });
+
+  it('should handle errors correctly if the API call fails', async () => {
+    const mockSurveyId = 123;
+
+    axios.get.mockRejectedValueOnce(new Error('Network Error'));
+
+    await expect(getAccountsBySurvey(mockSurveyId)).rejects.toThrow('Network Error');
   });
 });
