@@ -25,9 +25,7 @@
         "appleTeamId": "intentionally_left_blank"
       },
       "android": {
-        "track": "internal",
-        "releaseStatus": "draft",
-        "changesNotSentForReview": true
+        "track": "production"
       }
     },
     "uat": {
@@ -37,7 +35,7 @@
         "appleTeamId": "intentionally_left_blank"
       },
       "android": {
-        "track": "internal",
+        "track": "alpha",
         "releaseStatus": "draft",
         "changesNotSentForReview": true
       }
