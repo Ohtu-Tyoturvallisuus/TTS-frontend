@@ -2,8 +2,8 @@
 
 <p>
   <!-- Main branch badges -->
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml" alt="Continuous Integration">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml/badge.svg?branch=main"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-main.yml" alt="Continuous Integration">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-main.yml/badge.svg"/>
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all.yml/badge.svg"/>
@@ -17,14 +17,28 @@
 
   <!-- UAT branch badges -->
   <br />
-  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml" alt="Continuous Integration">
-    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/react-native-ci.yml/badge.svg?branch=uat"/>
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-uat.yml" alt="Continuous Integration">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-uat.yml/badge.svg"/>
   </a>
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-uat.yml/badge.svg"/>
   </a>
   <a href="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend" > 
     <img src="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend/branch/uat/graph/badge.svg?token=R9CQLULY9J"/> 
+  </a>
+
+  <!-- Production branch badges -->
+  <br />
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-production.yml" alt="Continuous Integration">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-production.yml/badge.svg"/>
+  </a>
+  <!-- TODO: Kun tuotantoon julkaistaan niin tämän kommentin voi poistaa
+  <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-prod.yml" alt="Continuous Deployment">
+    <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-prod.yml/badge.svg"/>
+  </a>
+  -->
+  <a href="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend" > 
+    <img src="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend/branch/production/graph/badge.svg?token=R9CQLULY9J"/> 
   </a>
 </p>
 

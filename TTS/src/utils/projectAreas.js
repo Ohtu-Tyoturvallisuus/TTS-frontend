@@ -1,22 +1,21 @@
 const getProjectAreas = () => {
 
     return [
-      ["AS Telinekataja (Event)", "EVENT"],
-      ["AS Telinekataja (Scaf)", "SCAF"],
       ["Etelä-Suomi", "AL31"],
-      ["Hallinto", "AL90"],
-      ["Itä-Suomi", "AL53"],
-      ["Kaakkois-Suomi", "AL52"],
-      ["Kataja Event", "3100"],
-      ["Kattilaryhmä", "AL21"],
-      ["Keski-Suomi", "AL51"],
       ["Kilpilahti", "AL32"],
       ["Länsi-Suomi", "AL34"],
       ["Lounais-Suomi", "AL35"],
-      ["Pohjanmaa", "AL50"],
-      ["Pohjois-Suomi", "AL54"],
       ["Sisä-Suomi", "AL41"],
-      ["Tuotemyynti", "AL91"]
+      ["Kaakkois-Suomi", "AL52"],
+      ["Keski-Suomi", "AL51"],
+      ["Pohjanmaa", "AL50"],
+      ["Itä-Suomi", "AL53"],
+      ["Pohjois-Suomi", "AL54"],
+      ["Kattilaryhmä", "AL21"],
+      ["AS Telinekataja SCAF", "SCAF"],
+      ["AS Telinekataja EVENT", "EVENT"],
+      ["Hallinto", "AL90"],
+      ["Kataja Event", "3100"]
     ];
 };
 

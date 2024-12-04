@@ -1,4 +1,4 @@
-name: CD-HazardHunt-UAT
+name: CD-HazardHunt-Production
 
 on:
   workflow_dispatch:
@@ -89,7 +89,7 @@ jobs:
         working-directory: ./TTS
 
       - name: Build on EAS
-        run: dotenv -- eas build -p all --non-interactive --no-wait --profile uat --auto-submit
+        run: dotenv -- eas build -p all --non-interactive --no-wait --profile production --auto-submit
         working-directory: ./TTS
         env:
           EXPO_PUBLIC_EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}

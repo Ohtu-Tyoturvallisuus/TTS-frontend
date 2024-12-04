@@ -31,7 +31,7 @@ const ProjectsList = () => {
     areaFilter,
     "", // DataAreaId not in use
     searchFilter,
-    shouldFetchProjects // Fetches only if filtering criteria is given
+    shouldFetchProjects // Should be true only if some filtering criteria is given
   );
 
   useEffect(() => {
@@ -57,8 +57,11 @@ const ProjectsList = () => {
       setDropdownKey(prevKey => prevKey + 1);
       return;
     }
-    console.log('Area filter changed:', value[1]);
-    setAreaFilter(value[1]);
+    const selectedArea = projectAreas.find(area => area[0] === value);
+    if (selectedArea) {
+      console.log('Area filter changed:', selectedArea[1]);
+      setAreaFilter(selectedArea[1]);
+    }
   };
 
   const handleProjectPress = (project) => {
@@ -89,11 +92,11 @@ const ProjectsList = () => {
             <Text style={styles.title}>{t('projectlist.projects')}</Text>
             <DropdownOptions
               key={dropdownKey}
+              options={projectAreas.map(area => area[0])}
               onSelect={handleAreaFilterChange}
-              options={projectAreas}
               placeholderText={t('projectlist.chooseArea')}
             />
-            <SearchBar value={displayedSearch} onChange={handleSearchChange} area={areaFilter}/>
+            <SearchBar value={displayedSearch} onChange={handleSearchChange}/>
             {loading && (
               <View className='pt-1'>
                 <ActivityIndicator testID='loading-indicator' size='large' color="#ef7d00" />
