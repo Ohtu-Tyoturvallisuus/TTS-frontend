@@ -54,9 +54,7 @@ jobs:
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
                 },
                 "android": {
-                  "track": "internal",
-                  "releaseStatus": "draft",
-                  "changesNotSentForReview": true
+                  "track": "production"
                 }
               },
               "uat": {
@@ -66,7 +64,7 @@ jobs:
                   "appleTeamId": "${{ secrets.EAS_APPLE_TEAM_ID }}"
                 },
                 "android": {
-                  "track": "internal",
+                  "track": "alpha",
                   "releaseStatus": "draft",
                   "changesNotSentForReview": true
                 }
