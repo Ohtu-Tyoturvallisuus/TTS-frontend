@@ -7,6 +7,8 @@ import { retrieveImage } from '@services/apiService';
 const FilledRiskNote = ({ renderTitle, riskNote, modalVisible, submitted }) => {
   const [retrievedImages, setRetrievedImages] = useState([]);
   const { t } = useTranslation(['translation', 'formFields']);
+  console.log('Risknote:', riskNote);
+  console.log('RiskNote translations', riskNote.translations);
 
   useEffect(() => {
     if (modalVisible) {
@@ -33,7 +35,9 @@ const FilledRiskNote = ({ renderTitle, riskNote, modalVisible, submitted }) => {
           {renderTitle()}:
         </Text>
         <Text>
+
           {riskNote.description}
+
         </Text>
         {riskNote.images.length > 0 ? (
           <View style={styles.imageContainer}>

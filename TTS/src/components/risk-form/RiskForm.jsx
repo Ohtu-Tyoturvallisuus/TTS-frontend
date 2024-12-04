@@ -47,7 +47,7 @@ const RiskForm = () => {
   const [ showExitModal, setShowExitModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const allowNavigationRef = useRef(false);
-  const { setToLangs } = useTranslationLanguages();
+  const { fromLang, toLangs, setToLangs } = useTranslationLanguages();
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
 
@@ -97,7 +97,14 @@ const RiskForm = () => {
     console.log('Submitting:', taskInfo);
     try {
       setSubmitted(true)
-      const response = await submitForm(project, taskInfo, formData, t);
+      const response = await submitForm(
+        project,
+        taskInfo,
+        formData,
+        t,
+        fromLang,
+        toLangs
+      );
       setAccessCode(response.access_code);
       setSelectedSurveyId(response.id);
       response._j && setSubmitted(false);

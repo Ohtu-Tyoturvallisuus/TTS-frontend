@@ -32,38 +32,39 @@ const validateTaskInfo = (fields) => {
 };
 
 /**
- * Submits a form by validating fields, posting a new survey instance, uploading images,
- * and posting risk notes. Displays a success alert upon successful submission.
+ * Submits form by validating fields, posting a new survey instance, uploading images,
+ * and posting risk notes.
  */
-export const submitForm = async (project, taskInfo, formData, t) => {
+export const submitForm = async (project, taskInfo, formData, t, formLanguage, toLanguages) => {
   try {
     const validatedSurveyData = validateTaskInfo(taskInfo);
-
     // POST a new survey instance
     const response = await postNewSurvey(
       project.id,
       validatedSurveyData.description,
       validatedSurveyData.task,
-      validatedSurveyData.scaffold_type
+      validatedSurveyData.scaffold_type,
+      formLanguage,
+      toLanguages
     );
     console.log('Server response:', response);
     const surveyId = response.id;
 
     const riskNotes = await Promise.all(Object.keys(formData).map(async key => {
-      const { description, status, risk_type, images } = formData[key];
-
+      const { description, status, risk_type, images, translations } = formData[key];
+      console.log('Risknote translations:', translations);
       const trimmedDescription = (description != null ? description.trim() : '');
       const trimmedStatus = (status != null ? status.trim() : '');
 
       let blobNames = [];
       let imageDetails = [];
       if (images && images.length > 0) {
-        blobNames = await uploadImages(images, key);
+      blobNames = await uploadImages(images, key);
 
-        imageDetails = blobNames.map((blobName, index) => ({
-          blobName,
-          isLandscape: images[index]?.isLandscape || false,
-        }))
+      imageDetails = blobNames.map((blobName, index) => ({
+        blobName,
+        isLandscape: images[index]?.isLandscape || false,
+      }));
       }
 
       return {
@@ -72,6 +73,7 @@ export const submitForm = async (project, taskInfo, formData, t) => {
         status: trimmedStatus,
         risk_type: risk_type,
         images: imageDetails,
+        translations: translations || {},
       };
     }));
 

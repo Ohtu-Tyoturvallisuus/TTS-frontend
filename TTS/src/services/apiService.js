@@ -32,7 +32,7 @@ export const fetchProject = async (projectId) => {
   return response.data;
 };
 
-export const postNewSurvey = async (projectId, desc, task, scaffoldType) => {
+export const postNewSurvey = async (projectId, desc, task, scaffoldType, language, languageOptions) => {
   const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + `projects/${projectId}/surveys/`;
   console.log('postNewSurvey:', url);
@@ -40,6 +40,8 @@ export const postNewSurvey = async (projectId, desc, task, scaffoldType) => {
     description: desc,
     task: task,
     scaffold_type: scaffoldType,
+    language: language,
+    translation_languages: languageOptions,
   },
   {
     headers: {
