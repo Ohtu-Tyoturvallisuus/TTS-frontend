@@ -32,9 +32,11 @@
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-production.yml" alt="Continuous Integration">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/ci-production.yml/badge.svg?branch=production"/>
   </a>
+  <!-- TODO: Kun tuotantoon julkaistaan niin tämän kommentin voi poistaa
   <a href="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-prod.yml" alt="Continuous Deployment">
     <img src="https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/actions/workflows/eas-build-submit-all-prod.yml/badge.svg"/>
   </a>
+  -->
   <a href="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend" > 
     <img src="https://codecov.io/gh/Ohtu-Tyoturvallisuus/TTS-frontend/branch/production/graph/badge.svg?token=R9CQLULY9J"/> 
   </a>
