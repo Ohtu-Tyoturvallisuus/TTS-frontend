@@ -2,21 +2,14 @@ import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-const SearchBar = ({ value, onChange, area }) => {
+const SearchBar = ({ value, onChange }) => {
   const { t } = useTranslation();
-
-  const getPlaceholderText = () => {
-    if (area && area.length) {
-      return `${t('searchbar.placeholder')} (${area})`;
-    }
-    return `${t('searchbar.placeholder')} (kaikki alueet)`;
-  };
 
   return (
     <View className="flex items-center justify-center pt-3">
       <TextInput
         style={styles.searchInput}
-        placeholder={getPlaceholderText()}
+        placeholder={t('searchbar.placeholder')}
         placeholderTextColor="#A9A9A9"
         value={value}
         onChangeText={onChange}

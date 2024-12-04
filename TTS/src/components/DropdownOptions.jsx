@@ -44,8 +44,8 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
         );
       }}
       renderItem={(item) => {
-        if (!item || !Array.isArray(item) || item.length < 2) {
-          return null; // Handle malformed item
+        if (!item || typeof item !== 'string') {
+          return null;
         }
         return (
           <View
@@ -54,7 +54,7 @@ const DropdownOptions = ({ options = [], onSelect, placeholderText }) => {
               ...(selectedItem === item && { backgroundColor: '#ADD8E6' }),
             }}
           >
-            <Text className="flex-1 text-lg font-medium">{item[0]}, {item[1]}</Text>
+            <Text className="flex-1 text-lg font-medium">{item}</Text>
           </View>
         );
       }}
