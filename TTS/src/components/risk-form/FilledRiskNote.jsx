@@ -3,12 +3,12 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RiskImage from '@components/take-picture/Image';
 import { retrieveImage } from '@services/apiService';
+import TranslationItem from '../speech-to-text/TranslationItem';
 
-const FilledRiskNote = ({ renderTitle, riskNote, modalVisible, submitted }) => {
+const FilledRiskNote = ({ renderTitle, riskNote, modalVisible, submitted, language }) => {
   const [retrievedImages, setRetrievedImages] = useState([]);
   const { t } = useTranslation(['translation', 'formFields']);
   console.log('Risknote:', riskNote);
-  console.log('RiskNote translations', riskNote.translations);
 
   useEffect(() => {
     if (modalVisible) {
@@ -34,11 +34,19 @@ const FilledRiskNote = ({ renderTitle, riskNote, modalVisible, submitted }) => {
         <Text className="text-base font-bold">
           {renderTitle()}:
         </Text>
-        <Text>
 
-          {riskNote.description}
+        {riskNote.translations[language] ? (
+          <TranslationItem
+            langCode={language}
+            text={riskNote.translations[language]}
+          />
+        ) : (
+          <TranslationItem
+            langCode={language}
+            text={riskNote.description}
+          />
+        )}
 
-        </Text>
         {riskNote.images.length > 0 ? (
           <View style={styles.imageContainer}>
           {!retrievedImages.length ? (
