@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
   },
   container: {
     alignItems: 'center',
@@ -36,7 +35,6 @@ const styles = StyleSheet.create({
   loadingContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 40,
   },
   recordButton: {
     alignItems: 'center',
