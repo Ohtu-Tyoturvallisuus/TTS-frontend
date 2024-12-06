@@ -32,12 +32,13 @@ export const fetchProject = async (projectId) => {
   return response.data;
 };
 
-export const postNewSurvey = async (projectId, desc, task, scaffoldType, language, languageOptions) => {
+export const postNewSurvey = async (projectId, desc, descTranslations, task, scaffoldType, language, languageOptions) => {
   const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + `projects/${projectId}/surveys/`;
   console.log('postNewSurvey:', url);
   const response = await axios.post(url, {
     description: desc,
+    description_translations: descTranslations,
     task: task,
     scaffold_type: scaffoldType,
     language: language,
