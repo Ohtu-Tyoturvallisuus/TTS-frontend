@@ -25,10 +25,9 @@ const TaskInfo = ({ project, setToLangs }) => {
     setTaskDesc,
     updateTranslations,
   } = useFormContext();
-  const title = 'taskInfo';
   const { t } = useTranslation();
-  const [newTranslations, setNewTranslations] = useState({});
-  const translations = getFormData(title, 'translations');
+  const [newDescTranslations, setNewDescTranslations] = useState({});
+  const descTranslations = getFormData('taskDesc', 'translations');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { fromLang, toLangs } = useTranslationLanguages();
@@ -40,8 +39,8 @@ const TaskInfo = ({ project, setToLangs }) => {
     try {
       const { translations: result, error } = await performTranslations(taskDesc, fromLang, toLangs);
       console.log('TRANSLATIONS MADE: ', result);
-      setNewTranslations(result);
-      updateTranslations(title, result);
+      setNewDescTranslations(result);
+      updateTranslations('taskDesc', result);
       setError(error);
     } catch (err) {
       setError(err.message);
@@ -156,10 +155,10 @@ const TaskInfo = ({ project, setToLangs }) => {
       {loading ? (
         <ActivityIndicator size="large" color="#ef7d00" />
       ) : (
-        newTranslations && Object.keys(newTranslations).length > 0 ? (
-          <TranslationsView translations={newTranslations} hide={true} />
+        newDescTranslations && Object.keys(newDescTranslations).length > 0 ? (
+          <TranslationsView translations={newDescTranslations} hide={true} />
         ) : (
-          <TranslationsView translations={translations} hide={true} />
+          <TranslationsView translations={descTranslations} hide={true} />
         )
       )}
     </View>
@@ -168,6 +167,7 @@ const TaskInfo = ({ project, setToLangs }) => {
 
 const styles = StyleSheet.create({
   button: {
+    flex: 1,
     alignItems: 'center',
     borderRadius: 5,
     justifyContent: 'center',
@@ -177,8 +177,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
   disabledButton: {
     backgroundColor: 'lightgray',

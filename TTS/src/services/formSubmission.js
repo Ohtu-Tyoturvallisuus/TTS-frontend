@@ -15,6 +15,8 @@ const validateTaskInfo = (fields) => {
       if (validatedFields[key].length === 0) {
         validatedFields[key] = '';
       }
+    } else if (typeof value === 'object') {
+      validatedFields[key] = validateTaskInfo(value);
     } else {
       validatedFields[key] = '';
     }
@@ -42,6 +44,7 @@ export const submitForm = async (project, taskInfo, formData, t, formLanguage, t
     const response = await postNewSurvey(
       project.id,
       validatedSurveyData.description,
+      validatedSurveyData.descriptionTranslations,
       validatedSurveyData.task,
       validatedSurveyData.scaffold_type,
       formLanguage,
