@@ -124,8 +124,8 @@ const SpeechToTextView = ({ setDescription = null, translate = true }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
     paddingTop: 10,
   },

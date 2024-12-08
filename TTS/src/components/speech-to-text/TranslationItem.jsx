@@ -16,6 +16,11 @@ const TranslationItem = ({ langCode, text }) => {
 };
 
 const styles = StyleSheet.create({
+  countryFlag: {
+    left: 0,
+    position: 'absolute',
+    top: 0,
+  },
   textContainer: {
     backgroundColor: '#f0f0f0',
     borderColor: '#c5c6c8',
@@ -27,11 +32,6 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     position: 'relative',
     width: '90%',
-  },
-  countryFlag: {
-    left: 0,
-    position: 'absolute',
-    top: 0,
   },
   translatedText: {
     paddingHorizontal: 10,

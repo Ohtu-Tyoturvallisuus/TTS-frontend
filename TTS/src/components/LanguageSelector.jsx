@@ -40,22 +40,22 @@ const LanguageSelector = ({ langOptions, onSelect}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'flex-start',
     padding: 5,
   },
   flagContainer: {
-    padding: 5,
-    marginHorizontal: 5,
+    borderColor: 'transparent',
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: 'transparent',
+    marginHorizontal: 5,
+    padding: 5,
   },
   selectedFlag: {
-    borderColor: '#ef7d00',
     backgroundColor: '#fff8f0',
+    borderColor: '#ef7d00',
   },
 });
 
