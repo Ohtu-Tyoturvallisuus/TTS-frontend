@@ -52,7 +52,7 @@
     "cancel": "Peruuta",
     "confirm": "Vahvista",
     "done": "Valmis",
-    "successMessage": "Viime-hetken vaarojen tunnistus suoritettu"
+    "successMessage": "Viime hetken vaarojen tunnistus suoritettu"
   },
   "general": {
     "done": "Valmis",
@@ -232,7 +232,7 @@
     "loading": "Liitytään..."
   },
   "taskinfo": {
-    "translate": "Käännä teksti"
+    "translate": "Käännä"
   },
   "translationsview": {
     "hide": "Piilota käännökset",
