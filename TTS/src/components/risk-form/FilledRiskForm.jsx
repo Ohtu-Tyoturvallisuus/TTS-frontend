@@ -27,7 +27,6 @@ const FilledRiskForm = ({
   task = null,
   scaffoldType = null,
   taskDesc = '',
-  taskDescTranslations = {},
   submitted = false,
   formattedDate = '',
   survey = {},

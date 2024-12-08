@@ -166,9 +166,9 @@ const TaskInfo = ({ project, setToLangs }) => {
 
 const styles = StyleSheet.create({
   button: {
-    flex: 1,
     alignItems: 'center',
     borderRadius: 5,
+    flex: 1,
     justifyContent: 'center',
     marginTop: 10,
     paddingVertical: 10,

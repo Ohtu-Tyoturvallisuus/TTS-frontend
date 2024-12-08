@@ -39,7 +39,7 @@ const FormValidationView = () => {
     taskDesc,
   } = useFormContext();
   console.log(accessCode);
-  const { fromLang, toLangs } = useTranslationLanguages();
+  // const { fromLang, toLangs } = useTranslationLanguages();
 
   const intervalDuration = 10000; // 10 seconds
   // Fetch accounts by survey ID every intervalDuration ms
