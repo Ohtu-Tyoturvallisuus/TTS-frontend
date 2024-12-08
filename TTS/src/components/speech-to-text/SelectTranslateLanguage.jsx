@@ -3,30 +3,20 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Modal, ScrollView 
 import CountryFlag from '@components/CountryFlag';
 import countriesData from '@lang/locales/languages.json';
 import { useTranslation } from 'react-i18next';
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useTranslationLanguages } from '@contexts/TranslationContext';
 
 const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
   const { t } = useTranslation();
-  const [selectedCountries, setSelectedCountries] = useState([]);
+  const { fromLang, toLangs } = useTranslationLanguages();
+  const [selectedCountries, setSelectedCountries] = useState(toLangs);
   const countries = countriesData.countries;
-  const { fromLang } = useTranslationLanguages();
   const [fromCountry, setFromCountry] = useState(() => {
     const initialCountry = countries.find(country => country.value === fromLang);
     return initialCountry ? initialCountry : countries[0];
   });
   const [searchText, setSearchText] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-
-  // Update origin value if fromLang changes
-  useEffect(() => {
-    const newOriginCountry = countries.find(country => country.value === fromLang);
-    if (newOriginCountry) {
-      setFromCountry(newOriginCountry);
-    } else if (countries.length > 0) {
-      setFromCountry(countries[0]);
-    }
-  }, [fromLang, countries]);
 
 // Filter countries based on the search text and exclude the origin country
 const filteredCountries = countries.filter(country =>
@@ -46,7 +36,7 @@ const filteredCountries = countries.filter(country =>
 
   return (
     <>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.selectCountryButton}
         onPress={() => setModalVisible(true)}
       >
@@ -62,9 +52,9 @@ const filteredCountries = countries.filter(country =>
             {selectedCountries.length > 0 && (
               selectedCountries.map(country => (
                <View key={country} style={{marginRight: 5, marginBottom: 5}}>
-                  <CountryFlag 
-                    isoCode={countries.find(c => c.value === country).flagCode} 
-                    size={24} 
+                  <CountryFlag
+                    isoCode={countries.find(c => c.value === country).flagCode}
+                    size={24}
                   />
                 </View>
               ))
@@ -83,7 +73,7 @@ const filteredCountries = countries.filter(country =>
               value={searchText}
               onChangeText={setSearchText}
             />
-            
+
             <View style={styles.languagesContainer}>
               {filteredCountries.map((country) => (
                 <View key={country.value} style={styles.countryItemContainer}>
