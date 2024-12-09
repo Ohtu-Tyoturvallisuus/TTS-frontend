@@ -132,7 +132,7 @@ const FilledRiskForm = ({
 
               {submitted && (
                 <LanguageSelector
-                  langOptions={[survey.language, ...survey.translation_languages]}
+                  langOptions={[survey.language, ...(survey.translation_languages || [])]}
                   onSelect={setSelectedTranslation}
                 />
               )}

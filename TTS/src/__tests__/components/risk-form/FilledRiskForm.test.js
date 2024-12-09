@@ -6,8 +6,33 @@ import { UserContext } from '@contexts/UserContext';
 
 jest.mock('@components/take-picture/Image', () => {
   const { View } = require('react-native');
-  const mockImage = ({ testID }) => <View testID={testID} />;
-  return mockImage;
+  const MockImage = ({ testID }) => <View testID={testID || 'mock-image'} />;
+  return MockImage;
+});
+
+jest.mock('@components/risk-form/FilledRiskNote', () => {
+  const { View, Text } = require('react-native');
+  const MockFilledRiskNote = ({ renderTitle, riskNote = {}, submitted, language }) => (
+    <View testID="mock-filled-risk-note">
+      <Text>{renderTitle()}</Text>
+      {submitted ? (
+        <Text>
+          {(riskNote.translations && riskNote.translations[language]) || riskNote.description || 'No Description'}
+        </Text>
+      ) : (
+        <Text>{riskNote.description || 'No Description'}</Text>
+      )}
+      {riskNote.images && riskNote.images.length > 0 && (
+        riskNote.images.map((image, index) => (
+          <View key={index} testID={`risk-image-${index}`}>
+            <Text>{`Image: ${image.blobName || image.uri}`}</Text>
+          </View>
+        ))
+      )}
+    </View>
+  );
+  MockFilledRiskNote.displayName = 'MockFilledRiskNote';
+  return MockFilledRiskNote;
 });
 
 jest.mock('@services/apiService', () => ({
@@ -36,6 +61,12 @@ describe('FilledRiskForm component', () => {
       },
       projectName: 'Project A',
       projectId: '12345',
+      survey: {
+        description: 'Description',
+        description_translations: { fi: 'Kuvaus', sv: 'Beskrivning' },
+        language: 'en',
+        translation_languages: ['fi', 'sv'],
+      },
       task: ['task1'],
       scaffoldType: ['type1'],
       taskDesc: 'This is a sample task description',
@@ -198,7 +229,13 @@ describe('FilledRiskForm component', () => {
   it('renders project name when form is submitted', () => {
     const { getByText } = setup({
       submitted: true,
-      survey: { project_name: 'Test Project' },
+      survey: {
+        project_name: 'Test Project',
+        description: 'Description',
+        description_translations: { fi: 'Kuvaus', sv: 'Beskrivning' },
+        language: 'en',
+        translation_languages: ['fi', 'sv']
+      },
     });
   
     expect(getByText('filledriskform.project: Test Project')).toBeTruthy();

@@ -191,18 +191,24 @@ test('fetchProjectList handles empty filters correctly', async () => {
 });
 
   test('postNewSurvey calls the correct API and returns data', async () => {
-    const projectId = 1;
-    const desc = 'Survey description';
-    const task = 'Task';
-    const scaffoldType = 'Type';
+    const mockProjectId = 1;
+    const mockDesc = 'Survey description';
+    const mockDescTranslations = { fi: 'Kuvaus', sv: 'Beskrivning' };
+    const mockTask = ['Task'];
+    const mockScaffoldType = ['Type'];
+    const mockLanguage = 'en';
+    const mockLanguageOptions = ['fi', 'sv'];
     axios.post.mockResolvedValueOnce(mockResponse);
 
-    const response = await postNewSurvey(projectId, desc, task, scaffoldType);
+    const response = await postNewSurvey(mockProjectId, mockDesc, mockDescTranslations, mockTask, mockScaffoldType, mockLanguage, mockLanguageOptions);
 
-    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining(`/projects/${projectId}/surveys/`), {
-      description: desc,
-      task: task,
-      scaffold_type: scaffoldType,
+    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining(`/projects/${mockProjectId}/surveys/`), {
+      description: mockDesc,
+      description_translations: mockDescTranslations,
+      task: mockTask,
+      scaffold_type: mockScaffoldType,
+      language: mockLanguage,
+      translation_languages: mockLanguageOptions,
     },
     {
       headers: {

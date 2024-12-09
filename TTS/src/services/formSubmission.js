@@ -1,7 +1,11 @@
 import { postNewSurvey, postRiskNotes } from './apiService';
 import { uploadImages } from './imageUpload';
 
-const validateTaskInfo = (fields) => {
+export const validateTaskInfo = (fields) => {
+  if (!fields || typeof fields !== 'object') {
+    throw new Error('Some fields are empty');
+  }
+
   const validatedFields = {};
   let hasEmptyField = false;
 
@@ -11,11 +15,13 @@ const validateTaskInfo = (fields) => {
     if (typeof value === 'string') {
       validatedFields[key] = value.trim() || '';
     } else if (Array.isArray(value)) {
-      validatedFields[key] = value.map(item => (typeof item === 'string' ? item.trim() : '')).filter(Boolean);
+      validatedFields[key] = value
+        .map(item => (typeof item === 'string' ? item.trim() : ''))
+        .filter(Boolean);
       if (validatedFields[key].length === 0) {
         validatedFields[key] = '';
       }
-    } else if (typeof value === 'object') {
+    } else if (value && typeof value === 'object') {
       validatedFields[key] = validateTaskInfo(value);
     } else {
       validatedFields[key] = '';

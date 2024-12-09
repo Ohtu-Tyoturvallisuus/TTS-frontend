@@ -11,7 +11,7 @@ const SelectTranslateLanguage = ({ setTranslationLanguages }) => {
   const { fromLang, toLangs } = useTranslationLanguages();
   const [selectedCountries, setSelectedCountries] = useState(toLangs);
   const countries = countriesData.countries;
-  const [fromCountry, setFromCountry] = useState(() => {
+  const [fromCountry] = useState(() => {
     const initialCountry = countries.find(country => country.value === fromLang);
     return initialCountry ? initialCountry : countries[0];
   });
