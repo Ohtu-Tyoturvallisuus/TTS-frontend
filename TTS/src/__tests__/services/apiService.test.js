@@ -16,7 +16,7 @@ import {
   uploadAudio,
   translateText,
   getSurveyByAccessCode,
-  joinSurvey
+  validateSurvey
 } from '@services/apiService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -191,18 +191,24 @@ test('fetchProjectList handles empty filters correctly', async () => {
 });
 
   test('postNewSurvey calls the correct API and returns data', async () => {
-    const projectId = 1;
-    const desc = 'Survey description';
-    const task = 'Task';
-    const scaffoldType = 'Type';
+    const mockProjectId = 1;
+    const mockDesc = 'Survey description';
+    const mockDescTranslations = { fi: 'Kuvaus', sv: 'Beskrivning' };
+    const mockTask = ['Task'];
+    const mockScaffoldType = ['Type'];
+    const mockLanguage = 'en';
+    const mockLanguageOptions = ['fi', 'sv'];
     axios.post.mockResolvedValueOnce(mockResponse);
 
-    const response = await postNewSurvey(projectId, desc, task, scaffoldType);
+    const response = await postNewSurvey(mockProjectId, mockDesc, mockDescTranslations, mockTask, mockScaffoldType, mockLanguage, mockLanguageOptions);
 
-    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining(`/projects/${projectId}/surveys/`), {
-      description: desc,
-      task: task,
-      scaffold_type: scaffoldType,
+    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining(`/projects/${mockProjectId}/surveys/`), {
+      description: mockDesc,
+      description_translations: mockDescTranslations,
+      task: mockTask,
+      scaffold_type: mockScaffoldType,
+      language: mockLanguage,
+      translation_languages: mockLanguageOptions,
     },
     {
       headers: {
@@ -453,55 +459,55 @@ test('fetchProjectList handles empty filters correctly', async () => {
         description: 'A test survey',
         created_at: '2024-11-15T10:00:00',
       };
-  
+
       axios.get.mockResolvedValueOnce({ data: mockResponseData });
-  
+
       const survey = await getSurveyByAccessCode(mockAccessCode);
-  
+
       expect(axios.get).toHaveBeenCalledWith(
         expect.stringContaining(`surveys/code/${mockAccessCode}`)
       );
-  
+
       expect(survey).toEqual(mockResponseData);
     });
-  
+
     it('should handle errors correctly if the API call fails', async () => {
       const mockAccessCode = 'testAccessCode';
-  
+
       axios.get.mockRejectedValueOnce(new Error('Network Error'));
-  
+
       await expect(getSurveyByAccessCode(mockAccessCode)).rejects.toThrow('Network Error');
     });
   });
-  
+
   describe('joinSurvey', () => {
     it('should join a survey using access code and return the response data', async () => {
       const mockAccessCode = 'testAccessCode';
       const mockToken = 'mockToken';
       const mockResponseData = { success: true, message: 'Successfully joined the survey.' };
-  
+
       axios.post.mockResolvedValueOnce({ data: mockResponseData });
-  
-      const response = await joinSurvey({ access_code: mockAccessCode, accessToken: mockToken });
-  
+
+      const response = await validateSurvey({ access_code: mockAccessCode, accessToken: mockToken });
+
       expect(axios.post).toHaveBeenCalledWith(
-        expect.stringContaining(`surveys/join/${mockAccessCode}/`),
+        expect.stringContaining(`surveys/validate/${mockAccessCode}/`),
         {},
         expect.objectContaining({
           headers: { Authorization: `Bearer ${mockToken}` },
         })
       );
-  
+
       expect(response).toEqual(mockResponseData);
     });
-  
+
     it('should handle errors correctly if the API call fails', async () => {
       const mockAccessCode = 'testAccessCode';
       const mockToken = 'mockToken';
-  
+
       axios.post.mockRejectedValueOnce(new Error('Network Error'));
-  
-      await expect(joinSurvey({ access_code: mockAccessCode, accessToken: mockToken })).rejects.toThrow('Network Error');
+
+      await expect(validateSurvey({ access_code: mockAccessCode, accessToken: mockToken })).rejects.toThrow('Network Error');
     });
   });
 });

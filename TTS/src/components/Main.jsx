@@ -11,7 +11,7 @@ import ProjectList from '@components/project-list/ProjectList';
 import CombinedSignIn from '@components/sign-in/CombinedSignIn';
 import Settings from '@components/settings/Settings';
 import { NavigationContext } from '@contexts/NavigationContext';
-import JoinSurvey from '@components/risk-form/JoinSurvey';
+import JoinSurvey from './risk-form/JoinSurvey';
 import FormValidationView from '@components/risk-form/FormValidationView';
 import RiskForm from '@components/risk-form/RiskForm';
 

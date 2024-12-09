@@ -20,7 +20,7 @@ const JoinSurvey = () => {
       .required(t('joinsurvey.error'))
       .length(6, t('joinsurvey.error_length')),
   });
-  
+
   const initialValues = {
     access_code: ''
   };

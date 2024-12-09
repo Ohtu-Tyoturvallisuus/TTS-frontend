@@ -13,9 +13,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
-import { retrieveImage, joinSurvey } from '@services/apiService';
+import { validateSurvey } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 import FilledRiskNote from './FilledRiskNote';
+import LanguageSelector from '@components/LanguageSelector';
+import TranslationItem from '@components/speech-to-text/TranslationItem';
 
 const FilledRiskForm = ({
   formData = {},
@@ -38,6 +40,7 @@ const FilledRiskForm = ({
   const [showExitModal, setShowExitModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [joinError, setJoinError] = useState(false);
+  const [selectedTranslation, setSelectedTranslation] = useState(survey.language);
 
   const relevantRiskNotes = Object.entries(formData)
     .filter(([, value]) => value.status === 'checked');
@@ -46,7 +49,7 @@ const FilledRiskForm = ({
     if (join) {
       setLoading(true)
       try {
-        const response = await joinSurvey({ access_code: accessCode, accessToken })
+        const response = await validateSurvey({ access_code: accessCode, accessToken })
         console.log('joinSurvey response:', response)
         setNewUserSurveys(!newUserSurveys)
         setLoading(false)
@@ -127,6 +130,13 @@ const FilledRiskForm = ({
                 </View>
               )}
 
+              {submitted && (
+                <LanguageSelector
+                  langOptions={[survey.language, ...survey.translation_languages]}
+                  onSelect={setSelectedTranslation}
+                />
+              )}
+
               <Text className="text-lg font-bold py-2">{t('riskform.projectName')}:</Text>
               <Text>{projectName}</Text>
 
@@ -151,18 +161,33 @@ const FilledRiskForm = ({
                 </>
               )}
 
-              {taskDesc && (
+              {taskDesc && submitted &&(
+                <>
+                  <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
+                  {survey.description_translations[selectedTranslation] ? (
+                    <TranslationItem
+                      langCode={selectedTranslation}
+                      text={survey.description_translations[selectedTranslation]}
+                    />
+                  ) : (
+                    <TranslationItem
+                      langCode={selectedTranslation}
+                      text={survey.description}
+                    />
+                  )}
+                </>
+              )}
+              {taskDesc && !submitted && (
                 <>
                   <Text className="text-lg font-bold py-2">{t('riskform.taskDescription')}:</Text>
                   <Text>{taskDesc}</Text>
                 </>
               )}
-
               {
                 submitted ? (
                   relevantRiskNotes.length > 0 ? (
-                    relevantRiskNotes.map(([key, value]) => {
-                      const variableToUse = joined ? value.note || '' : key || '';
+                    relevantRiskNotes.map(([key, riskNote]) => {
+                      const variableToUse = riskNote.note || '' ;
                       const renderTitle = () => {
                         if (!variableToUse) return '';
                         return variableToUse.startsWith('riskform.otherScaffolding')
@@ -176,10 +201,10 @@ const FilledRiskForm = ({
                         <FilledRiskNote
                           key={key}
                           renderTitle={renderTitle}
-                          value={value}
+                          riskNote={riskNote}
                           modalVisible={modalVisible}
-                          retrieveImage={retrieveImage}
                           submitted={submitted}
+                          language={selectedTranslation}
                         />
                       )
                     })
@@ -194,7 +219,7 @@ const FilledRiskForm = ({
                   )
                 ) : (
                   relevantRiskNotes.length > 0 ? (
-                    relevantRiskNotes.map(([key, value]) => {
+                    relevantRiskNotes.map(([key, riskNote]) => {
                       const renderTitle = () => {
                         return key.startsWith('riskform.otherScaffolding')
                           ? `${t(`${key.split(' ')[0]}`)} ${key.split(' ')[1]}`
@@ -207,10 +232,10 @@ const FilledRiskForm = ({
                         <FilledRiskNote
                           key={key}
                           renderTitle={renderTitle}
-                          value={value}
+                          riskNote={riskNote}
                           modalVisible={modalVisible}
-                          retrieveImage={retrieveImage}
                           submitted={submitted}
+                          language={selectedTranslation}
                         />
                       );
                     })

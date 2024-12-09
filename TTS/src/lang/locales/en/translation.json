@@ -41,7 +41,7 @@
     "next": "Next",
     "confirm": "Confirm"
   },
-  "formValidation": {
+  "formvalidation": {
     "listOfParticipants": "Participants",
     "participants": "Participants",
     "confirmMessage": "Have all participants acknowledged the risks?",
@@ -231,7 +231,7 @@
     "loading": "Joining..."
   },
   "taskinfo": {
-    "translate": "Translate text"
+    "translate": "Translate"
   },
   "translationsview": {
     "hide": "Hide translations",

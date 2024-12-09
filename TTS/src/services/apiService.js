@@ -32,14 +32,17 @@ export const fetchProject = async (projectId) => {
   return response.data;
 };
 
-export const postNewSurvey = async (projectId, desc, task, scaffoldType) => {
+export const postNewSurvey = async (projectId, desc, descTranslations, task, scaffoldType, language, languageOptions) => {
   const token = await AsyncStorage.getItem('access_token');
   const url = API_BASE_URL + `projects/${projectId}/surveys/`;
   console.log('postNewSurvey:', url);
   const response = await axios.post(url, {
     description: desc,
+    description_translations: descTranslations,
     task: task,
     scaffold_type: scaffoldType,
+    language: language,
+    translation_languages: languageOptions,
   },
   {
     headers: {
@@ -262,9 +265,9 @@ export const getAccountsBySurvey = async (surveyId) => {
   return response.data;
 }
 
-export const joinSurvey = async ({access_code, accessToken}) => {
-  const url = API_BASE_URL + `surveys/join/${access_code}/`;
-  console.log('Joining survey with access code:', access_code);
+export const validateSurvey = async ({access_code, accessToken}) => {
+  const url = API_BASE_URL + `surveys/validate/${access_code}/`;
+  console.log('Validating survey with access code:', access_code);
   const response = await axios.post(url, {}, {
     headers: {
       Authorization: `Bearer ${accessToken}`

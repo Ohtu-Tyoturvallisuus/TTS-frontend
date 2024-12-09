@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import RiskImage from '@components/take-picture/Image';
+import { retrieveImage } from '@services/apiService';
+import TranslationItem from '../speech-to-text/TranslationItem';
 
-const FilledRiskNote = ({ renderTitle, value, modalVisible, retrieveImage, submitted }) => {
+const FilledRiskNote = ({ renderTitle, riskNote, modalVisible, submitted, language }) => {
   const [retrievedImages, setRetrievedImages] = useState([]);
   const { t } = useTranslation(['translation', 'formFields']);
-                    
+  console.log('Risknote:', riskNote);
+
   useEffect(() => {
     if (modalVisible) {
       const fetchImages = async () => {
         const images = await Promise.all(
-          value.images?.map(async (image) => {
+          riskNote.images?.map(async (image) => {
             if (image.blobName) {
               const uri = await retrieveImage(image.blobName);
               return { uri };
@@ -23,7 +26,7 @@ const FilledRiskNote = ({ renderTitle, value, modalVisible, retrieveImage, submi
       };
       submitted && fetchImages();
     }
-  }, [value.images, modalVisible]);
+  }, [riskNote.images, modalVisible]);
 
   return (
     submitted ? (
@@ -31,10 +34,20 @@ const FilledRiskNote = ({ renderTitle, value, modalVisible, retrieveImage, submi
         <Text className="text-base font-bold">
           {renderTitle()}:
         </Text>
-        <Text>
-          {value.description}
-        </Text>
-        {value.images.length > 0 ? (
+
+        {riskNote.translations[language] ? (
+          <TranslationItem
+            langCode={language}
+            text={riskNote.translations[language]}
+          />
+        ) : (
+          <TranslationItem
+            langCode={language}
+            text={riskNote.description}
+          />
+        )}
+
+        {riskNote.images.length > 0 ? (
           <View style={styles.imageContainer}>
           {!retrievedImages.length ? (
             <View style={{ margin: 10 }}>
@@ -47,7 +60,7 @@ const FilledRiskNote = ({ renderTitle, value, modalVisible, retrieveImage, submi
                   key={index}
                   images={retrievedImages}
                   currentIndex={index}
-                  isLandscape={value.images[index]?.isLandscape}
+                  isLandscape={riskNote.images[index]?.isLandscape}
                   testID={`risk-image-${index}`}
                 />
               </View>
@@ -64,18 +77,18 @@ const FilledRiskNote = ({ renderTitle, value, modalVisible, retrieveImage, submi
           {renderTitle()}:
         </Text>
         <Text>
-          {value.description}
+          {riskNote.description}
         </Text>
         <View style={styles.imageContainer}>
-          {!value.images ? (
+          {!riskNote.images ? (
             <View style={{ margin: 10 }}>
             </View>
           ) : (
-            value.images.map((image, index) => (
+            riskNote.images.map((image, index) => (
               <View key={index}>
                 <RiskImage
                   key={index}
-                  images={value.images}
+                  images={riskNote.images}
                   currentIndex={index}
                   isLandscape={image.isLandscape}
                   testID={`risk-image-${index}`}

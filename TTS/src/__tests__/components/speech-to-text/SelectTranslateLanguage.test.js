@@ -7,6 +7,7 @@ jest.mock('react-i18next', () => ({
     t: (key) => {
       const translations = {
         'selecttranslate.selectTranslationLanguages': 'Select translation languages',
+        'selecttranslate.selectedTranslationLanguages': 'Selected languages for translation',
         'selecttranslate.selectLanguages': 'Select languages',
         'selecttranslate.searchLanguages': 'Search languages...',
         'selecttranslate.selectedLanguages': 'Selected languages:',
@@ -23,7 +24,7 @@ const originalUseTranslationLanguages = TranslationContext.useTranslationLanguag
 jest.mock('@contexts/TranslationContext', () => ({
   useTranslationLanguages: jest.fn(() => ({
     fromLang: 'fi',
-    toLangs: ['en', 'sv'],
+    toLangs: [],
   })),
 }));
 
@@ -126,7 +127,7 @@ describe('SelectTranslateLanguage Component', () => {
     const useTranslationLanguagesMock = require('@contexts/TranslationContext').useTranslationLanguages;
     useTranslationLanguagesMock.mockImplementation(() => ({
       fromLang: 'de', // German, not in the countries list
-      toLangs: ['en', 'sv'],
+      toLangs: [],
     }));
 
     const mockSetTranslationLanguages = jest.fn();
@@ -138,7 +139,7 @@ describe('SelectTranslateLanguage Component', () => {
     const searchInput = await findByPlaceholderText('Search languages...');
     fireEvent.changeText(searchInput, 'Suomi');
 
-    // Ensure deafult country ('Suomi') is not selectable
+    // Ensure default country ('Suomi') is not selectable
     expect(queryByText('Suomi')).toBeNull();
 
     useTranslationLanguagesMock.mockImplementation(originalUseTranslationLanguages);
