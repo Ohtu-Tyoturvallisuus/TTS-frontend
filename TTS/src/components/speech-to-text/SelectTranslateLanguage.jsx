@@ -44,7 +44,7 @@ const filteredCountries = countries.filter(country =>
           {selectedCountries.length === 0 ? (
             <Text>{t('selecttranslate.selectTranslationLanguages')}</Text>
           ) : (
-            <Text>{t('selecttranslate.selectedTranslationLanguages')}</Text>
+            <Text>{t('selecttranslate.selectTranslationLanguages')}</Text>
           )}
           <View style={styles.flagsContainer}>
             <CountryFlag isoCode={fromCountry.flagCode} size={24} style={styles.countryFlag} />
@@ -64,7 +64,7 @@ const filteredCountries = countries.filter(country =>
       </TouchableOpacity>
       <Modal visible={modalVisible} animationType='slide'>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <View style={[styles.container, {marginTop: 40}]}> 
+          <View style={[styles.container, {marginTop: 40}]}>
             <Text style={styles.label}>{t('selecttranslate.selectLanguages')}:</Text>
             <TextInput
               style={styles.searchInput}

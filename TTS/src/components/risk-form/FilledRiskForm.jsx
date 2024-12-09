@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import CloseButton from '@components/buttons/CloseButton';
-import { joinSurvey } from '@services/apiService';
+import { validateSurvey } from '@services/apiService';
 import { UserContext } from '@contexts/UserContext';
 import FilledRiskNote from './FilledRiskNote';
 import LanguageSelector from '@components/LanguageSelector';
@@ -49,7 +49,7 @@ const FilledRiskForm = ({
     if (join) {
       setLoading(true)
       try {
-        const response = await joinSurvey({ access_code: accessCode, accessToken })
+        const response = await validateSurvey({ access_code: accessCode, accessToken })
         console.log('joinSurvey response:', response)
         setNewUserSurveys(!newUserSurveys)
         setLoading(false)
@@ -132,7 +132,7 @@ const FilledRiskForm = ({
 
               {submitted && (
                 <LanguageSelector
-                  langOptions={[survey.language, ...(survey.translation_languages || [])]}
+                  langOptions={[survey.language, ...survey.translation_languages]}
                   onSelect={setSelectedTranslation}
                 />
               )}
