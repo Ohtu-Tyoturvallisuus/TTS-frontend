@@ -87,10 +87,10 @@ const MicrosoftSignIn = () => {
             const id = userProfile[1]
             const data = await signIn(name, id);
             console.log(data)
-            setAccountDatabaseId(data.id)
-            await AsyncStorage.setItem('account_database_id', data.id)
             setAccessToken(data.access_token);
             await AsyncStorage.setItem('access_token', data.access_token);
+            setAccountDatabaseId(data.id);
+            await AsyncStorage.setItem('account_database_id', data.id);
           } else {
             console.error('Error fetching token:', tokenData);
             Alert.alert('Token exchange failed', tokenData.error_description);
