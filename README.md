@@ -51,20 +51,13 @@ The project team consists of five students.
 This is the repository for the frontend of this project.
 #
 
-
 ## Development
 
 ### Links
 
-- **Product Backlog**
+- [**Backend repository**](https://github.com/Ohtu-Tyoturvallisuus/TTS-backend)
+- [**Documentation**](https://github.com/Ohtu-Tyoturvallisuus/TTS-documentation)
+- **Product Backlog**:
   - [Story list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/1)
   - [Task list](https://github.com/orgs/Ohtu-Tyoturvallisuus/projects/1/views/2)
-- **Backend [repository](https://github.com/Ohtu-Tyoturvallisuus/TTS-backend)**
-- **[Timelogs](https://study.cs.helsinki.fi/projekti/timelogs)**
-
-### Documentation
-- **[Branching practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-practices.md)**
-- **[Branching workflow](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/branching-workflow.md)**
-- **[Commit practices](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/commit-practices.md)**
-- **[Definition of Done](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/definition-of-done.md)**
-- **[Guide to EAS Build, Submit and Update](https://github.com/Ohtu-Tyoturvallisuus/TTS-frontend/blob/main/docs/guide-EAS.md)**
+- [**Timelogs**](https://study.cs.helsinki.fi/projekti/timelogs)
