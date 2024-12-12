@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import { UserContext } from '@contexts/UserContext';
 import ChangeLanguage from './ChangeLanguage';
-import CloseButton from '@components/buttons/CloseButton';
 import SettingsButton from '@components/buttons/SettingsButton';
 import MyObservations from './MyObservations';
 
@@ -106,11 +105,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#6f7072',
     borderRadius: 5,
+    height: 48,
     justifyContent: 'center',
     marginVertical: 10,
-    height: 48,
-    width: 80,
     padding: 15,
+    width: 80,
   },
   buttonText: {
     color: '#fff',
