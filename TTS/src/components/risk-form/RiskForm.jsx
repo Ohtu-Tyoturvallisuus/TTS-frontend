@@ -48,7 +48,7 @@ const RiskForm = () => {
   const [ showExitModal, setShowExitModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const allowNavigationRef = useRef(false);
-  const { fromLang, toLangs, setToLangs } = useTranslationLanguages();
+  const { fromLang, toLangs, setToLangs, clearToLangs } = useTranslationLanguages();
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
   console.log('TaskDesc translations',getFormData('taskDesc', 'translations'));
@@ -125,6 +125,7 @@ const RiskForm = () => {
     allowNavigationRef.current = true;
     resetProjectAndSurvey();
     resetFormData(),
+    clearToLangs();
     setShowExitModal(false);
     setSubmitted(false);
   };
