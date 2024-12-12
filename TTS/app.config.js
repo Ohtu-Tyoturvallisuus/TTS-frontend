@@ -4,7 +4,7 @@ export default {
   name: "HazardHunt",
   slug: "HazardHunt",
   scheme: ["hazardhunt"],
-  version: "1.0.6",
+  version: "1.1.0",
   owner: "telinekataja",
   orientation: "portrait",
   icon: "./assets/HazardHunt-icon.png",
