@@ -22,7 +22,7 @@ const useFetchSurveys = (projectId) => {
         console.log('Project:', project.projectId);
         const allSurveys = project.surveys || [];
         const filteredSurveys = allSurveys.filter((s) => {
-          console.log('Filtering user surveys:');
+          console.log('Filtering user surveys...');
           return String(s.creator) === accountDatabaseId;
         });
         console.log('Setting surveys to:', filteredSurveys)
