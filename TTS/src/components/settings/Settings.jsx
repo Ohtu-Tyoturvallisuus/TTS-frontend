@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Modal, StyleSheet, View, Text, Alert  } from 'react-native';
+import { Modal, StyleSheet, View, TouchableOpacity,Text, Alert  } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -91,7 +91,9 @@ const Settings = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <ChangeLanguage />
-            <CloseButton onPress={() => setChangeLanguageVisible(false)} />
+            <TouchableOpacity style={styles.button} onPress={() => setChangeLanguageVisible(false)}>
+              <Text style={styles.buttonText}>{t('closebutton.close')}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -100,6 +102,21 @@ const Settings = () => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#6f7072',
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginVertical: 10,
+    height: 48,
+    width: 80,
+    padding: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   container: {
     alignItems: 'center',
     backgroundColor: 'white',
