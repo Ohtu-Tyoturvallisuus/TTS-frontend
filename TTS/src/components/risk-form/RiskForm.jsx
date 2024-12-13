@@ -27,6 +27,7 @@ const RiskForm = () => {
 
   const {
     formData,
+    getFormData,
     updateFormField,
     replaceFormData,
     resetFormData,
@@ -47,10 +48,10 @@ const RiskForm = () => {
   const [ showExitModal, setShowExitModal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const allowNavigationRef = useRef(false);
-  const { setToLangs } = useTranslationLanguages();
+  const { fromLang, toLangs, setToLangs, clearToLangs } = useTranslationLanguages();
 
   const { surveyData, loading, error } = useFetchSurveyData(surveyURL);
-
+  console.log('TaskDesc translations',getFormData('taskDesc', 'translations'));
   // Merges previous survey's data to the form if surveyData is available
   useEffect(() => {
     if (surveyData) {
@@ -89,15 +90,24 @@ const RiskForm = () => {
   }, [navigation]);
 
   const handleSubmit = async () => {
+    const descTranslations = getFormData('taskDesc', 'translations') || {};
     const taskInfo = {
       task: task,
       description: taskDesc,
+      descriptionTranslations: descTranslations,
       scaffold_type: scaffoldType,
     };
     console.log('Submitting:', taskInfo);
     try {
       setSubmitted(true)
-      const response = await submitForm(project, taskInfo, formData, t);
+      const response = await submitForm(
+        project,
+        taskInfo,
+        formData,
+        t,
+        fromLang,
+        toLangs
+      );
       setAccessCode(response.access_code);
       setSelectedSurveyId(response.id);
       response._j && setSubmitted(false);
@@ -115,14 +125,8 @@ const RiskForm = () => {
     allowNavigationRef.current = true;
     resetProjectAndSurvey();
     resetFormData(),
+    clearToLangs();
     setShowExitModal(false);
-
-    // if (submitted) {
-    //   Alert.alert(
-    //     `${t('riskform.formCode')}: ${accessCode}`,
-    //     t('riskform.findFormInfo')
-    //   )
-    // }
     setSubmitted(false);
   };
 

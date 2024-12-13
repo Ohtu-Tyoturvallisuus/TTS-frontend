@@ -1,4 +1,4 @@
-import { submitForm } from '@services/formSubmission';
+import { submitForm, validateTaskInfo } from '@services/formSubmission';
 import { postNewSurvey, postRiskNotes } from '@services/apiService';
 import { uploadImages } from '@services/imageUpload';
 
@@ -13,6 +13,8 @@ jest.mock('@services/imageUpload', () => ({
 
 describe('submitForm', () => {
   const mockTranslate = jest.fn().mockImplementation(key => key);
+  const mockFormLanguage = 'en';
+  const mockToLanguages = ['fi', 'sv'];
 
   const mockAlert = jest.fn();
   global.alert = mockAlert;
@@ -21,6 +23,7 @@ describe('submitForm', () => {
   const taskInfo = {
     task: ['Installation'],
     description: 'New installation task',
+    descriptionTranslations: { fi: 'Uusi asennustehtävä', sv: 'Ny installationsuppgift' },
     scaffold_type: ['Work Scaffold'],
   };
   
@@ -45,13 +48,16 @@ describe('submitForm', () => {
     uploadImages.mockResolvedValueOnce(['blob1', 'blob2']);
     postRiskNotes.mockResolvedValueOnce();
 
-    await submitForm(project, taskInfo, formData, mockTranslate);
+    await submitForm(project, taskInfo, formData, mockTranslate, mockFormLanguage, mockToLanguages);
 
     expect(postNewSurvey).toHaveBeenCalledWith(
       project.id,
       taskInfo.description,
+      taskInfo.descriptionTranslations,
       taskInfo.task,
       taskInfo.scaffold_type,
+      mockFormLanguage,
+      mockToLanguages
     );
 
     expect(uploadImages).toHaveBeenCalledWith(formData.personal_protection.images, 'personal_protection');
@@ -74,10 +80,11 @@ describe('submitForm', () => {
     const incompleteTaskInfo = {
       task: 'Installation',
       description: '',
+      descriptionTranslations: {},
       scaffold_type: 'Work Scaffold',
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate, mockFormLanguage, mockToLanguages))
       .rejects.toThrow('Some fields are empty');
   });
 
@@ -85,10 +92,11 @@ describe('submitForm', () => {
     const incompleteTaskInfo = {
       task: null,
       description: 'Valid description',
+      descriptionTranslations: {fi: 'Oikea kuvaus', sv: 'Giltig beskrivning'},
       scaffold_type: 'Scaffold Type',
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate, mockFormLanguage, mockToLanguages))
       .rejects.toThrow('Some fields are empty');
   });
 
@@ -96,10 +104,11 @@ describe('submitForm', () => {
     const incompleteTaskInfo = {
       task: [],
       description: 'Valid description',
+      descriptionTranslations: {fi: 'Oikea kuvaus', sv: 'Giltig beskrivning'},
       scaffold_type: 'Scaffold Type',
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate, mockFormLanguage, mockToLanguages))
       .rejects.toThrow('Some fields are empty');
   });
 
@@ -107,10 +116,11 @@ describe('submitForm', () => {
     const incompleteTaskInfo = {
       task: ['Installation'],
       description: 'Valid description',
+      descriptionTranslations: {fi: 'Oikea kuvaus', sv: 'Giltig beskrivning'},
       scaffold_type: [6],
     };
 
-    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate))
+    await expect(submitForm(project, incompleteTaskInfo, formData, mockTranslate, mockFormLanguage, mockToLanguages))
       .rejects.toThrow('Some fields are empty');
   });
 
@@ -126,13 +136,16 @@ describe('submitForm', () => {
     postNewSurvey.mockResolvedValueOnce({ id: 123 });
     postRiskNotes.mockResolvedValueOnce();
 
-    await submitForm(project, taskInfo, newFormData, mockTranslate);
+    await submitForm(project, taskInfo, newFormData, mockTranslate, mockFormLanguage, mockToLanguages);
 
     expect(postNewSurvey).toHaveBeenCalledWith(
       project.id,
       taskInfo.description,
+      taskInfo.descriptionTranslations,
       taskInfo.task,
       taskInfo.scaffold_type,
+      mockFormLanguage,
+      mockToLanguages
     );
 
     expect(postRiskNotes).toHaveBeenCalledWith(123, expect.arrayContaining([
@@ -149,8 +162,8 @@ describe('submitForm', () => {
   it('should alert on submission error', async () => {
     postNewSurvey.mockRejectedValueOnce(new Error('Network Error'));
 
-    await expect(submitForm(project, taskInfo, formData, mockTranslate))
-      .rejects.toThrow('Network Error');
+    await expect(submitForm(project, taskInfo, formData, mockTranslate, mockFormLanguage, mockToLanguages)).
+      rejects.toThrow('Network Error');
 
     expect(mockAlert).toHaveBeenCalledWith(mockTranslate('riskform.errorSubmitting'));
   });
@@ -168,6 +181,7 @@ describe('submitForm', () => {
     const newTaskInfo = {
       task: ['Installation'],
       description: 'New installation task',
+      descriptionTranslations: { fi: 'Uusi asennustehtävä', sv: 'Ny installationsuppgift' },
       scaffold_type: ['Work Scaffold'],
     };
   
@@ -182,7 +196,7 @@ describe('submitForm', () => {
   
     postNewSurvey.mockResolvedValueOnce({ id: 123 });
   
-    await submitForm(project, newTaskInfo, newFormData, mockTranslate);
+    await submitForm(project, newTaskInfo, newFormData, mockTranslate, mockFormLanguage, mockToLanguages);
 
     expect(postRiskNotes).toHaveBeenCalledWith(123, expect.arrayContaining([
       expect.objectContaining({
@@ -197,3 +211,36 @@ describe('submitForm', () => {
     expect(uploadImages).not.toHaveBeenCalled();
   });
 });
+
+describe('validateTaskInfo', () => {
+  it('should throw an error if fields is null', () => {
+    expect(() => validateTaskInfo(null)).toThrow('Some fields are empty');
+  });
+
+  it('should throw an error if fields is undefined', () => {
+    expect(() => validateTaskInfo(undefined)).toThrow('Some fields are empty');
+  });
+
+  it('should throw an error if fields is not an object', () => {
+    expect(() => validateTaskInfo('notAnObject')).toThrow('Some fields are empty');
+  });
+
+  it('should return validated fields if fields are valid', () => {
+    const validFields = {
+      task: ['Installation'],
+      description: 'New installation task',
+      descriptionTranslations: { fi: 'Uusi asennustehtävä', sv: 'Ny installationsuppgift' },
+      scaffold_type: ['Work Scaffold'],
+    };
+
+    const result = validateTaskInfo(validFields);
+
+    expect(result).toEqual({
+      task: ['Installation'],
+      description: 'New installation task',
+      descriptionTranslations: { fi: 'Uusi asennustehtävä', sv: 'Ny installationsuppgift' },
+      scaffold_type: ['Work Scaffold'],
+    });
+  });
+});
+

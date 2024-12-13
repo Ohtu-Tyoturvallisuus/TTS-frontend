@@ -12,7 +12,7 @@ const MicrosoftSignIn = () => {
   const [CLIENT_ID, setClientId] = useState('');
   const [TENANT_ID, setTenantId] = useState('');
   const [loading, setLoading] = useState(true);
-  const { username, setUsername, setEmail, setAccessToken } = useContext(UserContext);
+  const { username, setUsername, setEmail, setAccessToken, setAccountDatabaseId } = useContext(UserContext);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -89,6 +89,8 @@ const MicrosoftSignIn = () => {
             console.log(data)
             setAccessToken(data.access_token);
             await AsyncStorage.setItem('access_token', data.access_token);
+            setAccountDatabaseId(data.id);
+            await AsyncStorage.setItem('account_database_id', data.id);
           } else {
             console.error('Error fetching token:', tokenData);
             Alert.alert('Token exchange failed', tokenData.error_description);
